@@ -1,0 +1,23 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+.form-section {
+    flex: 1;
+    padding: 5px;
+    border-right: 1px solid #ccc;
+}
+
+.table-section {
+    flex: 1;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.form-button {
+    margin-right: 1%;
+}
