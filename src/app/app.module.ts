@@ -12,10 +12,13 @@ import { ToastrModule } from 'ngx-toastr';
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, AppRoutingModule, SharedModule, BrowserAnimationsModule, MaterialModule, ToastrModule.forRoot()],
+  imports: [BrowserModule, AppRoutingModule, SharedModule, BrowserAnimationsModule, MaterialModule,MatDatepickerModule,
+    MatNativeDateModule, ToastrModule.forRoot()],
   providers: [
     provideHttpClient(withInterceptorsFromDi()),
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

@@ -74,6 +74,8 @@ export const NavigationItems: NavigationItem[] = [
       }
     ]
   },
+
+  /* side navigation bar item for form-demo */
   {
     id: 'formDemo',
     title: 'Form-Demo',
@@ -87,6 +89,48 @@ export const NavigationItems: NavigationItem[] = [
         type: 'item',
         classes: 'nav-item',
         url: '/pages/form-demo',
+        icon: 'dashboard',
+        auth: authenticationEnum.Home_Dashboard,
+        breadcrumbs: false
+      }
+    ]
+  },
+
+  /* side navigation bar item for employee registration form */
+  {
+    id: 'employee',
+    title: 'Employee Registration',
+    type: 'group',
+    icon: 'icon-navigation',
+    auth: authenticationEnum.Home,
+    children: [
+      {
+        id: 'employeeDet',
+        title: 'Employee Registration',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/pages/employee',
+        icon: 'dashboard',
+        auth: authenticationEnum.Home_Dashboard,
+        breadcrumbs: false
+      }
+    ]
+  },
+
+  /* side navigation bar item for member registration form */
+  {
+    id: 'member',
+    title: 'Member Registration',
+    type: 'group',
+    icon: 'icon-navigation',
+    auth: authenticationEnum.Home,
+    children: [
+      {
+        id: 'memberDet',
+        title: 'Member Registration',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/pages/member',
         icon: 'dashboard',
         auth: authenticationEnum.Home_Dashboard,
         breadcrumbs: false
