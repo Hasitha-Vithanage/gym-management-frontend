@@ -53,3 +53,58 @@
     background-color: #f3f6f9 !important;
     color: #424242 !important;
   }
+
+  /* Table CSS */
+
+.table-filter {    
+  display: flex;
+  justify-content: end;
+}
+
+.table-filter mat-form-field{    
+  width: 25%;
+  height: 70px;
+  margin-right: 10px;
+}
+
+.refresh-button{
+  background-color: #1976d2;
+  color: white;
+  border-radius: 8px;
+  font-size: 20px;
+}
+
+.table-section {
+width: 100%;
+background: white;
+padding: 20px;
+border-radius: 12px;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+table {
+width: 100%;
+border-collapse: collapse;
+}
+
+th,
+td {
+padding: 12px;
+text-align: left;
+border-bottom: 1px solid #ddd;
+}
+
+th {
+background-color: #1976d2 !important;
+color: white;
+}
+
+.action-column {
+display: flex;
+flex-direction: row;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+}

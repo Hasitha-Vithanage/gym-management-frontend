@@ -107,9 +107,123 @@
       </div>
 
       <div class="row">
-        <button type="submit" mat-raised-button color="primary" class="register-button half-width">Register</button>
-        <button type="reset" mat-raised-button class="reset-button half-width">Reset</button>
+        <button type="submit" mat-raised-button color="primary" class="register-button half-width">{{registerButtonLabel}}</button>
+        <button type="reset" mat-raised-button class="reset-button half-width" (click)="resetData()">Reset</button>
       </div>
     </form>
+  </div>
+
+  <!-- Table Section to the Right of Form -->
+  <div class="table-section">
+    <!-- title of the-->
+    <h2 class="form-title">Member Table</h2>
+
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <!--- Note that these columns can be defined in any order.
+            The actual rendered columns are set as a property on the row definition" -->
+
+      <!-- memberNo Column -->
+      <ng-container matColumnDef="memberNo">
+        <th mat-header-cell *matHeaderCellDef>Member No</th>
+        <td mat-cell *matCellDef="let element">{{ element.memberNo }}</td>
+      </ng-container>
+
+      <!-- firstName Column -->
+      <ng-container matColumnDef="firstName">
+        <th mat-header-cell *matHeaderCellDef>First name</th>
+        <td mat-cell *matCellDef="let element">{{ element.firstName }}</td>
+      </ng-container>
+
+      <!-- lastName Column -->
+      <ng-container matColumnDef="lastName">
+        <th mat-header-cell *matHeaderCellDef>Last Name</th>
+        <td mat-cell *matCellDef="let element">{{ element.lastName }}</td>
+      </ng-container>
+
+      <!-- nic Column -->
+      <ng-container matColumnDef="nic">
+        <th mat-header-cell *matHeaderCellDef>NIC</th>
+        <td mat-cell *matCellDef="let element">{{ element.nic }}</td>
+      </ng-container>
+
+      <!-- dateOfBirth Column -->
+      <ng-container matColumnDef="dateOfBirth">
+        <th mat-header-cell *matHeaderCellDef>Date of Birth</th>
+        <td mat-cell *matCellDef="let element">{{ element.dateOfBirth }}</td>
+      </ng-container>
+
+      <!-- address Column -->
+      <ng-container matColumnDef="address">
+        <th mat-header-cell *matHeaderCellDef>Address</th>
+        <td mat-cell *matCellDef="let element">{{ element.address }}</td>
+      </ng-container>
+
+      <!-- phoneNumber Column -->
+      <ng-container matColumnDef="phoneNumber">
+        <th mat-header-cell *matHeaderCellDef>Phone Number</th>
+        <td mat-cell *matCellDef="let element">{{ element.phoneNumber }}</td>
+      </ng-container>
+
+      <!-- email Column -->
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef>Email</th>
+        <td mat-cell *matCellDef="let element">{{ element.email }}</td>
+      </ng-container>
+
+      <!-- emergencyContactNumber Column -->
+      <ng-container matColumnDef="emergencyContactNumber">
+        <th mat-header-cell *matHeaderCellDef>Emergency Contact</th>
+        <td mat-cell *matCellDef="let element">{{ element.emergencyContactNumber }}</td>
+      </ng-container>
+
+      <!-- bloodType Column -->
+      <ng-container matColumnDef="bloodType">
+        <th mat-header-cell *matHeaderCellDef>Blood Type</th>
+        <td mat-cell *matCellDef="let element">{{ element.bloodType }}</td>
+      </ng-container>
+
+      <!-- joinedDate Column -->
+      <ng-container matColumnDef="joinedDate">
+        <th mat-header-cell *matHeaderCellDef>Date of Joining</th>
+        <td mat-cell *matCellDef="let element">{{ element.joinedDate }}</td>
+      </ng-container>
+
+      <!-- gender Column -->
+      <ng-container matColumnDef="gender">
+        <th mat-header-cell *matHeaderCellDef>Gender</th>
+        <td mat-cell *matCellDef="let element">{{ element.gender }}</td>
+      </ng-container>
+
+      <!-- injuries Column -->
+      <ng-container matColumnDef="injuries">
+        <th mat-header-cell *matHeaderCellDef>Injuries</th>
+        <td mat-cell *matCellDef="let element">{{ element.injuries }}</td>
+      </ng-container>
+     
+      <!-- membershipCategory Column -->
+      <ng-container matColumnDef="membershipCategory">
+        <th mat-header-cell *matHeaderCellDef>Membership Category</th>
+        <td mat-cell *matCellDef="let element">{{ element.membershipCategory }}</td>
+      </ng-container>
+
+      <!-- action Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let element">
+          <div class="action-column">
+            <button mat-icon-button color="warn" (click)="editData(element)" matTooltip="Edit">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="deleteData()" matTooltip="Delete">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+      
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
   </div>
 </div>

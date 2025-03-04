@@ -15,7 +15,6 @@ export class MemberServiceService {
     const requestUrl = environment.baseUrl + '/member';
     
     let headers = {};
-
     if (this.httpService.getAuthToken() !== null) {
       headers = {
         Authorization: 'Bearer ' + this.httpService.getAuthToken()
@@ -24,4 +23,17 @@ export class MemberServiceService {
     return this.http.post(requestUrl, form_details, {headers: headers});
   }
 
+
+    // Data retrieving backend call
+    getData() {
+      const requestUrl = environment.baseUrl + '/member';
+  
+      let headers = {};
+      if (this.httpService.getAuthToken() !== null) {
+        headers = {
+          Authorization: 'Bearer ' + this.httpService.getAuthToken()
+        };
+    }
+    return this.http.get(requestUrl, {headers: headers});
+    }
 }
