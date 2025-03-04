@@ -1,0 +1,115 @@
+<div class="container">
+  <div class="form-section">
+    <!-- title of the form-->
+    <h2 class="form-title">Member Registration Form</h2>
+
+    <!--- form -->
+    <form [formGroup]="memberForm" class="example-form" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <mat-form-field class="half-width">
+          <mat-label>Member No</mat-label>
+          <input matInput maxlength="5" placeholder="Ex. M001" formControlName="memberNo" type="text" />
+        </mat-form-field>
+
+        <mat-form-field class="half-width">
+          <mat-label>First Name</mat-label>
+          <input matInput matInput maxlength="10" placeholder="Ex. Mike" formControlName="firstName" type="text" />
+        </mat-form-field>
+      </div>
+
+      <div class="row">
+        <mat-form-field class="half-width">
+          <mat-label>Last Name</mat-label>
+          <input matInput matInput maxlength="10" placeholder="Ex. David" formControlName="lastName" type="text" />
+        </mat-form-field>
+
+        <mat-form-field class="half-width">
+          <mat-label>NIC</mat-label>
+          <input matInput matInput maxlength="12" placeholder="Ex. 512478912315" formControlName="nic" type="text" />
+        </mat-form-field>
+      </div>
+
+      <div class="row">
+        <mat-form-field class="half-width">
+          <mat-label>Date of Birth</mat-label>
+          <input matInput [matDatepicker]="dob" placeholder="MM/DD/YYYY" formControlName="dateOfBirth" />
+          <mat-datepicker-toggle matIconSuffix [for]="dob"></mat-datepicker-toggle>
+          <mat-datepicker #dob></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field class="half-width">
+          <mat-label>Address</mat-label>
+          <textarea matInput maxlength="100" placeholder="Ex. 123, ABC Road, Kandy" formControlName="address"></textarea>
+        </mat-form-field>
+      </div>
+
+      <div class="row">
+        <mat-form-field class="half-width">
+          <mat-label>Phone Number</mat-label>
+          <input matInput maxlength="10" placeholder="Ex. 1529867523" formControlName="phoneNumber" />
+        </mat-form-field>
+
+        <mat-form-field class="half-width">
+          <mat-label>Email</mat-label>
+          <input matInput maxlength="50" placeholder="Ex. abc@gmail.com" formControlName="email" type="email" />
+        </mat-form-field>
+      </div>
+
+      <div class="row">
+        <mat-form-field class="half-width">
+          <mat-label>Emergency Contact</mat-label>
+          <input matInput maxlength="10" placeholder="Ex. 1529867523" formControlName="emergencyContactNumber" />
+        </mat-form-field>
+
+        <mat-form-field class="half-width">
+          <mat-label>Blood Type</mat-label>
+          <mat-select formControlName="bloodType">
+            <mat-option value="A+">A+</mat-option>
+            <mat-option value="A-">A-</mat-option>
+            <mat-option value="B+">B+</mat-option>
+            <mat-option value="B-">B-</mat-option>
+            <mat-option value="AB+">AB+</mat-option>
+            <mat-option value="AB-">AB-</mat-option>
+            <mat-option value="O+">O+</mat-option>
+            <mat-option value="O-">O-</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="row">
+        <mat-form-field class="half-width">
+          <mat-label>Joined Date</mat-label>
+          <input matInput [matDatepicker]="join" placeholder="MM/DD/YYYY" formControlName="joinedDate" />
+          <mat-datepicker-toggle matIconSuffix [for]="join"></mat-datepicker-toggle>
+          <mat-datepicker #join></mat-datepicker>
+        </mat-form-field>
+
+        <mat-radio-group aria-label="Gender" class="half-width" formControlName="gender">
+          <mat-label>Gender</mat-label>
+          <mat-radio-button value="male">Male</mat-radio-button>
+          <mat-radio-button value="female">Female</mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+      <div class="row">
+        <mat-form-field class="half-width">
+          <mat-label>Injuries</mat-label>
+          <input matInput formControlName="injuries" />
+        </mat-form-field>
+
+        <mat-form-field class="half-width">
+          <mat-label>Membership Category</mat-label>
+          <mat-select formControlName="membershipCategory">
+            <mat-option value="online">Online</mat-option>
+            <mat-option value="physical">Physical</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="row">
+        <button type="submit" mat-raised-button color="primary" class="register-button half-width">Register</button>
+        <button type="reset" mat-raised-button class="reset-button half-width">Reset</button>
+      </div>
+    </form>
+  </div>
+</div>
