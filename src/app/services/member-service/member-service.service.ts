@@ -36,4 +36,32 @@ export class MemberServiceService {
     }
     return this.http.get(requestUrl, {headers: headers});
     }
+
+
+    // Data updating backend call function
+    editData(id:number, form_details:any) {
+      const requestUrl = environment.baseUrl + '/member/' + id.toString();
+    
+    let headers = {};
+    if (this.httpService.getAuthToken() !== null) {
+      headers = {
+        Authorization: 'Bearer ' + this.httpService.getAuthToken()
+      };
+    }
+    return this.http.put(requestUrl,form_details, {headers: headers});
+    }
+
+    
+    // Delete data backend call function
+    deleteData(id: number) {
+      const requestUrl = environment.baseUrl + '/member/' + id.toString();
+    
+    let headers = {};
+    if (this.httpService.getAuthToken() !== null) {
+      headers = {
+        Authorization: 'Bearer ' + this.httpService.getAuthToken()
+      };
+    }
+    return this.http.delete(requestUrl, {headers: headers});
+    }
 }
