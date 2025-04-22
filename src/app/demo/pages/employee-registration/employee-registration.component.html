@@ -171,8 +171,11 @@
 
     <!-- table filter-->
     <div class="table-filter">
-      <mat-form-field>
-        <mat-label>Filter</mat-label>
+      <mat-form-field appearance="outline">
+        <mat-label>
+          <mat-icon class="search-icon">search</mat-icon>
+          Search...
+        </mat-label>
         <input matInput (keyup)="applyFilter($event)" placeholder="" #input />
       </mat-form-field>
 
@@ -268,10 +271,10 @@
         <th mat-header-cell *matHeaderCellDef>Actions</th>
         <td mat-cell *matCellDef="let element">
           <div class="action-column">
-            <button mat-icon-button color="warn" (click)="editData(element)" matTooltip="Edit">
+            <button mat-icon-button class="gray-icon-btn" matTooltip="Edit" (click)="editData(element)">
               <mat-icon>edit</mat-icon>
             </button>
-            <button mat-icon-button color="warn" (click)="deleteData(element)" matTooltip="Delete">
+            <button mat-icon-button class="gray-icon-btn" matTooltip="Delete" (click)="deleteData(element)">
               <mat-icon>delete</mat-icon>
             </button>
           </div>

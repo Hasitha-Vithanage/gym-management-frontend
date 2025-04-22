@@ -1,71 +1,41 @@
-.container {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-  padding: 30px;
-  background: #f3f6f9;
-}
-
-/* Form CSS */
-.form-section {
-  width: 100%;
-  background: white;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
+/* Table CSS */
 
 .form-title {
   font-size: 24px;
   font-weight: 600;
   margin-bottom: 20px;
   color: #1976d2;
-  text-align: center;
 }
 
-.row {
+/* Container for New button and filter section */
+.toolbar {
   display: flex;
-  gap: 15px;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.half-width {
-  flex: 1;
+/* "Add New" button */
+.add-new .new-button {
+  background-color: #1976d2;
+  color: white;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+/* Table filter section */
+.table-filter {
+  display: flex;
+  gap: 12px;
+}
+
+/* Adjust mat-form-field styling */
+.table-filter mat-form-field {
   width: 250px;
+  margin: 0;
+  align-items: center;
 }
 
-mat-radio-group {
-  margin: 20px auto;
-}
-
-mat-radio-button {
-  margin-left: 50px;
-}
-
-.required-message {
-  color: red; 
-  font-size: 12px;
-  font-style: italic;
-  margin-top: 4px;
-  display: block;
-}
-
-.reset-button {
-  background-color: #f3f6f9 !important;
-  color: #424242 !important;
-}
-
-/* Table CSS */
-
-.table-filter {    
-    display: flex;
-    justify-content: end;
-}
-
-.table-filter mat-form-field{    
-    width: 25%;
-    height: 70px;
-    margin-right: 10px;
-}
 
 .table-filter mat-label {
   display: flex;
@@ -96,17 +66,20 @@ mat-radio-button {
   justify-content: center;
   padding: 0;
 }
+
 .table-section {
   width: 100%;
   background: white;
   padding: 20px;
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow-x: auto;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
+  table-layout: fixed;
 }
 
 th,
@@ -114,6 +87,10 @@ td {
   padding: 12px;
   text-align: left;
   border-bottom: 1px solid #ddd;
+  white-space: normal;
+  word-wrap: break-word;
+  max-width: 200px;
+  vertical-align: top;
 }
 
 th {
@@ -124,6 +101,13 @@ th {
 .action-column {
   display: flex;
   flex-direction: row;
+  justify-content: center;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
 }
 
 .gray-icon-btn {
@@ -133,9 +117,4 @@ th {
 
 .gray-icon-btn:hover {
   background-color: #f0f0f0;
-}
-
-.pagination {
-    display: flex;
-    justify-content: center;
 }

@@ -32,7 +32,7 @@ export const NavigationItems: NavigationItem[] = [
     children: [
       {
         id: 'default',
-        title: 'Default',
+        title: 'Dashboard',
         type: 'item',
         classes: 'nav-item',
         url: '/dashboard/default',
@@ -76,25 +76,25 @@ export const NavigationItems: NavigationItem[] = [
   },
 
   /* side navigation bar item for form-demo */
-  {
-    id: 'formDemo',
-    title: 'Form-Demo',
-    type: 'group',
-    icon: 'icon-navigation',
-    auth: authenticationEnum.Home,
-    children: [
-      {
-        id: 'formDemoDet',
-        title: 'Form Demo',
-        type: 'item',
-        classes: 'nav-item',
-        url: '/pages/form-demo',
-        icon: 'dashboard',
-        auth: authenticationEnum.Home_Dashboard,
-        breadcrumbs: false
-      }
-    ]
-  },
+  // {
+  //   id: 'formDemo',
+  //   title: 'Form-Demo',
+  //   type: 'group',
+  //   icon: 'icon-navigation',
+  //   auth: authenticationEnum.Home,
+  //   children: [
+  //     {
+  //       id: 'formDemoDet',
+  //       title: 'Form Demo',
+  //       type: 'item',
+  //       classes: 'nav-item',
+  //       url: '/pages/form-demo',
+  //       icon: 'dashboard',
+  //       auth: authenticationEnum.Home_Dashboard,
+  //       breadcrumbs: false
+  //     }
+  //   ]
+  // },
 
   /* side navigation bar item for employee registration form */
   {
@@ -110,7 +110,7 @@ export const NavigationItems: NavigationItem[] = [
         type: 'item',
         classes: 'nav-item',
         url: '/pages/employee',
-        icon: 'dashboard',
+        icon: '',
         auth: authenticationEnum.Home_Dashboard,
         breadcrumbs: false
       }
@@ -131,7 +131,56 @@ export const NavigationItems: NavigationItem[] = [
         type: 'item',
         classes: 'nav-item',
         url: '/pages/member',
-        icon: 'dashboard',
+        icon: '',
+        auth: authenticationEnum.Home_Dashboard,
+        breadcrumbs: false
+      }
+    ]
+  },
+  /* side navigation bar item for workout management module */
+  {
+    id: 'workout',
+    title: 'Workout Management',
+    type: 'group',
+    icon: 'icon-navigation',
+    auth: authenticationEnum.Home,
+    children: [
+      {
+        id: 'workoutDet',
+        title: 'Workout Plan',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/pages/workout',
+        icon: '',
+        auth: authenticationEnum.Home_Dashboard,
+        breadcrumbs: false
+      }
+    ]
+  },
+  {
+    id: 'masters',
+    title: 'Masters',
+    type: 'group',
+    icon: 'icon-navigation',
+    auth: authenticationEnum.Home,
+    children: [
+      {
+        id: 'equipmentsDet',
+        title: 'Equipments',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/pages/equipments',
+        icon: '',
+        auth: authenticationEnum.Home_Dashboard,
+        breadcrumbs: false
+      },
+      {
+        id: 'supplierDet',
+        title: 'Suppliers',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/pages/suppliers',
+        icon: '',
         auth: authenticationEnum.Home_Dashboard,
         breadcrumbs: false
       }

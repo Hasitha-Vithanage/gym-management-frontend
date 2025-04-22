@@ -1,0 +1,80 @@
+<div class="form-section">
+  <!-- title of the form-->
+    <div class="title">
+        <h2 class="form-title">Add New Supplier</h2>
+        <button mat-icon-button class="close-icon" style="padding: 0px;" (click)="closeDialog()">
+            <mat-icon fontIcon="close"></mat-icon>
+        </button>
+    </div>
+
+  <!--- form -->
+  <form class="example-form" [formGroup]="supplierForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <mat-form-field class="half-width">
+        <mat-label>Supplier Name</mat-label>
+        <input matInput maxlength="20" placeholder="Enter Supplier Name" type="text" formControlName="supplierName"/>
+      </mat-form-field>
+
+      <mat-form-field class="half-width">
+        <mat-label>Contact Person</mat-label>
+        <input matInput matInput maxlength="20" placeholder="Enter Contact person" type="text" formControlName="contactPerson"/>
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field class="half-width">
+        <mat-label>Contact No</mat-label>
+        <input matInput matInput maxlength="10" placeholder="Enter Contact No" type="text" formControlName="contactNo"/>
+      </mat-form-field>
+
+      <mat-form-field class="half-width">
+        <mat-label>Email Address</mat-label>
+        <input matInput matInput maxlength="50" placeholder="Enter Email Address" type="text" formControlName="emailAddress"/>
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field class="half-width">
+        <mat-label>Office Address</mat-label>
+        <input matInput matInput maxlength="100" placeholder="Enter Office Address" type="text" formControlName="officeAddress"/>
+      </mat-form-field>
+
+      <mat-form-field class="half-width">
+        <mat-label>Postal Address</mat-label>
+        <input matInput matInput maxlength="100" placeholder="Enter Postal Address" type="text" formControlName="postalAddress"/>
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <!-- Type as Checkboxes -->
+      <div class="half-width" formGroupName="equipmentType">
+        <mat-label>Equipment Type</mat-label>
+        <div class="checkbox-options">
+          <mat-checkbox formControlName="machines">Machines</mat-checkbox>
+          <mat-checkbox formControlName="freeweights">Freeweights & Bars</mat-checkbox>
+          <mat-checkbox formControlName="other">Other</mat-checkbox>
+        </div>
+      </div>
+
+      <div class="half-width">
+        <mat-label>Status</mat-label>
+        <mat-button-toggle-group class="status-toggle" color="primary" name="status" appearance="legacy" formControlName="status">
+          <mat-button-toggle [value]="true">Active</mat-button-toggle>
+          <mat-button-toggle [value]="false">Inactive</mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+    </div>
+
+    <div class="row">
+      <mat-form-field class="full-width">
+        <mat-label>Remarks</mat-label>
+        <textarea matInput rows="4" maxlength="1000" formControlName="remarks" placeholder="Enter Remarks"></textarea>
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <button type="reset" mat-raised-button class="close-button half-width" (click)="closeDialog()"><mat-icon>close</mat-icon>Close</button>
+      <button type="submit" mat-raised-button color="primary" class="submit-button half-width"><mat-icon>check</mat-icon>{{saveButtonLabel}}</button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,107 @@
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">Welcome to Workout Plan</h2>
+      <span>Step 1 of 3</span>
+      <p class="mb-4">Let's create your fitness profile to personalize your workout experience.</p>
+    </div>
+    <div class="card-body">
+      <!-- BMI calculator graph -->
+      <div class="bmi-result">
+        <div class="bmi-value">
+          Your BMI:
+          <span>22.5</span>
+        </div>
+        <div class="bmi-category" style="color: #ffcc66">Overweight</div>
+
+        <div class="bmi-chart">
+          <div class="bmi-categories">
+            <div class="category" style="background-color: #ff9999; width: 12.5%">
+              <div class="category-name">Underweight</div>
+              <div class="category-range">0 - 18.5</div>
+            </div>
+            <div class="category" style="background-color: #99cc99; width: 17.5%">
+              <div class="category-name">Normal</div>
+              <div class="category-range">18.5 - 24.9</div>
+            </div>
+            <div class="category" style="background-color: #ffcc66; width: 15%">
+              <div class="category-name">Overweight</div>
+              <div class="category-range">25 - 29.9</div>
+            </div>
+            <div class="category" style="background-color: #ff6666; width: 25%">
+              <div class="category-name">Obese</div>
+              <div class="category-range">30 - 39.9</div>
+            </div>
+            <div class="category" style="background-color: #cc0000; width: 30%">
+              <div class="category-name">Severely Obese</div>
+              <div class="category-range">40+</div>
+            </div>
+          </div>
+          <div class="bmi-pointer" style="left: 43%">▼</div>
+        </div>
+      </div>
+      <form class="example-form">
+        <div class="row">
+          <mat-form-field class="half-width">
+            <mat-label>Age</mat-label>
+            <input matInput maxlength="3" placeholder="" type="number" />
+          </mat-form-field>
+
+          <mat-form-field class="half-width">
+            <mat-label>Weight (kg)</mat-label>
+            <input matInput maxlength="3" placeholder="Weight in kg" type="number" />
+          </mat-form-field>
+        </div>
+
+        <div class="row">
+          <mat-form-field class="half-width">
+            <mat-label>Height (cm)</mat-label>
+            <input matInput maxlength="3" placeholder="Height in cm" type="number" />
+          </mat-form-field>
+
+          <mat-form-field class="half-width">
+            <mat-label>What's your primary fitness goal?</mat-label>
+            <mat-select>
+              <mat-option value="A+">
+                <h5>Muscle Gain 💪</h5>
+                <span>Build muscle and strength</span>
+              </mat-option>
+              <mat-option value="A+">
+                <h5>Fat Loss 🔥</h5>
+                <span>Reduce body fat percentage</span>
+              </mat-option>
+              <mat-option value="A+">
+                <h5>General Fitness ⚡</h5>
+                <span>Improve overall health</span>
+              </mat-option>
+              <mat-option value="A+">
+                <h5>Endurance 🏃</h5>
+                <span>Improve cardiovascular fitness</span>
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="row">
+          <mat-radio-group aria-label="experience" class="full-width" color="primary">
+            <mat-label class="radio-lable">Your fitness experience level:</mat-label>
+            <mat-radio-button value="beginner">
+              <h5>Beginner</h5>
+              <span>New to fitness</span>
+            </mat-radio-button>
+            <mat-radio-button value="intermediate">
+              <h5>Intermediate</h5>
+              <span>Some experience</span>
+            </mat-radio-button>
+            <mat-radio-button value="male">
+              <h5>Advanced</h5>
+              <span>Experienced athlete</span>
+            </mat-radio-button>
+          </mat-radio-group>
+        </div>
+
+        <button type="submit" mat-raised-button color="primary" class="register-button full-width" [disabled]="">Continue</button>
+      </form>
+    </div>
+  </div>
+</div>

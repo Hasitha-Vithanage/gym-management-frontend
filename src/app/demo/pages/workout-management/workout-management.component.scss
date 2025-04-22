@@ -1,0 +1,199 @@
+// /* General Page Styling */
+// body {
+//   background-color: #f4f4f4;
+//   font-family: 'Roboto', sans-serif;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   height: 100vh;
+//   margin: 0;
+// }
+
+// /* Card Container */
+// .container {
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   min-height: 100vh;
+// }
+
+// .card {
+//   background: #fff;
+//   border-radius: 10px;
+//   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+//   padding: 0px;
+//   width: 100%;
+//   max-width: 800px;
+//   text-align: center;
+//   margin: 0;
+// }
+
+.card-header {
+  border-bottom: 2px solid #eee;
+  padding-bottom: 5px;
+  margin-bottom: 5px;
+  text-align: center;
+}
+
+.card-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #333;
+}
+
+.card-body {
+  padding-top: 5px;
+}
+
+// .mb-4 {
+//   margin-bottom: 5px !important;
+// }
+
+.card-header span {
+  font-size: 14px;
+  color: #666;
+}
+
+// /* Form Styling */
+// .example-form {
+//   display: flex;
+//   flex-direction: row;
+//   gap: 0px;
+// }
+
+.row {
+  display: flex;
+  flex-direction: row;
+  gap: 0px;
+}
+
+.half-width {
+  width: 50%;
+}
+
+.full-width {
+  width: 100%;
+}
+
+// mat-form-field {
+//   width: 100%;
+//   height: auto;
+// }
+
+/* Radio Button Styling */
+mat-radio-group {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  margin-top: 15px;
+  width: 100%;
+}
+
+.radio-lable {
+  font-size: large;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 25%;
+}
+
+mat-radio-button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  color: #333;
+  padding: 10px;
+  border-radius: 5px;
+  transition: background 0.3s;
+  flex-grow: 1;
+}
+
+mat-radio-button:hover {
+  background: rgba(0, 123, 255, 0.1);
+}
+
+// /* Button Styling */
+.register-button {
+  font-size: 15px;
+  padding: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  border-radius: 5px;
+  transition: background 0.3s;
+  margin-top: 10px;
+}
+
+.register-button:hover {
+  background: #0056b3;
+}
+
+
+/* BMI calculator graph */
+.bmi-result {
+  margin-top: 30px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+
+.bmi-result .bmi-value {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.bmi-result .bmi-value span {
+  font-weight: bold;
+}
+
+.bmi-result .bmi-category {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.bmi-chart {
+  position: relative;
+  margin-top: 30px;
+}
+
+.bmi-chart .bmi-categories {
+  display: flex;
+  height: 60px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.bmi-chart .bmi-categories .category {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-align: center;
+  padding: 5px;
+  transition: all 0.3s;
+}
+
+// .bmi-chart .bmi-categories .category:hover {
+//   transform: translateY(-5px);
+// }
+
+.bmi-chart .bmi-categories .category .category-name {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.bmi-chart .bmi-categories .category .category-range {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.bmi-chart .bmi-pointer {
+  position: absolute;
+  top: -20px;
+  transform: translateX(-50%);
+  font-size: 20px;
+  transition: left 0.5s ease;
+}
