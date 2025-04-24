@@ -31,6 +31,7 @@ import {
 import { HttpService } from 'src/app/services/http.service';
 import { CacheService } from 'src/app/services/CacheService';
 
+
 @Component({
   selector: 'app-nav-right',
   imports: [SharedModule, RouterModule],
@@ -42,6 +43,8 @@ export class NavRightComponent {
   @Output() Customize = new EventEmitter();
   windowWidth: number;
   screenFull: boolean = true;
+
+  userName;
 
   constructor(
     private iconService: IconService,
@@ -71,6 +74,8 @@ export class NavRightComponent {
         WalletOutline
       ]
     );
+
+    this.userName = this.httpService.getLoginNameFromCache();
   }
 
   profile = [

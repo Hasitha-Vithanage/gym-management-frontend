@@ -25,6 +25,7 @@ export class NewSupplierDialogComponent {
     public dialogRef: MatDialogRef<NewSupplierDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
+    
     this.supplierForm = this.fb.group({
       supplierName: new FormControl(data?.supplierName || ''),
       contactPerson: new FormControl(data?.contactPerson || ''),

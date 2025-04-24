@@ -1,0 +1,86 @@
+.container {
+  gap: 30px;
+  padding: 30px;
+  background: #f3f6f9;
+}
+
+.beginner-workout-container {
+  max-width: 1000px;
+  margin: auto;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.beginner-workout-container .back-button {
+  padding: 20px 20px 20px 0px;
+  margin-bottom: 10px;
+  font-weight: bold;
+  font-size: medium;
+  width: 10%;
+}
+
+.beginner-workout-container h2 {
+  text-align: center;
+  color: #2e7d32;
+  margin-bottom: 2rem;
+}
+
+.beginner-workout-container .warmup-section {
+  background-color: #f1f8e9;
+  border-left: 5px solid #81c784;
+  padding: 1rem;
+  margin-bottom: 2rem;
+}
+
+.beginner-workout-container .warmup-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.beginner-workout-container .warmup-section ul li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.5rem 0;
+}
+
+.beginner-workout-container .main-workout-grid {
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: flex-start;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+  grid-auto-rows: min-content;
+}
+
+.beginner-workout-container .exercise-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1 1 280px;
+  max-width: 320px;
+  background: #fff;
+  border-left: 4px solid #4caf50;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.3s ease;
+  overflow: hidden;
+}
+
+.beginner-workout-container .exercise-card h4 {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.beginner-workout-container .exercise-card .sets-reps {
+  color: #555;
+  margin-bottom: 1rem;
+}
+
+.beginner-workout-container .exercise-card mat-expansion-panel {
+  background: #f5f5f5;
+}

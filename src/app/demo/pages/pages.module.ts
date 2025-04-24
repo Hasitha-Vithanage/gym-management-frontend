@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { PagesRoutes } from './pages.routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgApexchartsModule } from 'ng-apexcharts';
-import { MatDialog } from '@angular/material/dialog';
 import { TestComponent } from './test/test.component';
 import { MaterialModule } from 'src/app/material.module';
 import { FormDemoComponent } from './form-demo/form-demo.component';
@@ -13,10 +12,25 @@ import { MemberRegistrationComponent } from './member-registration/member-regist
 import { WorkoutManagementComponent } from './workout-management/workout-management.component';
 import { SupplierRegistrationComponent } from './supplier-registration/supplier-registration.component';
 import { NewSupplierDialogComponent } from './new-supplier-dialog/new-supplier-dialog.component';
+import { EquipmentRegistrationComponent } from './equipment-registration/equipment-registration.component';
+import { NewEquipmentDialogComponent } from './new-equipment-dialog/new-equipment-dialog.component';
+import { BeginnerWorkoutPlanComponent } from './beginner-workout-plan/beginner-workout-plan.component';
 // icons
 
 @NgModule({
-  declarations: [TestComponent, FormDemoComponent, EmployeeRegistrationComponent, MemberRegistrationComponent, WorkoutManagementComponent, SupplierRegistrationComponent, NewSupplierDialogComponent],
+  declarations: [
+    TestComponent,
+    FormDemoComponent,
+    EmployeeRegistrationComponent,
+    MemberRegistrationComponent,
+    WorkoutManagementComponent,
+    SupplierRegistrationComponent,
+    NewSupplierDialogComponent,
+    EquipmentRegistrationComponent,
+    NewEquipmentDialogComponent,
+    WorkoutManagementComponent,
+    BeginnerWorkoutPlanComponent
+  ],
   imports: [CommonModule, FormsModule, NgApexchartsModule, RouterModule.forChild(PagesRoutes), MaterialModule, ReactiveFormsModule],
   exports: []
 })

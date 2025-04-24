@@ -1,20 +1,20 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { HttpService } from '../http.service';
+import { Injectable } from '@angular/core';
 import { environment } from 'src/app/environments/environment';
+import { HttpService } from '../http.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class NewSupplierServiceService {
+export class NewEquipmentServiceService {
 
   constructor(private http: HttpClient, private httpService: HttpService) { }
 
   // Service call function for save new supplier
   serviceCall(form_details: any) {
-    console.log("In the service: ", form_details);
+    console.log("In the service");
 
-    const requestUrl = environment.baseUrl + '/suppliers';
+    const requestUrl = environment.baseUrl + '/equipments';
 
     let headers = {};
     if (this.httpService.getAuthToken() !== null) {
@@ -27,7 +27,7 @@ export class NewSupplierServiceService {
 
   // GetData function
   getData() {
-    const requestUrl = environment.baseUrl + '/suppliers';
+    const requestUrl = environment.baseUrl + '/equipments';
 
     let headers = {};
     if (this.httpService.getAuthToken() !== null) {
@@ -41,7 +41,7 @@ export class NewSupplierServiceService {
   // EditData function
   editData(id: number, form_details: any) {
 
-    const requestUrl = environment.baseUrl + '/suppliers/' + id.toString();
+    const requestUrl = environment.baseUrl + '/equipments/' + id.toString();
 
     let headers = {};
     if (this.httpService.getAuthToken() !== null) {
@@ -53,17 +53,30 @@ export class NewSupplierServiceService {
   }
 
   // DeleteData function
-deleteSupplier(id: number) {
-  const requestUrl = environment.baseUrl + '/suppliers/' + id.toString();
+  deleteEquipment(id: number) {
+    const requestUrl = environment.baseUrl + '/equipments/' + id.toString();
 
-  let headers = {};
-  if (this.httpService.getAuthToken() !== null) {
-    headers = {
-      Authorization: 'Bearer ' + this.httpService.getAuthToken()
-    };
+    let headers = {};
+    if (this.httpService.getAuthToken() !== null) {
+      headers = {
+        Authorization: 'Bearer ' + this.httpService.getAuthToken()
+      };
+    }
+
+    return this.http.delete(requestUrl, { headers: headers });
   }
 
-  return this.http.delete(requestUrl, { headers: headers });
-}
-}
+    // Get suppliers based on category
+    getSuppliersByCategory(category: string) {
+      const requestUrl = environment.baseUrl + `/suppliers/by-equipment-type?type=${category}`;
   
+      let headers = {};
+      if (this.httpService.getAuthToken() !== null) {
+        headers = {
+          Authorization: 'Bearer ' + this.httpService.getAuthToken()
+        };
+      }
+  
+      return this.http.get<any[]>(requestUrl, { headers: headers });
+    }
+}

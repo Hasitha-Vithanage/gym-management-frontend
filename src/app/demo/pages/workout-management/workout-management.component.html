@@ -1,107 +1,144 @@
-<div class="container">
-  <div class="card">
+<!--- Step 1 -->
+<div class="container two-column-layout" *ngIf="currentStep === 1">
+  <!-- Left: Form Card -->
+  <div class="card form-card">
     <div class="card-header">
       <h2 class="card-title">Welcome to Workout Plan</h2>
-      <span>Step 1 of 3</span>
-      <p class="mb-4">Let's create your fitness profile to personalize your workout experience.</p>
+      <span class="card-subtitle">
+        <mat-icon>fitness_center</mat-icon>
+        Let's get started on your fitness journey!
+      </span>
+      <p class="mb-4" class="card-subtitle-2">Let's create your fitness profile to personalize your workout experience.</p>
     </div>
+
     <div class="card-body">
-      <!-- BMI calculator graph -->
-      <div class="bmi-result">
-        <div class="bmi-value">
-          Your BMI:
-          <span>22.5</span>
-        </div>
-        <div class="bmi-category" style="color: #ffcc66">Overweight</div>
-
-        <div class="bmi-chart">
-          <div class="bmi-categories">
-            <div class="category" style="background-color: #ff9999; width: 12.5%">
-              <div class="category-name">Underweight</div>
-              <div class="category-range">0 - 18.5</div>
-            </div>
-            <div class="category" style="background-color: #99cc99; width: 17.5%">
-              <div class="category-name">Normal</div>
-              <div class="category-range">18.5 - 24.9</div>
-            </div>
-            <div class="category" style="background-color: #ffcc66; width: 15%">
-              <div class="category-name">Overweight</div>
-              <div class="category-range">25 - 29.9</div>
-            </div>
-            <div class="category" style="background-color: #ff6666; width: 25%">
-              <div class="category-name">Obese</div>
-              <div class="category-range">30 - 39.9</div>
-            </div>
-            <div class="category" style="background-color: #cc0000; width: 30%">
-              <div class="category-name">Severely Obese</div>
-              <div class="category-range">40+</div>
-            </div>
-          </div>
-          <div class="bmi-pointer" style="left: 43%">▼</div>
-        </div>
-      </div>
-      <form class="example-form">
+      <!--- Form Section -->
+      <form [formGroup]="formGroup" class="example-form">
         <div class="row">
-          <mat-form-field class="half-width">
+          <mat-form-field class="half-width" appearance="fill">
             <mat-label>Age</mat-label>
-            <input matInput maxlength="3" placeholder="" type="number" />
+            <input matInput type="number" formControlName="age" maxlength="3" />
           </mat-form-field>
 
-          <mat-form-field class="half-width">
+          <mat-form-field class="half-width" appearance="fill">
             <mat-label>Weight (kg)</mat-label>
-            <input matInput maxlength="3" placeholder="Weight in kg" type="number" />
+            <input matInput type="number" formControlName="weight" maxlength="3" />
           </mat-form-field>
         </div>
 
         <div class="row">
-          <mat-form-field class="half-width">
+          <mat-form-field class="half-width" appearance="fill">
             <mat-label>Height (cm)</mat-label>
-            <input matInput maxlength="3" placeholder="Height in cm" type="number" />
+            <input matInput type="number" formControlName="height" maxlength="3" />
           </mat-form-field>
 
-          <mat-form-field class="half-width">
-            <mat-label>What's your primary fitness goal?</mat-label>
-            <mat-select>
-              <mat-option value="A+">
-                <h5>Muscle Gain 💪</h5>
-                <span>Build muscle and strength</span>
-              </mat-option>
-              <mat-option value="A+">
-                <h5>Fat Loss 🔥</h5>
-                <span>Reduce body fat percentage</span>
-              </mat-option>
-              <mat-option value="A+">
-                <h5>General Fitness ⚡</h5>
-                <span>Improve overall health</span>
-              </mat-option>
-              <mat-option value="A+">
-                <h5>Endurance 🏃</h5>
-                <span>Improve cardiovascular fitness</span>
-              </mat-option>
+          <mat-form-field class="half-width" appearance="fill">
+            <mat-label>Primary Fitness Goal</mat-label>
+            <mat-select formControlName="fitnessGoal">
+              <mat-option value="muscle_gain">💪 Muscle Gain</mat-option>
+              <mat-option value="fat_loss">🔥 Fat Loss</mat-option>
+              <mat-option value="general_fitness">⚡ General Fitness</mat-option>
+              <mat-option value="endurance">🏃 Endurance</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
 
-        <div class="row">
-          <mat-radio-group aria-label="experience" class="full-width" color="primary">
-            <mat-label class="radio-lable">Your fitness experience level:</mat-label>
-            <mat-radio-button value="beginner">
-              <h5>Beginner</h5>
-              <span>New to fitness</span>
-            </mat-radio-button>
-            <mat-radio-button value="intermediate">
-              <h5>Intermediate</h5>
-              <span>Some experience</span>
-            </mat-radio-button>
-            <mat-radio-button value="male">
-              <h5>Advanced</h5>
-              <span>Experienced athlete</span>
-            </mat-radio-button>
+        <div class="row full-width">
+          <mat-label class="radio-label">Your Fitness Experience Level</mat-label>
+          <mat-radio-group formControlName="experienceLevel" class="radio-group" color="primary">
+            <mat-radio-button value="Beginner">Beginner</mat-radio-button>
+            <mat-radio-button value="Intermediate">Intermediate</mat-radio-button>
+            <mat-radio-button value="Advanced">Advanced</mat-radio-button>
           </mat-radio-group>
         </div>
 
-        <button type="submit" mat-raised-button color="primary" class="register-button full-width" [disabled]="">Continue</button>
+        <button type="button" mat-raised-button color="primary" class="next-button" [disabled]="formGroup.invalid" (click)="goToNextStep()">
+          Next
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
       </form>
     </div>
+  </div>
+
+  <!-- Summary Card Section -->
+  <div class="card summary-card" *ngIf="formGroup.valid">
+    <h4 class="summary-title">📝 Profile Summary</h4>
+    <div style="padding-top: 20px">
+      <p>
+        <mat-icon class="summary-icon">calendar_today</mat-icon>
+        <strong>Age:</strong>
+        {{ formGroup.value.age }}
+      </p>
+      <p>
+        <mat-icon class="summary-icon">fitness_center</mat-icon>
+        <strong>Weight:</strong>
+        {{ formGroup.value.weight }} kg
+      </p>
+      <p>
+        <mat-icon class="summary-icon">height</mat-icon>
+        <strong>Height:</strong>
+        {{ formGroup.value.height }} cm
+      </p>
+      <p>
+        <mat-icon class="summary-icon">flag</mat-icon>
+        <strong>Goal:</strong>
+        {{ formatGoal(formGroup.value.fitnessGoal) }}
+      </p>
+      <p>
+        <mat-icon class="summary-icon">trending_up</mat-icon>
+        <strong>Experience:</strong>
+        {{ formGroup.value.experienceLevel }}
+      </p>
+    </div>
+
+    <!--- Fitness goal tip -->
+    <div>
+      <div class="goal-tip-card" *ngIf="formGroup.valid">
+        <mat-icon>insights</mat-icon>
+        <div>
+          <h5>Tip for Your Goal</h5>
+          <p *ngIf="formGroup.value.fitnessGoal === 'muscle_gain'">
+            Focus on compound lifts like squats and deadlifts. Eat at a slight calorie surplus with high protein.
+          </p>
+          <p *ngIf="formGroup.value.fitnessGoal === 'fat_loss'">
+            Stay in a calorie deficit and include strength training to preserve lean mass.
+          </p>
+          <p *ngIf="formGroup.value.fitnessGoal === 'endurance'">
+            Include long-distance runs and interval cardio. Hydration and breathing control matter a lot!
+          </p>
+          <p *ngIf="formGroup.value.fitnessGoal === 'general_fitness'">
+            Mix it up: 3 cardio + 2 strength sessions per week is a solid plan.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!--- BMI card -->
+    <div *ngIf="formGroup.valid" class="bmi-card">
+      <!-- <mat-icon class="bmi-icon">accessibility</mat-icon> -->
+      <div>
+        <h5>
+          Your BMI:
+          <strong>{{ bmi }}</strong>
+        </h5>
+        <p class="bmi-category {{ bmiCategory | lowercase }}">{{ bmiCategory }}</p>
+        <mat-progress-bar mode="determinate" [value]="bmi" [color]="getBMIColor(bmiCategory)"></mat-progress-bar>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--- Step 2 -->
+<div *ngIf="currentStep === 2">
+  <!-- For beginners -->
+  <!-- *ngIf="['Beginner'].includes(formGroup.get('experienceLevel')?.value)" -->
+  <div *ngIf="['Beginner'].includes(formGroup.get('experienceLevel')?.value)">
+    <app-beginner-workout-plan></app-beginner-workout-plan>
+  </div>
+  <div *ngIf="['Intermediate'].includes(formGroup.get('experienceLevel')?.value)">
+    <p>Intermediate Workout Plan Here</p>
+  </div>
+  <div *ngIf="['Advanced'].includes(formGroup.get('experienceLevel')?.value)">
+    <p>Advanced Workout Plan Here</p>
   </div>
 </div>

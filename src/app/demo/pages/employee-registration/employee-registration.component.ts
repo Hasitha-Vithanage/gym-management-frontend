@@ -9,6 +9,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { subscribe } from 'diagnostics_channel';
 import { elementAt } from 'rxjs';
 import { EmpolyeeServiceService } from 'src/app/services/employee-service/empolyee-service.service';
+import { HttpService } from 'src/app/services/http.service';
 import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
 
 const ELEMENT_DATA: any[] = [
@@ -38,12 +39,14 @@ export class EmployeeRegistrationComponent implements OnInit {
   selectedData;
   isDisabled = false;
   submitted = false;
+  userName;
 
   /* calling constructor */
   constructor(
     private fb: FormBuilder,
     private employeeService: EmpolyeeServiceService,
-    private messageService: MessageServiceService) {
+    private messageService: MessageServiceService,
+    private http: HttpService) {
     this.employeeForm = new FormGroup({
       employeeId: new FormControl('', [Validators.required, Validators.minLength(5)]),
       jobTitle: new FormControl('', [Validators.required]),
@@ -65,6 +68,9 @@ export class EmployeeRegistrationComponent implements OnInit {
     // get data request
     // calling populate data function
     this.populateData();
+    this.userName = this.http.getLoginNameFromCache();
+    console.log(this.userName);
+    
   }
 
   // custom validation

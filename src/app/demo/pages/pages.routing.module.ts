@@ -5,6 +5,8 @@ import { EmployeeRegistrationComponent } from './employee-registration/employee-
 import { MemberRegistrationComponent } from './member-registration/member-registration.component';
 import { WorkoutManagementComponent } from './workout-management/workout-management.component';
 import { SupplierRegistrationComponent } from './supplier-registration/supplier-registration.component';
+import { EquipmentRegistrationComponent } from './equipment-registration/equipment-registration.component';
+import { BeginnerWorkoutPlanComponent } from './beginner-workout-plan/beginner-workout-plan.component';
 
 export const PagesRoutes: Routes = [
   {
@@ -34,5 +36,14 @@ export const PagesRoutes: Routes = [
   {
     path: 'suppliers',
     component: SupplierRegistrationComponent
+  },
+  {
+    path: 'equipments',
+    component: EquipmentRegistrationComponent
+  },
+
+  {
+    path: 'beginner-workout-plan',
+    component: BeginnerWorkoutPlanComponent
   },
 ];
