@@ -2,6 +2,8 @@ import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { error } from 'console';
+import { HttpService } from 'src/app/services/http.service';
 import { NewEquipmentServiceService } from 'src/app/services/new-equipment/new-equipment-service.service';
 
 @Component({
@@ -15,7 +17,8 @@ export class NewEquipmentDialogComponent {
   saveButtonLabel = "Save";
   mode = "add";
   selectedData: any;
-  suppliers: any[] = [];  // List of suppliers
+  supplierList: any[] = [];  // List of suppliers
+  userName;
 
   // Muscle group options for the dropdown
   muscleGroupsList: string[] = [
@@ -31,6 +34,7 @@ export class NewEquipmentDialogComponent {
     private fb: FormBuilder,
     private newEquipmentService: NewEquipmentServiceService,
     public dialogRef: MatDialogRef<NewEquipmentDialogComponent>,
+    private http: HttpService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
 
@@ -40,6 +44,7 @@ export class NewEquipmentDialogComponent {
 
      // Get today's date
      const today = new Date().toISOString().split('T')[0]; // Format as YYYY-MM-DD
+     const userName = this.http.getLoginNameFromCache();
 
      this.equipmentForm = this.fb.group({
        category: new FormControl(this.data?.category || '', [Validators.required]),
@@ -56,9 +61,32 @@ export class NewEquipmentDialogComponent {
        quantity: new FormControl(this.data?.quantity || '', [Validators.required]),
        condition: new FormControl(this.data?.condition || ''),
        purchaseDate: new FormControl(this.data?.purchaseDate || today, [Validators.required]), // Set today's date
-       addedBy: new FormControl(this.data?.addedBy || '', [Validators.required]),
+       addedBy: new FormControl(this.data?.addedBy || userName, [Validators.required]),
        remarks: new FormControl(this.data?.remarks || '')
      });
+
+     // Function for get suppliers
+     this.getSuppliers();
+
+     // Setting current user's username as addedBy
+     this.userName = this.http.getLoginNameFromCache();
+
+      // Disable the addedBy filed
+      this.equipmentForm.get('addedBy')?.disable();
+  }
+
+  // getSupplier function
+  public getSuppliers(): void {
+    //Call Service to get suppliers
+    this.newEquipmentService.getSuppliers().subscribe({
+      next: (response: any[]) => {
+        console.log("Suppliers: ", response);
+        this.supplierList = response;
+      }, 
+      error: (error) => {
+        console.log('Error fetching suppliers:', error);
+      }
+    });
   }
 
   // OnSubmit function to save new or update existing equipment

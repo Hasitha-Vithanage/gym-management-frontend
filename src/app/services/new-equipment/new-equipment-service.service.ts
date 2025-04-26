@@ -8,6 +8,19 @@ import { HttpService } from '../http.service';
 })
 export class NewEquipmentServiceService {
 
+  // Service all for get suppliers
+  public getSuppliers() {
+    const requestUrl = environment.baseUrl + '/equipments/get-suppliers';
+
+    let headers = {};
+    if (this.httpService.getAuthToken() !== null) {
+      headers = {
+        Authorization: 'Bearer ' + this.httpService.getAuthToken()
+      };
+    }
+    return this.http.get(requestUrl, { headers: headers });
+  }
+
   constructor(private http: HttpClient, private httpService: HttpService) { }
 
   // Service call function for save new supplier

@@ -22,9 +22,9 @@
       <mat-form-field class="half-width">
         <mat-label>Supplier</mat-label>
         <mat-select formControlName="supplier">
-          <mat-option value="Dumbbells">Supplier 1</mat-option>
-          <mat-option value="Plates">Supplier 2</mat-option>
-          <mat-option value="Kettlebells">Supplier 3</mat-option>
+          <mat-option *ngFor="let supplier of supplierList" [value]="supplier.id">
+            {{ supplier.supplierName }}
+          </mat-option>
         </mat-select>
       </mat-form-field>
     </div>
@@ -152,12 +152,16 @@
       <!--- Display the users who have the permission to add equipments -->
       <mat-form-field class="half-width">
         <mat-label>Added by</mat-label>
+        <input matInput maxlength="20" placeholder="" type="text" formControlName="addedBy"/>
+      </mat-form-field>
+      <!-- <mat-form-field class="half-width">
+        <mat-label>Added by</mat-label>
         <mat-select formControlName="addedBy">
           <mat-option value="user 1">User 1</mat-option>
           <mat-option value="user 2">User 2</mat-option>
           <mat-option value="user 3">User 3</mat-option>
         </mat-select>
-      </mat-form-field>
+      </mat-form-field> -->
     </div>
 
     <div class="row">
