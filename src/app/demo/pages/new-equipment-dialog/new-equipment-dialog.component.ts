@@ -91,29 +91,30 @@ export class NewEquipmentDialogComponent {
 
   // OnSubmit function to save new or update existing equipment
   onSubmit() {
-    const formValue = this.equipmentForm.value;
+    const formValue = this.equipmentForm.getRawValue();
 
     // Convert equipmentType group to string array
-    const selectedEquipmentTypes: string[] = Object.entries(formValue.equipmentType)
-      .filter(([key, value]) => value === true)
-      .map(([key]) => key.charAt(0).toUpperCase() + key.slice(1));
+    // const selectedMuscleGroups: string[] = Object.entries(formValue.muscleGroups)
+    //   .filter(([key, value]) => value === true)
+    //   .map(([key]) => key.charAt(0).toUpperCase() + key.slice(1));
 
-    // Build final payload
-    const payload = {
-      ...formValue,
-      equipmentType: selectedEquipmentTypes,
-    };
+    // // Build final payload
+    // const payload = {
+    //   ...formValue,
+    //   muscleGroups: selectedMuscleGroups,
+    // };
 
     // Calling service to add or edit equipment
     if (this.mode === 'add') {
-      this.newEquipmentService.serviceCall(payload).subscribe(
+      this.newEquipmentService.serviceCall(formValue).subscribe(
         (response) => {
           this.dialogRef.close({ action: 'add', data: response });
         },
         (error) => console.error('Error adding equipment:', error)
       );
     } else if (this.mode === 'edit') {
-      this.newEquipmentService.editData(this.selectedData?.id, payload).subscribe(
+      formValue.id = this.selectedData?.id;
+      this.newEquipmentService.editData(this.selectedData?.id, formValue).subscribe(
         (response) => {
           this.dialogRef.close({ action: 'edit', data: response });
         },

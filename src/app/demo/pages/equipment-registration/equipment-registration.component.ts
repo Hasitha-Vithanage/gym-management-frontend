@@ -95,15 +95,15 @@ export class EquipmentRegistrationComponent {
 
   // Delete Data function
   deleteData(data: any): void {
-
     this.equipmentService.deleteEquipment(data.id).subscribe({
       next: () => {
         console.log('Equipment deleted successfully');
-        
+        this.refreshData();   // <-- ADD this to refresh after deletion
       },
       error: (error) => {
-        console.error('Failed to delete supplier:', error);
+        console.error('Failed to delete equipment:', error);
       }
     });
   }
+  
 }

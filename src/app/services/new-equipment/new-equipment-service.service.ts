@@ -79,17 +79,17 @@ export class NewEquipmentServiceService {
     return this.http.delete(requestUrl, { headers: headers });
   }
 
-    // Get suppliers based on category
-    getSuppliersByCategory(category: string) {
-      const requestUrl = environment.baseUrl + `/suppliers/by-equipment-type?type=${category}`;
+    // // Get suppliers based on category
+    // getSuppliersByCategory(category: string) {
+    //   const requestUrl = environment.baseUrl + `/suppliers/by-equipment-type?type=${category}`;
   
-      let headers = {};
-      if (this.httpService.getAuthToken() !== null) {
-        headers = {
-          Authorization: 'Bearer ' + this.httpService.getAuthToken()
-        };
-      }
+    //   let headers = {};
+    //   if (this.httpService.getAuthToken() !== null) {
+    //     headers = {
+    //       Authorization: 'Bearer ' + this.httpService.getAuthToken()
+    //     };
+    //   }
   
-      return this.http.get<any[]>(requestUrl, { headers: headers });
-    }
+    //   return this.http.get<any[]>(requestUrl, { headers: headers });
+    // }
 }
