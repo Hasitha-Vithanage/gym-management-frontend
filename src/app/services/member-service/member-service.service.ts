@@ -8,60 +8,61 @@ import { environment } from 'src/app/environments/environment';
 })
 export class MemberServiceService {
 
-  constructor(private http: HttpClient, private httpService: HttpService) {}
+  constructor(private http: HttpClient, private httpService: HttpService) { }
 
   // Data saving backend call function
   serviceCall(form_details: any) {
     const requestUrl = environment.baseUrl + '/member';
-    
+
     let headers = {};
     if (this.httpService.getAuthToken() !== null) {
       headers = {
         Authorization: 'Bearer ' + this.httpService.getAuthToken()
       };
     }
-    return this.http.post(requestUrl, form_details, {headers: headers});
+    return this.http.post(requestUrl, form_details, { headers: headers });
   }
 
 
-    // Data retrieving backend call
-    getData() {
-      const requestUrl = environment.baseUrl + '/member';
-  
-      let headers = {};
-      if (this.httpService.getAuthToken() !== null) {
-        headers = {
-          Authorization: 'Bearer ' + this.httpService.getAuthToken()
-        };
+  // Data retrieving backend call
+  getData() {
+    const requestUrl = environment.baseUrl + '/member';
+
+    let headers = {};
+
+    if (this.httpService.getAuthToken() !== null) {
+      headers = {
+        Authorization: 'Bearer ' + this.httpService.getAuthToken()
+      };
     }
-    return this.http.get(requestUrl, {headers: headers});
-    }
+    return this.http.get(requestUrl, { headers: headers });
+  }
 
 
-    // Data updating backend call function
-    editData(id:number, form_details:any) {
-      const requestUrl = environment.baseUrl + '/member/' + id.toString();
-    
+  // Data updating backend call function
+  editData(id: number, form_details: any) {
+    const requestUrl = environment.baseUrl + '/member/' + id.toString();
+
     let headers = {};
     if (this.httpService.getAuthToken() !== null) {
       headers = {
         Authorization: 'Bearer ' + this.httpService.getAuthToken()
       };
     }
-    return this.http.put(requestUrl,form_details, {headers: headers});
-    }
+    return this.http.put(requestUrl, form_details, { headers: headers });
+  }
 
-    
-    // Delete data backend call function
-    deleteData(id: number) {
-      const requestUrl = environment.baseUrl + '/member/' + id.toString();
-    
+
+  // Delete data backend call function
+  deleteData(id: number) {
+    const requestUrl = environment.baseUrl + '/member/' + id.toString();
+
     let headers = {};
     if (this.httpService.getAuthToken() !== null) {
       headers = {
         Authorization: 'Bearer ' + this.httpService.getAuthToken()
       };
     }
-    return this.http.delete(requestUrl, {headers: headers});
-    }
+    return this.http.delete(requestUrl, { headers: headers });
+  }
 }

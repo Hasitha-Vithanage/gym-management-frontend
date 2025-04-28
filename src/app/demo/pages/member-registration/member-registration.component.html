@@ -94,7 +94,7 @@
       <div class="row">
         <mat-form-field class="half-width">
           <mat-label>Injuries</mat-label>
-          <input matInput formControlName="injuries" />
+          <textarea  matInput formControlName="injuries"></textarea>
         </mat-form-field>
 
         <mat-form-field class="half-width">
@@ -104,6 +104,14 @@
             <mat-option value="physical">Physical</mat-option>
           </mat-select>
         </mat-form-field>
+      </div>
+
+      <div class="row">
+        <button [disabled]="submitted" type="button" mat-raised-button (click)="fileInput.click()" class="mb-2">Choose File</button>
+        <div>
+          <img [src]="selectedImageUrl ? selectedImageUrl : 'assets/images/authentication/google.svg'" width="50px" height="50px" />
+        </div>
+        <input hidden (change)="onFileSelected($event)" #fileInput type="file" id="file" />
       </div>
 
       <div class="row">
