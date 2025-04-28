@@ -1,122 +1,118 @@
 /* Table CSS */
 
 .form-title {
-    font-size: 24px;
-    font-weight: 600;
-    margin-bottom: 20px;
-    color: #1976d2;
-  }
-  
-  /* Container for New button and filter section */
-  .toolbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  /* "Add New" button */
-  .add-new .new-button {
-    background-color: #1976d2;
-    color: white;
-    font-weight: 600;
-    border-radius: 8px;
-    padding: 20px;
-  }
-  
-  /* Table filter section */
-  .table-filter {
-    display: flex;
-    gap: 12px;
-  }
-  
-  /* Adjust mat-form-field styling */
-  .table-filter mat-form-field {
-    width: 250px;
-    margin: 0;
-    align-items: center;
-  }
-  
-  
-  .table-filter mat-label {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-weight: 500;
-    font-size: 14px;
-    color: #555;
-  }
-  
-  /* Style for the search icon */
-  .search-icon {
-    font-size: 20px;
-    color: #555;
-  }
-  
-  
-  /* Refresh button styling */
-  .refresh-button {
-    background-color: #1976d2;
-    color: white;
-    border-radius: 8px;
-    font-size: 20px;
-    height: 56px;
-    width: 56px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-  }
-  
-  .table-section {
-    width: 100%;
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    overflow-x: auto;
-  }
-  
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    table-layout: fixed;
-  }
-  
-  th,
-  td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-    white-space: normal;
-    word-wrap: break-word;
-    max-width: 200px;
-    vertical-align: top;
-  }
-  
-  th {
-    background-color: #1976d2 !important;
-    color: white;
-  }
-  
-  .action-column {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-  }
-  
-  .pagination {
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
-  }
-  
-  .gray-icon-btn {
-    color: #6e6e6e;
-    transition: background-color 0.2s ease;
-  }
-  
-  .gray-icon-btn:hover {
-    background-color: #f0f0f0;
-  }
-  
-  
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #1976d2;
+}
+
+/* Container for New button and filter section */
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* "Add New" button */
+.add-new .new-button {
+  background-color: #1976d2;
+  color: white;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+/* Table filter section */
+.table-filter {
+  display: flex;
+  gap: 12px;
+}
+
+/* Adjust mat-form-field styling */
+.table-filter mat-form-field {
+  width: 250px;
+  margin: 0;
+  align-items: center;
+}
+
+.table-filter mat-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+  font-size: 14px;
+  color: #555;
+}
+
+/* Style for the search icon */
+.search-icon {
+  font-size: 20px;
+  color: #555;
+}
+
+/* Refresh button styling */
+.refresh-button {
+  background-color: #1976d2;
+  color: white;
+  border-radius: 8px;
+  font-size: 20px;
+  height: 56px;
+  width: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.table-section {
+  width: 100%;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+th,
+td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  white-space: normal;
+  word-wrap: break-word;
+  max-width: 200px;
+  vertical-align: top;
+}
+
+th {
+  background-color: #1976d2 !important;
+  color: white;
+}
+
+.action-column {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.gray-icon-btn {
+  color: #6e6e6e;
+  transition: background-color 0.2s ease;
+}
+
+.gray-icon-btn:hover {
+  background-color: #f0f0f0;
+}

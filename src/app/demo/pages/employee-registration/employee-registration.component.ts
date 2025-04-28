@@ -1,13 +1,8 @@
 import { ChangeDetectionStrategy, Component, OnInit, signal, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, MinLengthValidator, Validators } from '@angular/forms';
-import { MatDatepickerControl, MatDatepickerModule, MatDatepickerPanel } from '@angular/material/datepicker';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { subscribe } from 'diagnostics_channel';
-import { elementAt } from 'rxjs';
 import { EmpolyeeServiceService } from 'src/app/services/employee-service/empolyee-service.service';
 import { HttpService } from 'src/app/services/http.service';
 import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
@@ -70,23 +65,23 @@ export class EmployeeRegistrationComponent implements OnInit {
     this.populateData();
     this.userName = this.http.getLoginNameFromCache();
     console.log(this.userName);
-    
+
   }
 
   // custom validation
   customDecimalValidator(control: AbstractControl) {
-    if(!control) {
+    if (!control) {
       return null;
     }
 
     const controlValue = +control.value;
-    
-    if(isNaN(+control.value)) {
+
+    if (isNaN(+control.value)) {
       return {
         customDecimalValidator: true
       };
     }
-    if(!Number.isInteger(controlValue)) {
+    if (!Number.isInteger(controlValue)) {
       return {
         customDecimalValidator: true
       };
@@ -155,21 +150,21 @@ export class EmployeeRegistrationComponent implements OnInit {
             // displaying success message
             this.messageService.showSuccess("Employee added successfully!");
           },
-          // displaying error message
+          // Displaying error message
           error: (error) => {
             this.messageService.showError(error);
           }
         });
 
       } else if (this.mode === "edit") {
-        // calling editData function to send the request to the backend
+        // Calling editData function to send the request to the backend
         this.employeeService.editData(this.selectedData?.id, this.employeeForm.value).subscribe({
           next: (response: any) => {
             let elementIndex = this.dataSource.data.findIndex((element) => element.id === this.selectedData?.id);
             this.dataSource.data[elementIndex] = response;
             this.dataSource = new MatTableDataSource(this.dataSource.data);
 
-            // displaying success message
+            // Displaying success message
             this.messageService.showSuccess("Employee details updated successfully!");
           },
           error: (error) => {

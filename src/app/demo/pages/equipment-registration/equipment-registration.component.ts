@@ -6,7 +6,25 @@ import { NewEquipmentDialogComponent } from '../new-equipment-dialog/new-equipme
 import { NewEquipmentServiceService } from 'src/app/services/new-equipment/new-equipment-service.service';
 
 const ELEMENT_DATA: any[] = [
-  { supplierName: 1, contactPerson: 'Hydrogen', contactNo: 1.0079, emailAddress: 'H', officeAddress: 1, postalAddress: 'Hydrogen', equipmentType: 1.0079, status: 'H', remarks: 1, actions: 1 },
+  {
+    category: 1,
+    supplier: 'Hydrogen',
+    brandName: 1,
+    quantity: 2,
+    condition: 3,
+    purchaseDate: '2023-10-01',
+    addedBy: 'John Doe',
+    machineName: 1.0079,
+    muscleGroups: 'H',
+    model: 'Hydrogen',
+    type: 1.0079,
+    sizeStandard: 'H',
+    barLength: 1,
+    weight: 1,
+    equipmentName: 1,
+    remarks: 'No remarks',
+    actions: 2
+  },
 ];
 
 @Component({
@@ -17,8 +35,11 @@ const ELEMENT_DATA: any[] = [
 })
 export class EquipmentRegistrationComponent {
 
+  supplierList: any[] = [];  // List of suppliers
+
   constructor(
-    private equipmentService: NewEquipmentServiceService
+    private equipmentService: NewEquipmentServiceService,
+    private newEquipmentService: NewEquipmentServiceService
   ) { }
 
   // OnInit function
@@ -26,8 +47,47 @@ export class EquipmentRegistrationComponent {
     this.populateData();
   }
 
+  // Function to get supplier name by ID
+  getSupplierName(id: number): string {
+    const supplier = this.supplierList.find(s => s.id === id);
+    return supplier ? supplier.supplierName : 'Unknown Supplier';
+  }
+
+  // getSupplier function
+  public getSuppliers(): void {
+    //Call Service to get suppliers
+    this.newEquipmentService.getSuppliers().subscribe({
+      next: (response: any[]) => {
+        console.log("Suppliers: ", response);
+        this.supplierList = response;
+      },
+      error: (error) => {
+        console.log('Error fetching suppliers:', error);
+      }
+    });
+  }
+
   // Table function
-  displayedColumns: string[] = ['supplierName', 'contactPerson', 'contactNo', 'emailAddress', 'officeAddress', 'postalAddress', 'equipmentType', 'status', 'remarks', 'actions'];
+  displayedColumns: string[] = [
+    'category',
+    'supplier',
+    'brandName',
+    'quantity',
+    'condition',
+    'purchaseDate',
+    'addedBy',
+    'machineName',
+    'muscleGroups',
+    'model',
+    'type',
+    'sizeStandard',
+    'barLength',
+    'weight',
+    'equipmentName',
+    'remarks',
+    'actions'
+  ];
+
   dataSource = new MatTableDataSource<any>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -35,6 +95,7 @@ export class EquipmentRegistrationComponent {
   //populateData function
   public populateData(): void {
     this.equipmentService.getData().subscribe((response: any) => {
+      this.getSuppliers(); // Call the function to get suppliers
       this.dataSource = new MatTableDataSource(response);
       this.dataSource.paginator = this.paginator;
       console.log("Get Data Response: ", response);
@@ -58,8 +119,8 @@ export class EquipmentRegistrationComponent {
   /* Refresh button function */
   refreshData(): void {
     this.populateData();
+    this.getSuppliers(); // Call getSuppliers to populate the supplier list
   }
-
   // Open dialog Box function
   readonly dialog = inject(MatDialog);
   openDialog(): void {
@@ -98,12 +159,12 @@ export class EquipmentRegistrationComponent {
     this.equipmentService.deleteEquipment(data.id).subscribe({
       next: () => {
         console.log('Equipment deleted successfully');
-        this.refreshData();   // <-- ADD this to refresh after deletion
+        this.refreshData();
       },
       error: (error) => {
         console.error('Failed to delete equipment:', error);
       }
     });
   }
-  
+
 }
