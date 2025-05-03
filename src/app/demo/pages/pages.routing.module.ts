@@ -7,6 +7,7 @@ import { WorkoutManagementComponent } from './workout-management/workout-managem
 import { SupplierRegistrationComponent } from './supplier-registration/supplier-registration.component';
 import { EquipmentRegistrationComponent } from './equipment-registration/equipment-registration.component';
 import { BeginnerWorkoutPlanComponent } from './beginner-workout-plan/beginner-workout-plan.component';
+import { ProgressTrackingComponent } from './progress-tracking/progress-tracking.component';
 
 export const PagesRoutes: Routes = [
   {
@@ -41,9 +42,12 @@ export const PagesRoutes: Routes = [
     path: 'equipments',
     component: EquipmentRegistrationComponent
   },
-
   {
     path: 'beginner-workout-plan',
     component: BeginnerWorkoutPlanComponent
+  },
+  {
+    path: 'progress-tracking',
+    component: ProgressTrackingComponent
   },
 ];

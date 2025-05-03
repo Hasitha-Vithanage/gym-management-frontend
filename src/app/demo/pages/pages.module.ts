@@ -15,6 +15,9 @@ import { NewSupplierDialogComponent } from './new-supplier-dialog/new-supplier-d
 import { EquipmentRegistrationComponent } from './equipment-registration/equipment-registration.component';
 import { NewEquipmentDialogComponent } from './new-equipment-dialog/new-equipment-dialog.component';
 import { BeginnerWorkoutPlanComponent } from './beginner-workout-plan/beginner-workout-plan.component';
+import { ProgressTrackingComponent } from './progress-tracking/progress-tracking.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { AddNewProgressDialogComponent } from './add-new-progress-dialog/add-new-progress-dialog.component';
 // icons
 
 @NgModule({
@@ -29,9 +32,11 @@ import { BeginnerWorkoutPlanComponent } from './beginner-workout-plan/beginner-w
     EquipmentRegistrationComponent,
     NewEquipmentDialogComponent,
     WorkoutManagementComponent,
-    BeginnerWorkoutPlanComponent
+    BeginnerWorkoutPlanComponent,
+    ProgressTrackingComponent,
+    AddNewProgressDialogComponent
   ],
-  imports: [CommonModule, FormsModule, NgApexchartsModule, RouterModule.forChild(PagesRoutes), MaterialModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, NgApexchartsModule, RouterModule.forChild(PagesRoutes), MaterialModule, ReactiveFormsModule, NgxChartsModule],
   exports: []
 })
 export class PagesModule {}

@@ -29,6 +29,7 @@
     "@ant-design/icons-angular": "^18.0.0",
     "@ng-bootstrap/ng-bootstrap": "^17.0.0",
     "@popperjs/core": "^2.11.8",
+    "@swimlane/ngx-charts": "^22.0.0-alpha.1",
     "apexcharts": "^3.49.2",
     "bootstrap": "^5.3.3",
     "ng-apexcharts": "^1.11.0",

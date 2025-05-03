@@ -1,0 +1,40 @@
+<!--- Supplier-->
+<div class="table-section">
+  <!-- Title of the-->
+  <h2 class="form-title">Progress Tracking</h2>
+
+  <!-- Container for new button and filter -->
+  <div class="toolbar">
+    <!-- add-new on the left -->
+    <div class="add-new">
+      <button type="reset" mat-raised-button class="new-button half-width" (click)="openDialog()">
+        <mat-icon>add</mat-icon>
+        Add Progress
+      </button>
+    </div>
+
+    <!-- table-filter on the right -->
+    <div class="table-filter">
+      <mat-form-field appearance="outline">
+        <mat-label>
+          <mat-icon class="search-icon">search</mat-icon>
+          Search...
+        </mat-label>
+        <input matInput placeholder="" #input />
+      </mat-form-field>
+
+      <!-- refresh button -->
+      <div>
+        <button mat-icon-button matTooltip="Refresh" class="refresh-button" (click)="refreshData()">
+          <mat-icon>refresh</mat-icon>
+        </button>
+      </div>
+      <!--- download button-->
+      <div>
+        <button mat-icon-button matTooltip="Refresh" class="refresh-button" (click)="refreshData()">
+          <mat-icon>download</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

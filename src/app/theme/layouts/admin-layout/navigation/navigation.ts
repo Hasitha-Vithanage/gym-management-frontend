@@ -158,6 +158,25 @@ export const NavigationItems: NavigationItem[] = [
     ]
   },
   {
+    id: 'ProgressTracking',
+    title: 'Progress Tracking',
+    type: 'group',
+    icon: 'icon-navigation',
+    auth: authenticationEnum.Home,
+    children: [
+      {
+        id: 'progressTrackingDet',
+        title: 'Progress Tracking',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/pages/progress-tracking',
+        icon: '',
+        auth: authenticationEnum.Home_Dashboard,
+        breadcrumbs: false
+      },
+    ]
+  },
+  {
     id: 'masters',
     title: 'Masters',
     type: 'group',
