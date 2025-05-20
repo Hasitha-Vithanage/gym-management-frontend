@@ -206,6 +206,25 @@ export const NavigationItems: NavigationItem[] = [
     ]
   },
   {
+    id: 'ratings',
+    title: 'Ratings & Feedback',
+    type: 'group',
+    icon: 'icon-navigation',
+    auth: authenticationEnum.Home,
+    children: [
+      {
+        id: 'ratingsDet',
+        title: 'Ratings & Feedback',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/pages/ratings&feedback',
+        icon: '',
+        auth: authenticationEnum.Home_Dashboard,
+        breadcrumbs: false
+      }
+    ]
+  },
+  {
     id: 'authentication',
     title: 'Authentication',
     type: 'group',

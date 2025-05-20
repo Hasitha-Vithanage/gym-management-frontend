@@ -8,6 +8,7 @@ import { SupplierRegistrationComponent } from './supplier-registration/supplier-
 import { EquipmentRegistrationComponent } from './equipment-registration/equipment-registration.component';
 import { BeginnerWorkoutPlanComponent } from './beginner-workout-plan/beginner-workout-plan.component';
 import { ProgressTrackingComponent } from './progress-tracking/progress-tracking.component';
+import { RatingsAndFeedbackComponent } from './ratings-and-feedback/ratings-and-feedback.component';
 
 export const PagesRoutes: Routes = [
   {
@@ -49,5 +50,9 @@ export const PagesRoutes: Routes = [
   {
     path: 'progress-tracking',
     component: ProgressTrackingComponent
+  },
+  {
+    path: 'ratings&feedback',
+    component: RatingsAndFeedbackComponent
   },
 ];

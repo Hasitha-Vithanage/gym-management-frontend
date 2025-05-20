@@ -18,6 +18,7 @@ import { BeginnerWorkoutPlanComponent } from './beginner-workout-plan/beginner-w
 import { ProgressTrackingComponent } from './progress-tracking/progress-tracking.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { AddNewProgressDialogComponent } from './add-new-progress-dialog/add-new-progress-dialog.component';
+import { RatingsAndFeedbackComponent } from './ratings-and-feedback/ratings-and-feedback.component';
 // icons
 
 @NgModule({
@@ -34,7 +35,8 @@ import { AddNewProgressDialogComponent } from './add-new-progress-dialog/add-new
     WorkoutManagementComponent,
     BeginnerWorkoutPlanComponent,
     ProgressTrackingComponent,
-    AddNewProgressDialogComponent
+    AddNewProgressDialogComponent,
+    RatingsAndFeedbackComponent
   ],
   imports: [CommonModule, FormsModule, NgApexchartsModule, RouterModule.forChild(PagesRoutes), MaterialModule, ReactiveFormsModule, NgxChartsModule],
   exports: []

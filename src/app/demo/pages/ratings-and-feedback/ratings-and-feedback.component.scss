@@ -58,6 +58,46 @@ mat-radio-button {
   background-color: #1976d2 !important;
 }
 
+/* Star Ratings - Improved */
+.star-rating {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+.star-rating mat-label {
+  margin-bottom: 10px;
+  display: block;
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.star-rating mat-icon {
+  font-size: 28px;
+  height: 28px;
+  width: 28px;
+  cursor: pointer;
+  color: #bdbdbd;
+  transition: color 0.2s ease, transform 0.2s ease;
+  margin-right: 20px;
+}
+
+.star-rating mat-icon:hover {
+  color: #ffc107;
+  transform: scale(1.1);
+}
+
+.star-rating mat-icon.filled {
+  color: #ffca28; /* amber filled */
+}
+
+/* Checkbox styling */
+.checkbox-options {
+  display: flex;
+  align-items: center;
+  padding-top: 24px;
+}
+
 /* Table CSS */
 
 .table-filter {    
