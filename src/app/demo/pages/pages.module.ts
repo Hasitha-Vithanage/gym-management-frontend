@@ -19,6 +19,7 @@ import { ProgressTrackingComponent } from './progress-tracking/progress-tracking
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { AddNewProgressDialogComponent } from './add-new-progress-dialog/add-new-progress-dialog.component';
 import { RatingsAndFeedbackComponent } from './ratings-and-feedback/ratings-and-feedback.component';
+import { NutritionAndMealPlanComponent } from './nutrition-and-meal-plan/nutrition-and-meal-plan.component';
 // icons
 
 @NgModule({
@@ -36,7 +37,8 @@ import { RatingsAndFeedbackComponent } from './ratings-and-feedback/ratings-and-
     BeginnerWorkoutPlanComponent,
     ProgressTrackingComponent,
     AddNewProgressDialogComponent,
-    RatingsAndFeedbackComponent
+    RatingsAndFeedbackComponent,
+    NutritionAndMealPlanComponent
   ],
   imports: [CommonModule, FormsModule, NgApexchartsModule, RouterModule.forChild(PagesRoutes), MaterialModule, ReactiveFormsModule, NgxChartsModule],
   exports: []

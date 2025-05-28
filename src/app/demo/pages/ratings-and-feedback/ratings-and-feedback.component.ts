@@ -198,8 +198,10 @@ export class RatingsAndFeedbackComponent {
           }
         });
       }
-      this.feedbackForm.disable();
-      this.isDisabled = true;
+      // this.feedbackForm.disable();
+      // this.isDisabled = true;
+      this.feedbackForm.reset();
+      this.rating = 0;
       this.mode = "add";
     } catch (error) {
       this.messageService.showError(error);
@@ -228,7 +230,7 @@ export class RatingsAndFeedbackComponent {
     this.populateData();
   }
 
-    // edit button function
+  // edit button function
   public editData(data: any): void {
     console.log(new Date(data.date));
     this.feedbackForm.patchValue(data);

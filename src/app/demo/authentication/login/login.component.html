@@ -2,10 +2,11 @@
   <div class="auth-wrapper v3">
     <form [formGroup]="loginForm" class="auth-form" (ngSubmit)="onSubmitLogin()">
       <div class="auth-header">
-        <a href="javascript:"><img src="assets/images/logo-dark.svg" alt="logo" /></a>
+        <!-- <a href="javascript:"><img style="width: 200px; height: 60px;" src="assets/images/dashboard-logo-dark.png" alt="logo" /></a> -->
       </div>
       <div class="card my-5">
         <div class="card-body">
+          <a href="javascript:"><img style="width: 250px; height: 80px; display: block; margin: 0 auto 20px;" src="assets/images/dashboard-logo-dark.png" alt="logo" /></a>
           <div class="d-flex justify-content-between align-items-end mb-4">
             <h3 class="mb-0"><b>Login</b></h3>
             <a [routerLink]="['/register']" class="link-primary">Don't have an account?</a>

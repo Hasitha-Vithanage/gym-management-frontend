@@ -1,0 +1,183 @@
+<div class="container two-column-layout">
+  <div class="card form-card">
+    <div class="nutrition-container">
+      <h2 class="page-title">🍎 Nutrition & Meal Plans</h2>
+      <p class="welcome-text">Welcome! Start by choosing one of the options below to manage your personalized diet plans.</p>
+
+      <div class="button-panel">
+        <button mat-raised-button color="primary" (click)="activeView = 'myPlans'">🍽️ My Meal Plans</button>
+        <button mat-raised-button color="accent" (click)="activeView = 'request'">📤 Request a Meal Plan</button>
+        <button mat-raised-button color="warn" (click)="activeView = 'predefined'">📚 Predefined Plans</button>
+      </div>
+
+      <div *ngIf="!activeView" class="illustration">
+        <img src="assets/images/logo-dark.png" alt="Meal Planning" />
+      </div>
+
+      <!-- My Meal Plans Section -->
+      <div *ngIf="activeView === 'myPlans'">
+        <h2 class="section-heading">🍽️ My Meal Plans</h2>
+        <mat-card *ngFor="let plan of myMealPlans" class="meal-plan-card">
+          <mat-card-header>
+            <mat-card-title>{{ plan.title }}</mat-card-title>
+            <mat-card-subtitle>{{ plan.date | date: 'mediumDate' }}</mat-card-subtitle>
+          </mat-card-header>
+
+          <mat-card-content>
+            <p>
+              <strong>Trainer:</strong>
+              {{ plan.trainer }}
+            </p>
+            <p>
+              <strong>Total Calories:</strong>
+              {{ plan.totalCalories }} kcal
+            </p>
+
+            <div *ngFor="let meal of plan.meals" class="meal-section">
+              <h4>{{ meal.name }} ({{ meal.time }})</h4>
+              <table class="meal-table">
+                <thead>
+                  <tr>
+                    <th>Food Item</th>
+                    <th>Quantity</th>
+                    <th>Calories</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of meal.items">
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.calories }} kcal</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p class="meal-total">Subtotal: {{ meal.totalCalories }} kcal</p>
+            </div>
+          </mat-card-content>
+          <hr />
+          <mat-card-actions>
+            <button mat-raised-button color="primary">Download</button>
+            <button mat-raised-button color="accent" style="margin-left: 5px">Share</button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+
+      <!-- Request a Meal Plan Section -->
+      <div *ngIf="activeView === 'request'">
+        <!-- Show request status if already submitted -->
+        <div *ngIf="hasRequestedPlan" class="request-status">
+          <mat-card class="status-card">
+            <mat-card-title>✅ Meal Plan Request Already Sent</mat-card-title>
+            <mat-card-content>
+              <p>
+                Your request was submitted on
+                <strong>28/05/2025</strong>
+                .
+              </p>
+              <p>We’ll notify you once your personalized plan is ready.</p>
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+        <!-- Request form content -->
+        <form [formGroup]="mealPlanRequestForm" (ngSubmit)="onSubmit()" class="request-form">
+          <h2>📤 Request a Meal Plan</h2>
+
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Userame</mat-label>
+            <input matInput placeholder="Your full name" formControlName="username" required />
+            <mat-error *ngIf="mealPlanRequestForm.get('name')?.hasError('required')">Name is required</mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="full-width">
+            <mat-label>Requested Date</mat-label>
+            <input matInput [matDatepicker]="join" placeholder="MM/DD/YYYY" formControlName="requestedDate" />
+            <mat-datepicker-toggle matSuffix [for]="join"></mat-datepicker-toggle>
+            <mat-datepicker #join></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Primary Fitness Goal</mat-label>
+            <mat-select formControlName="fitnessGoal" required>
+              <mat-option value="muscle_gain">💪 Muscle Gain</mat-option>
+              <mat-option value="fat_loss">🔥 Fat Loss</mat-option>
+              <mat-option value="general_fitness">⚡ General Fitness</mat-option>
+              <mat-option value="endurance">🏃 Endurance</mat-option>
+            </mat-select>
+            <mat-error *ngIf="mealPlanRequestForm.get('fitnessGoal')?.hasError('required')">Fitness goal is required</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Dietary Preferences</mat-label>
+            <mat-select formControlName="dietaryPreferences" multiple>
+              <mat-option value="vegetarian">Vegetarian</mat-option>
+              <mat-option value="vegan">Vegan</mat-option>
+              <mat-option value="pescatarian">Pescatarian</mat-option>
+              <mat-option value="keto">Keto</mat-option>
+              <mat-option value="none">None</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Allergies / Food Restrictions</mat-label>
+            <input matInput placeholder="E.g. nuts, gluten, lactose" formControlName="allergies" />
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Additional Notes</mat-label>
+            <textarea matInput rows="4" placeholder="Any other info you'd like to share" formControlName="additionalNotes"></textarea>
+          </mat-form-field>
+
+          <div class="form-actions">
+            <button mat-raised-button color="primary" type="submit" [disabled]="mealPlanRequestForm.invalid">Submit Request</button>
+            <button mat-button type="button" (click)="onReset()">Reset</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Predefined Plans Section -->
+      <div *ngIf="activeView === 'predefined'">
+        <!-- Predefined plans content -->
+        <h2 class="section-heading">📚 Predefined Meal Plans</h2>
+
+        <mat-accordion displayMode="flat" multi>
+          <mat-expansion-panel *ngFor="let plan of predefinedPlans" class="plan-panel">
+            <mat-expansion-panel-header>
+              <mat-panel-title style="font-weight: bold">{{ plan.title }} — {{ plan.totalCalories }} kcal</mat-panel-title>
+              <mat-panel-description>Created by {{ plan.trainer }} • {{ plan.date | date: 'mediumDate' }}</mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <div class="meal-block" *ngFor="let meal of plan.meals">
+              <h4>{{ meal.name }} ({{ meal.time }})</h4>
+
+              <table class="styled-meal-table">
+                <thead>
+                  <tr>
+                    <th>Food Item</th>
+                    <th>Quantity</th>
+                    <th>Calories</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of meal.items">
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.calories }} kcal</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <p class="meal-total">Subtotal: {{ meal.totalCalories }} kcal</p>
+              <mat-divider></mat-divider>
+            </div>
+
+            <mat-action-row>
+              <button mat-raised-button color="primary" (click)="selectPlan(plan)">Select Plan</button>
+              <button mat-raised-button color="accent" (click)="viewDetails(plan)">View Details</button>
+            </mat-action-row>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+    </div>
+  </div>
+</div>

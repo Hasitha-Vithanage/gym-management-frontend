@@ -158,6 +158,25 @@ export const NavigationItems: NavigationItem[] = [
     ]
   },
   {
+    id: 'nutrition&meal-plan',
+    title: 'Nutrition & Meal Plan',
+    type: 'group',
+    icon: 'icon-navigation',
+    auth: authenticationEnum.Home,
+    children: [
+      {
+        id: 'nutritionDet',
+        title: 'Nutrition & Meal Plan',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/pages/nutrition&meal-plan',
+        icon: '',
+        auth: authenticationEnum.Home_Dashboard,
+        breadcrumbs: false
+      }
+    ]
+  },
+  {
     id: 'ProgressTracking',
     title: 'Progress Tracking',
     type: 'group',

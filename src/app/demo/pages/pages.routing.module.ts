@@ -9,6 +9,7 @@ import { EquipmentRegistrationComponent } from './equipment-registration/equipme
 import { BeginnerWorkoutPlanComponent } from './beginner-workout-plan/beginner-workout-plan.component';
 import { ProgressTrackingComponent } from './progress-tracking/progress-tracking.component';
 import { RatingsAndFeedbackComponent } from './ratings-and-feedback/ratings-and-feedback.component';
+import { NutritionAndMealPlanComponent } from './nutrition-and-meal-plan/nutrition-and-meal-plan.component';
 
 export const PagesRoutes: Routes = [
   {
@@ -54,5 +55,9 @@ export const PagesRoutes: Routes = [
   {
     path: 'ratings&feedback',
     component: RatingsAndFeedbackComponent
+  },
+  {
+    path: 'nutrition&meal-plan',
+    component: NutritionAndMealPlanComponent
   },
 ];
