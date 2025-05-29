@@ -19,7 +19,7 @@ export class AddNewProgressDialogComponent {
   submitted = false;
   mode = "add";
   selectedData;
-  
+
 
   frontImageUrl: any;
   sideImageUrl: any;
@@ -60,6 +60,8 @@ export class AddNewProgressDialogComponent {
       backImageName: new FormControl(''),
       backImageType: new FormControl(''),
     });
+
+    this.progressForm.get('date')?.disable();
   }
 
   ngOnInit(): void {
@@ -104,7 +106,7 @@ export class AddNewProgressDialogComponent {
 
     this.progressService.serviceCall(this.prepareFormData()).subscribe((response: any) => {
       console.log("Response: ", response);
-      
+
     });
   }
 

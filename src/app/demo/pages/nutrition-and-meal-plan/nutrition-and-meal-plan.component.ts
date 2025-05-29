@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
+import { error } from 'console';
 import { HttpService } from 'src/app/services/http.service';
 import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
 import { NutritionAndMealPlansServiceService } from 'src/app/services/nutrition-and-meal-plans/nutrition-and-meal-plans-service.service';
@@ -11,7 +12,7 @@ import { NutritionAndMealPlansServiceService } from 'src/app/services/nutrition-
   templateUrl: './nutrition-and-meal-plan.component.html',
   styleUrl: './nutrition-and-meal-plan.component.scss'
 })
-export class NutritionAndMealPlanComponent {
+export class NutritionAndMealPlanComponent implements OnInit {
 
   activeView: 'myPlans' | 'request' | 'predefined' | null = null;
   hasRequestedPlan = false;
@@ -44,6 +45,27 @@ export class NutritionAndMealPlanComponent {
     this.mealPlanRequestForm.get('username')?.disable();
     this.mealPlanRequestForm.get('requestedDate')?.disable();
   }
+
+  // OnInit function
+  ngOnInit(): void {
+    this.checkExistingRequest();
+  }
+
+  // function for check if the user has already requested a meal plan
+  checkExistingRequest() {
+    const username = this.http.getLoginNameFromCache();
+    this.nutritionService.hasExistingRequest(username).subscribe({
+      next: (hasRequest: boolean) => {
+        this.hasRequestedPlan = hasRequest;
+        console.log(this.hasRequestedPlan);
+
+      },
+      error: (error) => {
+        this.messageService.showError("Failed to check meal plan request status");
+      }
+    });
+  }
+
 
   // myMealPlans
   myMealPlans = [
@@ -85,7 +107,7 @@ export class NutritionAndMealPlanComponent {
     }
   ];
 
-// Predefined meal plans
+  // Predefined meal plans
   predefinedPlans = [
     {
       title: 'Balanced Diet Plan',
@@ -171,7 +193,7 @@ export class NutritionAndMealPlanComponent {
   }
 
 
-// Onsubmit function
+  // Onsubmit function
   onSubmit() {
     this.submitted = true;
     // check if form is valid
@@ -180,11 +202,11 @@ export class NutritionAndMealPlanComponent {
     }
 
     console.log("Clicked");
-    console.log(this.mealPlanRequestForm.value);
+    console.log(this.mealPlanRequestForm.getRawValue());
     try {
       // check mode (add or edit)
       if (this.mode === "add") {
-        this.nutritionService.serviceCall(this.mealPlanRequestForm.value).subscribe({
+        this.nutritionService.serviceCall(this.mealPlanRequestForm.getRawValue()).subscribe({
           next: (response: any) => {
             if (this.dataSource && this.dataSource.data && this.dataSource.data.length > 0) {
               this.dataSource = new MatTableDataSource([response, ...this.dataSource.data]);
@@ -224,6 +246,7 @@ export class NutritionAndMealPlanComponent {
     }
   }
 
+  // form reset button function
   onReset() {
     this.submissionSuccess = false;
     this.mealPlanRequestForm.reset();

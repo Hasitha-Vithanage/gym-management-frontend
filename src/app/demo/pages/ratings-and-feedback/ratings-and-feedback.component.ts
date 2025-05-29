@@ -76,6 +76,9 @@ export class RatingsAndFeedbackComponent {
       userId: [{ value: this.http.getUserId(), disabled: true }],
     });
 
+    this.feedbackForm.get('date')?.disable();
+    this.feedbackForm.get('username')?.disable();
+
     // Disable the date filed
     this.feedbackForm.get('date')?.setValue(currentDate);
     // this.feedbackForm.get('date')?.disable();
@@ -166,7 +169,7 @@ export class RatingsAndFeedbackComponent {
     try {
       // check mode (add or edit)
       if (this.mode === "add") {
-        this.feedbackService.serviceCall(this.feedbackForm.value).subscribe({
+        this.feedbackService.serviceCall(this.feedbackForm.getRawValue()).subscribe({
           next: (response: any) => {
             if (this.dataSource && this.dataSource.data && this.dataSource.data.length > 0) {
               this.dataSource = new MatTableDataSource([response, ...this.dataSource.data]);

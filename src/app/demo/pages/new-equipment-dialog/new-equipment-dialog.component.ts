@@ -72,6 +72,7 @@ export class NewEquipmentDialogComponent {
 
     // Disable the addedBy filed
     this.equipmentForm.get('addedBy')?.disable();
+    this.equipmentForm.get('purchaseDate')?.disable();
   }
 
   // getSupplier function
