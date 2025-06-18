@@ -1,0 +1,112 @@
+<div class="form-section">
+  <!-- title of the form-->
+  <div class="title">
+    <h2 class="form-title">Add New Supplements</h2>
+    <button mat-icon-button class="close-icon" style="padding: 0px" (click)="closeDialog()">
+      <mat-icon fontIcon="close"></mat-icon>
+    </button>
+  </div>
+
+  <!--- form -->
+  <form class="example-form" [formGroup]="supplementForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <mat-form-field class="half-width">
+        <mat-label>Product Name</mat-label>
+        <input matInput maxlength="100" placeholder="Enter Product Name" type="text" formControlName="productName" />
+      </mat-form-field>
+
+      <mat-form-field class="half-width">
+        <mat-label>Brand</mat-label>
+        <input matInput matInput maxlength="100" placeholder="Enter Brand" type="text" formControlName="brand" />
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field appearance="fill" class="half-width">
+        <mat-label>Category</mat-label>
+        <mat-select formControlName="category" (selectionChange)="onCategoryChange($event)">
+          <mat-option *ngFor="let category of supplementCategories" [value]="category">
+            {{ category }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="half-width">
+        <mat-label>Description</mat-label>
+        <textarea matInput maxlength="2000" formControlName="description" placeholder="Enter Description"></textarea>
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field class="half-width">
+        <mat-label>Quantity (per unit)</mat-label>
+        <input matInput matInput placeholder="Enter Quantity (per unit)" type="number" formControlName="quantityPerUnit" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="half-width">
+        <mat-label>Unit</mat-label>
+        <mat-select formControlName="unit">
+          <mat-option *ngFor="let unit of unitOptionsMap[selectedCategory]" [value]="unit">
+            {{ unit }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field class="half-width">
+        <mat-label>Cost Price (LKR)</mat-label>
+        <input matInput matInput placeholder="Enter Cost Price (LKR)" type="number" formControlName="costPrice" />
+      </mat-form-field>
+
+      <mat-form-field class="half-width">
+        <mat-label>Retail Price (LKR)</mat-label>
+        <input matInput matInput placeholder="Enter Retail Price (LKR)" type="number" formControlName="retailPrice" />
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field class="half-width">
+        <mat-label>Quantity In Stock</mat-label>
+        <input matInput matInput placeholder="Enter Quantity In Stock" type="number" formControlName="quantityInStock" />
+      </mat-form-field>
+
+      <mat-form-field class="half-width">
+        <mat-label>Expiry Date</mat-label>
+        <input matInput [matDatepicker]="ed" placeholder="MM/DD/YYYY" formControlName="expiryDate" />
+        <mat-datepicker-toggle matIconSuffix [for]="ed"></mat-datepicker-toggle>
+        <mat-datepicker #ed></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field class="half-width">
+        <mat-label>Supplier</mat-label>
+        <mat-select formControlName="supplier">
+          <mat-option *ngFor="let supplier of supplierList" [value]="supplier.id">
+            {{ supplier.supplierName }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <div class="half-width">
+        <button [disabled]="submitted" type="button" mat-raised-button (click)="fileInput.click()" class="mb-2">Choose File</button>
+        <div>
+          <img [src]="selectedImageUrl ? selectedImageUrl : 'assets/images/authentication/google.svg'" width="50px" height="50px" />
+        </div>
+        <input hidden (change)="onFileSelected($event)" #fileInput type="file" id="file" />
+      </div>
+    </div>
+
+    <div class="row">
+      <button type="reset" mat-raised-button class="close-button half-width" (click)="closeDialog()">
+        <mat-icon>close</mat-icon>
+        Close
+      </button>
+      <button type="submit" mat-raised-button color="primary" class="submit-button half-width" [disabled]="!supplementForm.valid">
+        <mat-icon>check</mat-icon>
+        {{ saveButtonLabel }}
+      </button>
+    </div>
+  </form>
+</div>

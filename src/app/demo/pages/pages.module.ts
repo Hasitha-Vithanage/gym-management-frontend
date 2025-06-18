@@ -20,6 +20,12 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { AddNewProgressDialogComponent } from './add-new-progress-dialog/add-new-progress-dialog.component';
 import { RatingsAndFeedbackComponent } from './ratings-and-feedback/ratings-and-feedback.component';
 import { NutritionAndMealPlanComponent } from './nutrition-and-meal-plan/nutrition-and-meal-plan.component';
+import { SupplementInventoryManagementComponent } from './supplement-inventory-management/supplement-inventory-management.component';
+import { SalesAndRequestsComponent } from './sales-and-requests/sales-and-requests.component';
+import { MySupplementOrdersComponent } from './my-supplement-orders/my-supplement-orders.component';
+import { NewSupplementDialogComponent } from './new-supplement-dialog/new-supplement-dialog.component';
+import { BrowseSupplementsComponent } from './browse-supplements/browse-supplements.component';
+import { SupplementDetailsComponent } from './supplement-details/supplement-details.component';
 // icons
 
 @NgModule({
@@ -38,7 +44,13 @@ import { NutritionAndMealPlanComponent } from './nutrition-and-meal-plan/nutriti
     ProgressTrackingComponent,
     AddNewProgressDialogComponent,
     RatingsAndFeedbackComponent,
-    NutritionAndMealPlanComponent
+    NutritionAndMealPlanComponent,
+    SupplementInventoryManagementComponent,
+    SalesAndRequestsComponent,
+    MySupplementOrdersComponent,
+    NewSupplementDialogComponent,
+    BrowseSupplementsComponent,
+    SupplementDetailsComponent
   ],
   imports: [CommonModule, FormsModule, NgApexchartsModule, RouterModule.forChild(PagesRoutes), MaterialModule, ReactiveFormsModule, NgxChartsModule],
   exports: []

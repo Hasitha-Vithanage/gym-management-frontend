@@ -48,15 +48,16 @@
     <div class="row">
       <!-- Type as Checkboxes -->
       <div class="half-width" formGroupName="equipmentType">
-        <mat-label>Equipment Type</mat-label>
+        <mat-label>Supply Type</mat-label>
         <div class="checkbox-options">
           <mat-checkbox formControlName="machines">Machines</mat-checkbox>
           <mat-checkbox formControlName="freeweights">Freeweights & Bars</mat-checkbox>
           <mat-checkbox formControlName="other">Other</mat-checkbox>
+          <mat-checkbox formControlName="supplements">Supplements</mat-checkbox>
         </div>
       </div>
 
-      <div class="half-width">
+      <div class="width">
         <mat-label>Status</mat-label>
         <mat-button-toggle-group class="status-toggle" color="primary" name="status" appearance="legacy" formControlName="status">
           <mat-button-toggle [value]="true">Active</mat-button-toggle>

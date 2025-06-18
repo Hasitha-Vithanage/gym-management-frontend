@@ -1,4 +1,4 @@
-import { Component, inject, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { NewSupplierServiceService } from 'src/app/services/new-supplier/new-supplier-service.service';
 import { MatDialogRef } from '@angular/material/dialog';
@@ -37,6 +37,7 @@ export class NewSupplierDialogComponent {
         machines: new FormControl(data?.equipmentType?.includes('Machines') || false),
         freeweights: new FormControl(data?.equipmentType?.includes('Freeweights') || false),
         other: new FormControl(data?.equipmentType?.includes('Other') || false),
+        supplements: new FormControl(data?.equipmentType?.includes('Supplements') || false),
       }),
       status: new FormControl(data?.status ?? true),
       remarks: new FormControl(data?.remarks || ''),

@@ -10,6 +10,10 @@ import { BeginnerWorkoutPlanComponent } from './beginner-workout-plan/beginner-w
 import { ProgressTrackingComponent } from './progress-tracking/progress-tracking.component';
 import { RatingsAndFeedbackComponent } from './ratings-and-feedback/ratings-and-feedback.component';
 import { NutritionAndMealPlanComponent } from './nutrition-and-meal-plan/nutrition-and-meal-plan.component';
+import { SupplementInventoryManagementComponent } from './supplement-inventory-management/supplement-inventory-management.component';
+import { SalesAndRequestsComponent } from './sales-and-requests/sales-and-requests.component';
+import { BrowseSupplementsComponent } from './browse-supplements/browse-supplements.component';
+import { MySupplementOrdersComponent } from './my-supplement-orders/my-supplement-orders.component';
 
 export const PagesRoutes: Routes = [
   {
@@ -59,5 +63,21 @@ export const PagesRoutes: Routes = [
   {
     path: 'nutrition&meal-plan',
     component: NutritionAndMealPlanComponent
+  },
+  {
+    path: 'supplement-inventory-management',
+    component: SupplementInventoryManagementComponent
+  },
+  {
+    path: 'supplement-sales-requests',
+    component: SalesAndRequestsComponent
+  },
+  {
+    path: 'browse-supplements',
+    component: BrowseSupplementsComponent
+  },
+  {
+    path: 'my-supplement-orders',
+    component: MySupplementOrdersComponent
   },
 ];

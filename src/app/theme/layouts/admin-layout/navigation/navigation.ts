@@ -98,8 +98,8 @@ export const NavigationItems: NavigationItem[] = [
 
   /* side navigation bar item for employee registration form */
   {
-    id: 'employee',
-    title: 'Employee Registration',
+    id: 'userManagement',
+    title: 'User Management',
     type: 'group',
     icon: 'icon-navigation',
     auth: authenticationEnum.Home,
@@ -113,19 +113,8 @@ export const NavigationItems: NavigationItem[] = [
         icon: '',
         auth: authenticationEnum.Home_Dashboard,
         breadcrumbs: false
-      }
-    ]
-  },
-
-  /* side navigation bar item for member registration form */
-  {
-    id: 'member',
-    title: 'Member Registration',
-    type: 'group',
-    icon: 'icon-navigation',
-    auth: authenticationEnum.Home,
-    children: [
-      {
+      },
+            {
         id: 'memberDet',
         title: 'Member Registration',
         type: 'item',
@@ -137,6 +126,27 @@ export const NavigationItems: NavigationItem[] = [
       }
     ]
   },
+
+  /* side navigation bar item for member registration form */
+  // {
+  //   id: 'member',
+  //   title: 'Member Registration',
+  //   type: 'group',
+  //   icon: 'icon-navigation',
+  //   auth: authenticationEnum.Home,
+  //   children: [
+  //     {
+  //       id: 'memberDet',
+  //       title: 'Member Registration',
+  //       type: 'item',
+  //       classes: 'nav-item',
+  //       url: '/pages/member',
+  //       icon: '',
+  //       auth: authenticationEnum.Home_Dashboard,
+  //       breadcrumbs: false
+  //     }
+  //   ]
+  // },
   /* side navigation bar item for workout management module */
   {
     id: 'workout',
@@ -154,9 +164,20 @@ export const NavigationItems: NavigationItem[] = [
         icon: '',
         auth: authenticationEnum.Home_Dashboard,
         breadcrumbs: false
-      }
+      },
+      {
+        id: 'progressTrackingDet',
+        title: 'Progress Tracking',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/pages/progress-tracking',
+        icon: '',
+        auth: authenticationEnum.Home_Dashboard,
+        breadcrumbs: false
+      },
     ]
   },
+   /* side navigation bar item for nutrition & meal plan module */
   {
     id: 'nutrition&meal-plan',
     title: 'Nutrition & Meal Plan',
@@ -176,25 +197,77 @@ export const NavigationItems: NavigationItem[] = [
       }
     ]
   },
+   /* side navigation bar item for Progress Tracking module */
+  // {
+  //   id: 'ProgressTracking',
+  //   title: 'Progress Tracking',
+  //   type: 'group',
+  //   icon: 'icon-navigation',
+  //   auth: authenticationEnum.Home,
+  //   children: [
+  //     {
+  //       id: 'progressTrackingDet',
+  //       title: 'Progress Tracking',
+  //       type: 'item',
+  //       classes: 'nav-item',
+  //       url: '/pages/progress-tracking',
+  //       icon: '',
+  //       auth: authenticationEnum.Home_Dashboard,
+  //       breadcrumbs: false
+  //     },
+  //   ]
+  // },
+   /* side navigation bar item for workout management module */
   {
-    id: 'ProgressTracking',
-    title: 'Progress Tracking',
+    id: 'SupplementStore',
+    title: 'Supplement Store',
     type: 'group',
     icon: 'icon-navigation',
     auth: authenticationEnum.Home,
     children: [
       {
-        id: 'progressTrackingDet',
-        title: 'Progress Tracking',
+        id: 'inventoryManagementDet',
+        title: 'Inventory Management',
         type: 'item',
         classes: 'nav-item',
-        url: '/pages/progress-tracking',
+        url: '/pages/supplement-inventory-management',
+        icon: '',
+        auth: authenticationEnum.Home_Dashboard,
+        breadcrumbs: false
+      },
+      {
+        id: 'salesRequestsDet',
+        title: 'Sales & Requests',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/pages/supplement-sales-requests',
+        icon: '',
+        auth: authenticationEnum.Home_Dashboard,
+        breadcrumbs: false
+      },
+      {
+        id: 'browseSupplementsDet',
+        title: 'Browse Supplements',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/pages/browse-supplements',
+        icon: '',
+        auth: authenticationEnum.Home_Dashboard,
+        breadcrumbs: false
+      },
+      {
+        id: 'myOrdersDet',
+        title: 'My Orders',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/pages/my-supplement-orders',
         icon: '',
         auth: authenticationEnum.Home_Dashboard,
         breadcrumbs: false
       },
     ]
   },
+   /* side navigation bar item for Masters */
   {
     id: 'masters',
     title: 'Masters',

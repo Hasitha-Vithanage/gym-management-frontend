@@ -10,7 +10,7 @@ export class NewEquipmentServiceService {
 
   // Service all for get suppliers
   public getSuppliers() {
-    const requestUrl = environment.baseUrl + '/equipments/get-suppliers';
+    const requestUrl = environment.baseUrl + '/get-suppliers';
 
     let headers = {};
     if (this.httpService.getAuthToken() !== null) {
