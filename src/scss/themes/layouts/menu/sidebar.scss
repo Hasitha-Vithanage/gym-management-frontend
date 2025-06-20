@@ -1,5 +1,5 @@
 .pc-sidebar {
-  background: #001F3F;// var(--pc-sidebar-background); //  [bit]
+  background: #001f3f; // var(--pc-sidebar-background); //  [bit]
   width: $sidebar-width;
   position: fixed;
   top: 0;
@@ -13,7 +13,7 @@
   border-right: 1px solid rgb(240, 240, 240);
 
   a {
-    color: #B0BEC5;
+    color: #b0bec5;
     cursor: pointer;
   }
 
@@ -98,7 +98,7 @@
   }
   .navbar-content {
     position: relative;
-    height: calc(100vh - 60px);
+    height: 100%; // this was the problem for scroll scene
     padding: 16px 0;
 
     .coded-inner-navbar {
@@ -116,8 +116,8 @@
 
           > a {
             &:after {
-              content: '\e844';
-              font-family: 'feather';
+              content: "\e844";
+              font-family: "feather";
               font-size: 15px;
               border: none;
               position: absolute;
@@ -147,7 +147,7 @@
                 display: block;
 
                 &:before {
-                  content: '';
+                  content: "";
                   position: absolute;
                   top: 0;
                   right: 0;
@@ -248,7 +248,7 @@
         li {
           position: relative;
           &:before {
-            content: '';
+            content: "";
             position: absolute;
             top: 0;
             right: 0;
