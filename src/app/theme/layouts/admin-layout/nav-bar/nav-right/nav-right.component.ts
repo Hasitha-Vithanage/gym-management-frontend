@@ -84,9 +84,19 @@ export class NavRightComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.notificationService.getNotifications().subscribe({
+      next: (notifications: any[]) => {
+        console.log(notifications);
+        this.notificationService.addNotificationToBell(notifications);
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    });
+
     this.notificationService.notifications$.subscribe((notifications) => {
       this.notifications = notifications;
-      this.unreadCount = notifications.filter((n) => !n.read).length;
+      this.unreadCount = notifications.filter((n) => !n.readStatus).length;
     });
 
     // Close dropdown when clicking outside
@@ -111,23 +121,28 @@ export class NavRightComponent implements OnInit {
 
   markAllAsRead() {
     this.notifications.forEach((notification) => {
-      if (!notification.read) {
+      if (!notification.readStatus) {
         this.notificationService.markAsRead(notification.id);
       }
     });
   }
 
-  getRelativeTime(timestamp: Date): string {
-    const now = new Date();
-    const diff = now.getTime() - new Date(timestamp).getTime();
-    const minutes = Math.floor(diff / 60000);
-    const hours = Math.floor(diff / 3600000);
-    const days = Math.floor(diff / 86400000);
+  getRelativeTime(notification: any): string {
+    const timestamp = notification.timeStamp ? notification.timeStamp : null;
+    if (timestamp) {
+      const now = new Date();
+      const diff = now.getTime() - new Date(timestamp).getTime();
+      const minutes = Math.floor(diff / 60000);
+      const hours = Math.floor(diff / 3600000);
+      const days = Math.floor(diff / 86400000);
 
-    if (days > 0) return `${days}d ago`;
-    if (hours > 0) return `${hours}h ago`;
-    if (minutes > 0) return `${minutes}m ago`;
-    return 'Just now';
+      if (days > 0) return `${days}d ago`;
+      if (hours > 0) return `${hours}h ago`;
+      if (minutes > 0) return `${minutes}m ago`;
+      return 'Just now';
+    }
+
+    return '';
   }
 
   profile = [

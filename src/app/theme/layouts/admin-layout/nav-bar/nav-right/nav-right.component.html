@@ -22,7 +22,7 @@
             <div
               *ngFor="let notification of notifications.slice(0, 5)"
               class="notification-item"
-              [class.unread]="!notification.read"
+              [class.unread]="!notification.readStatus"
               (click)="markAsRead(notification.id)"
             >
               <div class="notification-icon" [class]="'icon-' + notification.type">
@@ -33,9 +33,9 @@
               </div>
               <div class="notification-content">
                 <div class="notification-message">{{ notification.message }}</div>
-                <div class="notification-time">{{ getRelativeTime(notification.timestamp) }}</div>
+                <div class="notification-time">{{ getRelativeTime(notification) }}</div>
               </div>
-              <div class="notification-status" *ngIf="!notification.read"></div>
+              <div class="notification-status" *ngIf="!notification.readStatus"></div>
             </div>
             <!-- <div>
               <a class="list-group-item list-group-item-action">

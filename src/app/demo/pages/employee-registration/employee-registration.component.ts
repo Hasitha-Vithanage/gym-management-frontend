@@ -175,7 +175,7 @@ export class EmployeeRegistrationComponent implements OnInit {
             // displaying success message
             this.messageService.showSuccess('Employee added successfully!');
 
-            this.addNotification(response);
+            // this.addNotification(response);
           },
           // Displaying error message
           error: (error) => {
@@ -266,6 +266,6 @@ export class EmployeeRegistrationComponent implements OnInit {
   }
 
   public addNotification(details: any): void {
-    this.notificationService.addNotification('Employee Added Successfully', 'success');
+    this.notificationService.addNotification('Employee Added Successfully', 'success', 1);
   }
 }
