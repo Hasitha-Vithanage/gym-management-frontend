@@ -7,34 +7,55 @@
   <li class="dropdown pc-h-item" ngbDropdown>
     <a class="pc-head-link dropdown-toggle arrow-none me-0 bg-gray-200" data-bs-toggle="dropdown" ngbDropdownToggle>
       <i antIcon type="bell" theme="outline"></i>
-      <span class="badge bg-primary pc-h-badge">3</span>
+      <span *ngIf="unreadCount > 0" class="badge bg-primary pc-h-badge">{{ unreadCount > 99 ? '99+' : unreadCount }}</span>
     </a>
     <div class="dropdown-menu dropdown-notification dropdown-menu-end pc-h-dropdown" ngbDropdownMenu>
       <div class="dropdown-header d-flex align-items-center justify-content-between">
         <h5 class="m-0">Notification</h5>
+        <button *ngIf="unreadCount > 0" (click)="markAllAsRead()" class="mark-all-read">Mark all as read</button>
         <a class="bg-transparent"><i class="text-success d-flex f-20" antIcon theme="outline" type="check-circle"></i></a>
       </div>
       <div class="dropdown-divider"></div>
       <ng-scrollbar style="min-height: 300px" visibility="hover">
         <div class="dropdown-header px-0 text-wrap header-notification-scroll">
           <div class="list-group list-group-flush w-100">
-            <a class="list-group-item list-group-item-action">
-              <div class="d-flex">
-                <div class="flex-shrink-0">
-                  <div class="user-avatar bg-light-success"><i class="d-flex" antIcon theme="outline" type="gift"></i></div>
-                </div>
-                <div class="flex-grow-1 ms-3">
-                  <span class="float-end text-muted">3:00 AM</span>
-                  <p class="text-body mb-0">
-                    It's
-                    <b>Cristina danny's</b>
-                    birthday today.
-                  </p>
-                  <span class="text-muted">2 min ago</span>
-                </div>
+            <div
+              *ngFor="let notification of notifications.slice(0, 5)"
+              class="notification-item"
+              [class.unread]="!notification.read"
+              (click)="markAsRead(notification.id)"
+            >
+              <div class="notification-icon" [class]="'icon-' + notification.type">
+                <span *ngIf="notification.type === 'success'">✓</span>
+                <span *ngIf="notification.type === 'info'">ℹ</span>
+                <span *ngIf="notification.type === 'warning'">⚠</span>
+                <span *ngIf="notification.type === 'error'">✕</span>
               </div>
-            </a>
-            <a class="list-group-item list-group-item-action">
+              <div class="notification-content">
+                <div class="notification-message">{{ notification.message }}</div>
+                <div class="notification-time">{{ getRelativeTime(notification.timestamp) }}</div>
+              </div>
+              <div class="notification-status" *ngIf="!notification.read"></div>
+            </div>
+            <!-- <div>
+              <a class="list-group-item list-group-item-action">
+                <div class="d-flex">
+                  <div class="flex-shrink-0">
+                    <div class="user-avatar bg-light-success"><i class="d-flex" antIcon theme="outline" type="gift"></i></div>
+                  </div>
+                  <div class="flex-grow-1 ms-3">
+                    <span class="float-end text-muted">3:00 AM</span>
+                    <p class="text-body mb-0">
+                      It's
+                      <b>Cristina danny's</b>
+                      birthday today.
+                    </p>
+                    <span class="text-muted">2 min ago</span>
+                  </div>
+                </div>
+              </a>
+            </div> -->
+            <!-- <a class="list-group-item list-group-item-action">
               <div class="d-flex">
                 <div class="flex-shrink-0">
                   <div class="user-avatar bg-light-primary"><i class="d-flex" antIcon theme="outline" type="message"></i></div>
@@ -79,14 +100,11 @@
                   <span class="text-muted">Daily scrum meeting time</span>
                 </div>
               </div>
-            </a>
+            </a> -->
           </div>
         </div>
       </ng-scrollbar>
       <div class="dropdown-divider"></div>
-      <div class="text-center py-2">
-        <a class="link-primary">View all</a>
-      </div>
     </div>
   </li>
   <li class="dropdown pc-h-item header-user-profile" ngbDropdown>

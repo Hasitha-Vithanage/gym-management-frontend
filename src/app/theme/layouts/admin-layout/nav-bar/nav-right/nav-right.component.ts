@@ -1,5 +1,5 @@
 // angular import
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 
 // project import
@@ -30,7 +30,7 @@ import {
 } from '@ant-design/icons-angular/icons';
 import { HttpService } from 'src/app/services/http.service';
 import { CacheService } from 'src/app/services/CacheService';
-
+import { NotificationService } from 'src/app/services/notification-service/notification.service';
 
 @Component({
   selector: 'app-nav-right',
@@ -38,7 +38,7 @@ import { CacheService } from 'src/app/services/CacheService';
   templateUrl: './nav-right.component.html',
   styleUrls: ['./nav-right.component.scss']
 })
-export class NavRightComponent {
+export class NavRightComponent implements OnInit {
   @Input() styleSelectorToggle!: boolean;
   @Output() Customize = new EventEmitter();
   windowWidth: number;
@@ -46,11 +46,16 @@ export class NavRightComponent {
 
   userName;
 
+  notifications: any[] = [];
+  unreadCount = 0;
+  showDropdown = false;
+
   constructor(
     private iconService: IconService,
     private httpService: HttpService,
     private router: Router,
-    private cacheService: CacheService
+    private cacheService: CacheService,
+    private notificationService: NotificationService
   ) {
     this.windowWidth = window.innerWidth;
     this.iconService.addIcon(
@@ -76,6 +81,53 @@ export class NavRightComponent {
     );
 
     this.userName = this.httpService.getLoginNameFromCache();
+  }
+
+  ngOnInit() {
+    this.notificationService.notifications$.subscribe((notifications) => {
+      this.notifications = notifications;
+      this.unreadCount = notifications.filter((n) => !n.read).length;
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (event) => {
+      if (!event.target || !(event.target as Element).closest('.notification-bell')) {
+        this.showDropdown = false;
+      }
+    });
+  }
+
+  toggleDropdown() {
+    this.showDropdown = !this.showDropdown;
+  }
+
+  closeDropdown() {
+    this.showDropdown = false;
+  }
+
+  markAsRead(notificationId: string) {
+    this.notificationService.markAsRead(notificationId);
+  }
+
+  markAllAsRead() {
+    this.notifications.forEach((notification) => {
+      if (!notification.read) {
+        this.notificationService.markAsRead(notification.id);
+      }
+    });
+  }
+
+  getRelativeTime(timestamp: Date): string {
+    const now = new Date();
+    const diff = now.getTime() - new Date(timestamp).getTime();
+    const minutes = Math.floor(diff / 60000);
+    const hours = Math.floor(diff / 3600000);
+    const days = Math.floor(diff / 86400000);
+
+    if (days > 0) return `${days}d ago`;
+    if (hours > 0) return `${hours}h ago`;
+    if (minutes > 0) return `${minutes}m ago`;
+    return 'Just now';
   }
 
   profile = [
