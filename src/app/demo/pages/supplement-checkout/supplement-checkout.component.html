@@ -1,0 +1,97 @@
+<div class="checkout-container">
+  <!-- Shipping & Billing Form -->
+  <div class="billing-form">
+    <h2>Shipping & Billing Details</h2>
+    <!-- Back Button -->
+    <button mat-button class="back-button" (click)="backButton()">
+      <mat-icon>arrow_back</mat-icon>
+      Back
+    </button>
+    <form [formGroup]="checkoutForm" (ngSubmit)="placeOrder()">
+      <div class="form-group">
+        <div class="row">
+          <mat-form-field class="half-width">
+            <mat-label>First Name</mat-label>
+            <input matInput matInput maxlength="20" placeholder="Enter First Name" type="text" formControlName="firstName" />
+          </mat-form-field>
+          <mat-form-field class="half-width">
+            <mat-label>Last Name</mat-label>
+            <input matInput matInput maxlength="20" placeholder="Enter Last Name" type="text" formControlName="lastName" />
+          </mat-form-field>
+        </div>
+
+        <div class="row">
+          <mat-form-field class="half-width">
+            <mat-label>Address</mat-label>
+            <input matInput matInput maxlength="10" placeholder="Enter Address" type="number" formControlName="address" />
+          </mat-form-field>
+          <mat-form-field class="half-width">
+            <mat-label>District</mat-label>
+            <input matInput matInput maxlength="25" placeholder="Enter District" type="text" formControlName="district" />
+          </mat-form-field>
+        </div>
+
+        <div class="row">
+          <mat-form-field class="half-width">
+            <mat-label>City</mat-label>
+            <input matInput matInput maxlength="25" placeholder="Enter City" type="text" formControlName="city" />
+          </mat-form-field>
+          <mat-form-field class="half-width">
+            <mat-label>Country</mat-label>
+            <input matInput matInput maxlength="25" placeholder="Enter country" type="text" formControlName="country" />
+          </mat-form-field>
+        </div>
+
+        <div class="row">
+          <mat-form-field class="half-width">
+            <mat-label>Phone</mat-label>
+            <input matInput matInput maxlength="10" placeholder="Enter Phone" type="text" formControlName="phone" />
+          </mat-form-field>
+          <mat-form-field class="half-width">
+            <mat-label>Email</mat-label>
+            <input matInput matInput maxlength="50" placeholder="Enter Email" type="email" formControlName="email" />
+          </mat-form-field>
+        </div>
+
+        <div class="row">
+          <mat-form-field class="half-width">
+            <mat-label>Notes</mat-label>
+            <textarea matInput maxlength="500" formControlName="notes" placeholder="Enter Notes"></textarea>
+          </mat-form-field>
+        </div>
+
+        <!-- <input type="text" formControlName="firstName" placeholder="First Name" />
+        <input type="text" formControlName="lastName" placeholder="Last Name" /> -->
+      </div>
+      <!-- <input type="text" formControlName="address" placeholder="Address" />
+      <input type="text" formControlName="district" placeholder="District" />
+      <input type="text" formControlName="city" placeholder="Town/City" />
+      <input type="text" formControlName="country" placeholder="Country" />
+      <input type="tel" formControlName="phone" placeholder="Phone" />
+      <input type="email" formControlName="email" placeholder="Email" />
+      <textarea formControlName="notes" placeholder="Order Notes"></textarea> -->
+    </form>
+  </div>
+
+  <!-- Order Summary -->
+  <div class="order-summary">
+    <h2>Your Order</h2>
+    <div class="summary-item">
+      <strong>Product:</strong>
+      {{ supplement.productName }}
+    </div>
+    <div class="summary-item">
+      <strong>Subtotal:</strong>
+      {{ supplement.retailPrice }} LKR
+    </div>
+    <div class="summary-item">
+      <strong>Shipping Address:</strong>
+      {{ shippingAddress }}
+    </div>
+    <div class="summary-item total">
+      <strong>Total:</strong>
+      {{ supplement.retailPrice }} LKR
+    </div>
+    <button class="place-order-btn" (click)="placeOrder()">Place Order</button>
+  </div>
+</div>

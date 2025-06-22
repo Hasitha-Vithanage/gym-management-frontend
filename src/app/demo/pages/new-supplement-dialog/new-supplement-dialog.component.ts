@@ -46,7 +46,7 @@ export class NewSupplementDialogComponent {
     'Pre-Workout': ['g', 'ml', 'Saving'],
     'Post-Workout': ['g', 'ml'],
     'Vitamins & Minerals': ['mg', 'tablets', 'capsules'],
-    'Fat Burners': ['mg', 'capsules'],
+    'Fat Burners': ['mg', 'capsules', 'savings'],
     'Creatine': ['g', 'kg'],
     'Amino Acids': ['g', 'capsules'],
     'Weight Gainers': ['g', 'kg'],

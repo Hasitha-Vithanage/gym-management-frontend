@@ -67,6 +67,20 @@ export class NewSupplementServiceService {
     return this.http.get(requestUrl, { headers: headers });
   }
 
+  // Get supplement data by id
+  getSupplementById(id: number) {
+    const requestUrl = environment.baseUrl + '/supplement/' + id;
+
+    let headers = {};
+
+    if (this.httpService.getAuthToken() !== null) {
+      headers = {
+        Authorization: 'Bearer ' + this.httpService.getAuthToken()
+      };
+    }
+    return this.http.get(requestUrl, { headers: headers });
+  }
+
 
   // Service all for get suppliers
   public getSuppliers() {

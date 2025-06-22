@@ -40,8 +40,10 @@ export class BrowseSupplementsComponent implements OnInit {
   }
 
     viewDetails(supplement: any): void {
-    // Navigate or open dialog - just log for now
+    // Navigate to the supplement details page with the selected supplement's ID
     console.log('Viewing supplement:', supplement);
+    this.router.navigate(['/pages/supplement-details', supplement.id]);
+
   }
 
 }

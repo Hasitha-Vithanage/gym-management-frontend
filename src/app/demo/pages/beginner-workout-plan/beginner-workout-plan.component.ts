@@ -69,4 +69,9 @@ export class BeginnerWorkoutPlanComponent {
       tip: 'Rest your forearms on your thighs or bench. Move only your wrists while curling.'
     }
   ];
+
+  backButton() : void {
+    
+  }
 }
+

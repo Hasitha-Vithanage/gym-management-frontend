@@ -26,6 +26,7 @@ import { MySupplementOrdersComponent } from './my-supplement-orders/my-supplemen
 import { NewSupplementDialogComponent } from './new-supplement-dialog/new-supplement-dialog.component';
 import { BrowseSupplementsComponent } from './browse-supplements/browse-supplements.component';
 import { SupplementDetailsComponent } from './supplement-details/supplement-details.component';
+import { SupplementCheckoutComponent } from './supplement-checkout/supplement-checkout.component';
 // icons
 
 @NgModule({
@@ -50,7 +51,8 @@ import { SupplementDetailsComponent } from './supplement-details/supplement-deta
     MySupplementOrdersComponent,
     NewSupplementDialogComponent,
     BrowseSupplementsComponent,
-    SupplementDetailsComponent
+    SupplementDetailsComponent,
+    SupplementCheckoutComponent
   ],
   imports: [CommonModule, FormsModule, NgApexchartsModule, RouterModule.forChild(PagesRoutes), MaterialModule, ReactiveFormsModule, NgxChartsModule],
   exports: []
