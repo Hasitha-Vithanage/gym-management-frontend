@@ -14,6 +14,7 @@ import { SupplementInventoryManagementComponent } from './supplement-inventory-m
 import { SalesAndRequestsComponent } from './sales-and-requests/sales-and-requests.component';
 import { BrowseSupplementsComponent } from './browse-supplements/browse-supplements.component';
 import { MySupplementOrdersComponent } from './my-supplement-orders/my-supplement-orders.component';
+import { EmployeeListComponent } from './reports/static-reports/components/employee-list/employee-list.component';
 
 export const PagesRoutes: Routes = [
   {
@@ -80,4 +81,8 @@ export const PagesRoutes: Routes = [
     path: 'my-supplement-orders',
     component: MySupplementOrdersComponent
   },
+  {
+    path: 'reports/employees-report',
+    component: EmployeeListComponent
+  }
 ];
