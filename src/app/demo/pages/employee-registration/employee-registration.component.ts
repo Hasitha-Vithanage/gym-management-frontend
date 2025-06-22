@@ -6,9 +6,23 @@ import { MatTableDataSource } from '@angular/material/table';
 import { EmpolyeeServiceService } from 'src/app/services/employee-service/empolyee-service.service';
 import { HttpService } from 'src/app/services/http.service';
 import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
+import { NotificationService } from 'src/app/services/notification-service/notification.service';
 
 const ELEMENT_DATA: any[] = [
-  { employeeId: 1, jobTitle: 'Hydrogen', dateOfJoining: 1.0079, firstName: 'H', lastName: 1, nic: 'Hydrogen', dateOfBirth: 1.0079, gender: 'H', address: 1.0079, email: 'H', phoneNumber: 'H', emergencyContactNumber: 1.0079 },
+  {
+    employeeId: 1,
+    jobTitle: 'Hydrogen',
+    dateOfJoining: 1.0079,
+    firstName: 'H',
+    lastName: 1,
+    nic: 'Hydrogen',
+    dateOfBirth: 1.0079,
+    gender: 'H',
+    address: 1.0079,
+    email: 'H',
+    phoneNumber: 'H',
+    emergencyContactNumber: 1.0079
+  }
 ];
 
 @Component({
@@ -16,21 +30,33 @@ const ELEMENT_DATA: any[] = [
   standalone: false,
   templateUrl: './employee-registration.component.html',
   styleUrl: './employee-registration.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EmployeeRegistrationComponent implements OnInit {
-
   /* creating form group variable */
   employeeForm: FormGroup;
 
-  displayedColumns: string[] = ['employeeId', 'jobTitle', 'dateOfJoining', 'firstName', 'lastName', 'nic',
-    'dateOfBirth', 'gender', 'address', 'email', 'phoneNumber', 'emergencyContactNumber', 'actions'];
+  displayedColumns: string[] = [
+    'employeeId',
+    'jobTitle',
+    'dateOfJoining',
+    'firstName',
+    'lastName',
+    'nic',
+    'dateOfBirth',
+    'gender',
+    'address',
+    'email',
+    'phoneNumber',
+    'emergencyContactNumber',
+    'actions'
+  ];
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  registerButtonLabel = "Register";
-  mode = "add";
+  registerButtonLabel = 'Register';
+  mode = 'add';
   selectedData;
   isDisabled = false;
   submitted = false;
@@ -41,7 +67,9 @@ export class EmployeeRegistrationComponent implements OnInit {
     private fb: FormBuilder,
     private employeeService: EmpolyeeServiceService,
     private messageService: MessageServiceService,
-    private http: HttpService) {
+    private http: HttpService,
+    private notificationService: NotificationService
+  ) {
     this.employeeForm = new FormGroup({
       employeeId: new FormControl('', [Validators.required, Validators.minLength(5)]),
       jobTitle: new FormControl('', [Validators.required]),
@@ -54,8 +82,8 @@ export class EmployeeRegistrationComponent implements OnInit {
       address: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required, Validators.email]),
       phoneNumber: new FormControl('', [Validators.required, Validators.minLength(10), this.customDecimalValidator]),
-      emergencyContactNumber: new FormControl('', [Validators.minLength(10), this.customDecimalValidator]),
-    })
+      emergencyContactNumber: new FormControl('', [Validators.minLength(10), this.customDecimalValidator])
+    });
   }
 
   // runs when load the page
@@ -65,7 +93,6 @@ export class EmployeeRegistrationComponent implements OnInit {
     this.populateData();
     this.userName = this.http.getLoginNameFromCache();
     console.log(this.userName);
-
   }
 
   // custom validation
@@ -100,7 +127,6 @@ export class EmployeeRegistrationComponent implements OnInit {
     }
   }
 
-
   // implementation of populateData function
   public populateData(): void {
     try {
@@ -126,7 +152,6 @@ export class EmployeeRegistrationComponent implements OnInit {
     }
   }
 
-
   /* onsubmit function */
   onSubmit() {
     this.submitted = true;
@@ -135,11 +160,11 @@ export class EmployeeRegistrationComponent implements OnInit {
       return;
     }
 
-    console.log("Clicked");
+    console.log('Clicked');
     console.log(this.employeeForm.value);
     try {
       // check mode (add or edit)
-      if (this.mode === "add") {
+      if (this.mode === 'add') {
         this.employeeService.serviceCall(this.employeeForm.value).subscribe({
           next: (response: any) => {
             if (this.dataSource && this.dataSource.data && this.dataSource.data.length > 0) {
@@ -148,15 +173,16 @@ export class EmployeeRegistrationComponent implements OnInit {
               this.dataSource = new MatTableDataSource([response]);
             }
             // displaying success message
-            this.messageService.showSuccess("Employee added successfully!");
+            this.messageService.showSuccess('Employee added successfully!');
+
+            // this.addNotification(response);
           },
           // Displaying error message
           error: (error) => {
             this.messageService.showError(error);
           }
         });
-
-      } else if (this.mode === "edit") {
+      } else if (this.mode === 'edit') {
         // Calling editData function to send the request to the backend
         this.employeeService.editData(this.selectedData?.id, this.employeeForm.value).subscribe({
           next: (response: any) => {
@@ -165,7 +191,7 @@ export class EmployeeRegistrationComponent implements OnInit {
             this.dataSource = new MatTableDataSource(this.dataSource.data);
 
             // Displaying success message
-            this.messageService.showSuccess("Employee details updated successfully!");
+            this.messageService.showSuccess('Employee details updated successfully!');
           },
           error: (error) => {
             this.messageService.showError(error);
@@ -174,12 +200,11 @@ export class EmployeeRegistrationComponent implements OnInit {
       }
       this.employeeForm.disable();
       this.isDisabled = true;
-      this.mode = "add";
+      this.mode = 'add';
     } catch (error) {
       this.messageService.showError(error);
     }
   }
-
 
   // reset button function
   public resetData(): void {
@@ -189,7 +214,7 @@ export class EmployeeRegistrationComponent implements OnInit {
     this.employeeForm.enable();
     this.isDisabled = false;
     this.submitted = false;
-    this.registerButtonLabel = "Register";
+    this.registerButtonLabel = 'Register';
   }
 
   // edit button function
@@ -203,8 +228,8 @@ export class EmployeeRegistrationComponent implements OnInit {
       dateOfJoining: new Date(data.dateOfJoining)
     });
 
-    this.registerButtonLabel = "Update";
-    this.mode = "edit";
+    this.registerButtonLabel = 'Update';
+    this.mode = 'edit';
     this.selectedData = data;
   }
 
@@ -223,7 +248,7 @@ export class EmployeeRegistrationComponent implements OnInit {
           this.dataSource = new MatTableDataSource(this.dataSource.data);
 
           // displaying success message
-          this.messageService.showSuccess("Employee record deleted successfully!");
+          this.messageService.showSuccess('Employee record deleted successfully!');
         },
         // displaying error message
         error: (error) => {
@@ -240,4 +265,7 @@ export class EmployeeRegistrationComponent implements OnInit {
     this.populateData();
   }
 
+  public addNotification(details: any): void {
+    this.notificationService.addNotification('Employee Added Successfully', 'success', 1);
+  }
 }

@@ -114,7 +114,7 @@ export const NavigationItems: NavigationItem[] = [
         auth: authenticationEnum.Home_Dashboard,
         breadcrumbs: false
       },
-            {
+      {
         id: 'memberDet',
         title: 'Member Registration',
         type: 'item',
@@ -174,10 +174,10 @@ export const NavigationItems: NavigationItem[] = [
         icon: '',
         auth: authenticationEnum.Home_Dashboard,
         breadcrumbs: false
-      },
+      }
     ]
   },
-   /* side navigation bar item for nutrition & meal plan module */
+  /* side navigation bar item for nutrition & meal plan module */
   {
     id: 'nutrition&meal-plan',
     title: 'Nutrition & Meal Plan',
@@ -197,7 +197,7 @@ export const NavigationItems: NavigationItem[] = [
       }
     ]
   },
-   /* side navigation bar item for Progress Tracking module */
+  /* side navigation bar item for Progress Tracking module */
   // {
   //   id: 'ProgressTracking',
   //   title: 'Progress Tracking',
@@ -217,7 +217,7 @@ export const NavigationItems: NavigationItem[] = [
   //     },
   //   ]
   // },
-   /* side navigation bar item for workout management module */
+  /* side navigation bar item for workout management module */
   {
     id: 'SupplementStore',
     title: 'Supplement Store',
@@ -264,10 +264,10 @@ export const NavigationItems: NavigationItem[] = [
         icon: '',
         auth: authenticationEnum.Home_Dashboard,
         breadcrumbs: false
-      },
+      }
     ]
   },
-   /* side navigation bar item for Masters */
+  /* side navigation bar item for Masters */
   {
     id: 'masters',
     title: 'Masters',
@@ -295,6 +295,25 @@ export const NavigationItems: NavigationItem[] = [
         auth: authenticationEnum.Home_Dashboard,
         breadcrumbs: false
       }
+    ]
+  },
+  {
+    id: 'reports',
+    title: 'Reports',
+    type: 'group',
+    icon: 'icon-navigation',
+    auth: authenticationEnum.Home,
+    children: [
+      {
+        id: 'employeeReport',
+        title: 'Employees Report',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/pages/reports/employees-report',
+        icon: '',
+        auth: authenticationEnum.Home_Dashboard,
+        breadcrumbs: false
+      } // add other reports to here
     ]
   },
   {

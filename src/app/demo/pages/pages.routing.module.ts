@@ -82,7 +82,7 @@ export const PagesRoutes: Routes = [
     path: 'my-supplement-orders',
     component: MySupplementOrdersComponent
   },
-  {
+    {
     path: 'supplement-details/:id',
     component: SupplementDetailsComponent
   },
@@ -90,4 +90,5 @@ export const PagesRoutes: Routes = [
     path: 'supplement-details/:id/checkout',
     component: SupplementCheckoutComponent
   },
+
 ];
