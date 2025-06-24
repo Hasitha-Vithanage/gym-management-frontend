@@ -11,9 +11,12 @@
           <input matInput maxlength="5" placeholder="Ex. E001" formControlName="employeeId" type="text" />
           <span
             class="required-message"
-            *ngIf="(employeeForm.get('employeeId').touched || submitted) && employeeForm.get('employeeId').errors">
+            *ngIf="(employeeForm.get('employeeId').touched || submitted) && employeeForm.get('employeeId').errors"
+          >
             <ng-container *ngIf="employeeForm.get('employeeId').errors['required']">Employee ID is required</ng-container>
-            <ng-container *ngIf="employeeForm.get('employeeId').errors['minlength']">Employee ID must be at least 5 characters long.</ng-container>
+            <ng-container *ngIf="employeeForm.get('employeeId').errors['minlength']">
+              Employee ID must be at least 5 characters long.
+            </ng-container>
           </span>
         </mat-form-field>
 
@@ -24,10 +27,8 @@
             <mat-option value="Admin">Admin</mat-option>
             <mat-option value="Receptionist">Receptionist</mat-option>
           </mat-select>
-          <span
-            class="required-message"
-            *ngIf="(employeeForm.get('jobTitle').touched || submitted) && employeeForm.get('jobTitle').errors">
-              <ng-container *ngIf="employeeForm.get('jobTitle').errors['required']">Job Title is required</ng-container>
+          <span class="required-message" *ngIf="(employeeForm.get('jobTitle').touched || submitted) && employeeForm.get('jobTitle').errors">
+            <ng-container *ngIf="employeeForm.get('jobTitle').errors['required']">Job Title is required</ng-container>
           </span>
         </mat-form-field>
       </div>
@@ -38,7 +39,8 @@
           <input matInput [matDatepicker]="join" placeholder="MM/DD/YYYY" formControlName="dateOfJoining" />
           <span
             class="required-message"
-            *ngIf="(employeeForm.get('dateOfJoining').touched || submitted) && employeeForm.get('dateOfJoining').errors">
+            *ngIf="(employeeForm.get('dateOfJoining').touched || submitted) && employeeForm.get('dateOfJoining').errors"
+          >
             <ng-container *ngIf="employeeForm.get('dateOfJoining').errors['required']">Date of Joining is required</ng-container>
           </span>
           <mat-datepicker-toggle matSuffix [for]="join"></mat-datepicker-toggle>
@@ -50,7 +52,8 @@
           <input matInput [matDatepicker]="dob" placeholder="MM/DD/YYYY" formControlName="dateOfBirth" />
           <span
             class="required-message"
-            *ngIf="(employeeForm.get('dateOfBirth').touched || submitted) && employeeForm.get('dateOfBirth').errors">
+            *ngIf="(employeeForm.get('dateOfBirth').touched || submitted) && employeeForm.get('dateOfBirth').errors"
+          >
             <ng-container *ngIf="employeeForm.get('dateOfBirth').errors['required']">Date of Birth is required</ng-container>
           </span>
           <mat-datepicker-toggle matSuffix [for]="dob"></mat-datepicker-toggle>
@@ -64,20 +67,23 @@
           <input matInput maxlength="10" placeholder="Ex. James" formControlName="firstName" type="text" />
           <span
             class="required-message"
-            *ngIf="(employeeForm.get('firstName').touched || submitted) && employeeForm.get('firstName').errors">
+            *ngIf="(employeeForm.get('firstName').touched || submitted) && employeeForm.get('firstName').errors"
+          >
             <ng-container *ngIf="employeeForm.get('firstName').errors['required']">First Name is required</ng-container>
-            <ng-container *ngIf="employeeForm.get('firstName').errors['minlength']">First name must be at least 3 characters long.</ng-container>
+            <ng-container *ngIf="employeeForm.get('firstName').errors['minlength']">
+              First name must be at least 3 characters long.
+            </ng-container>
           </span>
         </mat-form-field>
 
         <mat-form-field class="half-width">
           <mat-label>Last Name</mat-label>
           <input matInput maxlength="10" placeholder="Ex. Smith" formControlName="lastName" type="text" />
-          <span
-            class="required-message"
-            *ngIf="(employeeForm.get('lastName').touched || submitted) && employeeForm.get('lastName').errors">
+          <span class="required-message" *ngIf="(employeeForm.get('lastName').touched || submitted) && employeeForm.get('lastName').errors">
             <ng-container *ngIf="employeeForm.get('lastName').errors['required']">Last Name is required</ng-container>
-            <ng-container *ngIf="employeeForm.get('lastName').errors['minlength']">Last Name must be at least 3 characters long.</ng-container>
+            <ng-container *ngIf="employeeForm.get('lastName').errors['minlength']">
+              Last Name must be at least 3 characters long.
+            </ng-container>
           </span>
         </mat-form-field>
       </div>
@@ -86,11 +92,9 @@
         <mat-form-field class="half-width">
           <mat-label>NIC</mat-label>
           <input matInput maxlength="12" placeholder="Ex. 125456897924" formControlName="nic" type="text" />
-          <span
-            class="required-message"
-            *ngIf="(employeeForm.get('nic').touched || submitted) && employeeForm.get('nic').errors">
+          <span class="required-message" *ngIf="(employeeForm.get('nic').touched || submitted) && employeeForm.get('nic').errors">
             <ng-container *ngIf="employeeForm.get('nic').errors['required']">NIC is required</ng-container>
-            <ng-container *ngIf="employeeForm.get('nic').errors['minlength']">NIC must be at least 12 characters long.</ng-container>  
+            <ng-container *ngIf="employeeForm.get('nic').errors['minlength']">NIC must be at least 12 characters long.</ng-container>
           </span>
         </mat-form-field>
 
@@ -99,10 +103,15 @@
           <input matInput maxlength="10" placeholder="Ex. 1529867523" formControlName="phoneNumber" />
           <span
             class="required-message"
-            *ngIf=" (employeeForm.get('phoneNumber').touched || submitted) && employeeForm.get('phoneNumber').errors">
+            *ngIf="(employeeForm.get('phoneNumber').touched || submitted) && employeeForm.get('phoneNumber').errors"
+          >
             <ng-container *ngIf="employeeForm.get('phoneNumber').errors['required']">Phone Number is required</ng-container>
-            <ng-container *ngIf="employeeForm.get('phoneNumber').errors['minlength']">Phone Number must be at least 10 characters long.</ng-container>
-            <ng-container *ngIf="employeeForm.get('phoneNumber').errors['customDecimalValidator']">Please enter a valid phone number</ng-container>
+            <ng-container *ngIf="employeeForm.get('phoneNumber').errors['minlength']">
+              Phone Number must be at least 10 characters long.
+            </ng-container>
+            <ng-container *ngIf="employeeForm.get('phoneNumber').errors['customDecimalValidator']">
+              Please enter a valid phone number
+            </ng-container>
           </span>
         </mat-form-field>
       </div>
@@ -122,10 +131,17 @@
           <input matInput maxlength="10" placeholder="Ex. 1529867523" formControlName="emergencyContactNumber" />
           <span
             class="required-message"
-            *ngIf="(employeeForm.get('emergencyContactNumber').touched || submitted) && employeeForm.get('emergencyContactNumber').errors">
-            <ng-container *ngIf="employeeForm.get('emergencyContactNumber').hasError('required')">Emergency Contact is required.</ng-container>
-            <ng-container *ngIf="employeeForm.get('emergencyContactNumber').hasError('minlength')">Emergency Contact must be at least 10 characters long.</ng-container>
-            <ng-container *ngIf="employeeForm.get('emergencyContactNumber').hasError('customDecimalValidator')">Please enter a valid phone number.</ng-container>
+            *ngIf="(employeeForm.get('emergencyContactNumber').touched || submitted) && employeeForm.get('emergencyContactNumber').errors"
+          >
+            <ng-container *ngIf="employeeForm.get('emergencyContactNumber').hasError('required')">
+              Emergency Contact is required.
+            </ng-container>
+            <ng-container *ngIf="employeeForm.get('emergencyContactNumber').hasError('minlength')">
+              Emergency Contact must be at least 10 characters long.
+            </ng-container>
+            <ng-container *ngIf="employeeForm.get('emergencyContactNumber').hasError('customDecimalValidator')">
+              Please enter a valid phone number.
+            </ng-container>
           </span>
         </mat-form-field>
       </div>
@@ -135,9 +151,7 @@
           <mat-label>Gender:</mat-label>
           <mat-radio-button value="Male">Male</mat-radio-button>
           <mat-radio-button value="Female">Female</mat-radio-button>
-          <span
-            class="required-message"
-            *ngIf="(employeeForm.get('gender').touched || submitted) &&employeeForm.get('gender').errors">
+          <span class="required-message" *ngIf="(employeeForm.get('gender').touched || submitted) && employeeForm.get('gender').errors">
             <ng-container *ngIf="employeeForm.get('gender').hasError('required')">Gender is required</ng-container>
           </span>
         </mat-radio-group>
@@ -145,11 +159,8 @@
         <mat-form-field class="half-width">
           <mat-label>Address</mat-label>
           <textarea matInput maxlength="100" placeholder="Ex. 123, ABC Road, Kandy" formControlName="address"></textarea>
-          <span
-            class="required-message"
-            *ngIf="(employeeForm.get('address').touched || submitted) && employeeForm.get('address').errors">
+          <span class="required-message" *ngIf="(employeeForm.get('address').touched || submitted) && employeeForm.get('address').errors">
             <ng-container *ngIf="employeeForm.get('address').hasError('required')">Address is required</ng-container>
-            
           </span>
         </mat-form-field>
       </div>
@@ -162,7 +173,6 @@
       </div>
     </form>
   </div>
-
 
   <!-- Table Section to the Right of Form -->
   <div class="table-section">
@@ -276,6 +286,9 @@
             </button>
             <button mat-icon-button class="gray-icon-btn" matTooltip="Delete" (click)="deleteData(element)">
               <mat-icon>delete</mat-icon>
+            </button>
+            <button mat-icon-button class="gray-icon-btn" matTooltip="View Id" (click)="viewId(element)">
+              <mat-icon>View Id</mat-icon>
             </button>
           </div>
         </td>

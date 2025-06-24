@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, OnInit, signal, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, OnInit, signal, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, MinLengthValidator, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -7,6 +8,7 @@ import { EmpolyeeServiceService } from 'src/app/services/employee-service/empoly
 import { HttpService } from 'src/app/services/http.service';
 import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
 import { NotificationService } from 'src/app/services/notification-service/notification.service';
+import { QrCodeComponent } from '../qr-container/qr-code/qr-code.component';
 
 const ELEMENT_DATA: any[] = [
   {
@@ -68,7 +70,8 @@ export class EmployeeRegistrationComponent implements OnInit {
     private employeeService: EmpolyeeServiceService,
     private messageService: MessageServiceService,
     private http: HttpService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private dialog: MatDialog
   ) {
     this.employeeForm = new FormGroup({
       employeeId: new FormControl('', [Validators.required, Validators.minLength(5)]),
@@ -174,7 +177,7 @@ export class EmployeeRegistrationComponent implements OnInit {
             }
             // displaying success message
             this.messageService.showSuccess('Employee added successfully!');
-
+            // this.generateCard();
             // this.addNotification(response);
           },
           // Displaying error message
@@ -267,5 +270,11 @@ export class EmployeeRegistrationComponent implements OnInit {
 
   public addNotification(details: any): void {
     this.notificationService.addNotification('Employee Added Successfully', 'success', 1);
+  }
+
+  public viewId(data: any) {
+    this.dialog.open(QrCodeComponent, {
+      data: { value: data }
+    });
   }
 }

@@ -28,6 +28,7 @@ import { BrowseSupplementsComponent } from './browse-supplements/browse-suppleme
 import { SupplementDetailsComponent } from './supplement-details/supplement-details.component';
 import { SupplementCheckoutComponent } from './supplement-checkout/supplement-checkout.component';
 import { EmployeeListComponent } from './reports/static-reports/components/employee-list/employee-list.component';
+import { QrCodeComponent } from './qr-container/qr-code/qr-code.component';
 // icons
 
 @NgModule({
@@ -54,7 +55,8 @@ import { EmployeeListComponent } from './reports/static-reports/components/emplo
     BrowseSupplementsComponent,
     SupplementDetailsComponent,
     SupplementCheckoutComponent,
-    EmployeeListComponent
+    EmployeeListComponent,
+    QrCodeComponent
   ],
   imports: [
     CommonModule,
