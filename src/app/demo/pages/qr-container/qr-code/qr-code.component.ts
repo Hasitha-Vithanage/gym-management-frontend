@@ -1,6 +1,9 @@
 import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import * as QRCode from 'qrcode';
+import { environment } from 'src/app/environments/environment';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-qr-code',
@@ -10,6 +13,8 @@ import * as QRCode from 'qrcode';
 })
 export class QrCodeComponent {
   @ViewChild('qrCanvas') qrCanvas!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('pdfContent', { static: false }) pdfContent!: ElementRef;
+
   isCardGenerated = false;
   isGenerating = false;
   attendanceUrl = '';
@@ -45,13 +50,12 @@ export class QrCodeComponent {
       name: `${this.userData.firstName} ${this.userData.lastName}`,
       email: this.userData.email,
       phone: this.userData.phoneNumber,
-      employeeId: this.userData.employeeId,
-      verificationUrl: `${window.location.origin}/verify/${this.userData.employeeId}`
+      employeeId: this.userData.employeeId
     };
 
     // Create attendance URL
     const dataParam = encodeURIComponent(JSON.stringify(employeeData));
-    this.attendanceUrl = `${window.location.origin}/scan?data=${dataParam}`;
+    this.attendanceUrl = `${environment.baseUrl}/employeeService/mark-attendance/${this.userData.employeeId}`;
 
     try {
       await QRCode.toCanvas(canvas, this.attendanceUrl, {
@@ -62,27 +66,26 @@ export class QrCodeComponent {
           light: '#ffffff'
         }
       });
-
-      // Add click handler to QR code
-      canvas.addEventListener('click', () => {
-        this.simulateQRScan();
-      });
     } catch (error) {
       console.error('Error generating QR code:', error);
     }
   }
 
-  simulateQRScan() {
-    const employeeData = {
-      // name: `${this.userData.firstName} ${this.userData.lastName}`,
-      // email: this.userData.email,
-      // phone: this.userData.phone,
-      // department: this.userData.department,
-      // employeeId: this.userData.employeeId,
-      // registrationDate: this.userData.registrationDate
-    };
+  simulateQRScan() {}
 
-    const dataParam = encodeURIComponent(JSON.stringify(employeeData));
-    // this.router.navigate(['/scan'], { queryParams: { data: dataParam } });
+  public downloadId(): void {
+    const element = this.pdfContent.nativeElement;
+
+    html2canvas(element).then((canvas) => {
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+
+      const imgProps = pdf.getImageProperties(imgData);
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      pdf.save(`${this.userData.employeeId}.pdf`);
+    });
   }
 }

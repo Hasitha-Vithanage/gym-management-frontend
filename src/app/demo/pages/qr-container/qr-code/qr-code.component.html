@@ -1,6 +1,7 @@
 <div class="container">
   <div class="card-section" [ngStyle]="{ display: isCardGenerated ? 'block' : 'none' }">
-    <div class="id-card">
+    <button id="btn" (click)="downloadId()">Download</button>
+    <div #pdfContent class="id-card">
       <div class="card-header">
         <div class="company-logo">
           <div class="logo-placeholder">COMBAT FITNESS</div>
@@ -16,7 +17,6 @@
 
           <div class="info-details">
             <h2>{{ this.userData.firstName }} {{ this.userData.lastName }}</h2>
-            <!-- <p class="department">{{ 'userData.department' }}</p> -->
             <div class="details-grid">
               <div class="detail-item">
                 <span class="label">ID:</span>
@@ -30,10 +30,6 @@
                 <span class="label">Phone:</span>
                 <span class="value">{{ this.userData.phoneNumber }}</span>
               </div>
-              <!-- <div class="detail-item">
-                <span class="label">Registered:</span>
-                <span class="value">{{ 'userData.registrationDate' }}</span>
-              </div> -->
             </div>
           </div>
         </div>
@@ -53,29 +49,5 @@
         <p>This card is property of the company. If found, please return.</p>
       </div>
     </div>
-
-    <!-- <div class="card-actions">
-      <button class="action-btn secondary" (click)="resetForm()">Create Another</button>
-      <button class="action-btn tertiary" (click)="viewAttendance()">View Attendance</button>
-      <button class="action-btn primary" (click)="downloadCard()">Download Card</button>
-    </div> -->
-
-    <!-- <div class="demo-section">
-      <h3>🎯 Demo Instructions</h3>
-      <p>To test the attendance system:</p>
-      <ol>
-        <li>Click the QR code above to simulate scanning</li>
-        <li>Or copy the attendance URL and open it on your phone</li>
-        <li>Mark attendance and view the history</li>
-      </ol>
-      <button class="demo-btn" (click)="simulateQRScan()">📱 Simulate QR Scan</button>
-      <div class="url-section" *ngIf="attendanceUrl">
-        <p><strong>Attendance URL:</strong></p>
-        <div class="url-container">
-          <input type="text" [value]="attendanceUrl" readonly #urlInput />
-          <button class="copy-btn" (click)="copyUrl(urlInput)">Copy</button>
-        </div>
-      </div>
-    </div> -->
   </div>
 </div>
