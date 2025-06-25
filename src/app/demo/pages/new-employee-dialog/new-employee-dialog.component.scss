@@ -46,13 +46,21 @@
     margin-top: 20px;
   }
   
-  mat-radio-group {
-    margin: 20px ;
-  }
-  
-  mat-radio-button {
-    margin-left: 50px;
-  }
+mat-radio-group {
+  display: flex;
+  align-items: center;
+  height: 56px; /* Match height with mat-form-field */
+  padding-left: 12px;
+  margin-top: 20px;
+  border-radius: 4px;
+  width: 100%;
+}
+
+mat-radio-button {
+  margin-right: 24px;
+  font-size: 14px;
+}
+
 
   // Status toggle style
   .status-toggle {
@@ -100,8 +108,8 @@
     display: block;
   }
 
-  .submit-button {
-    background-color: #1976d2;
+  .register-button {
+    background-color: #1976d2 !important;
     color: #fff;
   }
   

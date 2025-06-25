@@ -1,24 +1,38 @@
 <div class="supplement-details-container">
   <h2 class="page-title">Supplement Details</h2>
 
-      <!-- Back Button -->
-    <button mat-button class="back-button" (click)="backToBrowsePage()"><mat-icon>arrow_back</mat-icon> Back</button>
+  <!-- Back Button -->
+  <button mat-button class="back-button" (click)="backToBrowsePage()">
+    <mat-icon>arrow_back</mat-icon>
+    Back
+  </button>
 
   <div class="supplement-main">
-    <img
-      [src]="supplement?.imageSrc"
-      alt="{{ supplement?.productName || supplement?.name }}"
-      class="supplement-image"
-    />
+    <img [src]="supplement?.imageSrc" alt="{{ supplement?.productName || supplement?.name }}" class="supplement-image" />
 
     <div class="supplement-info">
       <h3>{{ supplement?.productName || supplement?.name }}</h3>
 
-      <p><strong>Brand:</strong> {{ supplement?.brand }}</p>
-      <p><strong>Category:</strong> {{ supplement?.category }}</p>
-      <p><strong>Price:</strong> Rs. {{ supplement?.retailPrice }}</p>
-      <p><strong>Available Stock:</strong> {{ supplement?.quantityInStock }}</p>
-      <p><strong>Quantity per Unit:</strong> {{ supplement?.quantityPerUnit }} {{ supplement?.unit }}</p>
+      <p>
+        <strong>Brand:</strong>
+        {{ supplement?.brand }}
+      </p>
+      <p>
+        <strong>Category:</strong>
+        {{ supplement?.category }}
+      </p>
+      <p>
+        <strong>Price:</strong>
+        Rs. {{ supplement?.retailPrice }}
+      </p>
+      <p>
+        <strong>Available Stock:</strong>
+        {{ supplement?.quantityInStock }}
+      </p>
+      <p>
+        <strong>Quantity per Unit:</strong>
+        {{ supplement?.quantityPerUnit }} {{ supplement?.unit }}
+      </p>
 
       <div class="cart-actions">
         <label for="quantity">Quantity:</label>

@@ -87,7 +87,7 @@ mat-radio-button {
 }
 
 /* Refresh button styling */
-.refresh-button {
+.refresh-button, .print-button {
     background-color: #1976d2;
     color: white;
     border-radius: 8px;
@@ -98,7 +98,12 @@ mat-radio-button {
     align-items: center;
     justify-content: center;
     padding: 0;
+    border: none;
 }
+.refresh-button {
+    margin-right: 5px;
+}
+
 .table-section {
     width: 100%;
     background: white;
@@ -149,19 +154,19 @@ th {
     margin-bottom: 1.5rem;
 }
 
-.print-button {
-    margin-left: 5%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.6rem 1.2rem;
-    background-color: #3a6df2;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 500;
-    transition:
-        background-color 0.2s ease,
-        transform 0.1s ease;
-}
+// .print-button {
+//     margin-left: 5%;
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+//     padding: 0.6rem 1.2rem;
+//     background-color: #3a6df2;
+//     color: white;
+//     border: none;
+//     border-radius: 6px;
+//     cursor: pointer;
+//     font-weight: 500;
+//     transition:
+//         background-color 0.2s ease,
+//         transform 0.1s ease;
+// }

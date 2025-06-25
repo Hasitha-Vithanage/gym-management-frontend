@@ -28,6 +28,7 @@ import { BrowseSupplementsComponent } from './browse-supplements/browse-suppleme
 import { SupplementDetailsComponent } from './supplement-details/supplement-details.component';
 import { SupplementCheckoutComponent } from './supplement-checkout/supplement-checkout.component';
 import { EmployeeListComponent } from './reports/static-reports/components/employee-list/employee-list.component';
+import { NewEmployeeDialogComponent } from './new-employee-dialog/new-employee-dialog.component';
 // icons
 
 @NgModule({
@@ -35,6 +36,7 @@ import { EmployeeListComponent } from './reports/static-reports/components/emplo
     TestComponent,
     FormDemoComponent,
     EmployeeRegistrationComponent,
+    NewEmployeeDialogComponent,
     MemberRegistrationComponent,
     WorkoutManagementComponent,
     SupplierRegistrationComponent,
@@ -54,7 +56,8 @@ import { EmployeeListComponent } from './reports/static-reports/components/emplo
     BrowseSupplementsComponent,
     SupplementDetailsComponent,
     SupplementCheckoutComponent,
-    EmployeeListComponent
+    EmployeeListComponent,
+    
   ],
   imports: [
     CommonModule,

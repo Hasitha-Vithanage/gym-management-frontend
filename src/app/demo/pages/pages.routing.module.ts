@@ -16,6 +16,7 @@ import { BrowseSupplementsComponent } from './browse-supplements/browse-suppleme
 import { MySupplementOrdersComponent } from './my-supplement-orders/my-supplement-orders.component';
 import { SupplementDetailsComponent } from './supplement-details/supplement-details.component';
 import { SupplementCheckoutComponent } from './supplement-checkout/supplement-checkout.component';
+import { EmployeeListComponent } from './reports/static-reports/components/employee-list/employee-list.component';
 
 export const PagesRoutes: Routes = [
   {
@@ -90,5 +91,8 @@ export const PagesRoutes: Routes = [
     path: 'supplement-details/:id/checkout',
     component: SupplementCheckoutComponent
   },
-
+  {
+    path: 'reports/employees-report',
+    component: EmployeeListComponent
+  }
 ];

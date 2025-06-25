@@ -53,7 +53,7 @@ export class NewSupplementServiceService {
   }
 
 
-    // Data retrieving backend call
+  // Data retrieving backend call
   getData() {
     const requestUrl = environment.baseUrl + '/supplement';
 
@@ -94,6 +94,23 @@ export class NewSupplementServiceService {
     }
     return this.http.get(requestUrl, { headers: headers });
   }
+
+  // Place order function
+  placeOrder(orderDto: any) {
+    console.log('Placing order with details Array:', orderDto);
+    
+    const requestUrl = environment.baseUrl + '/supplement/place-order';
+
+    let headers = {};
+    if (this.httpService.getAuthToken() !== null) {
+      headers = {
+        Authorization: 'Bearer ' + this.httpService.getAuthToken()
+      };
+    }
+    // Combine all data into a single request body
+    return this.http.post(requestUrl, orderDto, { headers: headers });
+  }
+
 
 
 }

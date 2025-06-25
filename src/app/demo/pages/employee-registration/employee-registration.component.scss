@@ -6,6 +6,15 @@
   background: #f3f6f9;
 }
 
+/* "Add New" button */
+.add-new .new-button {
+  background-color: #1976d2;
+  color: white;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 20px;
+}
+
 /* Form CSS */
 .form-section {
   width: 100%;
@@ -60,15 +69,33 @@ mat-radio-button {
 
 /* Table CSS */
 
-.table-filter {    
-    display: flex;
-    justify-content: end;
+/* Container for New button and filter section */
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.table-filter mat-form-field{    
-    width: 25%;
-    height: 70px;
-    margin-right: 10px;
+/* "Add New" button */
+.add-new .new-button {
+  background-color: #1976d2;
+  color: white;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+/* Table filter section */
+.table-filter {
+  display: flex;
+  gap: 12px;
+}
+
+/* Adjust mat-form-field styling */
+.table-filter mat-form-field {
+  width: 250px;
+  margin: 0;
+  align-items: center;
 }
 
 .table-filter mat-label {
@@ -85,7 +112,6 @@ mat-radio-button {
   font-size: 20px;
   color: #555;
 }
-
 
 /* Refresh button styling */
 .refresh-button {

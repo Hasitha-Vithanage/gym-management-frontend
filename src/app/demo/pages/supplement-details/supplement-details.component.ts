@@ -37,10 +37,17 @@ ngOnInit(): void {
 
   }
 
-  checkout(supplement: any): void {
-    console.log('Proceeding to checkout with:', this.supplement, 'Quantity:', this.quantity);
-    this.router.navigate(['/pages/supplement-details', supplement.id, 'checkout']);
-  }
+checkout(supplement: any): void {
+  console.log('Proceeding to checkout with:', supplement, 'Quantity:', this.quantity);
+  this.router.navigate(
+    ['/pages/supplement-details', supplement.id, 'checkout'],
+    {
+      state: {
+        quantity: this.quantity
+      }
+    }
+  );
+}
 
   backToBrowsePage(): void {
     window.history.back();

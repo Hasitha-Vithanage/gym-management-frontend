@@ -1,189 +1,33 @@
 <div class="container">
-  <div class="form-section">
-    <!-- title of the form-->
-    <h2 class="form-title">Employee Registration Form</h2>
-
-    <!-- form -->
-    <form [formGroup]="employeeForm" class="example-form" (ngSubmit)="onSubmit()">
-      <div class="row">
-        <mat-form-field class="half-width">
-          <mat-label>Employee ID</mat-label>
-          <input matInput maxlength="5" placeholder="Ex. E001" formControlName="employeeId" type="text" />
-          <span
-            class="required-message"
-            *ngIf="(employeeForm.get('employeeId').touched || submitted) && employeeForm.get('employeeId').errors">
-            <ng-container *ngIf="employeeForm.get('employeeId').errors['required']">Employee ID is required</ng-container>
-            <ng-container *ngIf="employeeForm.get('employeeId').errors['minlength']">Employee ID must be at least 5 characters long.</ng-container>
-          </span>
-        </mat-form-field>
-
-        <mat-form-field class="half-width">
-          <mat-label>Select Job Title</mat-label>
-          <mat-select formControlName="jobTitle">
-            <mat-option value="Trainer">Trainer</mat-option>
-            <mat-option value="Admin">Admin</mat-option>
-            <mat-option value="Receptionist">Receptionist</mat-option>
-          </mat-select>
-          <span
-            class="required-message"
-            *ngIf="(employeeForm.get('jobTitle').touched || submitted) && employeeForm.get('jobTitle').errors">
-              <ng-container *ngIf="employeeForm.get('jobTitle').errors['required']">Job Title is required</ng-container>
-          </span>
-        </mat-form-field>
-      </div>
-
-      <div class="row">
-        <mat-form-field class="half-width">
-          <mat-label>Date of Joining</mat-label>
-          <input matInput [matDatepicker]="join" placeholder="MM/DD/YYYY" formControlName="dateOfJoining" />
-          <span
-            class="required-message"
-            *ngIf="(employeeForm.get('dateOfJoining').touched || submitted) && employeeForm.get('dateOfJoining').errors">
-            <ng-container *ngIf="employeeForm.get('dateOfJoining').errors['required']">Date of Joining is required</ng-container>
-          </span>
-          <mat-datepicker-toggle matSuffix [for]="join"></mat-datepicker-toggle>
-          <mat-datepicker #join></mat-datepicker>
-        </mat-form-field>
-
-        <mat-form-field class="half-width">
-          <mat-label>Date of Birth</mat-label>
-          <input matInput [matDatepicker]="dob" placeholder="MM/DD/YYYY" formControlName="dateOfBirth" />
-          <span
-            class="required-message"
-            *ngIf="(employeeForm.get('dateOfBirth').touched || submitted) && employeeForm.get('dateOfBirth').errors">
-            <ng-container *ngIf="employeeForm.get('dateOfBirth').errors['required']">Date of Birth is required</ng-container>
-          </span>
-          <mat-datepicker-toggle matSuffix [for]="dob"></mat-datepicker-toggle>
-          <mat-datepicker #dob></mat-datepicker>
-        </mat-form-field>
-      </div>
-
-      <div class="row">
-        <mat-form-field class="half-width">
-          <mat-label>First Name</mat-label>
-          <input matInput maxlength="10" placeholder="Ex. James" formControlName="firstName" type="text" />
-          <span
-            class="required-message"
-            *ngIf="(employeeForm.get('firstName').touched || submitted) && employeeForm.get('firstName').errors">
-            <ng-container *ngIf="employeeForm.get('firstName').errors['required']">First Name is required</ng-container>
-            <ng-container *ngIf="employeeForm.get('firstName').errors['minlength']">First name must be at least 3 characters long.</ng-container>
-          </span>
-        </mat-form-field>
-
-        <mat-form-field class="half-width">
-          <mat-label>Last Name</mat-label>
-          <input matInput maxlength="10" placeholder="Ex. Smith" formControlName="lastName" type="text" />
-          <span
-            class="required-message"
-            *ngIf="(employeeForm.get('lastName').touched || submitted) && employeeForm.get('lastName').errors">
-            <ng-container *ngIf="employeeForm.get('lastName').errors['required']">Last Name is required</ng-container>
-            <ng-container *ngIf="employeeForm.get('lastName').errors['minlength']">Last Name must be at least 3 characters long.</ng-container>
-          </span>
-        </mat-form-field>
-      </div>
-
-      <div class="row">
-        <mat-form-field class="half-width">
-          <mat-label>NIC</mat-label>
-          <input matInput maxlength="12" placeholder="Ex. 125456897924" formControlName="nic" type="text" />
-          <span
-            class="required-message"
-            *ngIf="(employeeForm.get('nic').touched || submitted) && employeeForm.get('nic').errors">
-            <ng-container *ngIf="employeeForm.get('nic').errors['required']">NIC is required</ng-container>
-            <ng-container *ngIf="employeeForm.get('nic').errors['minlength']">NIC must be at least 12 characters long.</ng-container>  
-          </span>
-        </mat-form-field>
-
-        <mat-form-field class="half-width">
-          <mat-label>Phone Number</mat-label>
-          <input matInput maxlength="10" placeholder="Ex. 1529867523" formControlName="phoneNumber" />
-          <span
-            class="required-message"
-            *ngIf=" (employeeForm.get('phoneNumber').touched || submitted) && employeeForm.get('phoneNumber').errors">
-            <ng-container *ngIf="employeeForm.get('phoneNumber').errors['required']">Phone Number is required</ng-container>
-            <ng-container *ngIf="employeeForm.get('phoneNumber').errors['minlength']">Phone Number must be at least 10 characters long.</ng-container>
-            <ng-container *ngIf="employeeForm.get('phoneNumber').errors['customDecimalValidator']">Please enter a valid phone number</ng-container>
-          </span>
-        </mat-form-field>
-      </div>
-
-      <div class="row">
-        <mat-form-field class="half-width">
-          <mat-label>Email</mat-label>
-          <input matInput maxlength="50" placeholder="Ex. abc@gmail.com" formControlName="email" type="email" />
-          <span class="required-message" *ngIf="(employeeForm.get('email').touched || submitted) && employeeForm.get('email').errors">
-            <ng-container *ngIf="employeeForm.get('email').errors['required']">Email is required</ng-container>
-            <ng-container *ngIf="employeeForm.get('email').errors['email']">Please enter a valid email address.</ng-container>
-          </span>
-        </mat-form-field>
-
-        <mat-form-field class="half-width">
-          <mat-label>Emergency Contact</mat-label>
-          <input matInput maxlength="10" placeholder="Ex. 1529867523" formControlName="emergencyContactNumber" />
-          <span
-            class="required-message"
-            *ngIf="(employeeForm.get('emergencyContactNumber').touched || submitted) && employeeForm.get('emergencyContactNumber').errors">
-            <ng-container *ngIf="employeeForm.get('emergencyContactNumber').hasError('required')">Emergency Contact is required.</ng-container>
-            <ng-container *ngIf="employeeForm.get('emergencyContactNumber').hasError('minlength')">Emergency Contact must be at least 10 characters long.</ng-container>
-            <ng-container *ngIf="employeeForm.get('emergencyContactNumber').hasError('customDecimalValidator')">Please enter a valid phone number.</ng-container>
-          </span>
-        </mat-form-field>
-      </div>
-
-      <div class="row">
-        <mat-radio-group aria-label="Select an option" formControlName="gender" class="half-width">
-          <mat-label>Gender:</mat-label>
-          <mat-radio-button value="Male">Male</mat-radio-button>
-          <mat-radio-button value="Female">Female</mat-radio-button>
-          <span
-            class="required-message"
-            *ngIf="(employeeForm.get('gender').touched || submitted) &&employeeForm.get('gender').errors">
-            <ng-container *ngIf="employeeForm.get('gender').hasError('required')">Gender is required</ng-container>
-          </span>
-        </mat-radio-group>
-
-        <mat-form-field class="half-width">
-          <mat-label>Address</mat-label>
-          <textarea matInput maxlength="100" placeholder="Ex. 123, ABC Road, Kandy" formControlName="address"></textarea>
-          <span
-            class="required-message"
-            *ngIf="(employeeForm.get('address').touched || submitted) && employeeForm.get('address').errors">
-            <ng-container *ngIf="employeeForm.get('address').hasError('required')">Address is required</ng-container>
-            
-          </span>
-        </mat-form-field>
-      </div>
-
-      <div class="row">
-        <button type="submit" mat-raised-button color="primary" class="register-button half-width" [disabled]="isDisabled">
-          {{ registerButtonLabel }}
-        </button>
-        <button type="reset" mat-raised-button class="reset-button half-width" (click)="resetData()">Reset</button>
-      </div>
-    </form>
-  </div>
-
-
   <!-- Table Section to the Right of Form -->
   <div class="table-section">
     <!-- title of the-->
-    <h2 class="form-title">Employee Table</h2>
-
-    <!-- table filter-->
-    <div class="table-filter">
-      <mat-form-field appearance="outline">
-        <mat-label>
-          <mat-icon class="search-icon">search</mat-icon>
-          Search...
-        </mat-label>
-        <input matInput (keyup)="applyFilter($event)" placeholder="" #input />
-      </mat-form-field>
-
-      <!-- refresh button-->
-      <div>
-        <button mat-icon-button (click)="refreshData()" class="refresh-button">
-          <mat-icon>refresh</mat-icon>
+    <h2 class="form-title">Employee Registration</h2>
+    <div class="toolbar">
+      <!-- add-new on the left -->
+      <div class="add-new">
+        <button type="reset" mat-raised-button class="new-button half-width" (click)="openDialog()">
+          <mat-icon>add</mat-icon>
+          Add New Employee
         </button>
+      </div>
+
+      <!-- table filter-->
+      <div class="table-filter">
+        <mat-form-field appearance="outline">
+          <mat-label>
+            <mat-icon class="search-icon">search</mat-icon>
+            Search...
+          </mat-label>
+          <input matInput (keyup)="applyFilter($event)" placeholder="" #input />
+        </mat-form-field>
+
+        <!-- refresh button-->
+        <div>
+          <button mat-icon-button (click)="refreshData()" class="refresh-button">
+            <mat-icon>refresh</mat-icon>
+          </button>
+        </div>
       </div>
     </div>
 
