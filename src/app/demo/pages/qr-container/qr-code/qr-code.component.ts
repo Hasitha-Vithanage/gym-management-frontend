@@ -50,7 +50,7 @@ export class QrCodeComponent {
       name: `${this.userData.firstName} ${this.userData.lastName}`,
       email: this.userData.email,
       phone: this.userData.phoneNumber,
-      employeeId: this.userData.employeeId
+      employeeId: this.userData.employeeId ? this.userData.employeeId : this.userData.memberId
     };
 
     // Create attendance URL
@@ -71,7 +71,7 @@ export class QrCodeComponent {
     }
   }
 
-  simulateQRScan() {}
+  simulateQRScan() { }
 
   public downloadId(): void {
     const element = this.pdfContent.nativeElement;

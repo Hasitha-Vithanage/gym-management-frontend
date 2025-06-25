@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal, ViewChild } from '@angular/core';
-=======
-import { ChangeDetectionStrategy, Component, ElementRef, OnInit, signal, ViewChild } from '@angular/core';
->>>>>>> 5e516f3bce6a3e0cf97d70cbcd0e006de43e1a1e
+import { ChangeDetectionStrategy, Component, ElementRef, OnInit, signal, ViewChild, inject } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, MinLengthValidator, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -12,11 +8,8 @@ import { EmpolyeeServiceService } from 'src/app/services/employee-service/empoly
 import { HttpService } from 'src/app/services/http.service';
 import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
 import { NotificationService } from 'src/app/services/notification-service/notification.service';
-<<<<<<< HEAD
 import { NewEmployeeDialogComponent } from '../new-employee-dialog/new-employee-dialog.component';
-=======
 import { QrCodeComponent } from '../qr-container/qr-code/qr-code.component';
->>>>>>> 5e516f3bce6a3e0cf97d70cbcd0e006de43e1a1e
 
 const ELEMENT_DATA: any[] = [
   {
@@ -79,7 +72,7 @@ export class EmployeeRegistrationComponent implements OnInit {
     private messageService: MessageServiceService,
     private http: HttpService,
     private notificationService: NotificationService,
-    private dialog: MatDialog
+    // private dialog: MatDialog
   ) {
   }
 
@@ -103,19 +96,19 @@ export class EmployeeRegistrationComponent implements OnInit {
     }
   }
 
-    // Dialog Box
-    readonly dialog = inject(MatDialog);
-    openDialog(): void {
-      const dialogRef = this.dialog.open(NewEmployeeDialogComponent, {
-        autoFocus: false,
-      });
-  
-      dialogRef.afterClosed().subscribe((result) => {
-        if (result?.action === 'add') {
-          this.dataSource.data = [result.data, ...this.dataSource.data];
-        }
-      });
-    }
+  // Dialog Box
+  readonly dialog = inject(MatDialog);
+  openDialog(): void {
+    const dialogRef = this.dialog.open(NewEmployeeDialogComponent, {
+      autoFocus: false,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result?.action === 'add') {
+        this.dataSource.data = [result.data, ...this.dataSource.data];
+      }
+    });
+  }
 
   // implementation of populateData function
   public populateData(): void {
@@ -142,65 +135,84 @@ export class EmployeeRegistrationComponent implements OnInit {
     }
   }
 
-<<<<<<< HEAD
-  // Edit Data function
-  editData(data: any): void {
-    const dialogRef = this.dialog.open(NewEmployeeDialogComponent, {
-      autoFocus: false,
-=======
-  /* onsubmit function */
-  onSubmit() {
-    this.submitted = true;
-    // check if form is valid
-    if (this.employeeForm.invalid) {
-      return;
-    }
+  // // Edit Data function
+  // editData(data: any): void {
+  //   const dialogRef = this.dialog.open(NewEmployeeDialogComponent, {
+  //     autoFocus: false,
+  //     /* onsubmit function */
+  //     onSubmit() {
+  //       this.submitted = true;
+  //       // check if form is valid
+  //       if (this.employeeForm.invalid) {
+  //         return;
+  //       }
 
-    console.log('Clicked');
-    console.log(this.employeeForm.value);
-    try {
-      // check mode (add or edit)
-      if (this.mode === 'add') {
-        this.employeeService.serviceCall(this.employeeForm.value).subscribe({
-          next: (response: any) => {
-            if (this.dataSource && this.dataSource.data && this.dataSource.data.length > 0) {
-              this.dataSource = new MatTableDataSource([response, ...this.dataSource.data]);
-            } else {
-              this.dataSource = new MatTableDataSource([response]);
-            }
-            // displaying success message
-            this.messageService.showSuccess('Employee added successfully!');
-            // this.generateCard();
-            // this.addNotification(response);
-          },
-          // Displaying error message
-          error: (error) => {
-            this.messageService.showError(error);
-          }
-        });
-      } else if (this.mode === 'edit') {
-        // Calling editData function to send the request to the backend
-        this.employeeService.editData(this.selectedData?.id, this.employeeForm.value).subscribe({
-          next: (response: any) => {
-            let elementIndex = this.dataSource.data.findIndex((element) => element.id === this.selectedData?.id);
-            this.dataSource.data[elementIndex] = response;
-            this.dataSource = new MatTableDataSource(this.dataSource.data);
+  //       console.log('Clicked');
+  //       console.log(this.employeeForm.value);
+  //       try {
+  //         // check mode (add or edit)
+  //         if (this.mode === 'add') {
+  //           this.employeeService.serviceCall(this.employeeForm.value).subscribe({
+  //             next: (response: any) => {
+  //               if (this.dataSource && this.dataSource.data && this.dataSource.data.length > 0) {
+  //                 this.dataSource = new MatTableDataSource([response, ...this.dataSource.data]);
+  //               } else {
+  //                 this.dataSource = new MatTableDataSource([response]);
+  //               }
+  //               // displaying success message
+  //               this.messageService.showSuccess('Employee added successfully!');
+  //               // this.generateCard();
+  //               // this.addNotification(response);
+  //             },
+  //             // Displaying error message
+  //             error: (error) => {
+  //               this.messageService.showError(error);
+  //             }
+  //           });
+  //         } else if (this.mode === 'edit') {
+  //           // Calling editData function to send the request to the backend
+  //           this.employeeService.editData(this.selectedData?.id, this.employeeForm.value).subscribe({
+  //             next: (response: any) => {
+  //               let elementIndex = this.dataSource.data.findIndex((element) => element.id === this.selectedData?.id);
+  //               this.dataSource.data[elementIndex] = response;
+  //               this.dataSource = new MatTableDataSource(this.dataSource.data);
 
-            // Displaying success message
-            this.messageService.showSuccess('Employee details updated successfully!');
-          },
-          error: (error) => {
-            this.messageService.showError(error);
-          }
-        });
-      }
-      this.employeeForm.disable();
-      this.isDisabled = true;
-      this.mode = 'add';
-    } catch (error) {
-      this.messageService.showError(error);
+  //               // Displaying success message
+  //               this.messageService.showSuccess('Employee details updated successfully!');
+  //             },
+  //             error: (error) => {
+  //               this.messageService.showError(error);
+  //             }
+  //           });
+  //         }
+  //         this.employeeForm.disable();
+  //         this.isDisabled = true;
+  //         this.mode = 'add';
+  //       } catch (error) {
+  //         this.messageService.showError(error);
+  //       }
+  //     }
+  //   });
+  // }
+
+    editData(data: any): void {
+      const dialogRef = this.dialog.open(NewEmployeeDialogComponent, {
+        autoFocus: false,
+      });
+  
+      dialogRef.afterOpened().subscribe(() => {
+        dialogRef.componentInstance.onEdit(data);
+      });
+  
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result?.action === 'edit') {
+          const newData = this.dataSource.data.filter(item => item.id !== result.data.id);
+          // Add the updated item to the top
+          this.dataSource.data = [result.data, ...newData];
+        }
+      });
     }
-  }
+  
 
   // reset button function
   public resetData(): void {
@@ -214,29 +226,28 @@ export class EmployeeRegistrationComponent implements OnInit {
   }
 
   // edit button function
-  public editData(data: any): void {
-    console.log(new Date(data.dateOfBirth));
-    this.employeeForm.patchValue(data);
+  // public editData(data: any): void {
+  //   console.log(new Date(data.dateOfBirth));
+  //   this.employeeForm.patchValue(data);
 
-    // patching date values after formatting
-    this.employeeForm.patchValue({
-      dateOfBirth: new Date(data.dateOfBirth),
-      dateOfJoining: new Date(data.dateOfJoining)
->>>>>>> 5e516f3bce6a3e0cf97d70cbcd0e006de43e1a1e
-    });
+  //   // patching date values after formatting
+  //   this.employeeForm.patchValue({
+  //     dateOfBirth: new Date(data.dateOfBirth),
+  //     dateOfJoining: new Date(data.dateOfJoining)
+  //   });
 
-    dialogRef.afterOpened().subscribe(() => {
-      dialogRef.componentInstance.onEdit(data);
-    });
+  //   dialogRef.afterOpened().subscribe(() => {
+  //     dialogRef.componentInstance.onEdit(data);
+  //   });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result?.action === 'edit') {
-        const newData = this.dataSource.data.filter(item => item.id !== result.data.id);
-        // Add the updated item to the top
-        this.dataSource.data = [result.data, ...newData];
-      }
-    });
-  }
+  //   dialogRef.afterClosed().subscribe((result) => {
+  //     if (result?.action === 'edit') {
+  //       const newData = this.dataSource.data.filter(item => item.id !== result.data.id);
+  //       // Add the updated item to the top
+  //       this.dataSource.data = [result.data, ...newData];
+  //     }
+  //   });
+  // }
 
   // delete button function
   public deleteData(data: any): void {
@@ -275,6 +286,8 @@ export class EmployeeRegistrationComponent implements OnInit {
   }
 
   public viewId(data: any) {
+    console.log(data);
+    
     this.dialog.open(QrCodeComponent, {
       data: { value: data }
     });
