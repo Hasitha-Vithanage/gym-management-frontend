@@ -51,7 +51,7 @@ mat-radio-button {
 }
 
 .required-message {
-  color: red; 
+  color: red;
   font-size: 12px;
   font-style: italic;
   margin-top: 4px;
@@ -69,6 +69,7 @@ mat-radio-button {
 
 /* Table CSS */
 
+<<<<<<< HEAD
 /* Container for New button and filter section */
 .toolbar {
   display: flex;
@@ -96,6 +97,17 @@ mat-radio-button {
   width: 250px;
   margin: 0;
   align-items: center;
+=======
+.table-filter {
+  display: flex;
+  justify-content: end;
+}
+
+.table-filter mat-form-field {
+  width: 25%;
+  height: 70px;
+  margin-right: 10px;
+>>>>>>> 5e516f3bce6a3e0cf97d70cbcd0e006de43e1a1e
 }
 
 .table-filter mat-label {
@@ -166,6 +178,6 @@ th {
 }
 
 .pagination {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }

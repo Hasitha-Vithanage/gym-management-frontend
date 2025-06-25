@@ -1,0 +1,334 @@
+// QR
+
+.container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.generate-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.card-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    max-width: 800px;
+    width: 100%;
+}
+
+.id-card {
+    background: white;
+    width: 400px;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    transform: perspective(1000px) rotateX(5deg);
+    transition: transform 0.3s ease;
+}
+
+.id-card:hover {
+    transform: perspective(1000px) rotateX(0deg);
+}
+
+.card-header {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    padding: 1.5rem;
+    text-align: center;
+    color: white;
+}
+
+.company-logo .logo-placeholder {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-top: 0.5rem;
+    opacity: 0.9;
+}
+
+.card-body {
+    padding: 2rem;
+}
+
+.employee-info {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.avatar {
+    flex-shrink: 0;
+}
+
+.avatar-placeholder {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #10b981, #059669);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+}
+
+.info-details h2 {
+    color: #1f2937;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.department {
+    color: #2563eb;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+.details-grid {
+    display: grid;
+    gap: 0.5rem;
+}
+
+.detail-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.detail-item .label {
+    font-weight: 600;
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
+.detail-item .value {
+    color: #1f2937;
+    font-size: 0.9rem;
+}
+
+.qr-section {
+    text-align: center;
+    padding-top: 1.5rem;
+    border-top: 2px solid #f3f4f6;
+}
+
+.qr-code {
+    margin-bottom: 1rem;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.qr-code:hover {
+    transform: scale(1.05);
+}
+
+.qr-label {
+    color: #64748b;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.qr-instructions {
+    background: #f0f9ff;
+    padding: 0.75rem;
+    border-radius: 8px;
+    border: 1px solid #bae6fd;
+}
+
+.qr-instructions p {
+    color: #0369a1;
+    font-size: 0.8rem;
+    margin: 0;
+}
+
+.card-footer {
+    background: #f8fafc;
+    padding: 1rem;
+    text-align: center;
+    border-top: 1px solid #e5e7eb;
+}
+
+.card-footer p {
+    color: #64748b;
+    font-size: 0.8rem;
+    margin: 0;
+}
+
+.card-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.action-btn {
+    padding: 0.875rem 2rem;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.action-btn.primary {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+}
+
+.action-btn.secondary {
+    background: #f3f4f6;
+    color: #374151;
+    border: 2px solid #e5e7eb;
+}
+
+.action-btn.tertiary {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    color: white;
+}
+
+.action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.demo-section {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+}
+
+.demo-section h3 {
+    color: #2563eb;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.demo-section p {
+    color: #64748b;
+    margin-bottom: 1rem;
+}
+
+.demo-section ol {
+    text-align: left;
+    color: #374151;
+    margin-bottom: 1.5rem;
+    padding-left: 1.5rem;
+}
+
+.demo-section li {
+    margin-bottom: 0.5rem;
+}
+
+.demo-btn {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 1.5rem;
+}
+
+.demo-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(245, 158, 11, 0.3);
+}
+
+.url-section {
+    background: #f8fafc;
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+}
+
+.url-section p {
+    color: #374151;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    text-align: left;
+}
+
+.url-container {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.url-container input {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    background: white;
+}
+
+.copy-btn {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.copy-btn:hover {
+    background: #1d4ed8;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+
+    .form-section {
+        padding: 2rem;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .id-card {
+        width: 100%;
+        max-width: 350px;
+    }
+
+    .employee-info {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .card-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .demo-section {
+        padding: 1.5rem;
+    }
+}
