@@ -127,7 +127,7 @@ export class NewEmployeeDialogComponent {
           }
         });
       }
-      this.employeeForm.disable();
+      // this.employeeForm.disable();
       this.isDisabled = true;
       this.mode = 'add';
     } catch (error) {
@@ -136,7 +136,7 @@ export class NewEmployeeDialogComponent {
     this.closeDialog();
   }
 
-    onEdit(data: any): void {
+  onEdit(data: any): void {
     this.employeeForm.patchValue({
       employeeId: data.employeeId,
       jobTitle: data.jobTitle,
@@ -157,7 +157,7 @@ export class NewEmployeeDialogComponent {
   }
 
 
-    // reset button function
+  // reset button function
   public resetData(): void {
     this.employeeForm.reset();
     this.employeeForm.setErrors = null;
@@ -173,7 +173,7 @@ export class NewEmployeeDialogComponent {
     this.dialogRef.close();
   }
 
-    public addNotification(details: any): void {
+  public addNotification(details: any): void {
     this.notificationService.addNotification('Employee Added Successfully', 'success', 1);
   }
 }

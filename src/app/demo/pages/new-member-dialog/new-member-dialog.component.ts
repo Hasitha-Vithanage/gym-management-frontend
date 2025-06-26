@@ -1,0 +1,187 @@
+import { Component } from '@angular/core';
+import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
+import { DomSanitizer } from '@angular/platform-browser';
+import { MemberServiceService } from 'src/app/services/member-service/member-service.service';
+import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
+
+@Component({
+  selector: 'app-new-member-dialog',
+  standalone: false,
+  templateUrl: './new-member-dialog.component.html',
+  styleUrl: './new-member-dialog.component.scss'
+})
+export class NewMemberDialogComponent {
+
+  memberForm: FormGroup;
+  registerButtonLabel = "Register";
+  mode = "add";
+  selectedData;
+  isButtonDisabled = false;
+  submitted = false;
+  selectedImageUrl;
+  isFileSelected = false;
+
+  dataSource: MatTableDataSource<any>;
+
+  constructor(private fb: FormBuilder,
+    private memberService: MemberServiceService,
+    public dialogRef: MatDialogRef<NewMemberDialogComponent>,
+    private sanitizer: DomSanitizer,
+    private messageService: MessageServiceService,
+  ) {
+    this.memberForm = this.fb.group({
+      memberNo: new FormControl(""),
+      firstName: new FormControl(""),
+      lastName: new FormControl(""),
+      nic: new FormControl(""),
+      dateOfBirth: new FormControl(""),
+      address: new FormControl(""),
+      phoneNumber: new FormControl(""),
+      email: new FormControl(""),
+      emergencyContactNumber: new FormControl(""),
+      bloodType: new FormControl(""),
+      joinedDate: new FormControl(""),
+      gender: new FormControl(""),
+      injuries: new FormControl(""),
+      membershipCategory: new FormControl(""),
+      image: new FormControl('', [Validators.required]),
+      imageName: new FormControl(''),
+      imageType: new FormControl(''),
+    })
+  }
+
+  /* OnSubmit function */
+  onSubmit() {
+    this.submitted = true;
+    // check if form is valid
+    if (this.memberForm.invalid) {
+      return;
+    }
+
+    if (this.mode === 'add') {
+      this.memberForm.patchValue({ status: 'Active' });
+
+      try {
+        this.memberService.serviceCall(this.prepareFormData()).subscribe({
+          next: (response) => {
+            if (this.dataSource && this.dataSource.data && this.dataSource.data.length > 0) {
+              this.dataSource = new MatTableDataSource([response, ...this.dataSource.data]);
+            } else {
+              this.dataSource = new MatTableDataSource([response]);
+            }
+
+            // success message
+            this.messageService.showSuccess('Member added successfully!');
+          }
+        })
+      } catch (error) {
+        this.messageService.showError(error);
+      }
+      ;
+    } else if (this.mode === 'edit') {
+      try {
+        this.memberService.editData(this.selectedData?.id, this.prepareFormData()).subscribe({
+          next: (response) => {
+            const index = this.dataSource.data.findIndex((element) => element.id === this.selectedData?.id);
+            this.dataSource.data[index] = response;
+            this.dataSource = new MatTableDataSource(this.dataSource.data);
+
+            // success message
+            this.messageService.showSuccess('Member edited successfully!');
+          },
+          error: (error) => {
+            this.messageService.showError('Action failed with error: ' + error);
+          }
+        });
+      } catch (error) {
+        this.messageService.showError(error);
+      }
+    }
+
+    this.closeDialog();
+  }
+
+  onEdit(data: any): void {
+    this.memberForm.patchValue({
+      memberNo: data.memberNo,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      nic: data.nic,
+      dateOfBirth: data.dateOfBirth,
+      address: data.address,
+      phoneNumber: data.phoneNumber,
+      email: data.email,
+      emergencyContactNumber: data.emergencyContactNumber,
+      bloodType: data.bloodType,
+      joinedDate: data.joinedDate,
+      gender: data.gender,
+      injuries: data.injuries,
+      membershipCategory: data.membershipCategory,
+      image: data.image,
+      imageName: data.imageName,
+      imageType: data.imageType,
+    });
+    this.registerButtonLabel = "Update";
+    this.mode = "edit";
+    this.selectedData = data;
+  }
+
+
+  // Reset button function
+  resetData() {
+    this.memberForm.reset();
+    this.memberForm.enable();
+    this.registerButtonLabel = "Register";
+    this.mode = "add";
+    this.isButtonDisabled = false;
+  }
+
+
+
+  public prepareFormData(): FormData {
+    const memberFormData = new FormData();
+    // demoFormData.append('demoForm', this.demoForm.value);
+    memberFormData.append('memberForm', new Blob([JSON.stringify(this.memberForm.value)], { type: 'application/json' }));
+
+    if (this.isFileSelected) {
+      memberFormData.append('image', this.memberForm.get('image').value, this.memberForm.get('image').value.name);
+    } else {
+      const imageBlob = this.base64ToBlob(this.memberForm.get('image').value, this.memberForm.get('imageType').value);
+      const file = new File([imageBlob], this.memberForm.get('imageName').value, { type: this.memberForm.get('imageType').value });
+      memberFormData.append('image', file, file.name);
+    }
+
+    return memberFormData;
+  }
+
+
+  base64ToBlob(base64: string, mimeType: string): Blob {
+    const byteCharacters = atob(base64);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    return new Blob([byteArray], { type: mimeType });
+  }
+
+
+  public onFileSelected(event): void {
+    if (event.target.files) {
+      const file = event.target.files[0];
+      const url = this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(file));
+      this.selectedImageUrl = url;
+      this.isFileSelected = true;
+      this.memberForm.get('image').setValue(file);
+    }
+  }
+
+  // Dialog close function
+  closeDialog(): void {
+    this.dialogRef.close();
+  }
+
+
+}

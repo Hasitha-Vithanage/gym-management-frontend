@@ -6,6 +6,15 @@
   background: #f3f6f9;
 }
 
+/* "Add New" button */
+.add-new .new-button {
+  background-color: #1976d2;
+  color: white;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 20px;
+}
+
 /* Form CSS */
 .form-section {
   width: 100%;
@@ -60,15 +69,33 @@ mat-radio-button {
 
 /* Table CSS */
 
-.table-filter {
+/* Container for New button and filter section */
+.toolbar {
   display: flex;
-  justify-content: end;
+  justify-content: space-between;
+  align-items: center;
 }
 
+/* "Add New" button */
+.add-new .new-button {
+  background-color: #1976d2;
+  color: white;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+/* Table filter section */
+.table-filter {
+  display: flex;
+  gap: 12px;
+}
+
+/* Adjust mat-form-field styling */
 .table-filter mat-form-field {
-  width: 25%;
-  height: 70px;
-  margin-right: 10px;
+  width: 250px;
+  margin: 0;
+  align-items: center;
 }
 
 .table-filter mat-label {
@@ -99,20 +126,17 @@ mat-radio-button {
   justify-content: center;
   padding: 0;
 }
-
 .table-section {
   width: 100%;
   background: white;
   padding: 20px;
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  overflow-x: auto;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
-  table-layout: fixed;
 }
 
 th,
@@ -120,10 +144,11 @@ td {
   padding: 12px;
   text-align: left;
   border-bottom: 1px solid #ddd;
-  white-space: normal;
-  word-wrap: break-word;
-  max-width: 200px;
-  vertical-align: top;
+
+  white-space: normal; /* Allow text to wrap */
+  word-wrap: break-word; /* Break long words */
+  word-break: break-word; /* Better support for overflowing text */
+  max-width: 150px;
 }
 
 th {
@@ -134,7 +159,6 @@ th {
 .action-column {
   display: flex;
   flex-direction: row;
-  justify-content: center;
 }
 
 .gray-icon-btn {
@@ -149,5 +173,4 @@ th {
 .pagination {
   display: flex;
   justify-content: center;
-  margin-top: 10px;
 }

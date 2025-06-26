@@ -30,6 +30,7 @@ import { SupplementCheckoutComponent } from './supplement-checkout/supplement-ch
 import { EmployeeListComponent } from './reports/static-reports/components/employee-list/employee-list.component';
 import { NewEmployeeDialogComponent } from './new-employee-dialog/new-employee-dialog.component';
 import { QrCodeComponent } from './qr-container/qr-code/qr-code.component';
+import { NewMemberDialogComponent } from './new-member-dialog/new-member-dialog.component';
 // icons
 
 @NgModule({
@@ -39,6 +40,7 @@ import { QrCodeComponent } from './qr-container/qr-code/qr-code.component';
     EmployeeRegistrationComponent,
     NewEmployeeDialogComponent,
     MemberRegistrationComponent,
+    NewMemberDialogComponent,
     WorkoutManagementComponent,
     SupplierRegistrationComponent,
     NewSupplierDialogComponent,
@@ -58,7 +60,6 @@ import { QrCodeComponent } from './qr-container/qr-code/qr-code.component';
     SupplementDetailsComponent,
     SupplementCheckoutComponent,
     EmployeeListComponent,
-    
     QrCodeComponent
   ],
   imports: [

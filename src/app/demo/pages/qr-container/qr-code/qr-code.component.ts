@@ -1,9 +1,10 @@
-import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, ElementRef, inject, Inject, ViewChild } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import * as QRCode from 'qrcode';
 import { environment } from 'src/app/environments/environment';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
 
 @Component({
   selector: 'app-qr-code',
@@ -20,7 +21,11 @@ export class QrCodeComponent {
   attendanceUrl = '';
   userData = null;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { value: string }) {
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: { value: string },
+    private messageService: MessageServiceService,
+    public dialogRef: MatDialogRef<QrCodeComponent>
+  ) {
     this.userData = this.data.value;
   }
 
@@ -50,7 +55,7 @@ export class QrCodeComponent {
       name: `${this.userData.firstName} ${this.userData.lastName}`,
       email: this.userData.email,
       phone: this.userData.phoneNumber,
-      employeeId: this.userData.employeeId ? this.userData.employeeId : this.userData.memberId
+      employeeId: this.userData.employeeId || this.userData.memberNo
     };
 
     // Create attendance URL
@@ -76,16 +81,30 @@ export class QrCodeComponent {
   public downloadId(): void {
     const element = this.pdfContent.nativeElement;
 
-    html2canvas(element).then((canvas) => {
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF('p', 'mm', 'a4');
+    try {
+      html2canvas(element).then((canvas) => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF('p', 'mm', 'a4');
 
-      const imgProps = pdf.getImageProperties(imgData);
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+        const imgProps = pdf.getImageProperties(imgData);
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
 
-      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-      pdf.save(`${this.userData.employeeId}.pdf`);
-    });
+        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+        pdf.save(`${this.userData.employeeId}.pdf`);
+
+        this.closeDialog();
+
+        // Show success message
+        this.messageService.showSuccess('ID card downloaded successfully!');
+      });
+    } catch (error) {
+      this.messageService.showError(error);
+    }
+  }
+
+  // Dialog close function
+  closeDialog(): void {
+    this.dialogRef.close();
   }
 }

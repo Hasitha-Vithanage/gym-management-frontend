@@ -1,11 +1,14 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MemberServiceService } from 'src/app/services/member-service/member-service.service';
 import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
+import { NewMemberDialogComponent } from '../new-member-dialog/new-member-dialog.component';
+import { QrCodeComponent } from '../qr-container/qr-code/qr-code.component';
 
 const ELEMENT_DATA: any[] = [
   {
@@ -95,17 +98,31 @@ export class MemberRegistrationComponent {
     });
   }
 
+  // Dialog Box
+  readonly dialog = inject(MatDialog);
+  openDialog(): void {
+    const dialogRef = this.dialog.open(NewMemberDialogComponent, {
+      autoFocus: false,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result?.action === 'add') {
+        this.dataSource.data = [result.data, ...this.dataSource.data];
+      }
+    });
+  }
+
   /* OnSubmit function */
   onSubmit() {
     this.submitted = true;
-  
+
     if (this.memberForm.invalid) {
       return;
     }
-  
+
     if (this.mode === 'add') {
       this.memberForm.patchValue({ status: 'Active' });
-  
+
       this.memberService.serviceCall(this.prepareFormData()).subscribe({
         next: (response) => {
           if (this.dataSource && this.dataSource.data && this.dataSource.data.length > 0) {
@@ -119,14 +136,14 @@ export class MemberRegistrationComponent {
           this.messageService.showError('Action failed with error: ' + error);
         }
       });
-  
+
     } else if (this.mode === 'edit') {
       this.memberService.editData(this.selectedData?.id, this.prepareFormData()).subscribe({
         next: (response) => {
           const index = this.dataSource.data.findIndex((element) => element.id === this.selectedData?.id);
           this.dataSource.data[index] = response;
           this.dataSource = new MatTableDataSource(this.dataSource.data);
-  
+
           this.messageService.showSuccess('Member edited successfully!');
         },
         error: (error) => {
@@ -134,38 +151,88 @@ export class MemberRegistrationComponent {
         }
       });
     }
-  
+
     this.memberForm.disable();
   }
-  
 
-  // Edit button function
-  public editData(data: any): void {
-    this.memberForm.patchValue(data);
-    this.registerButtonLabel = "Update";
-    this.mode = "edit";
+  editData(data: any): void {
+    const dialogRef = this.dialog.open(NewMemberDialogComponent, {
+      autoFocus: false,
+    });
 
-    // saving the current form values
-    this.selectedData = data;
+    dialogRef.afterOpened().subscribe(() => {
+      dialogRef.componentInstance.onEdit(data);
+    });
 
-    // patching date values after formatting
-    this.memberForm.patchValue({
-      dateOfBirth: new Date(data.dateOfBirth),
-      joinedDate: new Date(data.joinedDate)
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result?.action === 'edit') {
+        const newData = this.dataSource.data.filter(item => item.id !== result.data.id);
+        // Add the updated item to the top
+        this.dataSource.data = [result.data, ...newData];
+      }
     });
   }
+
+  onEdit(data: any): void {
+    this.memberForm.patchValue({
+      memberNo: data.memberNo,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      nic: data.nic,
+      dateOfBirth: data.dateOfBirth,
+      address: data.address,
+      phoneNumber: data.phoneNumber,
+      email: data.email,
+      emergencyContactNumber: data.emergencyContactNumber,
+      bloodType: data.bloodType,
+      joinedDate: data.joinedDate,
+      gender: data.gender,
+      injuries: data.injuries,
+      membershipCategory: data.membershipCategory,
+      image: data.image,
+      imageName: data.imageName,
+      imageType: data.imageType,
+    });
+    this.registerButtonLabel = "Update";
+    this.mode = "edit";
+    this.selectedData = data;
+  }
+
+
+  // Edit button function
+  // public editData(data: any): void {
+  //   this.memberForm.patchValue(data);
+  //   this.registerButtonLabel = "Update";
+  //   this.mode = "edit";
+
+  //   // saving the current form values
+  //   this.selectedData = data;
+
+  //   // patching date values after formatting
+  //   this.memberForm.patchValue({
+  //     dateOfBirth: new Date(data.dateOfBirth),
+  //     joinedDate: new Date(data.joinedDate)
+  //   });
+  // }
 
   // Delete button function
   public deleteData(data: any): void {
     const id = data.id;
-    this.memberService.deleteData(id).subscribe((response) => {
-      const index = this.dataSource.data.findIndex((element) => element.id === id);
+    try {
+      this.memberService.deleteData(id).subscribe((response) => {
+        const index = this.dataSource.data.findIndex((element) => element.id === id);
 
-      if (index !== -1) {
-        this.dataSource.data.splice(index, 1);
-      }
-      this.dataSource = new MatTableDataSource(this.dataSource.data);
-    });
+        if (index !== -1) {
+          this.dataSource.data.splice(index, 1);
+        }
+        this.dataSource = new MatTableDataSource(this.dataSource.data);
+
+        // success message
+        this.messageService.showSuccess('Member deleted successfully!');
+      });
+    } catch (error) {
+      this.messageService.showError('Action failed with error: ' + error);
+    }
   }
 
   // Reset button function
@@ -213,5 +280,13 @@ export class MemberRegistrationComponent {
       this.isFileSelected = true;
       this.memberForm.get('image').setValue(file);
     }
+  }
+
+  public viewId(data: any) {
+    console.log(data);
+
+    this.dialog.open(QrCodeComponent, {
+      data: { value: data }
+    });
   }
 }
