@@ -68,6 +68,7 @@ export class NotificationService {
     this.addNotificationToDb(notificationtemp).subscribe({
       next: (response: any) => {
         console.log(response);
+        this.addNotificationToBell([response]);
       },
       // Displaying error message
       error: (error) => {

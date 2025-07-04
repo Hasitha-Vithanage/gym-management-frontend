@@ -36,6 +36,7 @@ import { AssignTrainerComponent } from './assign-trainer/assign-trainer.componen
 import { MemberListComponent } from './reports/static-reports/components/member-list/member-list.component';
 import { TrainerLoginComponent } from './trainer-login/trainer-login/trainer-login.component';
 import { MemberLoginComponent } from './member-login/member-login/member-login.component';
+import { GymChartsComponent } from './gym-charts/gym-charts.component';
 
 // icons
 
@@ -71,7 +72,8 @@ import { MemberLoginComponent } from './member-login/member-login/member-login.c
     AssignTrainerDialogComponent,
     MemberListComponent,
     TrainerLoginComponent,
-    MemberLoginComponent
+    MemberLoginComponent,
+    GymChartsComponent
   ],
   imports: [
     CommonModule,
