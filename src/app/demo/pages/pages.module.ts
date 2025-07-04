@@ -31,6 +31,12 @@ import { EmployeeListComponent } from './reports/static-reports/components/emplo
 import { NewEmployeeDialogComponent } from './new-employee-dialog/new-employee-dialog.component';
 import { QrCodeComponent } from './qr-container/qr-code/qr-code.component';
 import { NewMemberDialogComponent } from './new-member-dialog/new-member-dialog.component';
+import { AssignTrainerDialogComponent } from './assign-trainer-dialog/assign-trainer-dialog.component';
+import { AssignTrainerComponent } from './assign-trainer/assign-trainer.component';
+import { MemberListComponent } from './reports/static-reports/components/member-list/member-list.component';
+import { TrainerLoginComponent } from './trainer-login/trainer-login/trainer-login.component';
+import { MemberLoginComponent } from './member-login/member-login/member-login.component';
+
 // icons
 
 @NgModule({
@@ -60,7 +66,12 @@ import { NewMemberDialogComponent } from './new-member-dialog/new-member-dialog.
     SupplementDetailsComponent,
     SupplementCheckoutComponent,
     EmployeeListComponent,
-    QrCodeComponent
+    QrCodeComponent,
+    AssignTrainerComponent,
+    AssignTrainerDialogComponent,
+    MemberListComponent,
+    TrainerLoginComponent,
+    MemberLoginComponent
   ],
   imports: [
     CommonModule,

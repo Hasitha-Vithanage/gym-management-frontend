@@ -1,74 +1,45 @@
-import { ChangeDetectionStrategy, Component, ElementRef, OnInit, signal, ViewChild, inject } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, MinLengthValidator, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, inject, ViewChild } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { EmpolyeeServiceService } from 'src/app/services/employee-service/empolyee-service.service';
+import { AssignTrainerServiceService } from 'src/app/services/assign-trainer/assign-trainer-service.service';
 import { HttpService } from 'src/app/services/http.service';
 import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
 import { NotificationService } from 'src/app/services/notification-service/notification.service';
-import { NewEmployeeDialogComponent } from '../new-employee-dialog/new-employee-dialog.component';
+import { AssignTrainerDialogComponent } from '../assign-trainer-dialog/assign-trainer-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 import { QrCodeComponent } from '../qr-container/qr-code/qr-code.component';
 
 const ELEMENT_DATA: any[] = [
   {
-    employeeId: 1,
-    jobTitle: 'Hydrogen',
-    dateOfJoining: 1.0079,
-    firstName: 'H',
-    lastName: 1,
-    nic: 'Hydrogen',
-    dateOfBirth: 1.0079,
-    gender: 'H',
-    address: 1.0079,
-    email: 'H',
-    phoneNumber: 'H',
-    emergencyContactNumber: 1.0079
+    member: 1,
+    trainer: 'Hydrogen',
   }
 ];
 
 @Component({
-  selector: 'app-employee-registration',
+  selector: 'app-assign-trainer',
   standalone: false,
-  templateUrl: './employee-registration.component.html',
-  styleUrl: './employee-registration.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  templateUrl: './assign-trainer.component.html',
+  styleUrls: ['./assign-trainer.component.scss']
 })
-export class EmployeeRegistrationComponent implements OnInit {
-  /* creating form group variable */
-  employeeForm: FormGroup;
+export class AssignTrainerComponent {
 
   displayedColumns: string[] = [
-    'employeeId',
-    'jobTitle',
-    'dateOfJoining',
-    'firstName',
-    'lastName',
-    'nic',
-    'dateOfBirth',
-    'gender',
-    'address',
-    'email',
-    'phoneNumber',
-    'emergencyContactNumber',
+    'member',
+    'trainer',
     'actions'
   ];
+
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  registerButtonLabel = 'Register';
-  mode = 'add';
-  selectedData;
-  isDisabled = false;
-  submitted = false;
-  userName;
-
   /* calling constructor */
   constructor(
     private fb: FormBuilder,
-    private employeeService: EmpolyeeServiceService,
+    private assignTrainerService: AssignTrainerServiceService,
     private messageService: MessageServiceService,
     private http: HttpService,
     private notificationService: NotificationService,
@@ -81,39 +52,12 @@ export class EmployeeRegistrationComponent implements OnInit {
     // get data request
     // calling populate data function
     this.populateData();
-    this.userName = this.http.getLoginNameFromCache();
-    console.log(this.userName);
-  }
-
-  // table filter function
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    // pagination code
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
-  }
-
-  // Dialog Box
-  readonly dialog = inject(MatDialog);
-  openDialog(): void {
-    const dialogRef = this.dialog.open(NewEmployeeDialogComponent, {
-      autoFocus: false,
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result?.action === 'add') {
-        this.dataSource.data = [result.data, ...this.dataSource.data];
-      }
-    });
   }
 
   // implementation of populateData function
   public populateData(): void {
     try {
-      this.employeeService.getData().subscribe({
+      this.assignTrainerService.getData().subscribe({
         next: (dataList: any[]) => {
           if (dataList.length <= 0) {
             return;
@@ -135,8 +79,35 @@ export class EmployeeRegistrationComponent implements OnInit {
     }
   }
 
+  // table filter function
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    // pagination code
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
+
+  // Dialog Box
+  readonly dialog = inject(MatDialog);
+  openDialog(): void {
+    const dialogRef = this.dialog.open(AssignTrainerDialogComponent, {
+      autoFocus: false,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result?.action === 'add') {
+        this.dataSource.data = [result.data, ...this.dataSource.data];
+      }
+    });
+  }
+
+
   editData(data: any): void {
-    const dialogRef = this.dialog.open(NewEmployeeDialogComponent, {
+    const dialogRef = this.dialog.open(AssignTrainerDialogComponent, {
       autoFocus: false,
     });
 
@@ -153,24 +124,12 @@ export class EmployeeRegistrationComponent implements OnInit {
     });
   }
 
-
-  // reset button function
-  public resetData(): void {
-    this.employeeForm.reset();
-    this.employeeForm.setErrors = null;
-    this.employeeForm.updateValueAndValidity();
-    this.employeeForm.enable();
-    this.isDisabled = false;
-    this.submitted = false;
-    this.registerButtonLabel = 'Register';
-  }
-
   // delete button function
   public deleteData(data: any): void {
     const id = data.id;
     try {
       // calling deleteData function to send the delete request to the backend
-      this.employeeService.deleteData(id).subscribe({
+      this.assignTrainerService.deleteData(id).subscribe({
         next: (respone: any) => {
           const index = this.dataSource.data.findIndex((element) => element.id === id);
 
@@ -180,7 +139,7 @@ export class EmployeeRegistrationComponent implements OnInit {
           this.dataSource = new MatTableDataSource(this.dataSource.data);
 
           // displaying success message
-          this.messageService.showSuccess('Employee record deleted successfully!');
+          this.messageService.showSuccess('Record deleted successfully!');
         },
         // displaying error message
         error: (error) => {

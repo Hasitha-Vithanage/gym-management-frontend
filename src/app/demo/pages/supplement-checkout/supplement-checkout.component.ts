@@ -17,11 +17,6 @@ export class SupplementCheckoutComponent {
   quantity: number = 1;
   checkoutForm!: FormGroup;
 
-
-
-  
-
-
   constructor(private fb: FormBuilder,
     private route: ActivatedRoute,
     private supplementService: NewSupplementServiceService,

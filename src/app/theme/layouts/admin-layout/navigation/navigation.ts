@@ -62,6 +62,28 @@ export const NavigationItems: NavigationItem[] = [
         isVisible: false
       },
       {
+        id: 'trainerLogin',
+        title: 'Trainer Login',
+        type: 'item',
+        url: '/pages/trainer-login',
+        //icon: 'ti ti-dashboard',
+        breadcrumbs: false,
+        classes: 'nav-item',
+        auth: authenticationEnum.System_Privileges,
+        isVisible: false
+      },
+      {
+        id: 'memberLogin',
+        title: 'Member Login',
+        type: 'item',
+        url: '/pages/member-login',
+        //icon: 'ti ti-dashboard',
+        breadcrumbs: false,
+        classes: 'nav-item',
+        auth: authenticationEnum.System_Privileges,
+        isVisible: false
+      },
+      {
         id: 'privilegeGroups',
         title: 'Privilege Grops',
         type: 'item',
@@ -120,6 +142,16 @@ export const NavigationItems: NavigationItem[] = [
         type: 'item',
         classes: 'nav-item',
         url: '/pages/member',
+        icon: '',
+        auth: authenticationEnum.Home_Dashboard,
+        breadcrumbs: false
+      },
+      {
+        id: 'assignTrainerDet',
+        title: 'Assign Trainer',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/pages/assign-trainer',
         icon: '',
         auth: authenticationEnum.Home_Dashboard,
         breadcrumbs: false
@@ -313,7 +345,17 @@ export const NavigationItems: NavigationItem[] = [
         icon: '',
         auth: authenticationEnum.Home_Dashboard,
         breadcrumbs: false
-      } // add other reports to here
+      }, // add other reports to here
+            {
+        id: 'membersReport',
+        title: 'Members Report',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/pages/reports/members-report',
+        icon: '',
+        auth: authenticationEnum.Home_Dashboard,
+        breadcrumbs: false
+      } 
     ]
   },
   {

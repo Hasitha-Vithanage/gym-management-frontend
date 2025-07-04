@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { HttpService } from 'src/app/services/http.service';
+import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
 import { NewSupplementServiceService } from 'src/app/services/new-supplement/new-supplement-service.service';
 
 @Component({
@@ -15,7 +17,9 @@ export class SupplementDetailsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private supplementService: NewSupplementServiceService,
-    private router: Router
+    private router: Router,
+    private messageService: MessageServiceService,
+        private http: HttpService,
   ) {}
 
 ngOnInit(): void {
@@ -34,7 +38,11 @@ ngOnInit(): void {
 
   addToCart(): void {
     console.log('Adding to cart:', this.supplement, 'Quantity:', this.quantity);
-
+    if(this.quantity > this.supplement.quantityInStock) {
+      console.error('Quantity must be greater than stock');
+      this.messageService.showError("Quantity must be less than or equal to stock available");
+      return;
+    }
   }
 
 checkout(supplement: any): void {

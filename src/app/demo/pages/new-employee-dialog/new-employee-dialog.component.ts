@@ -80,7 +80,6 @@ export class NewEmployeeDialogComponent {
     return null;
   }
 
-
   /* onsubmit function */
   onSubmit() {
     this.submitted = true;
@@ -155,7 +154,6 @@ export class NewEmployeeDialogComponent {
     this.mode = "edit";
     this.selectedData = data;
   }
-
 
   // reset button function
   public resetData(): void {

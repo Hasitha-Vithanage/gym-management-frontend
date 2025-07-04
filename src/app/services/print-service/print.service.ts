@@ -16,7 +16,7 @@ export class PrintService {
       <!DOCTYPE html>
       <html>
       <head>
-        <title>Employee Report</title>
+        <title>Member Report</title>
         <style>
           body {
             font-family: Arial, sans-serif;
@@ -76,17 +76,20 @@ export class PrintService {
         </style>
       </head>
       <body>
-        <h1>Employee Report</h1>
+        <h1>Member Report</h1>
         <div class="report-date">Generated on ${new Date().toLocaleDateString()}</div>
 
         <table>
           <thead>
             <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Age</th>
+              <th>Member ID</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>NIC</th>
+              <th>Gender</th>
+              <th>Date of Birth</th>
               <th>Phone Number</th>
-              <th>Salary</th>
+              <th>Emergency Contact</th>
             </tr>
           </thead>
           <tbody>
@@ -94,11 +97,14 @@ export class PrintService {
               .map(
                 (emp) => `
               <tr>
-                <td>${emp.id}</td>
+                <td>${emp.employeeId || emp.memberNo}</td>
                 <td>${emp.firstName} </td>
                 <td>${emp.lastName}</td>
-                <td>${emp.employeeId}</td>
-                <td>$${emp.jobTitle}</td>
+                <td>${emp.nic}</td>
+                <td>${emp.gender}</td>
+                <td>${emp.jobTitle || emp.dateOfBirth}</td>
+                <td>${emp.phoneNumber}</td>
+                <td>${emp.emergencyContactNumber}</td>
               </tr>
             `
               )
@@ -108,7 +114,7 @@ export class PrintService {
 
         <div class="footer">
           <p>Confidential - For internal use only</p>
-          <p>Total Employees: ${employees.length}</p>
+          <p>Total Members: ${employees.length}</p>
         </div>
       </body>
       </html>

@@ -91,7 +91,7 @@ export class QrCodeComponent {
         const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
 
         pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-        pdf.save(`${this.userData.employeeId}.pdf`);
+        pdf.save(`${this.userData.employeeId ? this.userData.employeeId : this.userData.memberNo}.pdf`);
 
         this.closeDialog();
 

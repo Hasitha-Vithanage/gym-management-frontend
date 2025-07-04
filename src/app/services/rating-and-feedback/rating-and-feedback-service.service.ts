@@ -31,7 +31,7 @@ export class RatingAndFeedbackServiceService {
   getTrainers() {
     console.log("In the service");
 
-    const requestUrl = environment.baseUrl + '/ratings&feedback/getTrainers'; // http://localhost:8080/form-demo
+    const requestUrl = environment.baseUrl + '/getTrainers'; // http://localhost:8080/form-demo
 
     let headers = {};
 

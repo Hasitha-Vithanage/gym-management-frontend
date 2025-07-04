@@ -1,0 +1,90 @@
+.login-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #f9f9f9;
+  position: relative;
+}
+
+.login-box {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.logo {
+  width: 140px;
+  margin-bottom: 1rem;
+}
+
+.title {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: #555;
+}
+
+h2 {
+  margin: 0.5rem 0;
+}
+
+.register-link {
+  display: block;
+  color: #1976d2;
+  font-size: 0.9rem;
+  margin-top: 5px;
+  text-decoration: none;
+}
+
+.input-full {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.login-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  font-size: 0.85rem;
+}
+
+.forgot-link {
+  color: #1976d2;
+  text-decoration: none;
+}
+
+.login-btn {
+  width: 100%;
+  font-weight: bold;
+  background-color: #1976d2 !important;
+  color: #fff !important;
+}
+
+.footer {
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 2rem;
+  font-size: 0.8rem;
+  color: #555;
+}
+
+.footer-links a {
+  margin-left: 1rem;
+  text-decoration: none;
+  color: #555;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}

@@ -1,0 +1,49 @@
+<!-- trainer-login.component.html -->
+<div class="login-wrapper">
+  <div class="login-box">
+    <a href="javascript:">
+      <img style="width: 250px; height: 80px; display: block; margin: 0 auto 20px" src="assets/images/dashboard-logo-dark.png" alt="logo" />
+    </a>
+    <div class="title">
+      <h3>Trainer Login</h3>
+      <a class="register-link" href="#">Don't have an account?</a>
+    </div>
+
+    <form [formGroup]="trainerLoginForm" (ngSubmit)="login()">
+
+        
+      <!-- Trainer Select -->
+      <mat-form-field appearance="outline" class="input-full">
+        <mat-select formControlName="trainerId" placeholder="Select Trainer">
+                    <mat-option *ngFor="let trainer of trainerList" [value]="trainer.id">
+            {{ trainer.firstName }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Password Input -->
+      <mat-form-field appearance="outline" class="input-full">
+        <input matInput type="password" formControlName="code" placeholder="Enter Code" />
+      </mat-form-field>
+
+      <!-- Keep me signed in + Forgot -->
+      <div class="login-options">
+        <mat-checkbox>Keep me sign in</mat-checkbox>
+        <a class="forgot-link" href="#">Forgot Password?</a>
+      </div>
+
+      <!-- Login Button -->
+      <button mat-flat-button class="login-btn" [disabled]="trainerLoginForm.invalid">Login</button>
+    </form>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <span>Sometext here © by you</span>
+    <div class="footer-links">
+      <a href="#">Home</a>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Contact us</a>
+    </div>
+  </div>
+</div>

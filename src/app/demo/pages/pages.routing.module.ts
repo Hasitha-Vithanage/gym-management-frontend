@@ -17,6 +17,10 @@ import { MySupplementOrdersComponent } from './my-supplement-orders/my-supplemen
 import { SupplementDetailsComponent } from './supplement-details/supplement-details.component';
 import { SupplementCheckoutComponent } from './supplement-checkout/supplement-checkout.component';
 import { EmployeeListComponent } from './reports/static-reports/components/employee-list/employee-list.component';
+import { AssignTrainerComponent } from './assign-trainer/assign-trainer.component';
+import { MemberListComponent } from './reports/static-reports/components/member-list/member-list.component';
+import { TrainerLoginComponent } from './trainer-login/trainer-login/trainer-login.component';
+import { MemberLoginComponent } from './member-login/member-login/member-login.component';
 
 export const PagesRoutes: Routes = [
   {
@@ -94,5 +98,21 @@ export const PagesRoutes: Routes = [
   {
     path: 'reports/employees-report',
     component: EmployeeListComponent
-  }
+  },
+  {
+    path: 'assign-trainer',
+    component: AssignTrainerComponent
+  },
+  {
+    path: 'reports/members-report',
+    component: MemberListComponent
+  },
+  {
+    path: 'trainer-login',
+    component: TrainerLoginComponent
+  },
+  {
+    path: 'member-login',
+    component: MemberLoginComponent
+  },
 ];
