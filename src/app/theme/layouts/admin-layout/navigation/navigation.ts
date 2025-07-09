@@ -209,6 +209,25 @@ export const NavigationItems: NavigationItem[] = [
       }
     ]
   },
+  {
+    id: 'gymChart',
+    title: 'Gym Charts',
+    type: 'group',
+    icon: 'icon-navigation',
+    auth: authenticationEnum.Home,
+    children: [
+      {
+        id: 'charts',
+        title: 'Gym Chart Examples',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/pages/charts',
+        icon: '',
+        auth: authenticationEnum.Home_Dashboard,
+        breadcrumbs: false
+      }
+    ]
+  },
   /* side navigation bar item for nutrition & meal plan module */
   {
     id: 'nutrition&meal-plan',
@@ -346,7 +365,7 @@ export const NavigationItems: NavigationItem[] = [
         auth: authenticationEnum.Home_Dashboard,
         breadcrumbs: false
       }, // add other reports to here
-            {
+      {
         id: 'membersReport',
         title: 'Members Report',
         type: 'item',
@@ -355,7 +374,7 @@ export const NavigationItems: NavigationItem[] = [
         icon: '',
         auth: authenticationEnum.Home_Dashboard,
         breadcrumbs: false
-      } 
+      }
     ]
   },
   {

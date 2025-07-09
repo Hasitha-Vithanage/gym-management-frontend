@@ -33,7 +33,7 @@ export class TrainerLoginServiceService {
     getTrainers() {
       console.log("In the service");
   
-      const requestUrl = environment.baseUrl + '/getTrainers'; // http://localhost:8080/form-demo
+      const requestUrl = environment.baseUrl + '/employee'; // http://localhost:8080/form-demo
   
       let headers = {};
   

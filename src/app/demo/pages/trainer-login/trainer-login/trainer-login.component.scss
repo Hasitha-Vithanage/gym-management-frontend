@@ -45,7 +45,6 @@ h2 {
 
 .input-full {
   width: 100%;
-  margin-bottom: 1rem;
 }
 
 .login-options {
@@ -88,3 +87,36 @@ h2 {
 .footer-links a:hover {
   text-decoration: underline;
 }
+
+.names {
+  display: none;
+}
+
+/* Dropdown Option Content Styling */
+.option-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.option-content .name {
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.option-content .job-title {
+  background-color: #e0f2ff;
+  color: #1565c0;
+  font-weight: 600;
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.names {
+  display: none;
+}
+
+

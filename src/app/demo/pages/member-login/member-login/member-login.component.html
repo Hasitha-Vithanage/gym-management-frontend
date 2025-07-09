@@ -13,25 +13,35 @@
 
       <!-- Member Select -->
       <mat-form-field appearance="outline" class="input-full">
-        <mat-select formControlName="memberId" placeholder="Select Member">
+                <mat-label>Member Name</mat-label>
+        <mat-select formControlName="memberId" placeholder="Select Member" placeholder="Select Member">
           <mat-option *ngFor="let member of memberList" [value]="member.id">
-            {{ member.firstName }}
+            <span>{{ member.firstName }} {{ member.lastName }}</span>
           </mat-option>
         </mat-select>
       </mat-form-field>
 
       <!-- firstName Input -->
-      <mat-form-field appearance="outline" class="input-full">
-        <input matInput type="text" formControlName="firstName" placeholder="Enter First Name" readonly/>
+      <mat-form-field appearance="outline" class="input-full names">
+        <mat-label>First Name</mat-label>
+        <input matInput type="text" formControlName="firstName" placeholder="Enter First Name"/>
+      </mat-form-field>
+
+      <!-- Password Input -->
+      <mat-form-field appearance="outline" class="input-full names">
+        <mat-label>Last Name</mat-label>
+        <input matInput type="text" formControlName="lastName" placeholder="Enter Last Name"/>
       </mat-form-field>
 
       <!-- Password Input -->
       <mat-form-field appearance="outline" class="input-full">
-        <input matInput type="text" formControlName="lastName" placeholder="Enter Last Name" readonly/>
+        <mat-label>Username</mat-label>
+        <input matInput type="text" formControlName="userName" placeholder="Enter Username"/>
       </mat-form-field>
 
       <!-- Password Input -->
       <mat-form-field appearance="outline" class="input-full">
+        <mat-label>Password</mat-label>
         <input matInput type="password" formControlName="password" placeholder="Enter Password" />
       </mat-form-field>
 

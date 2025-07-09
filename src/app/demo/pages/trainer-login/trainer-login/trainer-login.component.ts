@@ -24,29 +24,35 @@ export class TrainerLoginComponent implements OnInit {
     private messageService: MessageServiceService,
   ) { }
 
+  getTrainerName(id: number): string {
+  const selected = this.trainerList.find(trainer => trainer.id === id);
+  return selected ? `${selected.firstName} ${selected.lastName}` : '';
+}
+
   ngOnInit(): void {
     this.trainerLoginForm = this.fb.group({
       trainerId: [null, Validators.required],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
+      userName: ['', Validators.required],
       password: ['', Validators.required],
     });
 
     this.getTrainers();
 
 
-      // Set firstName and lastName when a trainer is selected
-  this.trainerLoginForm.get('trainerId')?.valueChanges.subscribe((selectedId) => {
-    const selectedTrainer = this.trainerList.find(t => t.id === selectedId);
-    if (selectedTrainer) {
-      this.trainerLoginForm.patchValue({
-        firstName: selectedTrainer.firstName || '',
-        lastName: selectedTrainer.lastName || ''
-      });
-    } else {
-      this.trainerLoginForm.patchValue({ firstName: '', lastName: '' });
-    }
-  });
+    // Set firstName and lastName when a trainer is selected
+    this.trainerLoginForm.get('trainerId')?.valueChanges.subscribe((selectedId) => {
+      const selectedTrainer = this.trainerList.find(t => t.id === selectedId);
+      if (selectedTrainer) {
+        this.trainerLoginForm.patchValue({
+          firstName: selectedTrainer.firstName || '',
+          lastName: selectedTrainer.lastName || ''
+        });
+      } else {
+        this.trainerLoginForm.patchValue({ firstName: '', lastName: '' });
+      }
+    });
   }
 
   // getMember function
@@ -64,7 +70,7 @@ export class TrainerLoginComponent implements OnInit {
   }
 
 
-  
+
 
   login(): void {
     if (this.trainerLoginForm.valid) {
@@ -79,6 +85,7 @@ export class TrainerLoginComponent implements OnInit {
           }
           // displaying success message
           this.messageService.showSuccess('Trainer Assigned successfully!');
+          this.trainerLoginForm.reset();
 
           // this.addNotification(response);
         },

@@ -22,6 +22,7 @@ import { MemberListComponent } from './reports/static-reports/components/member-
 import { TrainerLoginComponent } from './trainer-login/trainer-login/trainer-login.component';
 import { MemberLoginComponent } from './member-login/member-login/member-login.component';
 import { IntermediateWorkoutPlanComponent } from './intermediate-workout-plan/intermediate-workout-plan.component';
+import { GymChartsComponent } from './gym-charts/gym-charts.component';
 
 export const PagesRoutes: Routes = [
   {
@@ -115,9 +116,12 @@ export const PagesRoutes: Routes = [
   {
     path: 'member-login',
     component: MemberLoginComponent
-  }, 
+  },
   {
-    path: 'intermediate-workout-plan',
+    path: 'charts',
+    component: GymChartsComponent
+  },
+     { path: 'intermediate-workout-plan',
     component: IntermediateWorkoutPlanComponent
   }, 
 ];

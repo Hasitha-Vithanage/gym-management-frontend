@@ -5,34 +5,60 @@
       <img style="width: 250px; height: 80px; display: block; margin: 0 auto 20px" src="assets/images/dashboard-logo-dark.png" alt="logo" />
     </a>
     <div class="title">
-      <h3>Trainer Login</h3>
+      <h3>Employee Login</h3>
       <a class="register-link" href="#">Don't have an account?</a>
     </div>
 
     <form [formGroup]="trainerLoginForm" (ngSubmit)="login()">
-
-        
       <!-- Trainer Select -->
-      <mat-form-field appearance="outline" class="input-full">
-        <mat-select formControlName="trainerId" placeholder="Select Trainer">
-                    <mat-option *ngFor="let trainer of trainerList" [value]="trainer.id">
-            {{ trainer.firstName }}
+      <!-- <mat-form-field appearance="outline" class="input-full">
+        <mat-select formControlName="trainerId" placeholder="Select Employee">
+          <mat-option *ngFor="let trainer of trainerList" [value]="trainer.id">
+            {{ trainer.firstName }} {{ trainer.jobTitle }}
           </mat-option>
         </mat-select>
+      </mat-form-field> -->
+
+<mat-form-field appearance="outline" class="input-full">
+  <mat-select
+    formControlName="trainerId"
+    placeholder="Select Trainer"
+  >
+    <!-- This shows only the name after selection -->
+    <mat-select-trigger>
+      {{ getTrainerName(trainerLoginForm.get('trainerId')?.value) }}
+    </mat-select-trigger>
+
+    <!-- This shows name + job title in dropdown -->
+    <mat-option *ngFor="let trainer of trainerList" [value]="trainer.id">
+      <div class="option-content">
+        <span class="name">{{ trainer.firstName }} {{ trainer.lastName }}</span>
+        <span class="job-title">{{ trainer.jobTitle }}</span>
+      </div>
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+
+      <mat-form-field appearance="outline" class="input-full names" >
+        <mat-label>First Name</mat-label>
+        <input matInput type="text" formControlName="firstName" placeholder="Enter First Name"  />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="input-full names">
+        <mat-label>Last Name</mat-label>
+        <input matInput type="text" formControlName="lastName" placeholder="Enter Last Name"  />
       </mat-form-field>
 
       <!-- Password Input -->
       <mat-form-field appearance="outline" class="input-full">
-        <input matInput type="text" formControlName="firstName" placeholder="Enter First Name" readonly/>
+        <mat-label>Username</mat-label>
+        <input matInput type="text" formControlName="userName" placeholder="Enter UserName" required/>
       </mat-form-field>
 
       <!-- Password Input -->
       <mat-form-field appearance="outline" class="input-full">
-        <input matInput type="text" formControlName="lastName" placeholder="Enter Last Name" readonly/>
-      </mat-form-field>
-
-      <!-- Password Input -->
-      <mat-form-field appearance="outline" class="input-full">
+        <mat-label>Password</mat-label>
         <input matInput type="password" formControlName="password" placeholder="Enter Password" />
       </mat-form-field>
 

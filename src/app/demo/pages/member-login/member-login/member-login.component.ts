@@ -31,6 +31,7 @@ export class MemberLoginComponent {
       memberId: [null, Validators.required],
       firstName: ['',],
       lastName: ['',],
+      userName: ['', Validators.required],
       password: ['', Validators.required]
     });
 
@@ -88,6 +89,7 @@ export class MemberLoginComponent {
           }
           // displaying success message
           this.messageService.showSuccess('Member Assigned successfully!');
+          this.memberLoginForm.reset();
 
           // this.addNotification(response);
         },
