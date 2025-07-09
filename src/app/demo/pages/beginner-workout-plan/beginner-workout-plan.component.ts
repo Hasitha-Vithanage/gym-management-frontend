@@ -71,7 +71,7 @@ export class BeginnerWorkoutPlanComponent {
   ];
 
   backButton() : void {
-    
+    window.history.back();
   }
 }
 

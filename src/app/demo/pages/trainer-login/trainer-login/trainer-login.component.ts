@@ -16,13 +16,7 @@ export class TrainerLoginComponent implements OnInit {
 
   trainerLoginForm: FormGroup;
   trainerList: any[] = [];
-  trainers = [
-    { id: 1, name: 'John Silva' },
-    { id: 2, name: 'Amal Perera' },
-    { id: 3, name: 'Nadeesha Fernando' }
-  ]; // You can replace this with a service call
   dataSource: MatTableDataSource<any>;
-
 
   constructor(private fb: FormBuilder,
     private router: Router,
@@ -33,10 +27,26 @@ export class TrainerLoginComponent implements OnInit {
   ngOnInit(): void {
     this.trainerLoginForm = this.fb.group({
       trainerId: [null, Validators.required],
-      code: ['', Validators.required]
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      password: ['', Validators.required],
     });
 
     this.getTrainers();
+
+
+      // Set firstName and lastName when a trainer is selected
+  this.trainerLoginForm.get('trainerId')?.valueChanges.subscribe((selectedId) => {
+    const selectedTrainer = this.trainerList.find(t => t.id === selectedId);
+    if (selectedTrainer) {
+      this.trainerLoginForm.patchValue({
+        firstName: selectedTrainer.firstName || '',
+        lastName: selectedTrainer.lastName || ''
+      });
+    } else {
+      this.trainerLoginForm.patchValue({ firstName: '', lastName: '' });
+    }
+  });
   }
 
   // getMember function
@@ -52,6 +62,9 @@ export class TrainerLoginComponent implements OnInit {
       }
     });
   }
+
+
+  
 
   login(): void {
     if (this.trainerLoginForm.valid) {

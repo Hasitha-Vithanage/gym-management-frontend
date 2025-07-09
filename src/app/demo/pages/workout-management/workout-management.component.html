@@ -1,5 +1,5 @@
 <!--- Step 1 -->
-<div class="container two-column-layout" *ngIf="currentStep === 1">
+<div class="container two-column-layout">
   <!-- Left: Form Card -->
   <div class="card form-card">
     <div class="card-header">
@@ -48,11 +48,10 @@
           <mat-radio-group formControlName="experienceLevel" class="radio-group" color="primary">
             <mat-radio-button value="Beginner">Beginner</mat-radio-button>
             <mat-radio-button value="Intermediate">Intermediate</mat-radio-button>
-            <mat-radio-button value="Advanced">Advanced</mat-radio-button>
           </mat-radio-group>
         </div>
 
-        <button type="button" mat-raised-button class="next-button" [disabled]="formGroup.invalid" (click)="goToNextStep()">
+        <button type="button" mat-raised-button class="next-button" [disabled]="formGroup.invalid" (click)="viewDetails(this.formGroup.value)">
           Next
           <mat-icon>arrow_forward</mat-icon>
         </button>
@@ -128,17 +127,4 @@
   </div>
 </div>
 
-<!--- Step 2 -->
-<div *ngIf="currentStep === 2">
-  <!-- For beginners -->
-  <!-- *ngIf="['Beginner'].includes(formGroup.get('experienceLevel')?.value)" -->
-  <div *ngIf="['Beginner'].includes(formGroup.get('experienceLevel')?.value)">
-    <app-beginner-workout-plan></app-beginner-workout-plan>
-  </div>
-  <div *ngIf="['Intermediate'].includes(formGroup.get('experienceLevel')?.value)">
-    <p>Intermediate Workout Plan Here</p>
-  </div>
-  <div *ngIf="['Advanced'].includes(formGroup.get('experienceLevel')?.value)">
-    <p>Advanced Workout Plan Here</p>
-  </div>
-</div>
+

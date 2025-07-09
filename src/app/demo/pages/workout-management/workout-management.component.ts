@@ -1,6 +1,8 @@
 import { Component, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatStepper } from '@angular/material/stepper';
+import { Router } from '@angular/router';
+import { WorkoutManagementService } from 'src/app/services/workout-management/workout-management.service';
 
 
 @Component({
@@ -13,9 +15,11 @@ export class WorkoutManagementComponent {
 
   formGroup: FormGroup;
   @ViewChild('stepper') stepper!: MatStepper;
-  currentStep = 1;
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder,
+    private router: Router,
+    private workoutService: WorkoutManagementService
+  ) { }
 
   ngOnInit(): void {
     this.formGroup = this.fb.group({
@@ -34,11 +38,18 @@ export class WorkoutManagementComponent {
     });
   }
 
-  //goToNextStep function
-  goToNextStep(): void {
+  viewDetails(supplement: any): void {
+    // Navigate to the supplement details page with the selected supplement's ID
+    console.log('Viewing supplement:', supplement);
     if (this.formGroup.valid) {
-      this.currentStep = 2;
+      if (this.formGroup.get('experienceLevel').value === 'Beginner') {
+        this.router.navigate(['/pages/beginner-workout-plan']);
+      } else if (this.formGroup.get('experienceLevel').value === 'Intermediate') {
+        this.workoutService.setWorkoutData(this.formGroup.value);
+        this.router.navigate(['/pages/intermediate-workout-plan']);
+      }
     }
+
   }
 
   // mapping goal to the strings
