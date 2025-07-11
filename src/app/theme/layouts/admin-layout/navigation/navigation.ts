@@ -208,6 +208,16 @@ export const NavigationItems: NavigationItem[] = [
         breadcrumbs: false
       },
       {
+        id: 'myWorkoutPlanDet',
+        title: 'My Workout Plans',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/pages/my-workout-plan',
+        icon: '',
+        auth: authenticationEnum.Home_Dashboard,
+        breadcrumbs: false
+      },
+      {
         id: 'progressTrackingDet',
         title: 'Progress Tracking',
         type: 'item',

@@ -67,5 +67,25 @@ export class WorkoutPlanUploadService {
     // sending POST request to the server
     return this.http.put(requestUrl, employee_details, { headers: headers });
   }
+  
+
+getPdf(userId: string) {
+  console.log("Fetching PDF for user:", userId);
+
+  const requestUrl = environment.baseUrl + '/my-workout-plan/' + userId;
+
+  let headers = {};
+
+  if (this.httpService.getAuthToken() !== null) {
+    headers = {
+      Authorization: 'Bearer ' + this.httpService.getAuthToken()
+    };
+  }
+
+  return this.http.get(requestUrl, { headers: headers, responseType: 'blob' });
+}
+
+
+
 
 }

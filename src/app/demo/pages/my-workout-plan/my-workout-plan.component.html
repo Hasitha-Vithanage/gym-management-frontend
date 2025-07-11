@@ -1,0 +1,47 @@
+<div class="container">
+<div class="pdf-wrapper" *ngIf="!isLoading; else loadingTemplate">
+  <!-- Title -->
+  <h2 class="page-title">My Workout Plan</h2>
+
+  <!-- PDF Viewer with Action Buttons -->
+  <div *ngIf="hasPdf; else noPdfTemplate" class="pdf-frame-container">
+
+    <iframe [src]="pdfUrl" class="pdf-frame" frameborder="0" aria-label="Workout Plan PDF"></iframe>
+
+    <div class="action-buttons">
+      <button mat-raised-button color="primary" (click)="downloadPdf()">
+        <mat-icon>download</mat-icon> Download Plan
+      </button>
+      <button mat-raised-button color="accent" (click)="printPdf()">
+        <mat-icon>print</mat-icon> Print Plan
+      </button>
+    </div>
+
+    <p class="last-updated" *ngIf="workoutPlanLastUpdated">
+      Last updated: {{ workoutPlanLastUpdated | date:'medium' }}
+    </p>
+  </div>
+
+  <!-- No PDF Template -->
+  <ng-template #noPdfTemplate>
+    <div class="no-pdf-container">
+      <mat-icon class="no-pdf-icon">insert_drive_file</mat-icon>
+      <p class="no-pdf-text">No workout plan has been uploaded yet.</p>
+    </div>
+  </ng-template>
+
+  <!-- Support / Help -->
+  <p class="help-text">
+    Having trouble? <a href="/support" target="_blank" rel="noopener">Contact Support</a>
+  </p>
+
+</div>
+
+<!-- Loading Template -->
+<ng-template #loadingTemplate>
+  <div class="loading-container">
+    <mat-spinner></mat-spinner>
+    <p class="loading-text">Loading your workout plan...</p>
+  </div>
+</ng-template>
+</div>
