@@ -23,6 +23,7 @@ import { TrainerLoginComponent } from './trainer-login/trainer-login/trainer-log
 import { MemberLoginComponent } from './member-login/member-login/member-login.component';
 import { IntermediateWorkoutPlanComponent } from './intermediate-workout-plan/intermediate-workout-plan.component';
 import { GymChartsComponent } from './gym-charts/gym-charts.component';
+import { WorkoutPlanUploadComponent } from './workout-plan-upload/workout-plan-upload.component';
 
 export const PagesRoutes: Routes = [
   {
@@ -123,5 +124,8 @@ export const PagesRoutes: Routes = [
   },
      { path: 'intermediate-workout-plan',
     component: IntermediateWorkoutPlanComponent
+  }, 
+     { path: 'workout-plan-upload',
+    component: WorkoutPlanUploadComponent
   }, 
 ];

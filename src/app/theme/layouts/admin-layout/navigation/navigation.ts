@@ -198,6 +198,16 @@ export const NavigationItems: NavigationItem[] = [
         breadcrumbs: false
       },
       {
+        id: 'workoutPlanUploadDet',
+        title: 'Upload Workout Plan',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/pages/workout-plan-upload',
+        icon: '',
+        auth: authenticationEnum.Home_Dashboard,
+        breadcrumbs: false
+      },
+      {
         id: 'progressTrackingDet',
         title: 'Progress Tracking',
         type: 'item',

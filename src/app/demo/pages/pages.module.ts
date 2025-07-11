@@ -38,6 +38,8 @@ import { TrainerLoginComponent } from './trainer-login/trainer-login/trainer-log
 import { MemberLoginComponent } from './member-login/member-login/member-login.component';
 import { GymChartsComponent } from './gym-charts/gym-charts.component';
 import { IntermediateWorkoutPlanComponent } from './intermediate-workout-plan/intermediate-workout-plan.component';
+import { WorkoutPlanUploadComponent } from './workout-plan-upload/workout-plan-upload.component';
+import { UploadWorkoutPlanDialogComponent } from './upload-workout-plan-dialog/upload-workout-plan-dialog.component';
 
 // icons
 
@@ -75,7 +77,9 @@ import { IntermediateWorkoutPlanComponent } from './intermediate-workout-plan/in
     TrainerLoginComponent,
     MemberLoginComponent,
     IntermediateWorkoutPlanComponent,
-    GymChartsComponent
+    GymChartsComponent,
+    WorkoutPlanUploadComponent,
+    UploadWorkoutPlanDialogComponent
   ],
   imports: [
     CommonModule,
