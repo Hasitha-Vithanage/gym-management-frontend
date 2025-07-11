@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/app/environments/environment';
 import { HttpService } from '../http.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -21,25 +22,36 @@ export class WorkoutManagementService {
     return this.userDetails;
   }
 
-  clearWorkoutData() {
-    this.userDetails = null;
-  }
 
-  getTrainerByUserName(userName: any) {
-    console.log("In editData!");
-
-    // creating requesting URL
-    const requestUrl = environment.baseUrl + '/intermediate-workout-plan/' + userName.toString();
+    getTrainerById(): Observable<any> {
+      const id = 9;
+        const requestUrl = environment.baseUrl + '/trainer/' + id.toString();
 
     let headers = {};
-
     if (this.httpService.getAuthToken() !== null) {
       headers = {
         Authorization: 'Bearer ' + this.httpService.getAuthToken()
       };
     }
-
-    // sending GET request to the server
     return this.http.get(requestUrl, { headers: headers });
   }
+
+
+  clearWorkoutData() {
+    this.userDetails = null;
+  }
+
+
+    sendWorkoutRequest(requestPayload: any) {
+        const requestUrl = environment.baseUrl + '/sendRequest';
+
+    let headers = {};
+    if (this.httpService.getAuthToken() !== null) {
+      headers = {
+        Authorization: 'Bearer ' + this.httpService.getAuthToken()
+      };
+    }
+    return this.http.post(requestUrl, requestPayload, { headers: headers });
+  }
+
 }

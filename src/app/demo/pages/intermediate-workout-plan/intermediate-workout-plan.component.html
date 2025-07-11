@@ -12,27 +12,27 @@
 
     <div class="supplement-main">
       <div class="supplement-image">
-         <h3>User Information</h3>
+        <h3>User Information</h3>
 
         <p>
           <strong>Age:</strong>
-          {{ userDetails.age}}
+          {{ userDetails.age }}
         </p>
         <p>
           <strong>Weight:</strong>
-          {{ userDetails.weight}}
+          {{ userDetails.weight }}
         </p>
         <p>
           <strong>Height:</strong>
-          {{ userDetails.height}} cm
+          {{ userDetails.height }} cm
         </p>
         <p>
           <strong>Primary Fitness Goal:</strong>
-          {{ userDetails.fitnessGoal}}
+          {{ userDetails.fitnessGoal }}
         </p>
         <p>
           <strong>Fitness Experience Level:</strong>
-          {{ userDetails.experienceLevel}}
+          {{ userDetails.experienceLevel }}
         </p>
       </div>
 
@@ -41,23 +41,25 @@
 
         <p>
           <strong>Name:</strong>
-          Mike Tyson
+          {{ trainerDetails.firstName }} {{ trainerDetails.lastName }}
         </p>
         <p>
           <strong>Email:</strong>
-          mikemail.com
+          {{ trainerDetails.email }}
         </p>
         <p>
           <strong>Contact:</strong>
-          045897123154
+          {{ trainerDetails.phoneNumber }}
         </p>
       </div>
     </div>
   </div>
 
-          <div class="cart-actions">
-          <button (click)="senRequest()">Send Request</button>
-        </div>
+  <div class="cart-actions">
+    <button *ngIf="!isRequestSent" (click)="senRequest()">Send Request</button>
+
+    <p *ngIf="isRequestSent" class="sent-message">✅ Workout Plan Request Already Sent.</p>
+  </div>
 
   <div class="supplement-description">
     <h4>PDF</h4>
