@@ -31,25 +31,53 @@ export class NewMemberDialogComponent {
     private sanitizer: DomSanitizer,
     private messageService: MessageServiceService,
   ) {
-    this.memberForm = this.fb.group({
-      memberNo: new FormControl(""),
-      firstName: new FormControl(""),
-      lastName: new FormControl(""),
-      nic: new FormControl(""),
-      dateOfBirth: new FormControl(""),
-      address: new FormControl(""),
-      phoneNumber: new FormControl(""),
-      email: new FormControl(""),
-      emergencyContactNumber: new FormControl(""),
-      bloodType: new FormControl(""),
-      joinedDate: new FormControl(""),
-      gender: new FormControl(""),
-      injuries: new FormControl(""),
-      membershipCategory: new FormControl(""),
-      image: new FormControl('', [Validators.required]),
-      imageName: new FormControl(''),
-      imageType: new FormControl(''),
-    })
+this.memberForm = this.fb.group({
+  memberNo: new FormControl('', [
+    Validators.required,
+    Validators.maxLength(5),
+    Validators.pattern(/^M\d{3}$/) // e.g., M001
+  ]),
+  firstName: new FormControl('', [
+    Validators.required,
+    Validators.maxLength(10),
+    Validators.pattern(/^[a-zA-Z]+$/)
+  ]),
+  lastName: new FormControl('', [
+    Validators.required,
+    Validators.maxLength(10),
+    Validators.pattern(/^[a-zA-Z]+$/)
+  ]),
+  nic: new FormControl('', [
+    Validators.required,
+    Validators.pattern(/^(\d{9}[Vv]|\d{12})$/) // supports old and new formats
+  ]),
+  dateOfBirth: new FormControl('', Validators.required),
+  address: new FormControl('', [
+    Validators.required,
+    Validators.maxLength(100)
+  ]),
+  phoneNumber: new FormControl('', [
+    Validators.required,
+    Validators.pattern(/^\d{10}$/)
+  ]),
+  email: new FormControl('', [
+    Validators.required,
+    Validators.email,
+    Validators.maxLength(50)
+  ]),
+  emergencyContactNumber: new FormControl('', [
+    Validators.required,
+    Validators.pattern(/^\d{10}$/)
+  ]),
+  bloodType: new FormControl('', Validators.required),
+  joinedDate: new FormControl('', Validators.required),
+  gender: new FormControl('', Validators.required),
+  injuries: new FormControl('', Validators.maxLength(300)),
+  membershipCategory: new FormControl('', Validators.required),
+  image: new FormControl('', Validators.required),
+  imageName: new FormControl(''),
+  imageType: new FormControl('')
+});
   }
 
   /* OnSubmit function */

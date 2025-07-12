@@ -32,7 +32,7 @@
   
   .row {
     display: flex;
-    gap: 0px;
+    gap: 16px !important ;
   }
   
   .half-width {
@@ -59,6 +59,12 @@ mat-radio-group {
 mat-radio-button {
   margin-right: 24px;
   font-size: 14px;
+}
+
+input.mat-input-element:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.3);
+  border-radius: 40px !important;
 }
 
 
@@ -100,13 +106,30 @@ mat-radio-button {
     height: 100%;
   }
   
+  // .required-message {
+  //   color: red;
+  //   font-size: 12px;
+  //   font-style: italic;
+  //   margin-top: 4px;
+  //   display: block;
+  // }
+
   .required-message {
-    color: red;
-    font-size: 12px;
-    font-style: italic;
-    margin-top: 4px;
-    display: block;
-  }
+  display: block;
+  color: #d32f2f; /* Material red tone for errors */
+  font-size: 13px;
+  font-weight: 500;
+  margin-top: 4px;
+  padding-left: 2px;
+  font-style: normal;
+  transition: all 0.2s ease-in-out;
+  animation: fadeIn 0.25s ease-in-out;
+  line-height: 1.4;
+}
+
+mat-form-field .required-message {
+  margin-left: 0.5rem;
+}
 
   .register-button {
     background-color: #1976d2 !important;
@@ -118,3 +141,21 @@ mat-radio-button {
     color: #1976d2 !important;
   }
   
+mat-icon[matPrefix] {
+  color: #5e5959;               
+  margin-right: 8px;        
+  font-size: 20px;              
+  vertical-align: middle;       
+  transition: color 0.3s ease;  
+  user-select: none;   
+}
+
+mat-form-field.mat-focused mat-icon[matPrefix],
+mat-form-field:hover mat-icon[matPrefix] {
+  color: #1976d2;               /* Highlight icon color on focus/hover */
+}
+
+
+
+
+

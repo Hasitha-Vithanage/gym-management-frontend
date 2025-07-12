@@ -24,6 +24,9 @@ export class NewEmployeeDialogComponent {
   submitted = false;
   userName;
   dataSource: MatTableDataSource<any>;
+  today: Date = new Date();
+  
+
 
   constructor(
     private fb: FormBuilder,
@@ -43,42 +46,33 @@ export class NewEmployeeDialogComponent {
     const today = new Date().toISOString().split('T')[0]; // Format as YYYY-MM-DD
     const userName = this.http.getLoginNameFromCache();
 
-    this.employeeForm = new FormGroup({
-      employeeId: new FormControl('', [Validators.required, Validators.minLength(5)]),
-      jobTitle: new FormControl('', [Validators.required]),
-      dateOfJoining: new FormControl('', [Validators.required]),
-      firstName: new FormControl('', [Validators.required, Validators.minLength(3)]),
-      lastName: new FormControl('', [Validators.required, Validators.minLength(3)]),
-      nic: new FormControl('', [Validators.required, Validators.minLength(12)]),
-      dateOfBirth: new FormControl('', [Validators.required]),
-      gender: new FormControl('', [Validators.required]),
-      address: new FormControl('', [Validators.required]),
-      email: new FormControl('', [Validators.required, Validators.email]),
-      phoneNumber: new FormControl('', [Validators.required, Validators.minLength(10), this.customDecimalValidator]),
-      emergencyContactNumber: new FormControl('', [Validators.minLength(10), this.customDecimalValidator])
+    this.employeeForm = this.fb.group({
+      employeeId: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(5)]],
+      jobTitle: ['', Validators.required],
+      dateOfJoining: ['', [Validators.required, this.futureDateValidator]],
+      firstName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(15), Validators.pattern(/^[A-Za-z]+$/)]],
+      lastName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(15), Validators.pattern(/^[A-Za-z]+$/)]],
+      nic: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(12), Validators.pattern(/^[0-9]{9}[vVxX]$|^[1-2][0-9]{11}$/)]],
+      dateOfBirth: ['', [Validators.required, this.futureDateValidator]],
+      gender: ['', Validators.required],
+      address: ['', [Validators.required, Validators.maxLength(100)]],
+      email: ['', [Validators.required, Validators.email]],
+      phoneNumber: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
+      emergencyContactNumber: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
     });
+
   }
 
-  // custom validation
-  customDecimalValidator(control: AbstractControl) {
-    if (!control) {
-      return null;
-    }
 
-    const controlValue = +control.value;
 
-    if (isNaN(+control.value)) {
-      return {
-        customDecimalValidator: true
-      };
-    }
-    if (!Number.isInteger(controlValue)) {
-      return {
-        customDecimalValidator: true
-      };
-    }
-    return null;
+  futureDateValidator(control: AbstractControl) {
+    if (!control.value) return null;
+    const inputDate = new Date(control.value);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return inputDate > today ? { futureDate: true } : null;
   }
+
 
   /* onsubmit function */
   onSubmit() {

@@ -54,7 +54,30 @@ export class MyWorkoutPlanComponent {
     };
   }
 
-  populateData(): void {
+  // populateData(): void {
+  //   const userId = this.httpService.getLoginNameFromCache();
+
+  //   this.uploadWorkoutService.getPdf(userId).subscribe({
+  //     next: (data: Blob) => {
+  //       const blob = new Blob([data], { type: 'application/pdf' });
+  //       const url = URL.createObjectURL(blob);
+  //       this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  //       this.rawPdfBlob = blob;
+
+  //       console.log("response Data: ", data);
+
+  //     },
+  //     error: (err) => {
+  //       this.messageService.showError('Workout plan not available for this user.');
+  //       this.isLoading = false;
+  //       this.hasPdf = false;
+  //       this.rawPdfBlob = null;
+  //       this.pdfUrl = null;
+  //     }
+  //   });
+  // }
+
+   populateData(): void {
     const userId = this.httpService.getLoginNameFromCache();
 
     this.uploadWorkoutService.getPdf(userId).subscribe({
@@ -64,9 +87,9 @@ export class MyWorkoutPlanComponent {
         this.hasPdf = true;
         this.isLoading = false;
         this.workoutPlanLastUpdated = new Date(); // Set to now or get real timestamp if available
-
+        
         console.log("response Data: ", data);
-
+        
       },
       error: (err) => {
         this.messageService.showError('Workout plan not available for this user.');
@@ -77,6 +100,7 @@ export class MyWorkoutPlanComponent {
       }
     });
   }
+
 
   downloadPdf(): void {
     if (!this.rawPdfBlob) return;
