@@ -41,6 +41,7 @@ import { IntermediateWorkoutPlanComponent } from './intermediate-workout-plan/in
 import { WorkoutPlanUploadComponent } from './workout-plan-upload/workout-plan-upload.component';
 import { UploadWorkoutPlanDialogComponent } from './upload-workout-plan-dialog/upload-workout-plan-dialog.component';
 import { MyWorkoutPlanComponent } from './my-workout-plan/my-workout-plan.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 // icons
 
@@ -81,7 +82,8 @@ import { MyWorkoutPlanComponent } from './my-workout-plan/my-workout-plan.compon
     GymChartsComponent,
     WorkoutPlanUploadComponent,
     UploadWorkoutPlanDialogComponent,
-    MyWorkoutPlanComponent
+    MyWorkoutPlanComponent,
+    UserProfileComponent
   ],
   imports: [
     CommonModule,

@@ -25,6 +25,7 @@ export class AssignTrainerDialogComponent {
   dataSource: MatTableDataSource<any>;
   memberList: any[] = [];
   trainerList: any[] = [];
+  submitDisabled;
 
   constructor(
     private fb: FormBuilder,
@@ -156,6 +157,11 @@ export class AssignTrainerDialogComponent {
     this.registerButtonLabel = "Update";
     this.mode = "edit";
     this.selectedData = data;
+    this.submitDisabled = true;
+
+    this.assignTrainerForm.valueChanges.subscribe(() => {
+    this.submitDisabled = !this.assignTrainerForm.valid || this.assignTrainerForm.pristine;
+  });
   }
 
   // Dialog close function

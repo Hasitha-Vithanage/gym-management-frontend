@@ -15,6 +15,7 @@ export class WorkoutManagementComponent {
 
   formGroup: FormGroup;
   @ViewChild('stepper') stepper!: MatStepper;
+  submitted = false;
 
   constructor(private fb: FormBuilder,
     private router: Router,
@@ -24,8 +25,8 @@ export class WorkoutManagementComponent {
   ngOnInit(): void {
     this.formGroup = this.fb.group({
       age: ['', [Validators.required, Validators.min(10), Validators.max(100)]],
-      weight: ['', [Validators.required, Validators.min(20)]],
-      height: ['', [Validators.required, Validators.min(50)]],
+      weight: ['', [Validators.required, Validators.min(20), Validators.max(300)]],
+      height: ['', [Validators.required, Validators.min(100), Validators.max(250)]],
       fitnessGoal: ['', Validators.required],
       experienceLevel: ['', Validators.required]
     });
@@ -39,6 +40,7 @@ export class WorkoutManagementComponent {
   }
 
   viewDetails(supplement: any): void {
+    this.submitted = true;
     // Navigate to the supplement details page with the selected supplement's ID
     console.log('Viewing supplement:', supplement);
     if (this.formGroup.valid) {

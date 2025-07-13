@@ -107,11 +107,11 @@
       <div class="dropdown-divider"></div>
     </div>
   </li>
-<li class="pc-h-item">
-  <a class="pc-head-link me-0 bg-gray-200">
-<i antIcon type="plus" theme="outline"></i>
-  </a>
-</li>
+  <li class="pc-h-item">
+    <a class="pc-head-link me-0 bg-gray-200">
+      <i antIcon type="plus" theme="outline"></i>
+    </a>
+  </li>
 
   <li class="dropdown pc-h-item header-user-profile" ngbDropdown>
     <a class="pc-head-link dropdown-toggle arrow-none me-0" ngbDropdownToggle>
@@ -125,12 +125,12 @@
             <img src="assets/images/user/avatar-2.jpg" alt="user-image" class="user-avatar wid-35" />
           </div>
           <div class="flex-grow-1 ms-3 text-start">
-            <h6 class="mb-0">JWT User</h6>
-            <span>UI/UX Designer</span>
+            <h6 class="mb-0">{{ userName }}</h6>
+            <span>{{ role }}</span>
           </div>
-          <a href="javascript:" class="bg-transparent">
+          <!-- <a href="javascript:" class="bg-transparent">
             <i class="d-flex f-20" antIcon theme="outline" type="logout" (click)="logOutUser()"></i>
-          </a>
+          </a> -->
         </div>
       </div>
       <ul ngbNav #nav="ngbNav" class="nav drp-tabs nav-fill nav-tabs">
@@ -142,7 +142,7 @@
           <ng-template ngbNavContent>
             @for (task of profile; track task) {
               <div>
-                <a class="dropdown-item">
+                <a class="dropdown-item" (click)="viewProfile()">
                   <i class="text-muted" antIcon theme="outline" type="{{ task.icon }}"></i>
                   <span>{{ task.title }}</span>
                 </a>
@@ -156,7 +156,7 @@
             </div>
           </ng-template>
         </li>
-        <li ngbNavItem="2">
+        <!-- <li ngbNavItem="2">
           <a ngbNavLink>
             <i class="me-2" antIcon theme="outline" type="setting"></i>
             Setting
@@ -171,7 +171,7 @@
               </div>
             }
           </ng-template>
-        </li>
+        </li> -->
       </ul>
       <div [ngbNavOutlet]="nav"></div>
     </div>

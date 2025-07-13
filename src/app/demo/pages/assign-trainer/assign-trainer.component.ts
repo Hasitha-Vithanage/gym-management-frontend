@@ -52,6 +52,8 @@ export class AssignTrainerComponent {
     // get data request
     // calling populate data function
     this.populateData();
+
+    
   }
 
   // implementation of populateData function

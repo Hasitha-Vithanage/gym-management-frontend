@@ -25,6 +25,7 @@ import { IntermediateWorkoutPlanComponent } from './intermediate-workout-plan/in
 import { GymChartsComponent } from './gym-charts/gym-charts.component';
 import { WorkoutPlanUploadComponent } from './workout-plan-upload/workout-plan-upload.component';
 import { MyWorkoutPlanComponent } from './my-workout-plan/my-workout-plan.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 export const PagesRoutes: Routes = [
   {
@@ -131,5 +132,8 @@ export const PagesRoutes: Routes = [
   }, 
      { path: 'my-workout-plan',
     component: MyWorkoutPlanComponent
+  }, 
+     { path: 'user-profile',
+    component: UserProfileComponent
   }, 
 ];

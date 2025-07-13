@@ -25,7 +25,7 @@ export class NewEmployeeDialogComponent {
   userName;
   dataSource: MatTableDataSource<any>;
   today: Date = new Date();
-  
+  submitDisabled
 
 
   constructor(
@@ -47,7 +47,7 @@ export class NewEmployeeDialogComponent {
     const userName = this.http.getLoginNameFromCache();
 
     this.employeeForm = this.fb.group({
-      employeeId: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(5)]],
+      employeeId: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(5), Validators.pattern(/^E\d{3}$/)]],
       jobTitle: ['', Validators.required],
       dateOfJoining: ['', [Validators.required, this.futureDateValidator]],
       firstName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(15), Validators.pattern(/^[A-Za-z]+$/)]],
@@ -147,6 +147,12 @@ export class NewEmployeeDialogComponent {
     this.registerButtonLabel = "Update";
     this.mode = "edit";
     this.selectedData = data;
+
+    this.submitDisabled = true;
+
+    this.employeeForm.valueChanges.subscribe(() => {
+      this.submitDisabled = /* !this.employeeForm.valid || */ this.employeeForm.pristine;
+    });
   }
 
   // reset button function

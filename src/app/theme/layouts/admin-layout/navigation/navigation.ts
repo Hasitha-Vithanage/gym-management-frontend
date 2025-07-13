@@ -91,7 +91,7 @@ export const NavigationItems: NavigationItem[] = [
         //icon: 'ti ti-dashboard',
         breadcrumbs: false,
         classes: 'nav-item',
-        // auth: authenticationEnum.Privilege_Groups,
+        auth: authenticationEnum.Privilege_Groups,
         isVisible: false
       }
     ]

@@ -135,6 +135,13 @@ mat-form-field .required-message {
     background-color: #1976d2 !important;
     color: #fff;
   }
+
+  .register-button:disabled {
+ // background-color: #9e9e9e !important;
+  color: #e0e0e0 !important; /* lighter text */
+  cursor: not-allowed;
+  opacity: 0.8;
+}
   
   .close-button {
     background-color: #f3f6f9 !important;

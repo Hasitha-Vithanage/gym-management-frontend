@@ -18,11 +18,21 @@
           <mat-form-field class="half-width" appearance="fill">
             <mat-label>Age</mat-label>
             <input matInput type="number" formControlName="age" maxlength="3" />
+            <span class="required-message" *ngIf="submitted && formGroup.get('age').invalid">
+              <ng-container *ngIf="formGroup.get('age').hasError('required')">Age is required</ng-container>
+              <ng-container *ngIf="formGroup.get('age').hasError('min')">Minimum age is 10</ng-container>
+              <ng-container *ngIf="formGroup.get('age').hasError('max')">Maximum age is 100</ng-container>
+            </span>
           </mat-form-field>
 
           <mat-form-field class="half-width" appearance="fill">
             <mat-label>Weight (kg)</mat-label>
             <input matInput type="number" formControlName="weight" maxlength="3" />
+                        <span class="required-message" *ngIf="submitted && formGroup.get('weight').invalid">
+              <ng-container *ngIf="formGroup.get('weight').hasError('required')">Weight is required</ng-container>
+              <ng-container *ngIf="formGroup.get('weight').hasError('min')">Minimum weight is 20 KG</ng-container>
+              <ng-container *ngIf="formGroup.get('weight').hasError('max')">Maximum weight is 300 KG</ng-container>
+            </span>
           </mat-form-field>
         </div>
 
@@ -30,6 +40,11 @@
           <mat-form-field class="half-width" appearance="fill">
             <mat-label>Height (cm)</mat-label>
             <input matInput type="number" formControlName="height" maxlength="3" />
+                                    <span class="required-message" *ngIf="submitted && formGroup.get('height').invalid">
+              <ng-container *ngIf="formGroup.get('height').hasError('required')">Height is required</ng-container>
+              <ng-container *ngIf="formGroup.get('height').hasError('min')">Minimum height is 100 cm</ng-container>
+              <ng-container *ngIf="formGroup.get('height').hasError('max')">Maximum height is 250 cm</ng-container>
+            </span>
           </mat-form-field>
 
           <mat-form-field class="half-width" appearance="fill">
@@ -40,6 +55,9 @@
               <mat-option value="general_fitness">⚡ General Fitness</mat-option>
               <mat-option value="endurance">🏃 Endurance</mat-option>
             </mat-select>
+                                    <span class="required-message" *ngIf="submitted && formGroup.get('fitnessGoal').invalid">
+              <ng-container *ngIf="formGroup.get('fitnessGoal').hasError('required')">Primary Fitness Goal is required</ng-container>
+            </span>
           </mat-form-field>
         </div>
 
@@ -48,10 +66,18 @@
           <mat-radio-group formControlName="experienceLevel" class="radio-group" color="primary">
             <mat-radio-button value="Beginner">Beginner</mat-radio-button>
             <mat-radio-button value="Intermediate">Intermediate</mat-radio-button>
+                                    <span class="required-message" *ngIf="submitted && formGroup.get('experienceLevel').invalid">
+              <ng-container *ngIf="formGroup.get('weight').hasError('required')">Fitness Experience Level is required</ng-container>
+            </span>
           </mat-radio-group>
         </div>
 
-        <button type="button" mat-raised-button class="next-button" [disabled]="formGroup.invalid" (click)="viewDetails(this.formGroup.value)">
+        <button
+          type="button"
+          mat-raised-button
+          class="next-button"
+          (click)="viewDetails(this.formGroup.value)"
+        >
           Next
           <mat-icon>arrow_forward</mat-icon>
         </button>
@@ -126,5 +152,3 @@
     </div>
   </div>
 </div>
-
-

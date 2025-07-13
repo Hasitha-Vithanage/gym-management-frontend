@@ -60,7 +60,8 @@ export class QrCodeComponent {
 
     // Create attendance URL
     const dataParam = encodeURIComponent(JSON.stringify(employeeData));
-    this.attendanceUrl = `${environment.baseUrl}/employeeService/mark-attendance/${this.userData.employeeId}`;
+    this.attendanceUrl = this.userData.memberNo ? `${environment.baseUrl}/memberService/mark-attendance/present/${this.userData.memberNo}`
+                            : `${environment.baseUrl}/employeeService/mark-attendance/present/${this.userData.employeeId}`;
 
     try {
       await QRCode.toCanvas(canvas, this.attendanceUrl, {

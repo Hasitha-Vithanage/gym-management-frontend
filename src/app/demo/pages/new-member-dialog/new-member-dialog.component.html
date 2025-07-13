@@ -14,12 +14,22 @@
         <mat-label>Member No</mat-label>
         <mat-icon matPrefix>badge</mat-icon>
         <input matInput maxlength="5" placeholder="Ex. M001" formControlName="memberNo" type="text" />
+        <span class="required-message" *ngIf="submitted && memberForm.get('memberNo').invalid">
+          <ng-container *ngIf="memberForm.get('memberNo').hasError('required')">Member No is Required</ng-container>
+          <ng-container *ngIf="memberForm.get('memberNo').hasError('minlength')">Minimum 5 characters required</ng-container>
+          <ng-container *ngIf="memberForm.get('memberNo').hasError('maxlength')">Maximum 5 characters allowed</ng-container>
+        </span>
       </mat-form-field>
 
       <mat-form-field class="half-width">
         <mat-label>First Name</mat-label>
-        <mat-ico matPrefix>person</mat-ico>
+        <mat-icon matPrefix>person</mat-icon>
         <input matInput matInput maxlength="10" placeholder="Ex. Mike" formControlName="firstName" type="text" />
+        <span class="required-message" *ngIf="submitted && memberForm.get('firstName').invalid">
+          <ng-container *ngIf="memberForm.get('firstName').hasError('required')">First Name is required</ng-container>
+          <ng-container *ngIf="memberForm.get('firstName').hasError('minlength')">Minimum 3 characters required</ng-container>
+          <ng-container *ngIf="memberForm.get('firstName').hasError('pattern')">Only letters allowed</ng-container>
+        </span>
       </mat-form-field>
     </div>
 
@@ -28,12 +38,22 @@
         <mat-label>Last Name</mat-label>
         <mat-icon matPrefix>person_outline</mat-icon>
         <input matInput matInput maxlength="10" placeholder="Ex. David" formControlName="lastName" type="text" />
+        <span class="required-message" *ngIf="submitted && memberForm.get('lastName').invalid">
+          <ng-container *ngIf="memberForm.get('lastName').hasError('required')">Last Name is required</ng-container>
+          <ng-container *ngIf="memberForm.get('lastName').hasError('minlength')">Minimum 3 characters required</ng-container>
+          <ng-container *ngIf="memberForm.get('lastName').hasError('pattern')">Only letters allowed</ng-container>
+        </span>
       </mat-form-field>
 
       <mat-form-field class="half-width">
         <mat-label>NIC</mat-label>
         <mat-icon matPrefix>credit_card</mat-icon>
         <input matInput matInput maxlength="12" placeholder="Ex. 512478912315" formControlName="nic" type="text" />
+        <span class="required-message" *ngIf="submitted && memberForm.get('nic').invalid">
+          <ng-container *ngIf="memberForm.get('nic').hasError('required')">NIC is required</ng-container>
+          <ng-container *ngIf="memberForm.get('nic').hasError('minlength')">Invalid NIC format</ng-container>
+          <ng-container *ngIf="memberForm.get('nic').hasError('pattern')">Invalid NIC format</ng-container>
+        </span>
       </mat-form-field>
     </div>
 
@@ -44,12 +64,19 @@
         <input matInput [matDatepicker]="dob" placeholder="MM/DD/YYYY" formControlName="dateOfBirth" />
         <mat-datepicker-toggle matIconSuffix [for]="dob"></mat-datepicker-toggle>
         <mat-datepicker #dob></mat-datepicker>
+        <span class="required-message" *ngIf="submitted && memberForm.get('dateOfBirth').invalid">
+          <ng-container *ngIf="memberForm.get('dateOfBirth').hasError('required')">Date of Birth is required</ng-container>
+          <ng-container *ngIf="memberForm.get('dateOfBirth').hasError('futureDate')">Future dates not allowed</ng-container>
+        </span>
       </mat-form-field>
 
       <mat-form-field class="half-width">
         <mat-label>Address</mat-label>
         <mat-icon matPrefix>home</mat-icon>
         <textarea matInput maxlength="100" placeholder="Ex. 123, ABC Road, Kandy" formControlName="address"></textarea>
+        <span class="required-message" *ngIf="submitted && memberForm.get('address').invalid">
+          <ng-container *ngIf="memberForm.get('address').hasError('required')">Address is required</ng-container>
+        </span>
       </mat-form-field>
     </div>
 
@@ -58,12 +85,20 @@
         <mat-label>Phone Number</mat-label>
         <mat-icon matPrefix>call</mat-icon>
         <input matInput maxlength="10" placeholder="Ex. 1529867523" formControlName="phoneNumber" />
+        <span class="required-message" *ngIf="submitted && memberForm.get('phoneNumber').invalid">
+          <ng-container *ngIf="memberForm.get('phoneNumber').hasError('required')">Phone Number is required</ng-container>
+          <ng-container *ngIf="memberForm.get('phoneNumber').hasError('pattern')">Must be a 10-digit number</ng-container>
+        </span>
       </mat-form-field>
 
       <mat-form-field class="half-width">
         <mat-label>Email</mat-label>
         <mat-icon matPrefix>email</mat-icon>
         <input matInput maxlength="50" placeholder="Ex. abc@gmail.com" formControlName="email" type="email" />
+        <span class="required-message" *ngIf="submitted && memberForm.get('email').invalid">
+          <ng-container *ngIf="memberForm.get('email').hasError('required')">Email is required</ng-container>
+          <ng-container *ngIf="memberForm.get('email').hasError('email')">Invalid email format</ng-container>
+        </span>
       </mat-form-field>
     </div>
 
@@ -72,6 +107,10 @@
         <mat-label>Emergency Contact</mat-label>
         <mat-icon matPrefix>contact_phone</mat-icon>
         <input matInput maxlength="10" placeholder="Ex. 1529867523" formControlName="emergencyContactNumber" />
+        <span class="required-message" *ngIf="submitted && memberForm.get('emergencyContactNumber').invalid">
+          <ng-container *ngIf="memberForm.get('emergencyContactNumber').hasError('required')">Emergency contact is required</ng-container>
+          <ng-container *ngIf="memberForm.get('emergencyContactNumber').hasError('pattern')">Must be a 10-digit number</ng-container>
+        </span>
       </mat-form-field>
 
       <mat-form-field class="half-width">
@@ -97,12 +136,19 @@
         <input matInput [matDatepicker]="join" placeholder="MM/DD/YYYY" formControlName="joinedDate" />
         <mat-datepicker-toggle matIconSuffix [for]="join"></mat-datepicker-toggle>
         <mat-datepicker #join></mat-datepicker>
+        <span class="required-message" *ngIf="submitted && memberForm.get('joinedDate').invalid">
+          <ng-container *ngIf="memberForm.get('joinedDate').hasError('required')">Joined Date is required</ng-container>
+          <ng-container *ngIf="memberForm.get('joinedDate').hasError('futureDate')">Future dates not allowed</ng-container>
+        </span>
       </mat-form-field>
 
       <mat-radio-group aria-label="Gender" class="half-width" formControlName="gender">
         <mat-label>Gender</mat-label>
         <mat-radio-button value="male">Male</mat-radio-button>
         <mat-radio-button value="female">Female</mat-radio-button>
+        <span class="required-message" *ngIf="submitted && memberForm.get('gender').invalid">
+          <ng-container *ngIf="memberForm.get('gender').hasError('required')">Gender is required</ng-container>
+        </span>
       </mat-radio-group>
     </div>
 
@@ -111,6 +157,9 @@
         <mat-label>Injuries</mat-label>
         <mat-icon matPrefix>healing</mat-icon>
         <textarea matInput formControlName="injuries"></textarea>
+        <span class="required-message" *ngIf="submitted && memberForm.get('injuries').invalid">
+          <ng-container *ngIf="memberForm.get('injuries').hasError('maxLength')">Maximum 300 characters allowed</ng-container>
+        </span>
       </mat-form-field>
 
       <mat-form-field class="half-width">
@@ -120,6 +169,9 @@
           <mat-option value="online">Online</mat-option>
           <mat-option value="physical">Physical</mat-option>
         </mat-select>
+        <span class="required-message" *ngIf="submitted && memberForm.get('membershipCategory').invalid">
+          <ng-container *ngIf="memberForm.get('membershipCategory').hasError('required')">Membership Category is required</ng-container>
+        </span>
       </mat-form-field>
     </div>
 
@@ -137,7 +189,7 @@
     </div>
 
     <div class="row">
-      <button type="submit" mat-raised-button color="primary" class="register-button half-width" [disabled]="isButtonDisabled">
+      <button type="submit" mat-raised-button color="primary" class="register-button half-width" [disabled]="submitDisabled">
         {{ registerButtonLabel }}
       </button>
       <button type="reset" mat-raised-button class="reset-button half-width" (click)="resetData()">Reset</button>

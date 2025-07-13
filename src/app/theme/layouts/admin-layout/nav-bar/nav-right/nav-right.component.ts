@@ -45,6 +45,7 @@ export class NavRightComponent implements OnInit {
   screenFull: boolean = true;
 
   userName;
+  role = "Trainer";
 
   notifications: any[] = [];
   unreadCount = 0;
@@ -146,50 +147,54 @@ export class NavRightComponent implements OnInit {
   }
 
   profile = [
-    {
-      icon: 'edit',
-      title: 'Edit Profile'
-    },
+    // {
+    //   icon: 'edit',
+    //   title: 'Edit Profile'
+    // },
     {
       icon: 'user',
       title: 'View Profile'
     },
-    {
-      icon: 'profile',
-      title: 'Social Profile'
-    },
-    {
-      icon: 'wallet',
-      title: 'Billing'
-    }
+    // {
+    //   icon: 'profile',
+    //   title: 'Social Profile'
+    // },
+    // {
+    //   icon: 'wallet',
+    //   title: 'Billing'
+    // }
   ];
 
   setting = [
-    {
-      icon: 'question-circle',
-      title: 'Support'
-    },
-    {
-      icon: 'user',
-      title: 'Account Settings'
-    },
-    {
-      icon: 'lock',
-      title: 'Privacy Center'
-    },
-    {
-      icon: 'comment',
-      title: 'Feedback'
-    },
-    {
-      icon: 'unordered-list',
-      title: 'History'
-    }
+    // {
+    //   icon: 'question-circle',
+    //   title: 'Support'
+    // },
+    // {
+    //   icon: 'user',
+    //   title: 'Account Settings'
+    // },
+    // {
+    //   icon: 'lock',
+    //   title: 'Privacy Center'
+    // },
+    // {
+    //   icon: 'comment',
+    //   title: 'Feedback'
+    // },
+    // {
+    //   icon: 'unordered-list',
+    //   title: 'History'
+    // }
   ];
 
   public logOutUser(): void {
     this.cacheService.clear(this.httpService.getUserId()!);
     this.httpService.removeToken();
     this.router.navigate(['/login']);
+  }
+
+  public viewProfile(): void {
+    this.router.navigate(['/pages/user-profile']);
   }
 }

@@ -17,6 +17,9 @@
             {{ member.firstName }}
           </mat-option>
         </mat-select>
+                          <span class="required-message" *ngIf="submitted && assignTrainerForm.get('member').invalid">
+          <ng-container *ngIf="assignTrainerForm.get('member').hasError('required')">Member is required</ng-container>
+        </span>
       </mat-form-field>
 
       <mat-form-field class="half-width">
@@ -26,11 +29,14 @@
             {{ trainer.firstName }}
           </mat-option>
         </mat-select>
+                          <span class="required-message" *ngIf="submitted && assignTrainerForm.get('trainer').invalid">
+          <ng-container *ngIf="assignTrainerForm.get('trainer').hasError('required')">Trainer is required</ng-container>
+        </span>
       </mat-form-field>
     </div>
 
     <div class="row">
-      <button type="submit" mat-raised-button class="register-button half-width" [disabled]="isDisabled">
+      <button type="submit" mat-raised-button class="register-button half-width" [disabled]="submitDisabled">
         {{ registerButtonLabel }}
       </button>
       <button type="reset" mat-raised-button class="reset-button half-width" (click)="resetData()">Reset</button>

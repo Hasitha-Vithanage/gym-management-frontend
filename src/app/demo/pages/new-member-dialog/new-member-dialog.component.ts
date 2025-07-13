@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -13,72 +13,63 @@ import { MessageServiceService } from 'src/app/services/message-service/message-
   styleUrl: './new-member-dialog.component.scss'
 })
 export class NewMemberDialogComponent {
-
   memberForm: FormGroup;
-  registerButtonLabel = "Register";
-  mode = "add";
+  registerButtonLabel = 'Register';
+  mode = 'add';
   selectedData;
   isButtonDisabled = false;
   submitted = false;
   selectedImageUrl;
   isFileSelected = false;
+  submitDisabled;
 
   dataSource: MatTableDataSource<any>;
 
-  constructor(private fb: FormBuilder,
+  constructor(
+    private fb: FormBuilder,
     private memberService: MemberServiceService,
     public dialogRef: MatDialogRef<NewMemberDialogComponent>,
     private sanitizer: DomSanitizer,
-    private messageService: MessageServiceService,
+    private messageService: MessageServiceService
   ) {
-this.memberForm = this.fb.group({
-  memberNo: new FormControl('', [
-    Validators.required,
-    Validators.maxLength(5),
-    Validators.pattern(/^M\d{3}$/) // e.g., M001
-  ]),
-  firstName: new FormControl('', [
-    Validators.required,
-    Validators.maxLength(10),
-    Validators.pattern(/^[a-zA-Z]+$/)
-  ]),
-  lastName: new FormControl('', [
-    Validators.required,
-    Validators.maxLength(10),
-    Validators.pattern(/^[a-zA-Z]+$/)
-  ]),
-  nic: new FormControl('', [
-    Validators.required,
-    Validators.pattern(/^(\d{9}[Vv]|\d{12})$/) // supports old and new formats
-  ]),
-  dateOfBirth: new FormControl('', Validators.required),
-  address: new FormControl('', [
-    Validators.required,
-    Validators.maxLength(100)
-  ]),
-  phoneNumber: new FormControl('', [
-    Validators.required,
-    Validators.pattern(/^\d{10}$/)
-  ]),
-  email: new FormControl('', [
-    Validators.required,
-    Validators.email,
-    Validators.maxLength(50)
-  ]),
-  emergencyContactNumber: new FormControl('', [
-    Validators.required,
-    Validators.pattern(/^\d{10}$/)
-  ]),
-  bloodType: new FormControl('', Validators.required),
-  joinedDate: new FormControl('', Validators.required),
-  gender: new FormControl('', Validators.required),
-  injuries: new FormControl('', Validators.maxLength(300)),
-  membershipCategory: new FormControl('', Validators.required),
-  image: new FormControl('', Validators.required),
-  imageName: new FormControl(''),
-  imageType: new FormControl('')
-});
+    this.memberForm = this.fb.group({
+      memberNo: new FormControl('', [
+        Validators.required,
+        Validators.maxLength(5),
+        Validators.pattern(/^M\d{3}$/) // e.g., M001
+      ]),
+      firstName: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(15), Validators.pattern(/^[A-Za-z]+$/)]),
+      lastName: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(15), Validators.pattern(/^[A-Za-z]+$/)]),
+      nic: new FormControl('', [
+        Validators.required,
+        Validators.minLength(10),
+        Validators.maxLength(12),
+        Validators.pattern(/^[0-9]{9}[vVxX]$|^[1-2][0-9]{11}$/) // supports old and new formats
+      ]),
+      dateOfBirth: new FormControl('', [Validators.required, this.futureDateValidator]),
+      address: new FormControl('', [Validators.required, Validators.maxLength(100)]),
+      phoneNumber: new FormControl('', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]),
+      email: new FormControl('', [Validators.required, Validators.email, Validators.maxLength(50)]),
+      emergencyContactNumber: new FormControl('', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]),
+      bloodType: new FormControl('', Validators.required),
+      joinedDate: new FormControl('', [Validators.required, this.futureDateValidator]),
+      gender: new FormControl('', Validators.required),
+      injuries: new FormControl('', Validators.maxLength(300)),
+      membershipCategory: new FormControl('', Validators.required),
+      image: new FormControl(''),
+      imageName: new FormControl(''),
+      imageType: new FormControl('')
+    });
   }
+
+    futureDateValidator(control: AbstractControl) {
+      if (!control.value) return null;
+      const inputDate = new Date(control.value);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      return inputDate > today ? { futureDate: true } : null;
+    }
+  
 
   /* OnSubmit function */
   onSubmit() {
@@ -103,11 +94,10 @@ this.memberForm = this.fb.group({
             // success message
             this.messageService.showSuccess('Member added successfully!');
           }
-        })
+        });
       } catch (error) {
         this.messageService.showError(error);
       }
-      ;
     } else if (this.mode === 'edit') {
       try {
         this.memberService.editData(this.selectedData?.id, this.prepareFormData()).subscribe({
@@ -149,24 +139,27 @@ this.memberForm = this.fb.group({
       membershipCategory: data.membershipCategory,
       image: data.image,
       imageName: data.imageName,
-      imageType: data.imageType,
+      imageType: data.imageType
     });
-    this.registerButtonLabel = "Update";
-    this.mode = "edit";
+    this.registerButtonLabel = 'Update';
+    this.mode = 'edit';
     this.selectedData = data;
-  }
 
+        this.submitDisabled = true;
+
+    this.memberForm.valueChanges.subscribe(() => {
+      this.submitDisabled = /* !this.memberForm.valid || */ this.memberForm.pristine;
+    });
+  }
 
   // Reset button function
   resetData() {
     this.memberForm.reset();
     this.memberForm.enable();
-    this.registerButtonLabel = "Register";
-    this.mode = "add";
+    this.registerButtonLabel = 'Register';
+    this.mode = 'add';
     this.isButtonDisabled = false;
   }
-
-
 
   public prepareFormData(): FormData {
     const memberFormData = new FormData();
@@ -184,7 +177,6 @@ this.memberForm = this.fb.group({
     return memberFormData;
   }
 
-
   base64ToBlob(base64: string, mimeType: string): Blob {
     const byteCharacters = atob(base64);
     const byteNumbers = new Array(byteCharacters.length);
@@ -194,7 +186,6 @@ this.memberForm = this.fb.group({
     const byteArray = new Uint8Array(byteNumbers);
     return new Blob([byteArray], { type: mimeType });
   }
-
 
   public onFileSelected(event): void {
     if (event.target.files) {
@@ -210,6 +201,4 @@ this.memberForm = this.fb.group({
   closeDialog(): void {
     this.dialogRef.close();
   }
-
-
 }
