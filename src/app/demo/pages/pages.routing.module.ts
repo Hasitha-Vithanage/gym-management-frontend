@@ -26,6 +26,8 @@ import { GymChartsComponent } from './gym-charts/gym-charts.component';
 import { WorkoutPlanUploadComponent } from './workout-plan-upload/workout-plan-upload.component';
 import { MyWorkoutPlanComponent } from './my-workout-plan/my-workout-plan.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { MarkAttendanceComponent } from './mark-attendance/mark-attendance.component';
+import { AllFeedbacksComponent } from './all-feedbacks/all-feedbacks.component';
 
 export const PagesRoutes: Routes = [
   {
@@ -135,5 +137,11 @@ export const PagesRoutes: Routes = [
   }, 
      { path: 'user-profile',
     component: UserProfileComponent
+  }, 
+     { path: 'mark-attendance',
+    component: MarkAttendanceComponent
+  }, 
+     { path: 'all-feedbacks',
+    component: AllFeedbacksComponent
   }, 
 ];

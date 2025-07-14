@@ -10,7 +10,7 @@
   <!--- form -->
   <form [formGroup]="employeeForm" class="example-form" (ngSubmit)="onSubmit()">
     <div class="row">
-      <mat-form-field class="half-width">
+      <mat-form-field appearance="outline" class="half-width">
         <mat-label>Employee ID</mat-label>
          <mat-icon matPrefix>badge</mat-icon>
         <input matInput maxlength="5" placeholder="Ex. E001" formControlName="employeeId" />
@@ -21,7 +21,7 @@
         </span>
       </mat-form-field>
 
-      <mat-form-field class="half-width">
+      <mat-form-field appearance="outline" class="half-width">
         <mat-label>Select Job Title</mat-label>
                  <mat-icon matPrefix>work</mat-icon>
         <mat-select formControlName="jobTitle">
@@ -35,7 +35,7 @@
 
     <!-- Row 2 -->
     <div class="row">
-      <mat-form-field class="half-width">
+      <mat-form-field appearance="outline" class="half-width">
         <mat-label>Date of Joining</mat-label>
                  <mat-icon matPrefix>event_available</mat-icon>
         <input matInput [matDatepicker]="join" formControlName="dateOfJoining" placeholder="MM/DD/YYYY" />
@@ -47,7 +47,7 @@
         </span>
       </mat-form-field>
 
-      <mat-form-field class="half-width">
+      <mat-form-field appearance="outline" class="half-width">
         <mat-label>Date of Birth</mat-label>
                  <mat-icon matPrefix>cake</mat-icon>
         <input matInput [matDatepicker]="dob" [max]="today" formControlName="dateOfBirth" placeholder="MM/DD/YYYY" />
@@ -62,7 +62,7 @@
 
     <!-- Row 3 -->
     <div class="row">
-      <mat-form-field class="half-width">
+      <mat-form-field appearance="outline" class="half-width">
         <mat-label>First Name</mat-label>
                  <mat-icon matPrefix>person</mat-icon>
         <input matInput formControlName="firstName" placeholder="Ex. James" />
@@ -73,7 +73,7 @@
         </span>
       </mat-form-field>
 
-      <mat-form-field class="half-width">
+      <mat-form-field appearance="outline" class="half-width">
         <mat-label>Last Name</mat-label>
                  <mat-icon matPrefix>person_outline</mat-icon>
         <input matInput formControlName="lastName" placeholder="Ex. Smith" />
@@ -87,7 +87,7 @@
 
     <!-- Row 4 -->
     <div class="row">
-      <mat-form-field class="half-width">
+      <mat-form-field appearance="outline" class="half-width">
         <mat-label>NIC</mat-label>
         <mat-icon matPrefix>credit_card</mat-icon>
         <input matInput formControlName="nic" placeholder="Ex. 991234567V" />
@@ -97,7 +97,7 @@
         </span>
       </mat-form-field>
 
-      <mat-form-field class="half-width">
+      <mat-form-field appearance="outline" class="half-width">
         <mat-label>Phone Number</mat-label>
         <mat-icon matPrefix>call</mat-icon>
         <input matInput formControlName="phoneNumber" placeholder="Ex. 0771234567" />
@@ -110,7 +110,7 @@
 
     <!-- Row 5 -->
     <div class="row">
-      <mat-form-field class="half-width">
+      <mat-form-field appearance="outline" class="half-width">
         <mat-label>Email</mat-label>
         <mat-icon matPrefix>email</mat-icon>
         <input matInput formControlName="email" placeholder="Ex. abc@example.com" />
@@ -120,7 +120,7 @@
         </span>
       </mat-form-field>
 
-      <mat-form-field class="half-width">
+      <mat-form-field appearance="outline" class="half-width">
         <mat-label>Emergency Contact</mat-label>
         <mat-icon matPrefix>contact_phone</mat-icon>
         <input matInput formControlName="emergencyContactNumber" placeholder="Ex. 0711234567" />
@@ -133,7 +133,7 @@
 
     <!-- Row 6 -->
     <div class="row">
-      <mat-radio-group formControlName="gender" class="half-width">
+      <mat-radio-group appearance="outline" formControlName="gender" class="half-width">
         <mat-label>Gender:</mat-label>
         <!-- <mat-icon matPrefix>wc</mat-icon> -->
         <mat-radio-button value="Male">Male</mat-radio-button>
@@ -141,7 +141,7 @@
         <span class="required-message" *ngIf="submitted && employeeForm.get('gender').hasError('required')">Gender is required</span>
       </mat-radio-group>
 
-      <mat-form-field class="half-width">
+      <mat-form-field appearance="outline" class="half-width">
         <mat-label>Address</mat-label>
         <mat-icon matPrefix>home</mat-icon>
         <textarea matInput formControlName="address" placeholder="Ex. 123, Main Street, Colombo"></textarea>

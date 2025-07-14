@@ -42,6 +42,9 @@ import { WorkoutPlanUploadComponent } from './workout-plan-upload/workout-plan-u
 import { UploadWorkoutPlanDialogComponent } from './upload-workout-plan-dialog/upload-workout-plan-dialog.component';
 import { MyWorkoutPlanComponent } from './my-workout-plan/my-workout-plan.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { MarkAttendanceComponent } from './mark-attendance/mark-attendance.component';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import { AllFeedbacksComponent } from './all-feedbacks/all-feedbacks.component';
 
 // icons
 
@@ -83,7 +86,10 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
     WorkoutPlanUploadComponent,
     UploadWorkoutPlanDialogComponent,
     MyWorkoutPlanComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    MarkAttendanceComponent,
+    ConfirmDialogComponent,
+    AllFeedbacksComponent
   ],
   imports: [
     CommonModule,

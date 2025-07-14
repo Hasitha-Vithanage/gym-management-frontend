@@ -25,7 +25,7 @@ export class NewEmployeeDialogComponent {
   userName;
   dataSource: MatTableDataSource<any>;
   today: Date = new Date();
-  submitDisabled
+  submitDisabled;
 
 
   constructor(

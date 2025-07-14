@@ -16,7 +16,7 @@ import { WorkoutPlanUploadService } from 'src/app/services/workout-plan-upload/w
 })
 export class UploadWorkoutPlanDialogComponent {
 
-   workoutUploadForm: FormGroup;
+  workoutUploadForm: FormGroup;
   registerButtonLabel = 'Register';
   selectedFile: File | null = null;
   isDisabled = false;
@@ -33,7 +33,7 @@ export class UploadWorkoutPlanDialogComponent {
     private messageService: MessageServiceService,
     private notificationService: NotificationService,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.workoutUploadForm = new FormGroup({
@@ -41,7 +41,7 @@ export class UploadWorkoutPlanDialogComponent {
       planDescription: new FormControl('', []),
       userId: new FormControl('', []),
     });
-    
+
   }
 
   closeDialog(): void {
@@ -51,7 +51,7 @@ export class UploadWorkoutPlanDialogComponent {
   onSubmit(): void {
     this.submitted = true;
 
-    
+
 
     if (this.workoutUploadForm.invalid || !this.selectedFile) {
       this.messageService.showError("Please complete the form and select a PDF file.");
@@ -102,7 +102,7 @@ export class UploadWorkoutPlanDialogComponent {
   }
 
 
-    onEdit(data: any): void {
+  onEdit(data: any): void {
     this.workoutUploadForm.patchValue({
       workoutPlanTitle: data.employeeId,
       planDescription: data.jobTitle,

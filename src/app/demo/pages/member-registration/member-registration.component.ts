@@ -9,6 +9,7 @@ import { MemberServiceService } from 'src/app/services/member-service/member-ser
 import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
 import { NewMemberDialogComponent } from '../new-member-dialog/new-member-dialog.component';
 import { QrCodeComponent } from '../qr-container/qr-code/qr-code.component';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
 const ELEMENT_DATA: any[] = [
   {
@@ -215,24 +216,52 @@ export class MemberRegistrationComponent {
   //   });
   // }
 
-  // Delete button function
-  public deleteData(data: any): void {
-    const id = data.id;
-    try {
-      this.memberService.deleteData(id).subscribe((response) => {
-        const index = this.dataSource.data.findIndex((element) => element.id === id);
+  // // Delete button function
+  // public deleteData(data: any): void {
+  //   const id = data.id;
+  //   try {
+  //     this.memberService.deleteData(id).subscribe((response) => {
+  //       const index = this.dataSource.data.findIndex((element) => element.id === id);
 
-        if (index !== -1) {
-          this.dataSource.data.splice(index, 1);
-        }
-        this.dataSource = new MatTableDataSource(this.dataSource.data);
+  //       if (index !== -1) {
+  //         this.dataSource.data.splice(index, 1);
+  //       }
+  //       this.dataSource = new MatTableDataSource(this.dataSource.data);
 
-        // success message
-        this.messageService.showSuccess('Member deleted successfully!');
-      });
-    } catch (error) {
-      this.messageService.showError('Action failed with error: ' + error);
-    }
+  //       // success message
+  //       this.messageService.showSuccess('Member deleted successfully!');
+  //     });
+  //   } catch (error) {
+  //     this.messageService.showError('Action failed with error: ' + error);
+  //   }
+  // }
+
+public deleteData(data: any): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '350px',
+      data: {
+        message: `Are you sure you want to delete ${data.firstName} ${data.lastName}?`
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const id = data.id;
+        this.memberService.deleteData(id).subscribe({
+          next: () => {
+            const index = this.dataSource.data.findIndex(item => item.id === id);
+            if (index !== -1) {
+              this.dataSource.data.splice(index, 1);
+            }
+            this.dataSource = new MatTableDataSource(this.dataSource.data);
+            this.messageService.showSuccess('Record deleted successfully!');
+          },
+          error: (error) => {
+            this.messageService.showError(error);
+          }
+        });
+      }
+    });
   }
 
   // Reset button function

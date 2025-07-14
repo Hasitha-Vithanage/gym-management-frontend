@@ -10,6 +10,7 @@ import { NotificationService } from 'src/app/services/notification-service/notif
 import { AssignTrainerDialogComponent } from '../assign-trainer-dialog/assign-trainer-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { QrCodeComponent } from '../qr-container/qr-code/qr-code.component';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
 const ELEMENT_DATA: any[] = [
   {
@@ -126,32 +127,60 @@ export class AssignTrainerComponent {
     });
   }
 
-  // delete button function
+  // // delete button function
+  // public deleteData(data: any): void {
+  //   const id = data.id;
+  //   try {
+  //     // calling deleteData function to send the delete request to the backend
+  //     this.assignTrainerService.deleteData(id).subscribe({
+  //       next: (respone: any) => {
+  //         const index = this.dataSource.data.findIndex((element) => element.id === id);
+
+  //         if (index != -1) {
+  //           this.dataSource.data.splice(index, 1);
+  //         }
+  //         this.dataSource = new MatTableDataSource(this.dataSource.data);
+
+  //         // displaying success message
+  //         this.messageService.showSuccess('Record deleted successfully!');
+  //       },
+  //       // displaying error message
+  //       error: (error) => {
+  //         this.messageService.showError(error);
+  //       }
+  //     });
+  //   } catch (error) {
+  //     this.messageService.showError(error);
+  //   }
+  // }
+
   public deleteData(data: any): void {
-    const id = data.id;
-    try {
-      // calling deleteData function to send the delete request to the backend
-      this.assignTrainerService.deleteData(id).subscribe({
-        next: (respone: any) => {
-          const index = this.dataSource.data.findIndex((element) => element.id === id);
-
-          if (index != -1) {
-            this.dataSource.data.splice(index, 1);
-          }
-          this.dataSource = new MatTableDataSource(this.dataSource.data);
-
-          // displaying success message
-          this.messageService.showSuccess('Record deleted successfully!');
-        },
-        // displaying error message
-        error: (error) => {
-          this.messageService.showError(error);
+      const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+        width: '350px',
+        data: {
+          message: `Are you sure you want to delete ${data.member}?`
         }
       });
-    } catch (error) {
-      this.messageService.showError(error);
+  
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          const id = data.id;
+          this.assignTrainerService.deleteData(id).subscribe({
+            next: () => {
+              const index = this.dataSource.data.findIndex(item => item.id === id);
+              if (index !== -1) {
+                this.dataSource.data.splice(index, 1);
+              }
+              this.dataSource = new MatTableDataSource(this.dataSource.data);
+              this.messageService.showSuccess('Record deleted successfully!');
+            },
+            error: (error) => {
+              this.messageService.showError(error);
+            }
+          });
+        }
+      });
     }
-  }
 
   //refresh button function
   public refreshData(): void {

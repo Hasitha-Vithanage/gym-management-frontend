@@ -5,6 +5,7 @@ import { HttpService } from 'src/app/services/http.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { NewProgressServiceService } from 'src/app/services/new-progress/new-progress-service.service';
 import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
+import { error } from 'console';
 
 @Component({
   selector: 'app-add-new-progress-dialog',
@@ -31,6 +32,7 @@ export class AddNewProgressDialogComponent {
     private progressService: NewProgressServiceService,
     private messageService: MessageServiceService,
     public dialogRef: MatDialogRef<AddNewProgressDialogComponent>,
+    private http: HttpService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
 
@@ -61,7 +63,7 @@ export class AddNewProgressDialogComponent {
       backImageType: new FormControl(''),
     });
 
-    this.progressForm.get('date')?.disable();
+    // this.progressForm.get('date')?.disable();
   }
 
   ngOnInit(): void {
@@ -102,11 +104,17 @@ export class AddNewProgressDialogComponent {
   // OnSubmit function to save new or update existing progress
   onSubmit(): void {
     this.submitted = true;
+    const userName = this.http.getLoginNameFromCache();
     if (this.progressForm.invalid) return;
 
-    this.progressService.serviceCall(this.prepareFormData()).subscribe((response: any) => {
-      console.log("Response: ", response);
-
+    this.progressService.serviceCall(this.prepareFormData(), userName).subscribe({
+      next: (response) => {
+        this.messageService.showSuccess("Progress data saved successfully!")
+        this.closeDialog();
+      },
+      error: (error) => {
+        this.messageService.showError(error);
+      }
     });
   }
 

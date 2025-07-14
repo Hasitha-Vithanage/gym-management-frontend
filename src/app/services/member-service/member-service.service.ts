@@ -65,4 +65,22 @@ export class MemberServiceService {
     }
     return this.http.delete(requestUrl, { headers: headers });
   }
+
+
+      markAttendance(attendanceData: any) {
+      
+      // creating requesting URL
+    const requestUrl = environment.baseUrl + '/memberService/mark-attendance/present/' + attendanceData.member; // http://localhost:8080/employee
+
+    let headers = {};
+
+    if (this.httpService.getAuthToken() !== null) {
+      headers = {
+        Authorization: 'Bearer ' + this.httpService.getAuthToken()
+      };
+    }
+
+    // sending POST request to the server
+    return this.http.post(requestUrl, attendanceData, { headers: headers });
+  }
 }

@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -6,6 +6,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { HttpService } from 'src/app/services/http.service';
 import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
 import { RatingAndFeedbackServiceService } from 'src/app/services/rating-and-feedback/rating-and-feedback-service.service';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 const ELEMENT_DATA: any[] = [
   { category: 1, trainer: 'Hydrogen', rating: 1.0079, feedback: 'H', date: 1, username: 'Hydrogen', actions: 1.0079 },
@@ -33,6 +35,7 @@ export class RatingsAndFeedbackComponent {
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+  readonly dialog = inject(MatDialog);
 
 
   constructor(private fb: FormBuilder,
@@ -42,8 +45,43 @@ export class RatingsAndFeedbackComponent {
   ) { }
 
   ngOnInit(): void {
-    this.initForm();
-    this.populateData();
+
+    const currentDate = new Date().toISOString().substring(0, 10); // format: 'YYYY-MM-DD'
+
+    this.feedbackForm = this.fb.group({
+      category: ['', Validators.required],
+      trainer: [''],
+      rating: [0],
+      anonymous: [false],
+      feedback: [''],
+      date: [],
+      username: [{ value: '', }],
+    });
+
+    // this.feedbackForm.get('username')?.disable();
+
+    // Disable the date filed
+    this.feedbackForm.get('date')?.setValue(currentDate);
+
+    // Show trainer field only when category is 'Trainer'
+    this.feedbackForm.get('category').valueChanges.subscribe(value => {
+      this.showTrainerField = value === 'Trainer';
+
+      if (this.showTrainerField) {
+        this.feedbackForm.get('trainer').setValidators(Validators.required);
+      } else {
+        this.feedbackForm.get('trainer').clearValidators();
+      }
+      this.feedbackForm.get('trainer').updateValueAndValidity();
+    });
+
+    // Calling handleAnonymousToggle function
+    this.feedbackForm.get('anonymous')?.valueChanges.subscribe(() => {
+      this.handleAnonymousToggle();
+    });
+
+    // this.initForm();
+    this.populateData(this.http.getLoginNameFromCache());
     this.handleAnonymousToggle();
     this.getTrainers();
   }
@@ -62,49 +100,6 @@ export class RatingsAndFeedbackComponent {
     })
   }
 
-  initForm(): void {
-    const currentDate = new Date().toISOString().substring(0, 10); // format: 'YYYY-MM-DD'
-
-    this.feedbackForm = this.fb.group({
-      category: ['', Validators.required],
-      trainer: [''],
-      rating: [0],
-      anonymous: [false],
-      feedback: [''],
-      date: [],
-      username: [{ value: '', }],
-      userId: [{ value: this.http.getUserId(), disabled: true }],
-    });
-
-    this.feedbackForm.get('date')?.disable();
-    this.feedbackForm.get('username')?.disable();
-
-    // Disable the date filed
-    this.feedbackForm.get('date')?.setValue(currentDate);
-    // this.feedbackForm.get('date')?.disable();
-    // console.log(this.feedbackForm.get('date').value);
-
-    // // Disable the username filed
-    // this.feedbackForm.get('username')?.disable();
-
-    // Show trainer field only when category is 'Trainer'
-    this.feedbackForm.get('category').valueChanges.subscribe(value => {
-      this.showTrainerField = value === 'Trainer';
-
-      if (this.showTrainerField) {
-        this.feedbackForm.get('trainer').setValidators(Validators.required);
-      } else {
-        this.feedbackForm.get('trainer').clearValidators();
-      }
-      this.feedbackForm.get('trainer').updateValueAndValidity();
-    });
-
-    // Calling handleAnonymousToggle function
-    this.feedbackForm.get('anonymous')?.valueChanges.subscribe(() => {
-      this.handleAnonymousToggle();
-    });
-  }
-
   // table filter function
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -117,9 +112,10 @@ export class RatingsAndFeedbackComponent {
   }
 
   // implementation of populateData function
-  public populateData(): void {
+  public populateData(username: any): void {
+
     try {
-      this.feedbackService.getData().subscribe({
+      this.feedbackService.getDataByUserName(username).subscribe({
         next: (dataList: any[]) => {
           if (dataList.length <= 0) {
             return;
@@ -178,6 +174,7 @@ export class RatingsAndFeedbackComponent {
             }
             // displaying success message
             this.messageService.showSuccess("Employee added successfully!");
+            this.resetForm();
           },
           // Displaying error message
           error: (error) => {
@@ -187,7 +184,7 @@ export class RatingsAndFeedbackComponent {
 
       } else if (this.mode === "edit") {
         // Calling editData function to send the request to the backend
-        this.feedbackService.editData(this.selectedData?.id, this.feedbackForm.value).subscribe({
+        this.feedbackService.editData(this.selectedData?.id, this.feedbackForm.getRawValue()).subscribe({
           next: (response: any) => {
             let elementIndex = this.dataSource.data.findIndex((element) => element.id === this.selectedData?.id);
             this.dataSource.data[elementIndex] = response;
@@ -195,6 +192,11 @@ export class RatingsAndFeedbackComponent {
 
             // Displaying success message
             this.messageService.showSuccess("Employee details updated successfully!");
+            this.registerButtonLabel = "Submit";
+            this.mode = "save";
+            this.feedbackForm.get('category')?.enable();
+            this.feedbackForm.get('trainer')?.enable();
+            this.resetForm();
           },
           error: (error) => {
             this.messageService.showError(error);
@@ -213,8 +215,12 @@ export class RatingsAndFeedbackComponent {
 
   // Reset function
   resetForm(): void {
+    this.registerButtonLabel = "Submit";
+    this.mode = "save";
     this.feedbackForm.reset();
     this.rating = 0;
+    this.handleAnonymousToggle();
+
   }
 
   // Helper method to mark all controls as touched
@@ -230,48 +236,79 @@ export class RatingsAndFeedbackComponent {
 
   //refresh button function
   public refreshData(): void {
-    this.populateData();
+    this.populateData(this.http.getLoginNameFromCache());
   }
 
   // edit button function
   public editData(data: any): void {
     console.log(new Date(data.date));
     this.feedbackForm.patchValue(data);
+    this.registerButtonLabel = "Update";
+    this.mode = "edit";
+    this.selectedData = data;
+    this.feedbackForm.get('category')?.disable();
+    this.feedbackForm.get('trainer')?.disable();
 
     // patching date values after formatting
     this.feedbackForm.patchValue({
       date: new Date(data.date)
     });
 
-    this.registerButtonLabel = "Update";
-    this.mode = "edit";
-    this.selectedData = data;
   }
 
-  // delete button function
+  // // delete button function
+  // public deleteData(data: any): void {
+  //   const id = data.id;
+  //   try {
+  //     // calling deleteData function to send the delete request to the backend
+  //     this.feedbackService.deleteData(id).subscribe({
+  //       next: (respone: any) => {
+  //         const index = this.dataSource.data.findIndex((element) => element.id === id);
+
+  //         if (index != -1) {
+  //           this.dataSource.data.splice(index, 1);
+  //         }
+  //         this.dataSource = new MatTableDataSource(this.dataSource.data);
+
+  //         // displaying success message
+  //         this.messageService.showSuccess("Employee record deleted successfully!");
+  //       },
+  //       // displaying error message
+  //       error: (error) => {
+  //         this.messageService.showError(error);
+  //       }
+  //     });
+  //   } catch (error) {
+  //     this.messageService.showError(error);
+  //   }
+  // }
+
   public deleteData(data: any): void {
-    const id = data.id;
-    try {
-      // calling deleteData function to send the delete request to the backend
-      this.feedbackService.deleteData(id).subscribe({
-        next: (respone: any) => {
-          const index = this.dataSource.data.findIndex((element) => element.id === id);
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '350px',
+      data: {
+        message: `Are you sure you want to delete this ${data.category} feedback?`
+      }
+    });
 
-          if (index != -1) {
-            this.dataSource.data.splice(index, 1);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const id = data.id;
+        this.feedbackService.deleteData(id).subscribe({
+          next: () => {
+            const index = this.dataSource.data.findIndex(item => item.id === id);
+            if (index !== -1) {
+              this.dataSource.data.splice(index, 1);
+            }
+            this.dataSource = new MatTableDataSource(this.dataSource.data);
+            this.messageService.showSuccess('Record deleted successfully!');
+          },
+          error: (error) => {
+            this.messageService.showError(error);
           }
-          this.dataSource = new MatTableDataSource(this.dataSource.data);
-
-          // displaying success message
-          this.messageService.showSuccess("Employee record deleted successfully!");
-        },
-        // displaying error message
-        error: (error) => {
-          this.messageService.showError(error);
-        }
-      });
-    } catch (error) {
-      this.messageService.showError(error);
-    }
+        });
+      }
+    });
   }
+
 }

@@ -86,6 +86,20 @@ getPdf(userId: string) {
 }
 
 
+  deleteRecord(id: number) {
+
+  const requestUrl = environment.baseUrl + '/my-workout-plan/' + id.toString();
+
+  let headers = {};
+
+  if (this.httpService.getAuthToken() !== null) {
+    headers = {
+      Authorization: 'Bearer ' + this.httpService.getAuthToken()
+    };
+  }
+
+  return this.http.delete(requestUrl, { headers: headers });
+  }
 
 
 }

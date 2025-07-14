@@ -15,7 +15,7 @@
       <!--- Form Section -->
       <form [formGroup]="formGroup" class="example-form">
         <div class="row">
-          <mat-form-field class="half-width" appearance="fill">
+          <mat-form-field class="half-width" appearance="outline">
             <mat-label>Age</mat-label>
             <input matInput type="number" formControlName="age" maxlength="3" />
             <span class="required-message" *ngIf="submitted && formGroup.get('age').invalid">
@@ -25,7 +25,7 @@
             </span>
           </mat-form-field>
 
-          <mat-form-field class="half-width" appearance="fill">
+          <mat-form-field class="half-width" appearance="outline">
             <mat-label>Weight (kg)</mat-label>
             <input matInput type="number" formControlName="weight" maxlength="3" />
                         <span class="required-message" *ngIf="submitted && formGroup.get('weight').invalid">
@@ -37,7 +37,7 @@
         </div>
 
         <div class="row">
-          <mat-form-field class="half-width" appearance="fill">
+          <mat-form-field class="half-width" appearance="outline">
             <mat-label>Height (cm)</mat-label>
             <input matInput type="number" formControlName="height" maxlength="3" />
                                     <span class="required-message" *ngIf="submitted && formGroup.get('height').invalid">
@@ -47,7 +47,7 @@
             </span>
           </mat-form-field>
 
-          <mat-form-field class="half-width" appearance="fill">
+          <mat-form-field class="half-width" appearance="outline">
             <mat-label>Primary Fitness Goal</mat-label>
             <mat-select formControlName="fitnessGoal">
               <mat-option value="muscle_gain">💪 Muscle Gain</mat-option>

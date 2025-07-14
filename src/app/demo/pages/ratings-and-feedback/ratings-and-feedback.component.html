@@ -6,7 +6,7 @@
     <!--- form -->
     <form [formGroup]="feedbackForm" class="example-form" (ngSubmit)="onSubmit()">
       <div class="row">
-        <mat-form-field class="half-width">
+        <mat-form-field appearance="outline" class="half-width">
           <mat-label>Category</mat-label>
           <mat-select formControlName="category">
             <mat-option value="Gym">Gym</mat-option>
@@ -14,10 +14,10 @@
           </mat-select>
         </mat-form-field>
 
-        <mat-form-field class="half-width" *ngIf="showTrainerField">
+        <mat-form-field appearance="outline" class="half-width" *ngIf="showTrainerField">
           <mat-label>Trainer</mat-label>
           <mat-select formControlName="trainer">
-         <mat-option *ngFor="let trainer of trainerList" [value]="trainer.id">
+         <mat-option *ngFor="let trainer of trainerList" [value]="trainer.firstName">
             {{ trainer.firstName }}
           </mat-option>
           </mat-select>
@@ -40,7 +40,7 @@
       </div>
 
      <div class="row">
-      <mat-form-field class="full-width">
+      <mat-form-field appearance="outline" class="full-width">
         <mat-label>Feedback</mat-label>
         <textarea matInput rows="4" maxlength="1000" placeholder="Enter Feedback" formControlName="feedback"></textarea>
       </mat-form-field>
@@ -48,21 +48,21 @@
 
 
       <div class="row">
-        <mat-form-field class="half-width">
+        <mat-form-field appearance="outline" class="half-width">
           <mat-label>Date</mat-label>
           <input matInput [matDatepicker]="join" placeholder="MM/DD/YYYY" formControlName="date"/>
           <mat-datepicker-toggle matSuffix [for]="join"></mat-datepicker-toggle>
           <mat-datepicker #join></mat-datepicker>
         </mat-form-field>
 
-        <mat-form-field class="half-width">
+        <mat-form-field appearance="outline" class="half-width">
           <mat-label>Submitted By</mat-label>
-          <input matInput maxlength="50" placeholder="Enter your username" formControlName="username" type="text" />
+          <input matInput maxlength="50" placeholder="Enter your username" formControlName="username" type="text" readonly/>
         </mat-form-field>
       </div>
 
       <div class="row">
-        <button type="submit" mat-raised-button color="primary" class="register-button half-width">Submit</button>
+        <button type="submit" mat-raised-button color="primary" class="register-button half-width">{{registerButtonLabel}}</button>
         <button type="button" mat-raised-button class="reset-button half-width" (click)="resetForm()">Reset</button>
       </div>
     </form>
@@ -112,7 +112,7 @@
       <!-- jobTitle Column -->
       <ng-container matColumnDef="rating">
         <th mat-header-cell *matHeaderCellDef>Rating</th>
-        <td mat-cell *matCellDef="let element">{{ element.rating }}</td>
+        <td mat-cell *matCellDef="let element">{{ element.rating }} Stars</td>
       </ng-container>
 
       <!-- jobTitle Column -->

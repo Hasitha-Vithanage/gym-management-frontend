@@ -1,5 +1,8 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { HttpService } from '../http.service';
+import { environment } from 'src/app/environments/environment';
 
 export interface Exercise {
   id: string;
@@ -55,9 +58,10 @@ export class WorkoutService {
   public workouts$ = this.workoutsSubject.asObservable();
   public bodyMeasurements$ = this.bodyMeasurementsSubject.asObservable();
 
-  constructor() {
+  constructor(private http: HttpClient, private httpService: HttpService) {
     this.loadMockData();
   }
+
 
   private loadMockData(): void {
     // Mock workout data
@@ -121,10 +125,10 @@ export class WorkoutService {
 
     // Mock body measurements
     const mockMeasurements: BodyMeasurement[] = [
-      { date: new Date('2024-01-01'), weight: 180, bodyFat: 15, muscle: 45, chest: 42, arms: 16, waist: 32, thighs: 24 },
-      { date: new Date('2024-01-08'), weight: 181, bodyFat: 14.5, muscle: 45.5, chest: 42.2, arms: 16.1, waist: 31.8, thighs: 24.2 },
-      { date: new Date('2024-01-15'), weight: 182, bodyFat: 14, muscle: 46, chest: 42.5, arms: 16.3, waist: 31.5, thighs: 24.5 },
-      { date: new Date('2024-01-22'), weight: 183, bodyFat: 13.5, muscle: 46.5, chest: 42.8, arms: 16.5, waist: 31.2, thighs: 24.8 }
+      { date: new Date('2024-01-01'), weight: 180, },
+      { date: new Date('2024-01-08'), weight: 181, },
+      { date: new Date('2024-01-15'), weight: 182, },
+      { date: new Date('2024-01-22'), weight: 183, } //bodyFat: 13.5, muscle: 46.5, chest: 42.8, arms: 16.5, waist: 31.2, thighs: 24.8
     ];
 
     this.workoutsSubject.next(mockWorkouts);

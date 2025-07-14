@@ -84,4 +84,22 @@ export class EmpolyeeServiceService {
     // sending POST request to the server
     return this.http.delete(requestUrl, { headers: headers });
   }
+
+// markAttendance function
+    markAttendance(attendanceData: any) {
+      
+      // creating requesting URL
+    const requestUrl = environment.baseUrl + '/employeeService/mark-attendance/present/' + attendanceData.employee; // http://localhost:8080/employee
+
+    let headers = {};
+
+    if (this.httpService.getAuthToken() !== null) {
+      headers = {
+        Authorization: 'Bearer ' + this.httpService.getAuthToken()
+      };
+    }
+
+    // sending POST request to the server
+    return this.http.post(requestUrl, attendanceData, { headers: headers });
+  }
 }

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { error } from 'console';
 import { HttpService } from 'src/app/services/http.service';
 import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
 import { NotificationService } from 'src/app/services/notification-service/notification.service';
@@ -26,6 +27,8 @@ interface UserProfile {
 })
 export class UserProfileComponent {
 
+  userDetails: any;
+
   user: UserProfile = {
     id: 1,
     firstName: 'Hasitha',
@@ -47,7 +50,22 @@ export class UserProfileComponent {
         private notificationService: NotificationService,
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+ const userId = this.http.getLoginNameFromCache();
+    this.populateData(userId);
+  }
+
+  populateData(userId: any): void {
+
+    this.userProfileService.getUserData(userId).subscribe({
+      next: (response) => {
+        console.log("User Data Response: ", response);
+               this.userDetails = response;
+      }, error: (error) => {
+        this.messageService.showError(error);
+      }
+    });
+  }
 
 
 

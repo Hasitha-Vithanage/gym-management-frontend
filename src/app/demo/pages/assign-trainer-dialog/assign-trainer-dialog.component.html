@@ -10,7 +10,7 @@
   <!--- form -->
   <form [formGroup]="assignTrainerForm" class="example-form" (ngSubmit)="onSubmit()">
     <div class="row">
-      <mat-form-field class="half-width">
+      <mat-form-field appearance="outline" class="half-width">
         <mat-label>Select Member</mat-label>
         <mat-select formControlName="member">
           <mat-option *ngFor="let member of memberList" [value]="member.firstName">
@@ -22,7 +22,7 @@
         </span>
       </mat-form-field>
 
-      <mat-form-field class="half-width">
+      <mat-form-field appearance="outline" class="half-width">
         <mat-label>Select Trainer</mat-label>
         <mat-select formControlName="trainer">
           <mat-option *ngFor="let trainer of trainerList" [value]="trainer.firstName">

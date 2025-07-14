@@ -10,25 +10,34 @@
   <!--- form -->
   <form [formGroup]="workoutUploadForm" class="example-form" (ngSubmit)="onSubmit()">
     <div class="row">
-      <mat-form-field class="half-width">
+      <mat-form-field appearance="outline" class="half-width">
         <mat-label>Workout Plan Title</mat-label>
         <input matInput maxlength="50" placeholder="4-Week Strength Plan" formControlName="workoutPlanTitle" />
+        <span class="required-message" *ngIf="submitted && workoutUploadForm.get('workoutPlanTitle').invalid">
+          <ng-container *ngIf="workoutUploadForm.get('workoutPlanTitle').hasError('required')">
+            Workout Plan Title ID is required
+          </ng-container>
+          <ng-container *ngIf="workoutUploadForm.get('workoutPlanTitle').hasError('minlength')">Minimum 5 characters required</ng-container>
+        </span>
       </mat-form-field>
 
-      <mat-form-field class="half-width">
+      <mat-form-field appearance="outline" class="half-width">
         <mat-label>Plan Description</mat-label>
         <input matInput maxlength="50" placeholder="Optional notes..." formControlName="planDescription" />
       </mat-form-field>
-      <mat-form-field class="half-width">
+      <mat-form-field appearance="outline" class="half-width">
         <mat-label>Plan Description</mat-label>
-        <input matInput maxlength="50" placeholder="Optional notes..." formControlName="userId" readonly/>
+        <input matInput maxlength="50" placeholder="Optional notes..." formControlName="userId" readonly />
       </mat-form-field>
     </div>
 
     <div class="row">
       <div class="half-width pdf-upload-wrapper">
         <label for="pdfUpload">Upload Workout Plan (PDF)</label>
-        <input type="file" id="pdfUpload" accept="application/pdf" (change)="onFileSelected($event)" />
+        <input type="file" id="pdfUpload" accept="application/pdf" (change)="onFileSelected($event)" required />
+        <!-- <span class="required-message" *ngIf="submitted && !workoutUploadForm.valid">
+          <ng-container>Workout Plan (PDF) is required</ng-container>
+        </span> -->
       </div>
     </div>
 

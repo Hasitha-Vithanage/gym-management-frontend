@@ -147,6 +147,16 @@ export const NavigationItems: NavigationItem[] = [
         breadcrumbs: false
       },
       {
+        id: 'attendanceDet',
+        title: 'Mark Attendance',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/pages/mark-attendance',
+        icon: '',
+        auth: authenticationEnum.Home_Dashboard,
+        breadcrumbs: false
+      },
+      {
         id: 'assignTrainerDet',
         title: 'Assign Trainer',
         type: 'item',
@@ -410,6 +420,16 @@ export const NavigationItems: NavigationItem[] = [
         type: 'item',
         classes: 'nav-item',
         url: '/pages/ratings&feedback',
+        icon: '',
+        auth: authenticationEnum.Home_Dashboard,
+        breadcrumbs: false
+      },
+      {
+        id: 'allRatingsDet',
+        title: 'Feedback History',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/pages/all-feedbacks',
         icon: '',
         auth: authenticationEnum.Home_Dashboard,
         breadcrumbs: false

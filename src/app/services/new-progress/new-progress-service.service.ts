@@ -11,8 +11,8 @@ export class NewProgressServiceService {
   constructor(private http: HttpClient, private httpService: HttpService) { }
 
   // Service call function for save new progress
-  serviceCall(form_details: any) {
-    const requestUrl = environment.baseUrl + '/progress-tracking';
+  serviceCall(form_details: any, userName: string) {
+    const requestUrl = environment.baseUrl + '/progress-tracking/' + userName;
 
     let headers = {};
     const token = this.httpService.getAuthToken();
