@@ -28,6 +28,7 @@ import { MyWorkoutPlanComponent } from './my-workout-plan/my-workout-plan.compon
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { MarkAttendanceComponent } from './mark-attendance/mark-attendance.component';
 import { AllFeedbacksComponent } from './all-feedbacks/all-feedbacks.component';
+import { UploadMealPlanComponent } from './upload-meal-plan/upload-meal-plan.component';
 
 export const PagesRoutes: Routes = [
   {
@@ -143,5 +144,8 @@ export const PagesRoutes: Routes = [
   }, 
      { path: 'all-feedbacks',
     component: AllFeedbacksComponent
+  }, 
+     { path: 'upload-meal-plan',
+    component: UploadMealPlanComponent
   }, 
 ];

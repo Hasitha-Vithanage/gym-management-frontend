@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { error } from 'console';
 import { HttpService } from 'src/app/services/http.service';
+import { MealPlanUploadService } from 'src/app/services/meal-plan-upload/meal-plan-upload.service';
 import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
 import { NutritionAndMealPlansServiceService } from 'src/app/services/nutrition-and-meal-plans/nutrition-and-meal-plans-service.service';
 
@@ -23,12 +25,19 @@ export class NutritionAndMealPlanComponent implements OnInit {
   isDisabled = false;
   submitted = false;
   dataSource: any;
+  pdfUrl: SafeResourceUrl | null = null;
+  isLoading = true;
+  hasPdf = false;
+
+  private rawPdfBlob: Blob | null = null;
+  mealPlanLastUpdated: Date | null = null;
 
   constructor(private fb: FormBuilder,
     private http: HttpService,
     private nutritionService: NutritionAndMealPlansServiceService,
     private messageService: MessageServiceService,
-
+    private mealPlanUploadService: MealPlanUploadService,
+    private sanitizer: DomSanitizer
   ) {
 
     const today = new Date().toISOString().split('T')[0];
@@ -42,14 +51,40 @@ export class NutritionAndMealPlanComponent implements OnInit {
       allergies: [''],
       additionalNotes: ['']
     });
-    this.mealPlanRequestForm.get('username')?.disable();
-    this.mealPlanRequestForm.get('requestedDate')?.disable();
+    // this.mealPlanRequestForm.get('username')?.disable();
+    // this.mealPlanRequestForm.get('requestedDate')?.disable();
   }
 
   // OnInit function
   ngOnInit(): void {
     this.checkExistingRequest();
+    this.populateData();
   }
+
+  populateData(): void {
+    const userId = this.http.getLoginNameFromCache();
+
+    this.mealPlanUploadService.getPdf(userId).subscribe({
+      next: (data: Blob) => {
+        this.rawPdfBlob = data;
+        this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(data));
+        this.hasPdf = true;
+        this.isLoading = false;
+        this.mealPlanLastUpdated = new Date();
+
+        console.log("response Data: ", data);
+
+      },
+      error: (err) => {
+        this.messageService.showError('Meal plan not available for this user.');
+        this.isLoading = false;
+        this.hasPdf = false;
+        this.rawPdfBlob = null;
+        this.pdfUrl = null;
+      }
+    });
+  }
+
 
   // function for check if the user has already requested a meal plan
   checkExistingRequest() {
@@ -250,6 +285,18 @@ export class NutritionAndMealPlanComponent implements OnInit {
   onReset() {
     this.submissionSuccess = false;
     this.mealPlanRequestForm.reset();
+  }
+
+  downloadPdf(): void {
+    if (!this.rawPdfBlob) return;
+
+    const url = URL.createObjectURL(this.rawPdfBlob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'WorkoutPlan.pdf';
+    link.click();
+
+    URL.revokeObjectURL(url);
   }
 
 }

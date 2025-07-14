@@ -40,19 +40,19 @@ export class MyWorkoutPlanComponent {
   ) { }
 
   ngOnInit(): void {
-    this.loadUserProfile();
+    // this.loadUserProfile();
     this.populateData();
   }
 
-  private loadUserProfile(): void {
-    // Replace this with actual service call or logic to fetch user profile data
-    const cachedName = this.httpService.getLoginNameFromCache();
-    this.userProfile = {
-      photoUrl: 'assets/default-user.png', // fallback or from real user data
-      name: cachedName || 'User',
-      lastWorkoutDate: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000) // 5 days ago example
-    };
-  }
+  // private loadUserProfile(): void {
+  //   // Replace this with actual service call or logic to fetch user profile data
+  //   const cachedName = this.httpService.getLoginNameFromCache();
+  //   this.userProfile = {
+  //     photoUrl: 'assets/default-user.png', // fallback or from real user data
+  //     name: cachedName || 'User',
+  //     lastWorkoutDate: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000) // 5 days ago example
+  //   };
+  // }
 
   // populateData(): void {
   //   const userId = this.httpService.getLoginNameFromCache();

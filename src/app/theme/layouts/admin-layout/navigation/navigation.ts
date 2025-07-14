@@ -275,6 +275,16 @@ export const NavigationItems: NavigationItem[] = [
         icon: '',
         auth: authenticationEnum.Home_Dashboard,
         breadcrumbs: false
+      },
+      {
+        id: 'uploadNutritionDet',
+        title: 'Upload Meal Plan',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/pages/upload-meal-plan',
+        icon: '',
+        auth: authenticationEnum.Home_Dashboard,
+        breadcrumbs: false
       }
     ]
   },

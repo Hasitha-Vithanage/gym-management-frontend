@@ -45,6 +45,8 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { MarkAttendanceComponent } from './mark-attendance/mark-attendance.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { AllFeedbacksComponent } from './all-feedbacks/all-feedbacks.component';
+import { UploadMealPlanComponent } from './upload-meal-plan/upload-meal-plan.component';
+import { UploadMealPlanDialogComponent } from './upload-meal-plan-dialog/upload-meal-plan-dialog.component';
 
 // icons
 
@@ -89,7 +91,9 @@ import { AllFeedbacksComponent } from './all-feedbacks/all-feedbacks.component';
     UserProfileComponent,
     MarkAttendanceComponent,
     ConfirmDialogComponent,
-    AllFeedbacksComponent
+    AllFeedbacksComponent,
+    UploadMealPlanComponent,
+    UploadMealPlanDialogComponent
   ],
   imports: [
     CommonModule,
