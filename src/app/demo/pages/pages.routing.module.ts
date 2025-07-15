@@ -29,6 +29,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { MarkAttendanceComponent } from './mark-attendance/mark-attendance.component';
 import { AllFeedbacksComponent } from './all-feedbacks/all-feedbacks.component';
 import { UploadMealPlanComponent } from './upload-meal-plan/upload-meal-plan.component';
+import { AddClassComponent } from './add-class/add-class.component';
 
 export const PagesRoutes: Routes = [
   {
@@ -147,5 +148,8 @@ export const PagesRoutes: Routes = [
   }, 
      { path: 'upload-meal-plan',
     component: UploadMealPlanComponent
+  }, 
+     { path: 'add-class',
+    component: AddClassComponent
   }, 
 ];

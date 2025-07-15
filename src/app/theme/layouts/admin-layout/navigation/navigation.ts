@@ -260,6 +260,35 @@ export const NavigationItems: NavigationItem[] = [
   },
   /* side navigation bar item for nutrition & meal plan module */
   {
+    id: 'classScheduling',
+    title: 'Class Scheduling',
+    type: 'group',
+    icon: 'icon-navigation',
+    auth: authenticationEnum.Home,
+    children: [
+      {
+        id: 'addClassDet',
+        title: 'Schedule Class',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/pages/add-class',
+        icon: '',
+        auth: authenticationEnum.Home_Dashboard,
+        breadcrumbs: false
+      },
+      {
+        id: 'bookClassDet',
+        title: 'Book Class',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/pages/book-class',
+        icon: '',
+        auth: authenticationEnum.Home_Dashboard,
+        breadcrumbs: false
+      }
+    ]
+  },
+  {
     id: 'nutrition&meal-plan',
     title: 'Nutrition & Meal Plan',
     type: 'group',

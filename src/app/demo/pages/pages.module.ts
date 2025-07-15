@@ -47,6 +47,8 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
 import { AllFeedbacksComponent } from './all-feedbacks/all-feedbacks.component';
 import { UploadMealPlanComponent } from './upload-meal-plan/upload-meal-plan.component';
 import { UploadMealPlanDialogComponent } from './upload-meal-plan-dialog/upload-meal-plan-dialog.component';
+import { AddClassComponent } from './add-class/add-class.component';
+import { AddClassDialogComponent } from './add-class-dialog/add-class-dialog.component';
 
 // icons
 
@@ -93,7 +95,9 @@ import { UploadMealPlanDialogComponent } from './upload-meal-plan-dialog/upload-
     ConfirmDialogComponent,
     AllFeedbacksComponent,
     UploadMealPlanComponent,
-    UploadMealPlanDialogComponent
+    UploadMealPlanDialogComponent,
+    AddClassComponent,
+    AddClassDialogComponent
   ],
   imports: [
     CommonModule,
