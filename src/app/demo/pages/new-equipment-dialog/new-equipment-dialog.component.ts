@@ -130,6 +130,11 @@ export class NewEquipmentDialogComponent {
 
   // Edit function to populate form with existing data
   onEdit(data: any): void {
+
+    this.saveButtonLabel = "Update";
+    this.mode = "edit";
+    this.selectedData = data;
+
     this.equipmentForm.patchValue({
       category: data.category,
       supplier: data.supplier,
@@ -148,9 +153,7 @@ export class NewEquipmentDialogComponent {
       equipmentName: data.equipmentName,
       remarks: data.remarks
     });
-    this.saveButtonLabel = "Update";
-    this.mode = "edit";
-    this.selectedData = data;
+
 
     // patching date values after formatting
     this.equipmentForm.patchValue({

@@ -31,10 +31,10 @@ export class AddClassService {
 
   // editData function
   editData(id: number, class_details: any) {
-    console.log("In editData!");
+    console.log("ID", id);
 
     // creating requesting URL
-    const requestUrl = environment.baseUrl + '/update-class/' + id.toString();
+    const requestUrl = environment.baseUrl + '/add-class/' + id.toString();
 
     let headers = {};
 
@@ -48,7 +48,7 @@ export class AddClassService {
     return this.http.put(requestUrl, class_details, { headers: headers });
   }
 
-   // deleteData function
+  // deleteData function
   deleteData(id: number) {
     console.log("In deleteData!");
 
@@ -83,5 +83,19 @@ export class AddClassService {
     // sending GET request to the server
     return this.http.get(requestUrl, { headers: headers });
   }
+
+  getClassById(id: number) {
+    const requestUrl = environment.baseUrl + '/book-class-submit/' + id;
+
+    let headers = {};
+
+    if (this.httpService.getAuthToken() !== null) {
+      headers = {
+        Authorization: 'Bearer ' + this.httpService.getAuthToken()
+      };
+    }
+    return this.http.get(requestUrl, { headers: headers });
+  }
+
 
 }

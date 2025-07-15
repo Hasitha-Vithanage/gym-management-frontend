@@ -49,6 +49,8 @@ import { UploadMealPlanComponent } from './upload-meal-plan/upload-meal-plan.com
 import { UploadMealPlanDialogComponent } from './upload-meal-plan-dialog/upload-meal-plan-dialog.component';
 import { AddClassComponent } from './add-class/add-class.component';
 import { AddClassDialogComponent } from './add-class-dialog/add-class-dialog.component';
+import { BookClassComponent } from './book-class/book-class.component';
+import { BookClassSubmitComponent } from './book-class-submit/book-class-submit.component';
 
 // icons
 
@@ -97,7 +99,9 @@ import { AddClassDialogComponent } from './add-class-dialog/add-class-dialog.com
     UploadMealPlanComponent,
     UploadMealPlanDialogComponent,
     AddClassComponent,
-    AddClassDialogComponent
+    AddClassDialogComponent,
+    BookClassComponent,
+    BookClassSubmitComponent
   ],
   imports: [
     CommonModule,

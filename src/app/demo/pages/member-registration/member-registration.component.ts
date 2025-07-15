@@ -114,47 +114,6 @@ export class MemberRegistrationComponent {
   }
 
   /* OnSubmit function */
-  onSubmit() {
-    this.submitted = true;
-
-    if (this.memberForm.invalid) {
-      return;
-    }
-
-    if (this.mode === 'add') {
-      this.memberForm.patchValue({ status: 'Active' });
-
-      this.memberService.serviceCall(this.prepareFormData()).subscribe({
-        next: (response) => {
-          if (this.dataSource && this.dataSource.data && this.dataSource.data.length > 0) {
-            this.dataSource = new MatTableDataSource([response, ...this.dataSource.data]);
-          } else {
-            this.dataSource = new MatTableDataSource([response]);
-          }
-          this.messageService.showSuccess('Member added successfully!');
-        },
-        error: (error) => {
-          this.messageService.showError('Action failed with error: ' + error);
-        }
-      });
-
-    } else if (this.mode === 'edit') {
-      this.memberService.editData(this.selectedData?.id, this.prepareFormData()).subscribe({
-        next: (response) => {
-          const index = this.dataSource.data.findIndex((element) => element.id === this.selectedData?.id);
-          this.dataSource.data[index] = response;
-          this.dataSource = new MatTableDataSource(this.dataSource.data);
-
-          this.messageService.showSuccess('Member edited successfully!');
-        },
-        error: (error) => {
-          this.messageService.showError('Action failed with error: ' + error);
-        }
-      });
-    }
-
-    this.memberForm.disable();
-  }
 
   editData(data: any): void {
     const dialogRef = this.dialog.open(NewMemberDialogComponent, {
@@ -173,68 +132,6 @@ export class MemberRegistrationComponent {
       }
     });
   }
-
-  onEdit(data: any): void {
-    this.memberForm.patchValue({
-      memberNo: data.memberNo,
-      firstName: data.firstName,
-      lastName: data.lastName,
-      nic: data.nic,
-      dateOfBirth: data.dateOfBirth,
-      address: data.address,
-      phoneNumber: data.phoneNumber,
-      email: data.email,
-      emergencyContactNumber: data.emergencyContactNumber,
-      bloodType: data.bloodType,
-      joinedDate: data.joinedDate,
-      gender: data.gender,
-      injuries: data.injuries,
-      membershipCategory: data.membershipCategory,
-      image: data.image,
-      imageName: data.imageName,
-      imageType: data.imageType,
-    });
-    this.registerButtonLabel = "Update";
-    this.mode = "edit";
-    this.selectedData = data;
-  }
-
-
-  // Edit button function
-  // public editData(data: any): void {
-  //   this.memberForm.patchValue(data);
-  //   this.registerButtonLabel = "Update";
-  //   this.mode = "edit";
-
-  //   // saving the current form values
-  //   this.selectedData = data;
-
-  //   // patching date values after formatting
-  //   this.memberForm.patchValue({
-  //     dateOfBirth: new Date(data.dateOfBirth),
-  //     joinedDate: new Date(data.joinedDate)
-  //   });
-  // }
-
-  // // Delete button function
-  // public deleteData(data: any): void {
-  //   const id = data.id;
-  //   try {
-  //     this.memberService.deleteData(id).subscribe((response) => {
-  //       const index = this.dataSource.data.findIndex((element) => element.id === id);
-
-  //       if (index !== -1) {
-  //         this.dataSource.data.splice(index, 1);
-  //       }
-  //       this.dataSource = new MatTableDataSource(this.dataSource.data);
-
-  //       // success message
-  //       this.messageService.showSuccess('Member deleted successfully!');
-  //     });
-  //   } catch (error) {
-  //     this.messageService.showError('Action failed with error: ' + error);
-  //   }
-  // }
 
 public deleteData(data: any): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {

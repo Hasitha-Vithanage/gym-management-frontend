@@ -7,6 +7,40 @@ import { MessageServiceService } from 'src/app/services/message-service/message-
 import { NotificationService } from 'src/app/services/notification-service/notification.service';
 import { AddClassService } from 'src/app/services/add-class/add-class.service';
 
+export class DateValidator {
+  //  static startTimeBeforeEndTimeValidator(control: AbstractControl): ValidatorFn {
+  //   return (formGroup: AbstractControl): ValidationErrors | null => {
+  //     const startTime = formGroup.get('startTime')?.value;
+  //     const endTime = formGroup.get('endTime')?.value;
+
+  //     if (!startTime || !endTime) return null;
+
+  //     const [startHour, startMinute] = startTime.split(':').map(Number);
+  //     const [endHour, endMinute] = endTime.split(':').map(Number);
+
+  //     const start = startHour * 60 + startMinute;
+  //     const end = endHour * 60 + endMinute;
+
+  //     return start >= end ? { startAfterEnd: true } : null;
+  //   };
+  // }
+
+static startTimeBeforeEndTimeValidator(formGroup: AbstractControl): ValidationErrors | null {
+    const startTime = formGroup.get('startTime')?.value;
+    const endTime = formGroup.get('endTime')?.value;
+ 
+    if (!startTime || !endTime) return null;
+ 
+    const [startHour, startMinute] = startTime.split(':').map(Number);
+    const [endHour, endMinute] = endTime.split(':').map(Number);
+ 
+    const start = startHour * 60 + startMinute;
+    const end = endHour * 60 + endMinute;
+ 
+    return start >= end ? { startAfterEnd: true } : null;
+  }
+}
+
 @Component({
   selector: 'app-add-class-dialog',
   standalone: false,
@@ -16,7 +50,7 @@ import { AddClassService } from 'src/app/services/add-class/add-class.service';
 export class AddClassDialogComponent {
 
   classForm: FormGroup;
-  registerButtonLabel = 'Schedule';
+  saveButtonLabel = 'Schedule';
   mode = 'add';
   selectedData;
   isDisabled = false;
@@ -33,7 +67,6 @@ export class AddClassDialogComponent {
     private http: HttpService,
     private addClassService: AddClassService,
     private messageService: MessageServiceService,
-    private notificationService: NotificationService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
 
@@ -57,9 +90,8 @@ export class AddClassDialogComponent {
       fee: ['', [Validators.required, Validators.min(0), Validators.pattern(/^\d+(\.\d{1,2})?$/)]],
       status: ['', [Validators.required]],
     },
-  {
-      validators: this.startTimeBeforeEndTimeValidator()
-  });
+ {Validators: DateValidator.startTimeBeforeEndTimeValidator});
+
   }
 
   startTimeBeforeEndTimeValidator(): ValidatorFn {
@@ -92,93 +124,104 @@ export class AddClassDialogComponent {
   /* onsubmit function */
   onSubmit() {
     this.submitted = true;
-    // check if form is valid
+
+    // Validate form
     if (this.classForm.invalid) {
       return;
     }
 
-      const payload = {
-    ...this.classForm.value,
-    remainingSlots: this.classForm.value.totalSlots
-  };
+    // Prepare payload
+    const payload = {
+      ...this.classForm.value,
+      remainingSlots: this.classForm.value.totalSlots,
+      ...(this.mode === 'edit' ? { id: this.selectedData.id } : {})
+    };
 
-  console.log("Payload: ", payload);
-  
+    console.log('Payload:', this.selectedData);
 
     try {
-      // check mode (add or edit)
       if (this.mode === 'add') {
         this.addClassService.serviceCall(payload).subscribe({
           next: (response: any) => {
-            if (this.dataSource && this.dataSource.data && this.dataSource.data.length > 0) {
-              this.dataSource = new MatTableDataSource([response, ...this.dataSource.data]);
-            } else {
-              this.dataSource = new MatTableDataSource([response]);
-            }
-            // displaying success message
             this.messageService.showSuccess('Class Scheduled successfully!');
+            this.dialogRef.close({ action: 'add', data: response });
           },
-          // Displaying error message
           error: (error) => {
             this.messageService.showError(error);
           }
         });
       } else if (this.mode === 'edit') {
-        // Calling editData function to send the request to the backend
-        this.addClassService.editData(this.selectedData?.id, this.classForm.value).subscribe({
+        this.addClassService.editData(payload.id, payload).subscribe({
           next: (response: any) => {
-            let elementIndex = this.dataSource.data.findIndex((element) => element.id === this.selectedData?.id);
-            this.dataSource.data[elementIndex] = response;
-            this.dataSource = new MatTableDataSource(this.dataSource.data);
-
-            // Displaying success message
             this.messageService.showSuccess('Class details updated successfully!');
+            this.dialogRef.close({ action: 'edit', data: response });
           },
           error: (error) => {
             this.messageService.showError(error);
           }
         });
       }
-      // this.employeeForm.disable();
+
       this.isDisabled = true;
       this.mode = 'add';
     } catch (error) {
       this.messageService.showError(error);
     }
-    this.closeDialog();
   }
 
+  // onEdit(data: any): void {
+  //   this.classForm.patchValue({
+  //     classTitle: data.classTitle,
+  //     description: data.description,
+  //     date: new Date(data.date),
+  //     startTime: data.startTime,
+  //     endTime: data.endTime,
+  //     conductorName: data.conductorName,
+  //     profession: data.profession,
+  //     totalSlots: data.totalSlots,
+  //     remainingSlots: data.remainingSlots,
+  //     fee: data.fee,
+  //     status: data.status,
+  //   });
+  //   this.registerButtonLabel = 'Update';
+  //   this.mode = 'edit';
+  //   this.selectedData = data;
+
+  //   this.submitDisabled = true;
+  //   // patching date values after formatting
+  //   this.classForm.patchValue({
+  //     joinedDate: new Date(data.joinedDate),
+  //     dateOfBirth: new Date(data.dateOfBirth),
+  //   });
+
+  //   this.classForm.valueChanges.subscribe(() => {
+  //     this.submitDisabled = /* !this.memberForm.valid || */ this.classForm.pristine;
+  //   });
+  // }
+
+
   onEdit(data: any): void {
+
+    this.saveButtonLabel = 'Update';
+    this.mode = 'edit';
+    this.selectedData = data;
+
+
     this.classForm.patchValue({
       classTitle: data.classTitle,
       description: data.description,
-      date: data.date,
+      date: new Date(data.date),
       startTime: data.startTime,
       endTime: data.endTime,
       conductorName: data.conductorName,
       profession: data.profession,
       totalSlots: data.totalSlots,
       remainingSlots: data.remainingSlots,
-      address: data.address,
       fee: data.fee,
       status: data.status,
     });
-    this.registerButtonLabel = "Update";
-    this.mode = "edit";
-    this.selectedData = data;
 
-    this.submitDisabled = true;
 
-    // patching date values after formatting
-    this.classForm.patchValue({
-      date: new Date(data.date),
-      startTime: new Date(data.startTime),
-      endTime: new Date(data.endTime),
-    });
-
-    this.classForm.valueChanges.subscribe(() => {
-      this.submitDisabled = /* !this.employeeForm.valid || */ this.classForm.pristine;
-    });
   }
 
   // reset button function
@@ -189,7 +232,7 @@ export class AddClassDialogComponent {
     this.classForm.enable();
     this.isDisabled = false;
     this.submitted = false;
-    this.registerButtonLabel = 'Register';
+    this.saveButtonLabel = 'Schedule';
   }
 
   // Dialog close function

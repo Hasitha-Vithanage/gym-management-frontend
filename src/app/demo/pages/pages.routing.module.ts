@@ -30,6 +30,8 @@ import { MarkAttendanceComponent } from './mark-attendance/mark-attendance.compo
 import { AllFeedbacksComponent } from './all-feedbacks/all-feedbacks.component';
 import { UploadMealPlanComponent } from './upload-meal-plan/upload-meal-plan.component';
 import { AddClassComponent } from './add-class/add-class.component';
+import { BookClassComponent } from './book-class/book-class.component';
+import { BookClassSubmitComponent } from './book-class-submit/book-class-submit.component';
 
 export const PagesRoutes: Routes = [
   {
@@ -151,5 +153,11 @@ export const PagesRoutes: Routes = [
   }, 
      { path: 'add-class',
     component: AddClassComponent
+  }, 
+     { path: 'book-class',
+    component: BookClassComponent
+  }, 
+     { path: 'book-class-submit/:id',
+    component: BookClassSubmitComponent
   }, 
 ];

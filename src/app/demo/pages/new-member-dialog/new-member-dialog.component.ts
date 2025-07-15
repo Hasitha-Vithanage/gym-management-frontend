@@ -62,14 +62,14 @@ export class NewMemberDialogComponent {
     });
   }
 
-    futureDateValidator(control: AbstractControl) {
-      if (!control.value) return null;
-      const inputDate = new Date(control.value);
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      return inputDate > today ? { futureDate: true } : null;
-    }
-  
+  futureDateValidator(control: AbstractControl) {
+    if (!control.value) return null;
+    const inputDate = new Date(control.value);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return inputDate > today ? { futureDate: true } : null;
+  }
+
 
   /* OnSubmit function */
   onSubmit() {
@@ -145,8 +145,8 @@ export class NewMemberDialogComponent {
     this.mode = 'edit';
     this.selectedData = data;
 
-        this.submitDisabled = true;
-                // patching date values after formatting
+    this.submitDisabled = true;
+    // patching date values after formatting
     this.memberForm.patchValue({
       joinedDate: new Date(data.joinedDate),
       dateOfBirth: new Date(data.dateOfBirth),

@@ -47,7 +47,7 @@ export class NewEmployeeDialogComponent {
     const userName = this.http.getLoginNameFromCache();
 
     this.employeeForm = this.fb.group({
-      employeeId: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(5), Validators.pattern(/^E\d{3}$/)]],
+      employeeId: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(5), Validators.pattern(/^E\d{4}$/)]],
       jobTitle: ['', Validators.required],
       dateOfJoining: ['', [Validators.required, this.futureDateValidator]],
       firstName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(15), Validators.pattern(/^[A-Za-z]+$/)]],

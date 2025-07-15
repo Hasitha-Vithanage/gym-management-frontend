@@ -89,7 +89,7 @@ export class EmpolyeeServiceService {
     markAttendance(attendanceData: any) {
       
       // creating requesting URL
-    const requestUrl = environment.baseUrl + '/employeeService/mark-attendance/present/' + attendanceData.employee; // http://localhost:8080/employee
+    const requestUrl = environment.baseUrl + '/employeeService/mark-attendance/' + attendanceData.employee; // http://localhost:8080/employee
 
     let headers = {};
 
