@@ -34,7 +34,7 @@
       <!-- employeeId Column -->
       <ng-container matColumnDef="member">
         <th mat-header-cell *matHeaderCellDef>Member</th>
-        <td mat-cell *matCellDef="let element">{{ element.username }}</td>
+        <td mat-cell *matCellDef="let element">{{ element.userId }}</td>
       </ng-container>
 
       <!-- dateOfJoining Column -->
@@ -62,6 +62,12 @@
         <td mat-cell *matCellDef="let element">{{ element.dietaryPreferences }}</td>
       </ng-container>
 
+      <!-- firstName Column -->
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>Status</th>
+        <td mat-cell *matCellDef="let element">{{ element.status }}</td>
+      </ng-container>
+
       <!-- action Column -->
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef style="text-align: center;">Actions</th>
@@ -73,9 +79,7 @@
             <button mat-icon-button class="gray-icon-btn" matTooltip="Upload Plan" (click)="uploadPlan(element)">
               <mat-icon>upload</mat-icon>
             </button>
-            <button mat-icon-button class="gray-icon-btn" matTooltip="Delete" (click)="deleteData(element)">
-              <mat-icon>delete</mat-icon>
-            </button>
+
           </div>
         </td>
       </ng-container>

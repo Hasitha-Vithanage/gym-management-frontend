@@ -146,6 +146,11 @@ export class NewMemberDialogComponent {
     this.selectedData = data;
 
         this.submitDisabled = true;
+                // patching date values after formatting
+    this.memberForm.patchValue({
+      joinedDate: new Date(data.joinedDate),
+      dateOfBirth: new Date(data.dateOfBirth),
+    });
 
     this.memberForm.valueChanges.subscribe(() => {
       this.submitDisabled = /* !this.memberForm.valid || */ this.memberForm.pristine;

@@ -254,6 +254,8 @@ export class RatingsAndFeedbackComponent {
       date: new Date(data.date)
     });
 
+     this.rating = data.rating;
+
   }
 
   // // delete button function

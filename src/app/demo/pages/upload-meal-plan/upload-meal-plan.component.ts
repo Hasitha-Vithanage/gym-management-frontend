@@ -40,6 +40,7 @@ export class UploadMealPlanComponent {
     'fitnessGoal',
     'allergies',
     'dietaryPreferences',
+    'status',
     'actions',
   ];
 

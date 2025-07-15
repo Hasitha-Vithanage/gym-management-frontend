@@ -106,7 +106,7 @@ export class UploadMealPlanDialogComponent {
         // mealPlanTitle: data.employeeId,
         // planDescription: data.jobTitle,
         // mealPlanPdf: data.dateOfJoining,
-        userId: data.username
+        userId: data.userId
       });
       this.registerButtonLabel = "Upload";
       this.mode = "edit";

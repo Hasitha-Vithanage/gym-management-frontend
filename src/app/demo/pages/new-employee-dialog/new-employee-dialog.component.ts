@@ -150,6 +150,12 @@ export class NewEmployeeDialogComponent {
 
     this.submitDisabled = true;
 
+        // patching date values after formatting
+    this.employeeForm.patchValue({
+      dateOfJoining: new Date(data.dateOfJoining),
+      dateOfBirth: new Date(data.dateOfBirth),
+    });
+
     this.employeeForm.valueChanges.subscribe(() => {
       this.submitDisabled = /* !this.employeeForm.valid || */ this.employeeForm.pristine;
     });

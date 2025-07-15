@@ -4,6 +4,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { NewEquipmentDialogComponent } from '../new-equipment-dialog/new-equipment-dialog.component';
 import { NewEquipmentServiceService } from 'src/app/services/new-equipment/new-equipment-service.service';
+import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
 const ELEMENT_DATA: any[] = [
   {
@@ -39,7 +41,8 @@ export class EquipmentRegistrationComponent {
 
   constructor(
     private equipmentService: NewEquipmentServiceService,
-    private newEquipmentService: NewEquipmentServiceService
+    private newEquipmentService: NewEquipmentServiceService,
+    private messageService: MessageServiceService
   ) { }
 
   // OnInit function
@@ -154,17 +157,32 @@ export class EquipmentRegistrationComponent {
     });
   }
 
-  // Delete Data function
-  deleteData(data: any): void {
-    this.equipmentService.deleteEquipment(data.id).subscribe({
-      next: () => {
-        console.log('Equipment deleted successfully');
-        this.refreshData();
-      },
-      error: (error) => {
-        console.error('Failed to delete equipment:', error);
-      }
-    });
-  }
+      public deleteData(data: any): void {
+      const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+        width: '350px',
+        data: {
+          message: `Are you sure you want to delete ${data.category}?`
+        }
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          const id = data.id;
+          this.newEquipmentService.deleteEquipment(id).subscribe({
+            next: () => {
+              const index = this.dataSource.data.findIndex(item => item.id === id);
+              if (index !== -1) {
+                this.dataSource.data.splice(index, 1);
+              }
+              this.dataSource = new MatTableDataSource(this.dataSource.data);
+              this.messageService.showSuccess('Record deleted successfully!');
+            },
+            error: (error) => {
+              this.messageService.showError(error);
+            }
+          });
+        }
+      });
+    }
 
 }

@@ -78,7 +78,7 @@
 
       <ng-container matColumnDef="expiryDate">
         <th mat-header-cell *matHeaderCellDef>expiryDate</th>
-        <td mat-cell *matCellDef="let element">{{ element.expiryDate }}</td>
+        <td mat-cell *matCellDef="let element">{{ element.expiryDate | date: 'dd/MM/yyyy' }}</td>
       </ng-container>
 
       <ng-container matColumnDef="supplier" style="width: 200px;">

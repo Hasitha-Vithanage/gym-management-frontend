@@ -44,7 +44,7 @@ export class NutritionAndMealPlanComponent implements OnInit {
     const name = this.http.getLoginNameFromCache();
 
     this.mealPlanRequestForm = this.fb.group({
-      username: [name, Validators.required],
+      userId: [name, Validators.required],
       requestedDate: [today, [Validators.required, Validators.min(10)]],
       fitnessGoal: ['', Validators.required],
       dietaryPreferences: [[]],
@@ -76,7 +76,7 @@ export class NutritionAndMealPlanComponent implements OnInit {
 
       },
       error: (err) => {
-        this.messageService.showError('Meal plan not available for this user.');
+        // this.messageService.showError('Meal plan not available for this user.');
         this.isLoading = false;
         this.hasPdf = false;
         this.rawPdfBlob = null;
@@ -88,8 +88,8 @@ export class NutritionAndMealPlanComponent implements OnInit {
 
   // function for check if the user has already requested a meal plan
   checkExistingRequest() {
-    const username = this.http.getLoginNameFromCache();
-    this.nutritionService.hasExistingRequest(username).subscribe({
+    const userId = this.http.getLoginNameFromCache();
+    this.nutritionService.hasExistingRequest(userId).subscribe({
       next: (hasRequest: boolean) => {
         this.hasRequestedPlan = hasRequest;
         console.log(this.hasRequestedPlan);

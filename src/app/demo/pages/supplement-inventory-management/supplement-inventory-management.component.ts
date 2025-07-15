@@ -4,6 +4,8 @@ import { NewSupplementDialogComponent } from '../new-supplement-dialog/new-suppl
 import { MatTableDataSource } from '@angular/material/table';
 import { NewSupplementServiceService } from 'src/app/services/new-supplement/new-supplement-service.service';
 import { MatPaginator } from '@angular/material/paginator';
+import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
 const ELEMENT_DATA: any[] = [
   {
@@ -60,7 +62,8 @@ export class SupplementInventoryManagementComponent {
 
   constructor(
     private newSupplementService: NewSupplementServiceService,
-    private dialogBox: MatDialog
+    private dialogBox: MatDialog,
+    private messageService: MessageServiceService
   ) { }
 
    // OnInit function
@@ -106,23 +109,40 @@ export class SupplementInventoryManagementComponent {
     dialogRef.afterClosed().subscribe((result) => {
       if (result?.action === 'add') {
         this.dataSource.data = [result.data, ...this.dataSource.data];
+        this.populateData();
       }
     });
   }
 
 
-  // Delete Data function
-  deleteData(data: any): void {
-    this.newSupplementService.deleteData(data.id).subscribe({
-      next: () => {
-        console.log('Supplement deleted successfully');
-        this.refreshData();
-      },
-      error: (error) => {
-        console.error('Failed to delete supplement:', error);
+  public deleteData(data: any): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '350px',
+      data: {
+        message: `Are you sure you want to delete ${data.productName}?`
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const id = data.id;
+        this.newSupplementService.deleteData(id).subscribe({
+          next: () => {
+            const index = this.dataSource.data.findIndex(item => item.id === id);
+            if (index !== -1) {
+              this.dataSource.data.splice(index, 1);
+            }
+            this.dataSource = new MatTableDataSource(this.dataSource.data);
+            this.messageService.showSuccess('Record deleted successfully!');
+          },
+          error: (error) => {
+            this.messageService.showError(error);
+          }
+        });
       }
     });
   }
+
 
   
   // Edit Data function

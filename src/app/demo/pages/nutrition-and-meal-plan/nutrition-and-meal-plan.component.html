@@ -25,7 +25,7 @@
 
           <mat-card-content>
             <div *ngIf="hasPdf; else noPdfTemplate" class="pdf-frame-container">
-              <iframe [src]="pdfUrl" class="pdf-frame" frameborder="0" aria-label="Workout Plan PDF"></iframe>
+              <iframe [src]="pdfUrl" class="pdf-frame" frameborder="0" aria-label="Meal Plan PDF"></iframe>
 
               <div class="action-buttons">
                 <button mat-raised-button color="primary" (click)="downloadPdf()">
@@ -41,7 +41,7 @@
             <ng-template #noPdfTemplate>
               <div class="no-pdf-container">
                 <mat-icon class="no-pdf-icon">insert_drive_file</mat-icon>
-                <p class="no-pdf-text">No workout plan has been uploaded yet.</p>
+                <p class="no-pdf-text">No Meal plan has been uploaded yet.</p>
               </div>
             </ng-template>
           </mat-card-content>
@@ -73,7 +73,7 @@
 
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Userame</mat-label>
-            <input matInput placeholder="Your full name" formControlName="username" required readonly/>
+            <input matInput placeholder="Your full name" formControlName="userId" required readonly/>
             <mat-error *ngIf="mealPlanRequestForm.get('name')?.hasError('required')">Name is required</mat-error>
           </mat-form-field>
 
@@ -87,10 +87,10 @@
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Primary Fitness Goal</mat-label>
             <mat-select formControlName="fitnessGoal" required>
-              <mat-option value="muscle_gain">💪 Muscle Gain</mat-option>
-              <mat-option value="fat_loss">🔥 Fat Loss</mat-option>
-              <mat-option value="general_fitness">⚡ General Fitness</mat-option>
-              <mat-option value="endurance">🏃 Endurance</mat-option>
+              <mat-option value="Muscle Gain">💪 Muscle Gain</mat-option>
+              <mat-option value="Fat Loss">🔥 Fat Loss</mat-option>
+              <mat-option value="General Fitness">⚡ General Fitness</mat-option>
+              <mat-option value="Endurance">🏃 Endurance</mat-option>
             </mat-select>
             <mat-error *ngIf="mealPlanRequestForm.get('fitnessGoal')?.hasError('required')">Fitness goal is required</mat-error>
           </mat-form-field>

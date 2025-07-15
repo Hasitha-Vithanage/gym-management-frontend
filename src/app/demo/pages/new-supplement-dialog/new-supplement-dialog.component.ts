@@ -15,16 +15,16 @@ import { MatSort } from '@angular/material/sort';
   styleUrl: './new-supplement-dialog.component.scss'
 })
 export class NewSupplementDialogComponent {
-
   supplementForm: FormGroup;
-  saveButtonLabel = "Save";
-  mode = "add";
+  saveButtonLabel = 'Save';
+  mode = 'add';
   selectedData;
   selectedImageUrl;
   isFileSelected = false;
   submitted = false;
-  supplierList: any[] = [];  // List of suppliers
-
+  supplierList: any[] = []; // List of suppliers
+  selectedFileName: string;
+  today = new Date();
 
   supplementCategories: string[] = [
     'Protein',
@@ -41,20 +41,24 @@ export class NewSupplementDialogComponent {
     'Other'
   ];
 
-  unitOptionsMap: { [key: string]: string[] } = {
-    'Protein': ['g', 'kg'],
-    'Pre-Workout': ['g', 'ml', 'Saving'],
-    'Post-Workout': ['g', 'ml'],
-    'Vitamins & Minerals': ['mg', 'tablets', 'capsules'],
-    'Fat Burners': ['mg', 'capsules', 'savings'],
-    'Creatine': ['g', 'kg'],
-    'Amino Acids': ['g', 'capsules'],
-    'Weight Gainers': ['g', 'kg'],
-    'Digestive Health': ['capsules', 'tablets', 'ml'],
-    'Hydration & Electrolytes': ['ml', 'L'],
-    'Accessories': ['unit'],
-    'Other': ['unit']
-  };  
+  unitList: string[] = [
+    'kg',
+    'g',
+    'mg',
+    'lb',
+    'oz',
+    'L',
+    'ml',
+    'cm',
+    'mm',
+    'inch',
+    'ft',
+    'pcs',
+    'servings',
+    'tablespoon',
+    'teaspoon',
+    'cup'
+  ];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -69,7 +73,6 @@ export class NewSupplementDialogComponent {
     private messageService: MessageServiceService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-
     // this.supplementForm = this.fb.group({
     //   productName: new FormControl(data?.productName || ''),
     //   brand: new FormControl(data?.brand || ''),
@@ -87,39 +90,62 @@ export class NewSupplementDialogComponent {
   }
 
   ngOnInit() {
-
     this.supplementForm = this.fb.group({
-      productName: new FormControl(this.data?.productName || '', [Validators.required]),
-      brand: new FormControl(this.data?.brand || '', [Validators.required]),
+      productName: new FormControl(this.data?.productName || '', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]),
+      brand: new FormControl(this.data?.brand || '', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]),
       category: new FormControl(this.data?.category || '', [Validators.required]),
-      quantityPerUnit: new FormControl(this.data?.quantityPerUnit || '', [Validators.required]),
+      quantityPerUnit: new FormControl(this.data?.quantityPerUnit || '', [
+        Validators.required,
+        Validators.pattern(/^[0-9]+([.][0-9]{1,2})?$/), // allows integers or decimals
+        Validators.min(1)
+      ]),
       unit: new FormControl(this.data?.unit || '', [Validators.required]),
-      costPrice: new FormControl(this.data?.costPrice || '', [Validators.required]),
-      retailPrice: new FormControl(this.data?.retailPrice || '', [Validators.required]),
-      quantityInStock: new FormControl(this.data?.quantityInStock || '', [Validators.required]),
-      expiryDate: new FormControl(this.data?.expiryDate || ''),
-      supplier: new FormControl(this.data?.supplier || ''),
-      description: new FormControl(this.data?.description || ''),
+      costPrice: new FormControl(this.data?.costPrice || '', [
+        Validators.required,
+        Validators.pattern(/^[0-9]+([.][0-9]{1,2})?$/),
+        Validators.min(0)
+      ]),
+      retailPrice: new FormControl(this.data?.retailPrice || '', [
+        Validators.required,
+        Validators.pattern(/^[0-9]+([.][0-9]{1,2})?$/),
+        Validators.min(0)
+      ]),
+      quantityInStock: new FormControl(this.data?.quantityInStock || '', [
+        Validators.required,
+        Validators.pattern(/^[0-9]+$/),
+        Validators.min(0)
+      ]),
+      expiryDate: new FormControl(this.data?.expiryDate || '', [
+        // Optional: you can also add Validators.required if expiry is mandatory
+        this.futureDateValidator
+      ]),
+      supplier: new FormControl(this.data?.supplier || '', [Validators.required]),
+      description: new FormControl(this.data?.description || '', [Validators.maxLength(500)]),
       image: new FormControl(''),
       imageName: new FormControl(''),
-      imageType: new FormControl(''),
+      imageType: new FormControl('')
     });
-
 
     // Function for get suppliers
     this.getSuppliers();
 
-    this.supplementForm.get('unit').disable();
+    // this.supplementForm.get('unit').disable();
 
     // Setting current user's username as addedBy
     // this.userName = this.http.getLoginNameFromCache();
+  }
+
+  futureDateValidator(control: FormControl) {
+    const selectedDate = new Date(control.value);
+    const today = new Date();
+    return selectedDate > today ? null : { invalidDate: true };
   }
 
   selectedCategory: string = '';
   // Function to handle category change
   onCategoryChange(event: any): void {
     this.selectedCategory = event.value;
-        this.supplementForm.get('unit').enable();
+    this.supplementForm.get('unit').enable();
   }
 
   // Close button function
@@ -152,7 +178,6 @@ export class NewSupplementDialogComponent {
           this.messageService.showError('Action failed with error: ' + error);
         }
       });
-
     } else if (this.mode === 'edit') {
       this.newSupplementService.editData(this.selectedData?.id, this.prepareFormData()).subscribe({
         next: (response) => {
@@ -170,12 +195,11 @@ export class NewSupplementDialogComponent {
     this.closeDialog();
   }
 
-
   // Edit button function
   public editData(data: any): void {
     this.supplementForm.patchValue(data);
-    this.saveButtonLabel = "Update";
-    this.mode = "edit";
+    this.saveButtonLabel = 'Update';
+    this.mode = 'edit';
 
     // saving the current form values
     this.selectedData = data;
@@ -187,13 +211,12 @@ export class NewSupplementDialogComponent {
     });
   }
 
-
   // getSupplier function
   public getSuppliers(): void {
     //Call Service to get suppliers
     this.newSupplementService.getSuppliers().subscribe({
       next: (response: any[]) => {
-        console.log("Suppliers: ", response);
+        console.log('Suppliers: ', response);
         this.supplierList = response;
       },
       error: (error) => {
@@ -201,7 +224,6 @@ export class NewSupplementDialogComponent {
       }
     });
   }
-
 
   /* table filter function */
   applyFilter(event: Event) {
@@ -212,7 +234,6 @@ export class NewSupplementDialogComponent {
       this.dataSource.paginator.firstPage();
     }
   }
-
 
   public prepareFormData(): FormData {
     const supplementFormData = new FormData();
@@ -241,12 +262,18 @@ export class NewSupplementDialogComponent {
   }
 
   public onFileSelected(event): void {
-    if (event.target.files) {
-      const file = event.target.files[0];
-      const url = this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(file));
-      this.selectedImageUrl = url;
-      this.isFileSelected = true;
-      this.supplementForm.get('image').setValue(file);
+    const input = event.target as HTMLInputElement;
+
+    if (input?.files?.length) {
+      this.selectedFileName = input.files[0].name;
+
+      if (event.target.files) {
+        const file = event.target.files[0];
+        const url = this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(file));
+        this.selectedImageUrl = url;
+        this.isFileSelected = true;
+        this.supplementForm.get('image').setValue(file);
+      }
     }
   }
 
@@ -265,17 +292,15 @@ export class NewSupplementDialogComponent {
       description: data.description,
       image: data.image,
       imageName: data.imageName,
-      imageType: data.imageType,
+      imageType: data.imageType
     });
-    this.saveButtonLabel = "Update";
-    this.mode = "edit";
+    this.saveButtonLabel = 'Update';
+    this.mode = 'edit';
     this.selectedData = data;
-    
 
     // patching date values after formatting
     this.supplementForm.patchValue({
-      expiryDate: new Date(data.expiryDate),
+      expiryDate: new Date(data.expiryDate)
     });
   }
-
 }
