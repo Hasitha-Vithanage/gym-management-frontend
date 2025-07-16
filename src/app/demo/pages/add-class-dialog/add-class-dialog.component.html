@@ -36,7 +36,7 @@
       <mat-form-field appearance="outline" class="half-width">
         <mat-label>Date</mat-label>
         <mat-icon matPrefix>event</mat-icon>
-        <input matInput [matDatepicker]="date" formControlName="date" placeholder="MM/DD/YYYY" />
+        <input matInput [matDatepicker]="date" formControlName="date" placeholder="MM/DD/YYYY" (dateChange)="onDateChange($event)" />
         <span class="required-message" *ngIf="submitted && classForm.get('date').invalid">
           <ng-container *ngIf="classForm.get('date').hasError('required')">Date is required</ng-container>
           <ng-container *ngIf="classForm.get('date').errors?.['invalidDate']">Invalid date format</ng-container>

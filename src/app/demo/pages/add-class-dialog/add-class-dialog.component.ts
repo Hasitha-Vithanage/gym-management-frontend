@@ -6,6 +6,7 @@ import { HttpService } from 'src/app/services/http.service';
 import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
 import { NotificationService } from 'src/app/services/notification-service/notification.service';
 import { AddClassService } from 'src/app/services/add-class/add-class.service';
+import moment from 'moment';
 
 export const startTimeBeforeEndTimeValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
   const startTime = control.get('startTime')?.value;
@@ -117,12 +118,6 @@ export class AddClassDialogComponent {
       },
       { validators: startTimeBeforeEndTimeValidator }
     );
-
-    this.classForm.get('date')?.valueChanges.subscribe((value) => {
-      console.log('Date changed:', value);
-      console.log('Date errors:', this.classForm.get('date')?.errors);
-      console.log('Form errors:', this.classForm.errors);
-    });
   }
 
   /* onsubmit function */
@@ -237,5 +232,19 @@ export class AddClassDialogComponent {
   // Dialog close function
   closeDialog(): void {
     this.dialogRef.close();
+  }
+
+  onDateChange(event: any) {
+    const selectedDate = this.classForm.get('date').value;
+    if (selectedDate) {
+      // Convert to UTC and set time to midnight
+      const normalizedDate = moment(selectedDate).startOf('day').toDate();
+      console.log(normalizedDate);
+      this.classForm.get('date').setValue(normalizedDate);
+
+      const date = this.classForm.get('date').value;
+      const formattedDate = moment(date).format('YYYY-MM-DD');
+      this.classForm.patchValue({ date: formattedDate });
+    }
   }
 }

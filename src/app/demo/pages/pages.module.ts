@@ -55,8 +55,21 @@ import { MembershipCategoriesComponent } from './membership-categories/membershi
 import { MembershipCategoriesDialogComponent } from './membership-categories-dialog/membership-categories-dialog.component';
 import { PaymentsComponent } from './payments/payments.component';
 import { PaymentsDialogComponent } from './payments-dialog/payments-dialog.component';
-
+import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
+import { MomentDateAdapter } from '@angular/material-moment-adapter';
 // icons
+
+export const MY_DATE_FORMATS = {
+  parse: {
+    dateInput: 'MM/DD/YYYY'
+  },
+  display: {
+    dateInput: 'MM/DD/YYYY',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY'
+  }
+};
 
 @NgModule({
   declarations: [
@@ -120,6 +133,16 @@ import { PaymentsDialogComponent } from './payments-dialog/payments-dialog.compo
     ReactiveFormsModule,
     NgxChartsModule
   ],
-  exports: []
+  exports: [],
+  providers: [
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter
+    },
+    {
+      provide: MAT_DATE_FORMATS,
+      useValue: MY_DATE_FORMATS
+    }
+  ]
 })
 export class PagesModule {}
