@@ -65,7 +65,45 @@ export class MembershipCategoryService {
     return this.http.get(requestUrl, { headers: headers });
   }
 
-    deleteData(id: number) {
+  getMembersByFirstName(firstName: string) {
+    console.log("Member Name: ", firstName);
+
+
+    // creating requesting URL
+    const requestUrl = environment.baseUrl + '/membership-category/' + firstName; // http://localhost:8080/assign-trainer
+
+    let headers = {};
+
+    if (this.httpService.getAuthToken() !== null) {
+      headers = {
+        Authorization: 'Bearer ' + this.httpService.getAuthToken()
+      };
+    }
+
+    // sending GET request to the server
+    return this.http.get(requestUrl, { headers: headers });
+  }
+
+  getFeeByCategoryName(categoryName: string) {
+    console.log("Member Name: ", categoryName);
+
+
+    // creating requesting URL
+    const requestUrl = environment.baseUrl + '/membership-category-fee/' + categoryName; // http://localhost:8080/assign-trainer
+
+    let headers = {};
+
+    if (this.httpService.getAuthToken() !== null) {
+      headers = {
+        Authorization: 'Bearer ' + this.httpService.getAuthToken()
+      };
+    }
+
+    // sending GET request to the server
+    return this.http.get(requestUrl, { headers: headers });
+  }
+
+  deleteData(id: number) {
     console.log("In deleteData!");
 
     // creating requesting URL
@@ -81,19 +119,6 @@ export class MembershipCategoryService {
 
     // sending POST request to the server
     return this.http.delete(requestUrl, { headers: headers });
-  }
-
-    // Service all for get suppliers
-  public getMembershipCategory() {
-    const requestUrl = environment.baseUrl + '/membership-category';
-
-    let headers = {};
-    if (this.httpService.getAuthToken() !== null) {
-      headers = {
-        Authorization: 'Bearer ' + this.httpService.getAuthToken()
-      };
-    }
-    return this.http.get(requestUrl, { headers: headers });
   }
 
 }

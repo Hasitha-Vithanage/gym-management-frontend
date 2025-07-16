@@ -457,6 +457,25 @@ export const NavigationItems: NavigationItem[] = [
     ]
   },
   {
+    id: 'payments',
+    title: 'Payments',
+    type: 'group',
+    icon: 'icon-navigation',
+    auth: authenticationEnum.Home,
+    children: [
+      {
+        id: 'payments',
+        title: 'Payments',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/pages/payments',
+        icon: '',
+        auth: authenticationEnum.Home_Dashboard,
+        breadcrumbs: false
+      }, // add other reports to here
+    ]
+  },
+  {
     id: 'ratings',
     title: 'Ratings & Feedback',
     type: 'group',

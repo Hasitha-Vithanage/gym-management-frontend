@@ -13,7 +13,7 @@ import { MessageServiceService } from 'src/app/services/message-service/message-
   templateUrl: './new-member-dialog.component.html',
   styleUrl: './new-member-dialog.component.scss'
 })
-export class NewMemberDialogComponent implements OnInit{
+export class NewMemberDialogComponent implements OnInit {
   memberForm: FormGroup;
   registerButtonLabel = 'Register';
   mode = 'add';
@@ -30,7 +30,7 @@ export class NewMemberDialogComponent implements OnInit{
   constructor(
     private fb: FormBuilder,
     private memberService: MemberServiceService,
-        private membershipCategoryService: MembershipCategoryService,
+    private membershipCategoryService: MembershipCategoryService,
     public dialogRef: MatDialogRef<NewMemberDialogComponent>,
     private sanitizer: DomSanitizer,
     private messageService: MessageServiceService
@@ -76,11 +76,11 @@ export class NewMemberDialogComponent implements OnInit{
     return inputDate > today ? { futureDate: true } : null;
   }
 
-  
+
   // getMembershipCategory function
   public getMembershipCategory(): void {
     //Call Service to get suppliers
-    this.membershipCategoryService.getMembershipCategory().subscribe({
+    this.membershipCategoryService.getData().subscribe({
       next: (response: any[]) => {
         console.log("Membership Category: ", response);
         this.membershipCategoryList = response;

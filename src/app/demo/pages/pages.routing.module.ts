@@ -33,6 +33,7 @@ import { AddClassComponent } from './add-class/add-class.component';
 import { BookClassComponent } from './book-class/book-class.component';
 import { BookClassSubmitComponent } from './book-class-submit/book-class-submit.component';
 import { MembershipCategoriesComponent } from './membership-categories/membership-categories.component';
+import { PaymentsComponent } from './payments/payments.component';
 
 export const PagesRoutes: Routes = [
   {
@@ -163,5 +164,8 @@ export const PagesRoutes: Routes = [
   }, 
      { path: 'membership-categories',
     component: MembershipCategoriesComponent
+  }, 
+     { path: 'payments',
+    component: PaymentsComponent
   }, 
 ];

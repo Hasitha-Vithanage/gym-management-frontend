@@ -53,6 +53,8 @@ import { BookClassComponent } from './book-class/book-class.component';
 import { BookClassSubmitComponent } from './book-class-submit/book-class-submit.component';
 import { MembershipCategoriesComponent } from './membership-categories/membership-categories.component';
 import { MembershipCategoriesDialogComponent } from './membership-categories-dialog/membership-categories-dialog.component';
+import { PaymentsComponent } from './payments/payments.component';
+import { PaymentsDialogComponent } from './payments-dialog/payments-dialog.component';
 
 // icons
 
@@ -105,7 +107,9 @@ import { MembershipCategoriesDialogComponent } from './membership-categories-dia
     BookClassComponent,
     BookClassSubmitComponent,
     MembershipCategoriesComponent,
-    MembershipCategoriesDialogComponent 
+    MembershipCategoriesDialogComponent,
+    PaymentsComponent,
+    PaymentsDialogComponent
   ],
   imports: [
     CommonModule,
