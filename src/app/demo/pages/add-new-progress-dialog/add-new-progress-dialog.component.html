@@ -10,64 +10,64 @@
   <!--- form -->
   <form class="example-form" [formGroup]="progressForm" (ngSubmit)="onSubmit()">
     <div class="row">
-      <mat-form-field class="half-width">
+      <mat-form-field appearance="outline" class="half-width">
         <mat-label>Date</mat-label>
         <input matInput [matDatepicker]="join" placeholder="MM/DD/YYYY" formControlName="date" />
         <mat-datepicker-toggle matSuffix [for]="join"></mat-datepicker-toggle>
         <mat-datepicker #join></mat-datepicker>
       </mat-form-field>
 
-      <mat-form-field class="half-width">
+      <mat-form-field appearance="outline" class="half-width">
         <mat-label>Weight (Kg)</mat-label>
         <input matInput maxlength="20" placeholder="Enter Weight" type="number" formControlName="weight" />
       </mat-form-field>
     </div>
 
     <div class="row">
-      <mat-form-field class="half-width">
+      <mat-form-field appearance="outline" class="half-width">
         <mat-label>Height (cm)</mat-label>
         <input matInput maxlength="20" placeholder="Enter Height" type="number" formControlName="height" />
       </mat-form-field>
 
-      <mat-form-field class="half-width">
+      <mat-form-field appearance="outline" class="half-width">
         <mat-label>Waist Circumference (cm)</mat-label>
         <input matInput maxlength="50" placeholder="Enter Waist Circumference (cm)" type="number" formControlName="waist" />
       </mat-form-field>
     </div>
 
     <div class="row">
-      <mat-form-field class="half-width">
+      <mat-form-field appearance="outline" class="half-width">
         <mat-label>Hip Circumference (cm)</mat-label>
         <input matInput maxlength="50" placeholder="Enter Hip Circumference (cm)" type="number" formControlName="hip" />
       </mat-form-field>
 
-      <mat-form-field class="half-width">
+      <mat-form-field appearance="outline" class="half-width">
         <mat-label>Neck Circumference (cm)</mat-label>
         <input matInput maxlength="50" placeholder="Enter Neck Circumference (cm)" type="number" formControlName="neck" />
       </mat-form-field>
     </div>
 
     <div class="row">
-      <mat-form-field class="half-width">
+      <mat-form-field appearance="outline" class="half-width">
         <mat-label>BMI</mat-label>
         <input matInput maxlength="20" placeholder="Auto-calculated" [readonly]="true" type="number" formControlName="bmi" />
       </mat-form-field>
 
-      <mat-form-field class="half-width">
+      <mat-form-field appearance="outline" class="half-width">
         <mat-label>Body Fat %</mat-label>
         <input matInput maxlength="20" placeholder="Auto-calculated" [readonly]="true" type="number" formControlName="bodyFat" />
       </mat-form-field>
     </div>
 
     <div class="row">
-      <mat-form-field class="half-width">
+      <mat-form-field appearance="outline" class="half-width">
         <mat-label>Gender</mat-label>
         <mat-select formControlName="gender">
           <mat-option value="Male">Male</mat-option>
           <mat-option value="Female">Female</mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field class="half-width">
+      <mat-form-field appearance="outline" class="half-width">
         <mat-label>Remarks</mat-label>
         <textarea matInput maxlength="1000" placeholder="Enter Remarks" formControlName="remarks"></textarea>
       </mat-form-field>

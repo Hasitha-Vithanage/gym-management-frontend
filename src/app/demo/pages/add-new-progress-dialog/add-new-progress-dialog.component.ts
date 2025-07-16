@@ -45,8 +45,8 @@ export class AddNewProgressDialogComponent {
       waist: new FormControl('', Validators.required),
       hip: new FormControl('', Validators.required),
       neck: new FormControl('', Validators.required),
-      bmi: new FormControl({ value: '', disabled: true }),
-      bodyFat: new FormControl({ value: '', disabled: true }),
+      bmi: new FormControl( ''),
+      bodyFat: new FormControl( ''),
       gender: new FormControl('', Validators.required),
       remarks: new FormControl(''),
 
