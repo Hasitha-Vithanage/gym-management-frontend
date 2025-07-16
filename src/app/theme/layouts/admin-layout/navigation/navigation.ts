@@ -414,6 +414,16 @@ export const NavigationItems: NavigationItem[] = [
         icon: '',
         auth: authenticationEnum.Home_Dashboard,
         breadcrumbs: false
+      },
+      {
+        id: 'membershipCategoriesDet',
+        title: 'Membership Categories',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/pages/membership-categories',
+        icon: '',
+        auth: authenticationEnum.Home_Dashboard,
+        breadcrumbs: false
       }
     ]
   },

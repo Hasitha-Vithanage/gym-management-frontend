@@ -1,0 +1,31 @@
+<div class="form-section">
+  <!-- title of the form-->
+  <div class="title">
+    <h2 class="form-title">Add Membership Category</h2>
+    <button mat-icon-button class="close-icon" style="padding: 0px" (click)="closeDialog()">
+      <mat-icon fontIcon="close"></mat-icon>
+    </button>
+  </div>
+
+  <!--- form -->
+  <form [formGroup]="membershipCategoryForm" class="example-form" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Category Name</mat-label>
+        <input matInput placeholder="Enter the membership fee" type="text" formControlName="categoryName" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Membership Fee (LKR)</mat-label>
+        <input matInput placeholder="Enter the membership fee" type="number" formControlName="fee" />
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <button type="submit" mat-raised-button class="register-button half-width" [disabled]="submitDisabled">
+        {{ registerButtonLabel }}
+      </button>
+      <button type="reset" mat-raised-button class="reset-button half-width" (click)="resetData()">Reset</button>
+    </div>
+  </form>
+</div>

@@ -51,6 +51,8 @@ import { AddClassComponent } from './add-class/add-class.component';
 import { AddClassDialogComponent } from './add-class-dialog/add-class-dialog.component';
 import { BookClassComponent } from './book-class/book-class.component';
 import { BookClassSubmitComponent } from './book-class-submit/book-class-submit.component';
+import { MembershipCategoriesComponent } from './membership-categories/membership-categories.component';
+import { MembershipCategoriesDialogComponent } from './membership-categories-dialog/membership-categories-dialog.component';
 
 // icons
 
@@ -101,7 +103,9 @@ import { BookClassSubmitComponent } from './book-class-submit/book-class-submit.
     AddClassComponent,
     AddClassDialogComponent,
     BookClassComponent,
-    BookClassSubmitComponent
+    BookClassSubmitComponent,
+    MembershipCategoriesComponent,
+    MembershipCategoriesDialogComponent 
   ],
   imports: [
     CommonModule,
