@@ -7,38 +7,30 @@ import { MessageServiceService } from 'src/app/services/message-service/message-
 import { NotificationService } from 'src/app/services/notification-service/notification.service';
 import { AddClassService } from 'src/app/services/add-class/add-class.service';
 
-export class DateValidator {
-  //  static startTimeBeforeEndTimeValidator(control: AbstractControl): ValidatorFn {
-  //   return (formGroup: AbstractControl): ValidationErrors | null => {
-  //     const startTime = formGroup.get('startTime')?.value;
-  //     const endTime = formGroup.get('endTime')?.value;
+export const startTimeBeforeEndTimeValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+  const startTime = control.get('startTime')?.value;
+  const endTime = control.get('endTime')?.value;
+  console.log('validators called');
 
-  //     if (!startTime || !endTime) return null;
+  if (!startTime || !endTime) return null;
 
-  //     const [startHour, startMinute] = startTime.split(':').map(Number);
-  //     const [endHour, endMinute] = endTime.split(':').map(Number);
+  const start = convertToDate(startTime);
+  const end = convertToDate(endTime);
 
-  //     const start = startHour * 60 + startMinute;
-  //     const end = endHour * 60 + endMinute;
+  return end <= start ? { startTimeBeforeEndTimeValidator: true } : null;
+};
 
-  //     return start >= end ? { startAfterEnd: true } : null;
-  //   };
-  // }
-
-static startTimeBeforeEndTimeValidator(formGroup: AbstractControl): ValidationErrors | null {
-    const startTime = formGroup.get('startTime')?.value;
-    const endTime = formGroup.get('endTime')?.value;
- 
-    if (!startTime || !endTime) return null;
- 
-    const [startHour, startMinute] = startTime.split(':').map(Number);
-    const [endHour, endMinute] = endTime.split(':').map(Number);
- 
-    const start = startHour * 60 + startMinute;
-    const end = endHour * 60 + endMinute;
- 
-    return start >= end ? { startAfterEnd: true } : null;
+function convertToDate(time: string | number[] | Date): Date {
+  if (Array.isArray(time)) {
+    // if input is like [10, 30]
+    return new Date(0, 0, 0, time[0], time[1]);
   }
+  if (typeof time === 'string') {
+    // if input is like "10:30"
+    const [hour, minute] = time.split(':').map(Number);
+    return new Date(0, 0, 0, hour, minute);
+  }
+  return new Date(time);
 }
 
 @Component({
@@ -48,7 +40,6 @@ static startTimeBeforeEndTimeValidator(formGroup: AbstractControl): ValidationEr
   styleUrl: './add-class-dialog.component.scss'
 })
 export class AddClassDialogComponent {
-
   classForm: FormGroup;
   saveButtonLabel = 'Schedule';
   mode = 'add';
@@ -59,7 +50,7 @@ export class AddClassDialogComponent {
   dataSource: MatTableDataSource<any>;
   today: Date = new Date();
   submitDisabled;
-
+  startEndTimeCustomValidationStatus = false;
 
   constructor(
     private fb: FormBuilder,
@@ -68,49 +59,29 @@ export class AddClassDialogComponent {
     private addClassService: AddClassService,
     private messageService: MessageServiceService,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) {
-
-  }
+  ) {}
 
   ngOnInit() {
-
     // Get today's date
     const today = new Date().toISOString().split('T')[0]; // Format as YYYY-MM-DD
     const userName = this.http.getLoginNameFromCache();
 
-    this.classForm = this.fb.group({
-      classTitle: ['', [Validators.required, Validators.maxLength(50)]],
-      description: ['', [Validators.required, Validators.maxLength(200)]],
-      date: ['', [Validators.required, this.futureDateValidator]],
-      startTime: ['', [Validators.required]],
-      endTime: ['', [Validators.required]],
-      conductorName: ['', [Validators.required, Validators.maxLength(50), Validators.pattern(/^[A-Za-z\s.'-]+$/)]],
-      profession: ['', [Validators.required, Validators.maxLength(50), Validators.pattern(/^[A-Za-z\s&-]+$/)]],
-      totalSlots: ['', [Validators.required, Validators.min(1), Validators.max(25), Validators.pattern(/^[0-9]+$/)]],
-      fee: ['', [Validators.required, Validators.min(0), Validators.pattern(/^\d+(\.\d{1,2})?$/)]],
-      status: ['', [Validators.required]],
-    },
- {Validators: DateValidator.startTimeBeforeEndTimeValidator});
-
+    this.classForm = this.fb.group(
+      {
+        classTitle: ['', [Validators.required, Validators.maxLength(50)]],
+        description: ['', [Validators.required, Validators.maxLength(200)]],
+        date: ['', [Validators.required, this.futureDateValidator]],
+        startTime: ['', [Validators.required]],
+        endTime: ['', [Validators.required]],
+        conductorName: ['', [Validators.required, Validators.maxLength(50), Validators.pattern(/^[A-Za-z\s.'-]+$/)]],
+        profession: ['', [Validators.required, Validators.maxLength(50), Validators.pattern(/^[A-Za-z\s&-]+$/)]],
+        totalSlots: ['', [Validators.required, Validators.min(1), Validators.max(25), Validators.pattern(/^[0-9]+$/)]],
+        fee: ['', [Validators.required, Validators.min(0), Validators.pattern(/^\d+(\.\d{1,2})?$/)]],
+        status: ['', [Validators.required]]
+      },
+      { validators: startTimeBeforeEndTimeValidator }
+    );
   }
-
-  startTimeBeforeEndTimeValidator(): ValidatorFn {
-    return (formGroup: AbstractControl): ValidationErrors | null => {
-      const startTime = formGroup.get('startTime')?.value;
-      const endTime = formGroup.get('endTime')?.value;
-
-      if (!startTime || !endTime) return null;
-
-      const [startHour, startMinute] = startTime.split(':').map(Number);
-      const [endHour, endMinute] = endTime.split(':').map(Number);
-
-      const start = startHour * 60 + startMinute;
-      const end = endHour * 60 + endMinute;
-
-      return start >= end ? { startAfterEnd: true } : null;
-    };
-  }
-
 
   futureDateValidator(control: AbstractControl) {
     if (!control.value) return null;
@@ -119,7 +90,6 @@ export class AddClassDialogComponent {
     today.setHours(0, 0, 0, 0);
     return inputDate < today ? { futureDate: true } : null;
   }
-
 
   /* onsubmit function */
   onSubmit() {
@@ -199,13 +169,10 @@ export class AddClassDialogComponent {
   //   });
   // }
 
-
   onEdit(data: any): void {
-
     this.saveButtonLabel = 'Update';
     this.mode = 'edit';
     this.selectedData = data;
-
 
     this.classForm.patchValue({
       classTitle: data.classTitle,
@@ -218,10 +185,8 @@ export class AddClassDialogComponent {
       totalSlots: data.totalSlots,
       remainingSlots: data.remainingSlots,
       fee: data.fee,
-      status: data.status,
+      status: data.status
     });
-
-
   }
 
   // reset button function

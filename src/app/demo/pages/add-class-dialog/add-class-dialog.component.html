@@ -53,7 +53,10 @@
         <input matInput placeholder="" formControlName="startTime" type="time" />
         <span class="required-message" *ngIf="submitted && classForm.get('startTime').invalid">
           <ng-container *ngIf="classForm.get('startTime').hasError('required')">Start Time is required</ng-container>
-          <ng-container *ngIf="classForm.get('startTime')?.errors?.['startAfterEnd']">Start Time is required</ng-container>
+          <ng-container *ngIf="classForm.errors?.['startTimeBeforeEndTimeValidator']">Start Time is required</ng-container>
+        </span>
+        <span class="required-message" *ngIf="submitted && classForm.errors">
+          <ng-container *ngIf="classForm.errors?.['startTimeBeforeEndTimeValidator']">Start time must be before end time</ng-container>
         </span>
       </mat-form-field>
     </div>
@@ -66,7 +69,9 @@
         <input matInput placeholder="" formControlName="endTime" type="time" />
         <span class="required-message" *ngIf="submitted && classForm.get('endTime').invalid">
           <ng-container *ngIf="classForm.get('endTime').hasError('required')">End Time is required</ng-container>
-          <ng-container *ngIf="classForm.get('endTime').hasError('startAfterEnd')">End time must be after start time</ng-container>
+        </span>
+        <span class="required-message" *ngIf="submitted && classForm.errors">
+          <ng-container *ngIf="classForm.errors?.['startTimeBeforeEndTimeValidator']">End time must be after start time</ng-container>
         </span>
       </mat-form-field>
 
