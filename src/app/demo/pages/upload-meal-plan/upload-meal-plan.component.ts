@@ -18,7 +18,6 @@ import { MealPlanUploadService } from 'src/app/services/meal-plan-upload/meal-pl
   styleUrl: './upload-meal-plan.component.scss'
 })
 export class UploadMealPlanComponent {
-
   viewData(_t64: any) {
     throw new Error('Method not implemented.');
   }
@@ -34,15 +33,7 @@ export class UploadMealPlanComponent {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  displayedColumns: string[] = [
-    'member',
-    'requestedDate',
-    'fitnessGoal',
-    'allergies',
-    'dietaryPreferences',
-    'status',
-    'actions',
-  ];
+  displayedColumns: string[] = ['member', 'requestedDate', 'fitnessGoal', 'allergies', 'dietaryPreferences', 'status', 'actions'];
 
   /* calling constructor */
   constructor(
@@ -50,15 +41,12 @@ export class UploadMealPlanComponent {
     private uploadMealPlanService: MealPlanUploadService,
     private messageService: MessageServiceService,
     private http: HttpService,
-    private notificationService: NotificationService,
+    private notificationService: NotificationService
     // private dialog: MatDialog
-  ) {
-  }
+  ) {}
   ngOnInit(): void {
-
     this.populateData();
   }
-
 
   // implementation of populateData function
   public populateData(): void {
@@ -69,8 +57,8 @@ export class UploadMealPlanComponent {
             return;
           }
 
-          console.log("Meal plan list: ", dataList);
-          
+          console.log('Meal plan list: ', dataList);
+
           this.dataSource = new MatTableDataSource(dataList);
 
           // sorting and pagination
@@ -87,7 +75,6 @@ export class UploadMealPlanComponent {
     }
   }
 
-
   // table filter function
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -99,11 +86,11 @@ export class UploadMealPlanComponent {
     }
   }
 
-
   readonly dialog = inject(MatDialog);
   uploadPlan(data: any) {
     const dialogRef = this.dialog.open(UploadMealPlanDialogComponent, {
       autoFocus: false,
+      data: data
     });
 
     dialogRef.afterOpened().subscribe(() => {
@@ -112,7 +99,7 @@ export class UploadMealPlanComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result?.action === 'edit') {
-        const newData = this.dataSource.data.filter(item => item.id !== result.data.id);
+        const newData = this.dataSource.data.filter((item) => item.id !== result.data.id);
         // Add the updated item to the top
         this.dataSource.data = [result.data, ...newData];
 
@@ -120,7 +107,6 @@ export class UploadMealPlanComponent {
       }
     });
   }
-
 
   // // delete button function
   // public deleteData(data: any): void {
@@ -149,7 +135,6 @@ export class UploadMealPlanComponent {
   //   }
   // }
 
-
   public deleteData(data: any): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '350px',
@@ -158,12 +143,12 @@ export class UploadMealPlanComponent {
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         const id = data.id;
         this.uploadMealPlanService.deleteRecord(id).subscribe({
           next: () => {
-            const index = this.dataSource.data.findIndex(item => item.id === id);
+            const index = this.dataSource.data.findIndex((item) => item.id === id);
             if (index !== -1) {
               this.dataSource.data.splice(index, 1);
             }
