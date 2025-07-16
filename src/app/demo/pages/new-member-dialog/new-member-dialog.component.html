@@ -166,8 +166,9 @@
         <mat-label>Membership Category</mat-label>
         <mat-icon matPrefix>fitness_center</mat-icon>
         <mat-select formControlName="membershipCategory">
-          <mat-option value="online">Online</mat-option>
-          <mat-option value="physical">Physical</mat-option>
+          <mat-option *ngFor="let membershipCategory of membershipCategoryList" [value]="membershipCategory.categoryName">
+            {{ membershipCategory.categoryName }}
+          </mat-option>
         </mat-select>
         <span class="required-message" *ngIf="submitted && memberForm.get('membershipCategory').invalid">
           <ng-container *ngIf="memberForm.get('membershipCategory').hasError('required')">Membership Category is required</ng-container>

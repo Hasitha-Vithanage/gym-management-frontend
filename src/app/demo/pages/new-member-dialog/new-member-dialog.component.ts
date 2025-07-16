@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MemberServiceService } from 'src/app/services/member-service/member-service.service';
+import { MembershipCategoryService } from 'src/app/services/membership-category/membership-category.service';
 import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
 
 @Component({
@@ -12,7 +13,7 @@ import { MessageServiceService } from 'src/app/services/message-service/message-
   templateUrl: './new-member-dialog.component.html',
   styleUrl: './new-member-dialog.component.scss'
 })
-export class NewMemberDialogComponent {
+export class NewMemberDialogComponent implements OnInit{
   memberForm: FormGroup;
   registerButtonLabel = 'Register';
   mode = 'add';
@@ -22,12 +23,14 @@ export class NewMemberDialogComponent {
   selectedImageUrl;
   isFileSelected = false;
   submitDisabled;
+  membershipCategoryList: any[] = [];  // List of suppliers
 
   dataSource: MatTableDataSource<any>;
 
   constructor(
     private fb: FormBuilder,
     private memberService: MemberServiceService,
+        private membershipCategoryService: MembershipCategoryService,
     public dialogRef: MatDialogRef<NewMemberDialogComponent>,
     private sanitizer: DomSanitizer,
     private messageService: MessageServiceService
@@ -61,6 +64,9 @@ export class NewMemberDialogComponent {
       imageType: new FormControl('')
     });
   }
+  ngOnInit(): void {
+    this.getMembershipCategory();
+  }
 
   futureDateValidator(control: AbstractControl) {
     if (!control.value) return null;
@@ -68,6 +74,21 @@ export class NewMemberDialogComponent {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     return inputDate > today ? { futureDate: true } : null;
+  }
+
+  
+  // getMembershipCategory function
+  public getMembershipCategory(): void {
+    //Call Service to get suppliers
+    this.membershipCategoryService.getMembershipCategory().subscribe({
+      next: (response: any[]) => {
+        console.log("Membership Category: ", response);
+        this.membershipCategoryList = response;
+      },
+      error: (error) => {
+        console.log('Error fetching suppliers:', error);
+      }
+    });
   }
 
 

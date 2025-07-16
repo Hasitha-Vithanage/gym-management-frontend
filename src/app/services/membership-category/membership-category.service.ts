@@ -83,4 +83,17 @@ export class MembershipCategoryService {
     return this.http.delete(requestUrl, { headers: headers });
   }
 
+    // Service all for get suppliers
+  public getMembershipCategory() {
+    const requestUrl = environment.baseUrl + '/membership-category';
+
+    let headers = {};
+    if (this.httpService.getAuthToken() !== null) {
+      headers = {
+        Authorization: 'Bearer ' + this.httpService.getAuthToken()
+      };
+    }
+    return this.http.get(requestUrl, { headers: headers });
+  }
+
 }
