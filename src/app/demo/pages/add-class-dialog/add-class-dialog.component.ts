@@ -10,7 +10,6 @@ import { AddClassService } from 'src/app/services/add-class/add-class.service';
 export const startTimeBeforeEndTimeValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
   const startTime = control.get('startTime')?.value;
   const endTime = control.get('endTime')?.value;
-  console.log('validators called');
 
   if (!startTime || !endTime) return null;
 
@@ -32,6 +31,43 @@ function convertToDate(time: string | number[] | Date): Date {
   }
   return new Date(time);
 }
+
+export const futureDateValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+  const inputDate = control.value;
+  console.log('futureDateValidator called:', { inputDate, type: typeof inputDate }); // Debug log
+
+  if (!inputDate) {
+    return null; // Don't validate if empty (let required validator handle this)
+  }
+
+  // Convert input to Date object
+  let selectedDate: Date;
+  if (typeof inputDate === 'string') {
+    // Handle YYYY-MM-DD format (common for <input type="date">)
+    selectedDate = new Date(inputDate);
+  } else if (inputDate instanceof Date) {
+    selectedDate = inputDate;
+  } else {
+    console.warn('Unexpected date format:', inputDate);
+    return { invalidDate: true }; // Invalid format
+  }
+
+  if (isNaN(selectedDate.getTime())) {
+    console.warn('Invalid date object:', selectedDate);
+    return { invalidDate: true }; // Invalid date
+  }
+
+  // Normalize to midnight for date-only comparison
+  selectedDate.setHours(0, 0, 0, 0);
+
+  // Get today's date, normalized to midnight
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  console.log('Comparing dates:', { selectedDate, today }); // Debug log
+
+  return selectedDate < today ? { futureDateValidator: true } : null;
+};
 
 @Component({
   selector: 'app-add-class-dialog',
@@ -70,7 +106,7 @@ export class AddClassDialogComponent {
       {
         classTitle: ['', [Validators.required, Validators.maxLength(50)]],
         description: ['', [Validators.required, Validators.maxLength(200)]],
-        date: ['', [Validators.required, this.futureDateValidator]],
+        date: ['', [Validators.required, futureDateValidator]],
         startTime: ['', [Validators.required]],
         endTime: ['', [Validators.required]],
         conductorName: ['', [Validators.required, Validators.maxLength(50), Validators.pattern(/^[A-Za-z\s.'-]+$/)]],
@@ -81,14 +117,12 @@ export class AddClassDialogComponent {
       },
       { validators: startTimeBeforeEndTimeValidator }
     );
-  }
 
-  futureDateValidator(control: AbstractControl) {
-    if (!control.value) return null;
-    const inputDate = new Date(control.value);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    return inputDate < today ? { futureDate: true } : null;
+    this.classForm.get('date')?.valueChanges.subscribe((value) => {
+      console.log('Date changed:', value);
+      console.log('Date errors:', this.classForm.get('date')?.errors);
+      console.log('Form errors:', this.classForm.errors);
+    });
   }
 
   /* onsubmit function */
