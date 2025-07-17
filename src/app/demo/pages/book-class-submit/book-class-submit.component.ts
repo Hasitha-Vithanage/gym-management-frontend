@@ -51,7 +51,7 @@ export class BookClassSubmitComponent {
     this.classBookForm = this.fb.group({
       firstName: new FormControl('', Validators.required),
       lastName: new FormControl('', Validators.required),
-      phoneNumber: new FormControl('', Validators.required),
+      phone: new FormControl('', Validators.required),
       email: new FormControl('', [Validators.required, Validators.email]),
       image: new FormControl(''),
       imageName: new FormControl(''),
@@ -112,7 +112,7 @@ export class BookClassSubmitComponent {
     firstName: this.classBookForm.value.firstName,
     lastName: this.classBookForm.value.lastName,
     email: this.classBookForm.value.email,
-    phoneNumber: this.classBookForm.value.phone,
+    phone: this.classBookForm.value.phone,
     classId: this.class?.id,
     bookedBy: userName
   };

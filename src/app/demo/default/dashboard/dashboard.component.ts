@@ -1,5 +1,5 @@
 // angular import
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // project import
@@ -13,31 +13,89 @@ import { SalesReportChartComponent } from './sales-report-chart/sales-report-cha
 // icons
 import { IconService } from '@ant-design/icons-angular';
 import { FallOutline, GiftOutline, MessageOutline, RiseOutline, SettingOutline } from '@ant-design/icons-angular/icons';
+import { DashboardService } from 'src/app/services/dashboard/dashboard.service';
+import { error } from 'console';
+import { forkJoin } from 'rxjs';
+import { NewSupplementServiceService } from 'src/app/services/new-supplement/new-supplement-service.service';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
-    selector: 'app-default',
-    imports: [
-        CommonModule,
-        SharedModule,
-        MonthlyBarChartComponent,
-        IncomeOverviewChartComponent,
-        AnalyticsChartComponent,
-        SalesReportChartComponent
-    ],
-    templateUrl: './dashboard.component.html',
-    styleUrls: ['./dashboard.component.scss']
+  selector: 'app-default',
+  imports: [
+    CommonModule,
+    SharedModule,
+    MonthlyBarChartComponent,
+    IncomeOverviewChartComponent,
+    AnalyticsChartComponent,
+    SalesReportChartComponent
+  ],
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.scss']
 })
-export class DefaultComponent {
+export class DefaultComponent implements OnInit {
+
+  employeeCount;
+  supplierCount;
+  memberCount;
+  newMembersInThisMonth;
+
+  dataSource = new MatTableDataSource<any>;
+
+  displayedColumns: string[] = [
+    'productName',
+    'brand',
+    'category',
+    'quantityPerUnit',
+    'quantityInStock',
+    'retailPrice',
+  ];
+
   // constructor
-  constructor(private iconService: IconService) {
+  constructor(private iconService: IconService,
+    private dashboardService: DashboardService,
+    private newSupplementService: NewSupplementServiceService,
+  ) {
     this.iconService.addIcon(...[RiseOutline, FallOutline, SettingOutline, GiftOutline, MessageOutline]);
   }
+  ngOnInit(): void {
+    this.populateDate();
+  }
+
+  populateDate() {
+    forkJoin({
+      employees: this.dashboardService.totalEmployeeCount(),
+      members: this.dashboardService.totalMemberCount(),
+      suppliers: this.dashboardService.totalSupplierCount(),
+      newMembersInThisMonth: this.dashboardService.newMembersInThisMonth(),
+    }).subscribe({
+      next: (results) => {
+        this.employeeCount = results.employees;
+        this.memberCount = results.members;
+        this.supplierCount = results.suppliers;
+        this.newMembersInThisMonth = results.newMembersInThisMonth;
+
+        console.log("Employee Count:", this.employeeCount);
+        console.log("Member Count:", this.memberCount);
+        console.log("Supplier Count:", this.supplierCount);
+      },
+      error: (error) => {
+        console.log("Error loading dashboard data:", error);
+      }
+    });
+
+    this.newSupplementService.getData().subscribe({
+      next: (response: any) => {
+        this.dataSource = new MatTableDataSource(response);
+      }
+    })
+  }
+
 
   recentOrder = tableData;
 
   AnalyticEcommerce = [
     {
-      title: 'Total Page Views',
+      title: 'Total Employees',
       amount: '4,42,236',
       background: 'bg-light-primary ',
       border: 'border-primary',
@@ -47,7 +105,7 @@ export class DefaultComponent {
       number: '35,000'
     },
     {
-      title: 'Total Users',
+      title: 'Total Members',
       amount: '78,250',
       background: 'bg-light-primary ',
       border: 'border-primary',

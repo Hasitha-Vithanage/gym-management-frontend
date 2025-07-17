@@ -1,23 +1,73 @@
 <div class="row">
-  @for (analytic of AnalyticEcommerce; track analytic) {
-    <div class="col-md-6 col-xl-3">
-      <app-card [showHeader]="false" blockClass="dashboard-card">
-        <h6 class="mb-2 f-w-400 text-muted">{{ analytic.title }}</h6>
-        <h4 class="mb-3">
-          {{ analytic.amount }}
-          <span class="badge {{ analytic.background }} border {{ analytic.border }} ">
+  <div class="col-md-6 col-xl-3">
+    <app-card [showHeader]="false" blockClass="dashboard-card">
+      <h6 class="mb-2 f-w-400 text-muted">Total Employees</h6>
+      <h4 class="mb-3">
+        {{ employeeCount }}
+        <!-- <span class="badge bg-light-primary border border-primary ">
             <i antIcon type="{{ analytic.icon }}" theme="outline"></i>
             {{ analytic.percentage }}
-          </span>
-        </h4>
-        <p class="mb-0 text-muted text-sm">
+          </span> -->
+      </h4>
+      <!-- <p class="mb-0 text-muted text-sm">
           You made an extra
           <span class="{{ analytic.color }}">{{ analytic.number }}</span>
           this year
-        </p>
-      </app-card>
-    </div>
-  }
+        </p> -->
+    </app-card>
+  </div>
+  <div class="col-md-6 col-xl-3">
+    <app-card [showHeader]="false" blockClass="dashboard-card">
+      <h6 class="mb-2 f-w-400 text-muted">Total Members</h6>
+      <h4 class="mb-3">
+        {{ memberCount }}
+        <!-- <span class="badge bg-light-primary border border-primary ">
+            <i antIcon type="{{ analytic.icon }}" theme="outline"></i>
+            {{ analytic.percentage }}
+          </span> -->
+      </h4>
+      <!-- <p class="mb-0 text-muted text-sm">
+          You made an extra
+          <span class="{{ analytic.color }}">{{ analytic.number }}</span>
+          this year
+        </p> -->
+    </app-card>
+  </div>
+  <div class="col-md-6 col-xl-3">
+    <app-card [showHeader]="false" blockClass="dashboard-card">
+      <h6 class="mb-2 f-w-400 text-muted">Total Suppliers</h6>
+      <h4 class="mb-3">
+        {{ supplierCount }}
+        <!-- <span class="badge bg-light-primary border border-primary ">
+            <i antIcon type="{{ analytic.icon }}" theme="outline"></i>
+            {{ analytic.percentage }}
+          </span> -->
+      </h4>
+      <!-- <p class="mb-0 text-muted text-sm">
+          You made an extra
+          <span class="{{ analytic.color }}">{{ analytic.number }}</span>
+          this year
+        </p> -->
+    </app-card>
+  </div>
+  <div class="col-md-6 col-xl-3">
+    <app-card [showHeader]="false" blockClass="dashboard-card">
+      <h6 class="mb-2 f-w-400 text-muted">New Members This Month</h6>
+      <h4 class="mb-3">
+        {{ newMembersInThisMonth }}
+        <!-- <span class="badge bg-light-primary border border-primary ">
+            <i antIcon type="{{ analytic.icon }}" theme="outline"></i>
+            {{ analytic.percentage }}
+          </span> -->
+      </h4>
+      <!-- <p class="mb-0 text-muted text-sm">
+          You made an extra
+          <span class="{{ analytic.color }}">{{ analytic.number }}</span>
+          this year
+        </p> -->
+    </app-card>
+  </div>
+
   <div class="col-md-12 col-xl-8">
     <app-monthly-bar-chart />
   </div>
@@ -26,36 +76,35 @@
   </div>
 
   <div class="col-md-12 col-xl-8">
-    <h5 class="mb-3">Recent Orders</h5>
+    <h5 class="mb-3">Supplement Store</h5>
     <div class="card tbl-card">
       <div class="table-responsive">
         <table class="table table-hover mb-0">
           <thead>
             <tr>
-              <th>TRACKING NO.</th>
               <th>PRODUCT NAME</th>
-              <th>STATUS</th>
-              <th class="text-end">TOTAL ORDER</th>
-              <th class="text-end">TOTAL AMOUNT</th>
+              <th>BRAND</th>
+              <th class="text-end">QUANTITY PER UNIT</th>
+              <th class="text-end">QUANTITY IN STOCK</th>
+              <th class="text-end">PRICE</th>
             </tr>
           </thead>
           <tbody>
-            @for (order of recentOrder; track order) {
-              <tr>
-                <td>
-                  <a href="javascript:" class="text-muted">{{ order.id }}</a>
-                </td>
-                <td>{{ order.name }}</td>
-                <td>
-                  <span class="d-block">
-                    <i class="badge-circle {{ order.status_type }} f-10 m-r-5"></i>
-                    {{ order.status }}
-                  </span>
-                </td>
-                <td class="text-end">{{ order.quantity }}</td>
-                <td class="text-end">{{ order.amount }}</td>
-              </tr>
-            }
+            <tr *ngFor="let supplement of dataSource.data">
+              <td>
+                <a href="javascript:" class="">{{ supplement.productName }}</a>
+              </td>
+              <td>{{ supplement.brand }}</td>
+              <td>
+                <span class="d-block text-end">
+                  <i class=" bg-success f-10 m-r-5"></i>
+                  <!-- You can dynamically change class -->
+                  {{ supplement.quantityPerUnit }} {{ supplement.unit }}
+                </span>
+              </td>
+              <td class="text-end">{{ supplement.quantityInStock }}</td>
+              <td class="text-end">{{ supplement.retailPrice | currency: 'LKR' }}</td>
+            </tr>
           </tbody>
         </table>
       </div>
