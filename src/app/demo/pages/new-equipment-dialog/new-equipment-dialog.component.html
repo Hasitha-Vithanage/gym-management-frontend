@@ -12,6 +12,7 @@
     <div class="row">
       <mat-form-field appearance="outline" class="half-width">
         <mat-label>Category</mat-label>
+        <mat-icon matPrefix>category</mat-icon>
         <mat-select formControlName="category">
           <mat-option value="Machines">Machines</mat-option>
           <mat-option value="Freeweights">Freeweights & Bars</mat-option>
@@ -21,6 +22,7 @@
 
       <mat-form-field appearance="outline" class="half-width">
         <mat-label>Supplier</mat-label>
+        <mat-icon matPrefix>local_shipping</mat-icon>
         <mat-select formControlName="supplier">
           <mat-option *ngFor="let supplier of supplierList" [value]="supplier.id">
             {{ supplier.supplierName }}
@@ -33,11 +35,13 @@
       <!--- Machine Name - Model will display only if user select Machines in the Category dropdown -->
       <mat-form-field appearance="outline" class="half-width" *ngIf="equipmentForm.get('category')?.value === 'Machines'">
         <mat-label>Machine Name</mat-label>
+        <mat-icon matPrefix>fitness_center</mat-icon>
         <input matInput maxlength="20" placeholder="Enter Machine Name" type="text" formControlName="machineName" />
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="half-width" *ngIf="equipmentForm.get('category')?.value === 'Machines'">
         <mat-label>Muscle Groups</mat-label>
+        <mat-icon matPrefix>sports_gymnastics</mat-icon>
         <mat-select multiple formControlName="muscleGroups">
           <mat-option *ngFor="let group of muscleGroupsList" [value]="group">
             {{ group }}
@@ -49,11 +53,13 @@
     <div class="row">
       <mat-form-field appearance="outline" class="half-width">
         <mat-label>Brand Name</mat-label>
+        <mat-icon matPrefix>branding_watermark</mat-icon>
         <input matInput maxlength="20" placeholder="Enter Brand Name" type="text" formControlName="brandName" />
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="half-width" *ngIf="equipmentForm.get('category')?.value === 'Machines'">
         <mat-label>Model</mat-label>
+        <mat-icon matPrefix>model_training</mat-icon>
         <input matInput maxlength="50" placeholder="Enter Model Name or Number" type="text" formControlName="model" />
       </mat-form-field>
     </div>
@@ -62,6 +68,7 @@
       <!--- Display only if the user select Freeweights & Bars in the Category dropdown-->
       <mat-form-field appearance="outline" class="half-width" *ngIf="equipmentForm.get('category')?.value === 'Freeweights'">
         <mat-label>Type</mat-label>
+        <mat-icon matPrefix>sports_handball</mat-icon>
         <mat-select formControlName="type">
           <mat-option value="Dumbbells">Dumbbells</mat-option>
           <mat-option value="Plates">Plates</mat-option>
@@ -71,8 +78,9 @@
       </mat-form-field>
 
       <!--- Display only if user select Plates or Bars in the Type dropdown-->
-      <mat-form-field appearance="outline" class="half-width" *ngIf="['Plates', 'Bars'].includes(equipmentForm.get('type')?.value)">
+      <mat-form-field appearance="outline" class="half-width" *ngIf="['Plates', 'Bars'].includes(equipmentForm.get('type')?.value) || ['Freeweights'].includes(equipmentForm.get('category')?.value)">
         <mat-label>Size Standard</mat-label>
+        <mat-icon matPrefix>straighten</mat-icon>
         <mat-select formControlName="sizeStandard">
           <mat-option value="Olympic">Olympic Bars</mat-option>
           <mat-option value="Regular">Regular Bars</mat-option>
@@ -83,6 +91,7 @@
     <div class="row">
       <mat-form-field appearance="outline" class="half-width" *ngIf="['Plates', 'Bars'].includes(equipmentForm.get('type')?.value)">
         <mat-label>Bar Length</mat-label>
+        <mat-icon matPrefix>height</mat-icon>
         <mat-select formControlName="barLength">
           <!-- Display only if selected Olympic in Size Standard -->
           <mat-option *ngIf="equipmentForm.get('sizeStandard')?.value === 'Olympic'" value="7 feet">
@@ -114,6 +123,7 @@
       <!-- Display only if selected Dumbbells, Plates, Kettlebells in Type dropdown -->
       <mat-form-field appearance="outline" class="half-width" *ngIf="['Dumbbells', 'Plates', 'Kettlebells'].includes(equipmentForm.get('type')?.value)">
         <mat-label>Weight</mat-label>
+        <mat-icon matPrefix>fitness_center</mat-icon>
         <input matInput maxlength="3" placeholder="Enter Weight (kg)" type="number" formControlName="weight" />
       </mat-form-field>
     </div>
@@ -122,11 +132,13 @@
       <!-- Display only if selected Other in Category dropdown -->
       <mat-form-field appearance="outline" class="half-width" *ngIf="equipmentForm.get('category')?.value === 'Other'">
         <mat-label>Equipment Name</mat-label>
+        <mat-icon matPrefix>build</mat-icon>
         <input matInput maxlength="20" placeholder="Enter Equipment Name" type="text" formControlName="equipmentName" />
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="half-width">
         <mat-label>Quantity</mat-label>
+        <mat-icon matPrefix>format_list_numbered</mat-icon>
         <input matInput maxlength="20" placeholder="Enter Quantity" type="number" formControlName="quantity" />
       </mat-form-field>
     </div>
@@ -134,6 +146,7 @@
     <div class="row">
       <mat-form-field appearance="outline" class="half-width">
         <mat-label>Condition</mat-label>
+        <mat-icon matPrefix>check_circle</mat-icon>
         <mat-select formControlName="condition">
           <mat-option value="New">New</mat-option>
           <mat-option value="Good">Good</mat-option>
@@ -144,6 +157,7 @@
 
       <mat-form-field appearance="outline" class="half-width">
         <mat-label>Purchase Date</mat-label>
+        <mat-icon matPrefix>calendar_today</mat-icon>
         <input matInput [matDatepicker]="join" placeholder="MM/DD/YYYY" formControlName="purchaseDate" />
         <mat-datepicker-toggle matSuffix [for]="join"></mat-datepicker-toggle>
         <mat-datepicker #join></mat-datepicker>
@@ -152,6 +166,7 @@
       <!--- Display the users who have the permission to add equipments -->
       <mat-form-field appearance="outline" class="half-width">
         <mat-label>Added by</mat-label>
+        <mat-icon matPrefix>person</mat-icon>
         <input matInput maxlength="20" placeholder="" type="text" formControlName="addedBy" />
       </mat-form-field>
     </div>
@@ -159,6 +174,7 @@
     <div class="row">
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Remarks</mat-label>
+        <mat-icon matPrefix>note</mat-icon>
         <textarea matInput rows="4" maxlength="1000" placeholder="Enter Remarks" formControlName="remarks"></textarea>
       </mat-form-field>
     </div>

@@ -8,6 +8,7 @@
       <div class="row">
         <mat-form-field appearance="outline" class="half-width">
           <mat-label>Category</mat-label>
+          <mat-icon matPrefix>category</mat-icon>
           <mat-select formControlName="category">
             <mat-option value="Gym">Gym</mat-option>
             <mat-option value="Trainer">Trainer</mat-option>
@@ -16,6 +17,7 @@
 
         <mat-form-field appearance="outline" class="half-width" *ngIf="showTrainerField">
           <mat-label>Trainer</mat-label>
+          <mat-icon matPrefix>person</mat-icon>
           <mat-select formControlName="trainer">
          <mat-option *ngFor="let trainer of trainerList" [value]="trainer.firstName">
             {{ trainer.firstName }}
@@ -42,6 +44,7 @@
      <div class="row">
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Feedback</mat-label>
+        <mat-icon matPrefix>chat</mat-icon>
         <textarea matInput rows="2" maxlength="1000" placeholder="Enter Feedback" formControlName="feedback"></textarea>
       </mat-form-field>
     </div>
@@ -50,6 +53,7 @@
       <div class="row">
         <mat-form-field appearance="outline" class="half-width">
           <mat-label>Date</mat-label>
+          <mat-icon matPrefix>event</mat-icon>
           <input matInput [matDatepicker]="join" placeholder="MM/DD/YYYY" formControlName="date"/>
           <mat-datepicker-toggle matSuffix [for]="join"></mat-datepicker-toggle>
           <mat-datepicker #join></mat-datepicker>
@@ -57,6 +61,7 @@
 
         <mat-form-field appearance="outline" class="half-width">
           <mat-label>Submitted By</mat-label>
+          <mat-icon matPrefix>account_circle</mat-icon>
           <input matInput maxlength="50" placeholder="Enter your username" formControlName="username" type="text" readonly/>
         </mat-form-field>
       </div>

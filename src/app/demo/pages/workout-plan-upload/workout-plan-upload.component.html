@@ -6,9 +6,7 @@
 
     <div class="toolbar">
       <!-- add-new on the left -->
-      <div class="add-new">
-
-      </div>
+      <div class="add-new"></div>
 
       <!-- table filter-->
       <div class="table-filter">
@@ -30,7 +28,6 @@
     </div>
 
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-
       <!-- employeeId Column -->
       <ng-container matColumnDef="member">
         <th mat-header-cell *matHeaderCellDef>Member</th>
@@ -52,9 +49,9 @@
 
       <!-- action Column -->
       <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef style="text-align: center;">Actions</th>
+        <th mat-header-cell *matHeaderCellDef style="text-align: center">Actions</th>
         <td mat-cell *matCellDef="let element">
-          <div class="action-column" style="justify-content: center;">
+          <div class="action-column" style="justify-content: center">
             <button mat-icon-button class="gray-icon-btn" matTooltip="View" (click)="viewData(element)">
               <mat-icon>visibility</mat-icon>
             </button>

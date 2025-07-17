@@ -147,3 +147,17 @@
 .pdf-upload-wrapper input[type='file']::-webkit-file-upload-button:hover {
   background: #125a9c;
 }
+
+  mat-icon[matPrefix] {
+  color: #5e5959;
+  margin-right: 8px;
+  font-size: 20px;
+  vertical-align: middle;
+  transition: color 0.3s ease;
+  user-select: none;
+}
+
+mat-form-field.mat-focused mat-icon[matPrefix],
+mat-form-field:hover mat-icon[matPrefix] {
+  color: #1976d2; /* Highlight icon color on focus/hover */
+}

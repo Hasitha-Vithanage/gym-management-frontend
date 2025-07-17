@@ -46,7 +46,6 @@
             </ng-template>
           </mat-card-content>
           <hr />
-
         </mat-card>
       </div>
 
@@ -72,20 +71,23 @@
           <h2>📤 Request a Meal Plan</h2>
 
           <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Userame</mat-label>
-            <input matInput placeholder="Your full name" formControlName="userId" required readonly/>
+            <mat-label>Username</mat-label>
+            <mat-icon matPrefix>person</mat-icon>
+            <input matInput placeholder="Your full name" formControlName="userId" required readonly />
             <mat-error *ngIf="mealPlanRequestForm.get('name')?.hasError('required')">Name is required</mat-error>
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Requested Date</mat-label>
-            <input matInput [matDatepicker]="join" placeholder="MM/DD/YYYY" formControlName="requestedDate" readonly/>
+            <mat-icon matPrefix>calendar_today</mat-icon>
+            <input matInput [matDatepicker]="join" placeholder="MM/DD/YYYY" formControlName="requestedDate" readonly />
             <mat-datepicker-toggle matSuffix [for]="join"></mat-datepicker-toggle>
             <mat-datepicker #join></mat-datepicker>
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Primary Fitness Goal</mat-label>
+            <mat-icon matPrefix>flag</mat-icon>
             <mat-select formControlName="fitnessGoal" required>
               <mat-option value="Muscle Gain">💪 Muscle Gain</mat-option>
               <mat-option value="Fat Loss">🔥 Fat Loss</mat-option>
@@ -97,6 +99,7 @@
 
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Dietary Preferences</mat-label>
+            <mat-icon matPrefix>restaurant</mat-icon>
             <mat-select formControlName="dietaryPreferences" multiple>
               <mat-option value="vegetarian">Vegetarian</mat-option>
               <mat-option value="vegan">Vegan</mat-option>
@@ -108,11 +111,13 @@
 
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Allergies / Food Restrictions</mat-label>
+            <mat-icon matPrefix>warning</mat-icon>
             <input matInput placeholder="E.g. nuts, gluten, lactose" formControlName="allergies" />
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Additional Notes</mat-label>
+            <mat-icon matPrefix>notes</mat-icon>
             <textarea matInput rows="4" placeholder="Any other info you'd like to share" formControlName="additionalNotes"></textarea>
           </mat-form-field>
 

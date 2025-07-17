@@ -110,3 +110,16 @@
     color: #1976d2 !important;
   }
   
+    mat-icon[matPrefix] {
+  color: #5e5959;
+  margin-right: 8px;
+  font-size: 20px;
+  vertical-align: middle;
+  transition: color 0.3s ease;
+  user-select: none;
+}
+
+mat-form-field.mat-focused mat-icon[matPrefix],
+mat-form-field:hover mat-icon[matPrefix] {
+  color: #1976d2; /* Highlight icon color on focus/hover */
+}

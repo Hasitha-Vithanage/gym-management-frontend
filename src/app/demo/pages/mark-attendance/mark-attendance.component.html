@@ -6,6 +6,7 @@
       <!-- Date Picker -->
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Attendance Date</mat-label>
+        <mat-icon matPrefix>event</mat-icon>
         <input matInput [matDatepicker]="picker" formControlName="attendanceDate" />
         <span class="required-message" *ngIf="submitted && attendanceForm.get('attendanceDate').invalid">
           <ng-container *ngIf="attendanceForm.get('attendanceDate').hasError('required')">Attendance Date is required</ng-container>
@@ -17,6 +18,7 @@
       <!-- Attendance Type -->
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Select Attendance Type</mat-label>
+        <mat-icon matPrefix>how_to_reg</mat-icon>
         <mat-select formControlName="attendanceType">
           <mat-option value="employee">Employee</mat-option>
           <mat-option value="member">Member</mat-option>

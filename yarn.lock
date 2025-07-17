@@ -295,6 +295,13 @@
     fast-glob "3.3.2"
     yargs "^17.2.1"
 
+"@angular/material-moment-adapter@^20.1.1":
+  version "20.1.2"
+  resolved "https://registry.npmjs.org/@angular/material-moment-adapter/-/material-moment-adapter-20.1.2.tgz"
+  integrity sha512-dqpS8KqaCWAtUGfsvLJCzAAwWHTyQn7KigCiZ7d1y6ZArsDfxHkY2wHn//nc/qGqnqG1SmNo0oGyXDm6iNX1BQ==
+  dependencies:
+    tslib "^2.3.0"
+
 "@angular/material@^18.2.13":
   version "18.2.14"
   resolved "https://registry.npmjs.org/@angular/material/-/material-18.2.14.tgz"
@@ -5634,6 +5641,11 @@ mkdirp@^3.0.1:
   version "3.0.1"
   resolved "https://registry.npmjs.org/mkdirp/-/mkdirp-3.0.1.tgz"
   integrity sha512-+NsyUUAZDmo6YVHzL/stxSu3t9YS1iljliy3BSDrXJ/dkn1KYdmtZODGGjLcc9XLgVVpH4KshHB8XmZgMhaBXg==
+
+moment@^2.30.1:
+  version "2.30.1"
+  resolved "https://registry.npmjs.org/moment/-/moment-2.30.1.tgz"
+  integrity sha512-uEmtNhbDOrWPFS+hdjFCBfy9f2YoyzRpwcl+DqpC6taX21FzsTLQVbMV/W7PzNSX6x/bhC1zA3c2UQ5NzH6how==
 
 mrmime@2.0.0:
   version "2.0.0"

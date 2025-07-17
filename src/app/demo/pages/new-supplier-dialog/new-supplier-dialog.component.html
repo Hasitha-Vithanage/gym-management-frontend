@@ -10,44 +10,50 @@
   <!--- form -->
   <form class="example-form" [formGroup]="supplierForm" (ngSubmit)="onSubmit()">
     <div class="row">
-      <mat-form-field class="half-width">
+      <mat-form-field appearance="outline" class="half-width">
         <mat-label>Supplier Name</mat-label>
+        <mat-icon matPrefix>storefront</mat-icon>
         <input matInput maxlength="20" placeholder="Enter Supplier Name" type="text" formControlName="supplierName"/>
       </mat-form-field>
 
-      <mat-form-field class="half-width">
+      <mat-form-field appearance="outline" class="half-width">
         <mat-label>Contact Person</mat-label>
+        <mat-icon matPrefix>person</mat-icon>
         <input matInput matInput maxlength="20" placeholder="Enter Contact person" type="text" formControlName="contactPerson"/>
       </mat-form-field>
     </div>
 
     <div class="row">
-      <mat-form-field class="half-width">
+      <mat-form-field appearance="outline" class="half-width">
         <mat-label>Contact No</mat-label>
+        <mat-icon matPrefix>phone</mat-icon>
         <input matInput matInput maxlength="10" placeholder="Enter Contact No" type="text" formControlName="contactNo"/>
       </mat-form-field>
 
-      <mat-form-field class="half-width">
+      <mat-form-field appearance="outline" class="half-width">
         <mat-label>Email Address</mat-label>
+        <mat-icon matPrefix>email</mat-icon>
         <input matInput matInput maxlength="50" placeholder="Enter Email Address" type="text" formControlName="emailAddress"/>
       </mat-form-field>
     </div>
 
     <div class="row">
-      <mat-form-field class="half-width">
+      <mat-form-field appearance="outline" class="half-width">
         <mat-label>Office Address</mat-label>
+        <mat-icon matPrefix>location_city</mat-icon>
         <input matInput matInput maxlength="100" placeholder="Enter Office Address" type="text" formControlName="officeAddress"/>
       </mat-form-field>
 
-      <mat-form-field class="half-width">
+      <mat-form-field appearance="outline" class="half-width">
         <mat-label>Postal Address</mat-label>
+        <mat-icon matPrefix>markunread_mailbox</mat-icon>
         <input matInput matInput maxlength="100" placeholder="Enter Postal Address" type="text" formControlName="postalAddress"/>
       </mat-form-field>
     </div>
 
     <div class="row">
       <!-- Type as Checkboxes -->
-      <div class="half-width" formGroupName="equipmentType">
+      <div class="half-width" appearance="outline" formGroupName="equipmentType">
         <mat-label>Supply Type</mat-label>
         <div class="checkbox-options">
           <mat-checkbox formControlName="machines">Machines</mat-checkbox>
@@ -67,8 +73,9 @@
     </div>
 
     <div class="row">
-      <mat-form-field class="full-width">
+      <mat-form-field appearance="outline" class="full-width">
         <mat-label>Remarks</mat-label>
+        <mat-icon matPrefix>notes</mat-icon>
         <textarea matInput rows="4" maxlength="1000" formControlName="remarks" placeholder="Enter Remarks"></textarea>
       </mat-form-field>
     </div>

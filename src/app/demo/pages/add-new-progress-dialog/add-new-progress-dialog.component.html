@@ -12,6 +12,7 @@
     <div class="row">
       <mat-form-field appearance="outline" class="half-width">
         <mat-label>Date</mat-label>
+        <mat-icon matPrefix>event</mat-icon>
         <input matInput [matDatepicker]="join" placeholder="MM/DD/YYYY" formControlName="date" />
         <mat-datepicker-toggle matSuffix [for]="join"></mat-datepicker-toggle>
         <mat-datepicker #join></mat-datepicker>
@@ -19,6 +20,7 @@
 
       <mat-form-field appearance="outline" class="half-width">
         <mat-label>Weight (Kg)</mat-label>
+        <mat-icon matPrefix>fitness_center</mat-icon>
         <input matInput maxlength="20" placeholder="Enter Weight" type="number" formControlName="weight" />
       </mat-form-field>
     </div>
@@ -26,11 +28,14 @@
     <div class="row">
       <mat-form-field appearance="outline" class="half-width">
         <mat-label>Height (cm)</mat-label>
+        <mat-icon matPrefix>straighten</mat-icon>
         <input matInput maxlength="20" placeholder="Enter Height" type="number" formControlName="height" />
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="half-width">
         <mat-label>Waist Circumference (cm)</mat-label>
+        <!-- <mat-icon matPrefix>accessibility</mat-icon> -->
+        <mat-icon matPrefix>accessibility_new</mat-icon>
         <input matInput maxlength="50" placeholder="Enter Waist Circumference (cm)" type="number" formControlName="waist" />
       </mat-form-field>
     </div>
@@ -38,11 +43,13 @@
     <div class="row">
       <mat-form-field appearance="outline" class="half-width">
         <mat-label>Hip Circumference (cm)</mat-label>
+        <mat-icon matPrefix>accessibility</mat-icon>
         <input matInput maxlength="50" placeholder="Enter Hip Circumference (cm)" type="number" formControlName="hip" />
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="half-width">
         <mat-label>Neck Circumference (cm)</mat-label>
+        <mat-icon matPrefix>account_circle</mat-icon>
         <input matInput maxlength="50" placeholder="Enter Neck Circumference (cm)" type="number" formControlName="neck" />
       </mat-form-field>
     </div>
@@ -50,11 +57,13 @@
     <div class="row">
       <mat-form-field appearance="outline" class="half-width">
         <mat-label>BMI</mat-label>
+        <mat-icon matPrefix>calculate</mat-icon>
         <input matInput maxlength="20" placeholder="Auto-calculated" [readonly]="true" type="number" formControlName="bmi" />
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="half-width">
         <mat-label>Body Fat %</mat-label>
+        <mat-icon matPrefix>percent</mat-icon>
         <input matInput maxlength="20" placeholder="Auto-calculated" [readonly]="true" type="number" formControlName="bodyFat" />
       </mat-form-field>
     </div>
@@ -62,6 +71,7 @@
     <div class="row">
       <mat-form-field appearance="outline" class="half-width">
         <mat-label>Gender</mat-label>
+        <mat-icon matPrefix>wc</mat-icon>
         <mat-select formControlName="gender">
           <mat-option value="Male">Male</mat-option>
           <mat-option value="Female">Female</mat-option>
@@ -69,6 +79,7 @@
       </mat-form-field>
       <mat-form-field appearance="outline" class="half-width">
         <mat-label>Remarks</mat-label>
+        <mat-icon matPrefix>notes</mat-icon>
         <textarea matInput maxlength="1000" placeholder="Enter Remarks" formControlName="remarks"></textarea>
       </mat-form-field>
     </div>

@@ -51,7 +51,7 @@ export class BookClassSubmitComponent {
     this.classBookForm = this.fb.group({
       firstName: new FormControl('', Validators.required),
       lastName: new FormControl('', Validators.required),
-      phone: new FormControl('', Validators.required),
+      phoneNumber: new FormControl('', Validators.required),
       email: new FormControl('', [Validators.required, Validators.email]),
       image: new FormControl(''),
       imageName: new FormControl(''),
@@ -96,26 +96,41 @@ export class BookClassSubmitComponent {
   //   });
   // }
 
-  bookClass(): void {
+ bookClass(): void {
   if (this.classBookForm.invalid || !this.selectedFile) {
-    this.messageService.showError('Please complete the form and upload your payslip.');
+    this.messageService.showError('Please complete all required fields and upload your payslip.');
     return;
   }
 
-  const formData = this.prepareFormData();
+  const userName = this.http.getLoginNameFromCache();
 
-  this.bookClassService.serviceCall(formData).subscribe({
+  // Create FormData
+  const formData = new FormData();
+
+  // Append JSON data as Blob
+  const bookingData = {
+    firstName: this.classBookForm.value.firstName,
+    lastName: this.classBookForm.value.lastName,
+    email: this.classBookForm.value.email,
+    phoneNumber: this.classBookForm.value.phone,
+    classId: this.class?.id,
+    bookedBy: userName
+  };
+
+  formData.append('bookingForm', new Blob([JSON.stringify(bookingData)], { type: 'application/json' }));
+  formData.append('payslip', this.selectedFile, this.selectedFile.name);
+
+  this.bookClassService.bookClass(formData).subscribe({
     next: (response) => {
-      this.messageService.showSuccess(
-        'Your class booking request has been submitted successfully. Our team will review your payslip and confirm your booking shortly.'
-      );
-      this.router.navigate(['/book-class']); // Optional: redirect
+      this.messageService.showSuccess('Class booked successfully!');
+      this.router.navigate(['/book-class']);
     },
     error: (error) => {
       this.messageService.showError('Failed to book class: ' + error.message);
     }
   });
 }
+
 
 
   // public prepareFormData(): FormData {
@@ -135,35 +150,35 @@ export class BookClassSubmitComponent {
   // }
 
   public prepareFormData(): FormData {
-  const formData = new FormData();
+    const formData = new FormData();
 
-  const userName = this.http.getLoginNameFromCache(); 
+    const userName = this.http.getLoginNameFromCache();
 
-  // Form values
-  const formValues = this.classBookForm.value;
+    // Form values
+    const formValues = this.classBookForm.value;
 
-  // Append form data as JSON Blob
-  formData.append(
-    'bookingForm',
-    new Blob([JSON.stringify(formValues)], { type: 'application/json' })
-  );
+    // Append form data as JSON Blob
+    formData.append(
+      'bookingForm',
+      new Blob([JSON.stringify(formValues)], { type: 'application/json' })
+    );
 
-  // Append class data as JSON Blob
-  formData.append(
-    'classDetails',
-    new Blob([JSON.stringify(this.class)], { type: 'application/json' })
-  );
+    // Append class data as JSON Blob
+    formData.append(
+      'classDetails',
+      new Blob([JSON.stringify(this.class)], { type: 'application/json' })
+    );
 
-  // Append the user name as a plain field
-  formData.append('userName', userName);
+    // Append the user name as a plain field
+    formData.append('userName', userName);
 
-  // Append PDF file
-  if (this.selectedFile) {
-    formData.append('payslip', this.selectedFile, this.selectedFile.name);
+    // Append PDF file
+    if (this.selectedFile) {
+      formData.append('payslip', this.selectedFile, this.selectedFile.name);
+    }
+
+    return formData;
   }
-
-  return formData;
-}
 
 
 
