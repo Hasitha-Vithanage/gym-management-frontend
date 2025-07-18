@@ -84,15 +84,29 @@ export class NewProgressServiceService {
     return this.http.get<any[]>(requestUrl, { headers });
   }
 
+  getData(): Observable<{ date: string; weight: number }[]> {
+    const requestUrl = environment.baseUrl + '/get-progress-data';
 
-  getProgressPhotos(userName: string) {
-  const requestUrl = environment.baseUrl + '/progress-photos/' + userName;
+    let headers = {};
+    const token = this.httpService.getAuthToken();
+    if (token !== null) {
+      headers = {
+        Authorization: 'Bearer ' + token
+      };
+    }
 
-  const token = this.httpService.getAuthToken();
-  const headers = token ? { Authorization: 'Bearer ' + token } : {};
+    return this.http.get<any[]>(requestUrl, { headers });
+  }
 
-  return this.http.get<any[]>(requestUrl, { headers });
-}
+
+  // getProgressPhotos(userName: string) {
+  //   const requestUrl = environment.baseUrl + '/progress-photos/' + userName;
+
+  //   const token = this.httpService.getAuthToken();
+  //   const headers = token ? { Authorization: 'Bearer ' + token } : {};
+
+  //   return this.http.get<any[]>(requestUrl, { headers });
+  // }
 
 
 }

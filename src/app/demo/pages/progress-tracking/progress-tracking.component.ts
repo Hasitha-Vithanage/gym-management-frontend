@@ -4,6 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { AddNewProgressDialogComponent } from '../add-new-progress-dialog/add-new-progress-dialog.component';
 import { HttpService } from 'src/app/services/http.service';
 import { NewProgressServiceService } from 'src/app/services/new-progress/new-progress-service.service';
+import { subscribe } from 'diagnostics_channel';
 
 export interface BodyMeasurement {
   date: Date;
@@ -37,7 +38,7 @@ export class ProgressTrackingComponent {
 
   ngOnInit(): void {
     this.populateData();
-    this.populateImageComparison();
+    // this.populateImageComparison();
   }
 
   populateData() {
@@ -65,39 +66,48 @@ export class ProgressTrackingComponent {
         console.error('Error fetching progress data', err);
       }
     });
+
+
+    // getting data for the image comparison
+    this.progressService.getData().subscribe({
+      next: (response) => {
+        console.log(response);
+        
+      }
+    })
   }
 
 
-  populateImageComparison(): void {
-    this.progressService.getProgressPhotos(this.userName).subscribe({
-      next: (data) => {
-        const sorted = data
-          .filter((d: any) => d.frontImage || d.sideImage || d.backImage)
-          .map((entry: any) => ({
-            ...entry,
-            date: new Date(entry.date),  // ✅ fixed this
-            frontImage: entry.frontImage ? this.createImageUrl(entry.frontImage, entry.frontImageType) : null,
-            sideImage: entry.sideImage ? this.createImageUrl(entry.sideImage, entry.sideImageType) : null,
-            backImage: entry.backImage ? this.createImageUrl(entry.backImage, entry.backImageType) : null
-          }))
-          .sort((a, b) => a.date.getTime() - b.date.getTime());
+  // populateImageComparison(): void {
+  //   this.progressService.getProgressPhotos(this.userName).subscribe({
+  //     next: (data) => {
+  //       const sorted = data
+  //         .filter((d: any) => d.frontImage || d.sideImage || d.backImage)
+  //         .map((entry: any) => ({
+  //           ...entry,
+  //           date: new Date(entry.date),  // ✅ fixed this
+  //           frontImage: entry.frontImage ? this.createImageUrl(entry.frontImage, entry.frontImageType) : null,
+  //           sideImage: entry.sideImage ? this.createImageUrl(entry.sideImage, entry.sideImageType) : null,
+  //           backImage: entry.backImage ? this.createImageUrl(entry.backImage, entry.backImageType) : null
+  //         }))
+  //         .sort((a, b) => a.date.getTime() - b.date.getTime());
 
-          console.log("date: ", sorted);
+  //         console.log("date: ", sorted);
           
 
-        if (sorted.length >= 2) {
-          this.previousImage = sorted[sorted.length - 2];
-          this.latestImage = sorted[sorted.length - 1];
-        } else {
-          this.previousImage = null;
-          this.latestImage = null;
-        }
-      },
-      error: (err) => {
-        console.error('Failed to load progress images', err);
-      }
-    });
-  }
+  //       if (sorted.length >= 2) {
+  //         this.previousImage = sorted[sorted.length - 2];
+  //         this.latestImage = sorted[sorted.length - 1];
+  //       } else {
+  //         this.previousImage = null;
+  //         this.latestImage = null;
+  //       }
+  //     },
+  //     error: (err) => {
+  //       console.error('Failed to load progress images', err);
+  //     }
+  //   });
+  // }
 
   createImageUrl(byteArray: any, mimeType: string): string {
     const binary = new Uint8Array(byteArray).reduce((data, byte) => data + String.fromCharCode(byte), '');

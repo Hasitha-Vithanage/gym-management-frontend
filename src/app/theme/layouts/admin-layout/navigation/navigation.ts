@@ -355,16 +355,16 @@ export const NavigationItems: NavigationItem[] = [
         auth: authenticationEnum.Home_Dashboard,
         breadcrumbs: false
       },
-      {
-        id: 'salesRequestsDet',
-        title: 'Sales & Requests',
-        type: 'item',
-        classes: 'nav-item',
-        url: '/pages/supplement-sales-requests',
-        icon: '',
-        auth: authenticationEnum.Home_Dashboard,
-        breadcrumbs: false
-      },
+      // {
+      //   id: 'salesRequestsDet',
+      //   title: 'Sales & Requests',
+      //   type: 'item',
+      //   classes: 'nav-item',
+      //   url: '/pages/supplement-sales-requests',
+      //   icon: '',
+      //   auth: authenticationEnum.Home_Dashboard,
+      //   breadcrumbs: false
+      // },
       {
         id: 'browseSupplementsDet',
         title: 'Browse Supplements',
@@ -375,16 +375,16 @@ export const NavigationItems: NavigationItem[] = [
         auth: authenticationEnum.Home_Dashboard,
         breadcrumbs: false
       },
-      {
-        id: 'myOrdersDet',
-        title: 'My Orders',
-        type: 'item',
-        classes: 'nav-item',
-        url: '/pages/my-supplement-orders',
-        icon: '',
-        auth: authenticationEnum.Home_Dashboard,
-        breadcrumbs: false
-      }
+      // {
+      //   id: 'myOrdersDet',
+      //   title: 'My Orders',
+      //   type: 'item',
+      //   classes: 'nav-item',
+      //   url: '/pages/my-supplement-orders',
+      //   icon: '',
+      //   auth: authenticationEnum.Home_Dashboard,
+      //   breadcrumbs: false
+      // }
     ]
   },
   /* side navigation bar item for Masters */

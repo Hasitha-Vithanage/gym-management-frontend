@@ -119,3 +119,20 @@ mat-form-field.mat-focused mat-icon[matPrefix],
 mat-form-field:hover mat-icon[matPrefix] {
   color: #1976d2; /* Highlight icon color on focus/hover */
 }
+
+  .required-message {
+  display: block;
+  color: #d32f2f; /* Material red tone for errors */
+  font-size: 13px;
+  font-weight: 500;
+  margin-top: 4px;
+  padding-left: 2px;
+  font-style: normal;
+  transition: all 0.2s ease-in-out;
+  animation: fadeIn 0.25s ease-in-out;
+  line-height: 1.4;
+}
+
+mat-form-field .required-message {
+  margin-left: 0.5rem;
+}

@@ -57,7 +57,7 @@ export class NutritionAndMealPlanComponent implements OnInit {
 
   // OnInit function
   ngOnInit(): void {
-    this.checkExistingRequest();
+    // this.checkExistingRequest();
     this.populateData();
   }
 
@@ -87,19 +87,19 @@ export class NutritionAndMealPlanComponent implements OnInit {
 
 
   // function for check if the user has already requested a meal plan
-  checkExistingRequest() {
-    const userId = this.http.getLoginNameFromCache();
-    this.nutritionService.hasExistingRequest(userId).subscribe({
-      next: (hasRequest: boolean) => {
-        this.hasRequestedPlan = hasRequest;
-        console.log(this.hasRequestedPlan);
+  // checkExistingRequest() {
+  //   const userId = this.http.getLoginNameFromCache();
+  //   this.nutritionService.hasExistingRequest(userId).subscribe({
+  //     next: (hasRequest: boolean) => {
+  //       this.hasRequestedPlan = hasRequest;
+  //       console.log(this.hasRequestedPlan);
 
-      },
-      error: (error) => {
-        this.messageService.showError("Failed to check meal plan request status");
-      }
-    });
-  }
+  //     },
+  //     error: (error) => {
+  //       this.messageService.showError("Failed to check meal plan request status");
+  //     }
+  //   });
+  // }
 
 
   // myMealPlans

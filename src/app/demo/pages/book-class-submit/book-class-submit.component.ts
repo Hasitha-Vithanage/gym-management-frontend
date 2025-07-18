@@ -96,40 +96,40 @@ export class BookClassSubmitComponent {
   //   });
   // }
 
- bookClass(): void {
-  if (this.classBookForm.invalid || !this.selectedFile) {
-    this.messageService.showError('Please complete all required fields and upload your payslip.');
-    return;
-  }
-
-  const userName = this.http.getLoginNameFromCache();
-
-  // Create FormData
-  const formData = new FormData();
-
-  // Append JSON data as Blob
-  const bookingData = {
-    firstName: this.classBookForm.value.firstName,
-    lastName: this.classBookForm.value.lastName,
-    email: this.classBookForm.value.email,
-    phone: this.classBookForm.value.phone,
-    classId: this.class?.id,
-    bookedBy: userName
-  };
-
-  formData.append('bookingForm', new Blob([JSON.stringify(bookingData)], { type: 'application/json' }));
-  formData.append('payslip', this.selectedFile, this.selectedFile.name);
-
-  this.bookClassService.bookClass(formData).subscribe({
-    next: (response) => {
-      this.messageService.showSuccess('Class booked successfully!');
-      this.router.navigate(['/book-class']);
-    },
-    error: (error) => {
-      this.messageService.showError('Failed to book class: ' + error.message);
+  bookClass(): void {
+    if (this.classBookForm.invalid || !this.selectedFile) {
+      this.messageService.showError('Please complete all required fields and upload your payslip.');
+      return;
     }
-  });
-}
+
+    const userName = this.http.getLoginNameFromCache();
+
+    // Create FormData
+    const formData = new FormData();
+
+    // Append JSON data as Blob
+    const bookingData = {
+      firstName: this.classBookForm.value.firstName,
+      lastName: this.classBookForm.value.lastName,
+      email: this.classBookForm.value.email,
+      phone: this.classBookForm.value.phone,
+      classId: this.class?.id,
+      bookedBy: userName
+    };
+
+    formData.append('bookingForm', new Blob([JSON.stringify(bookingData)], { type: 'application/json' }));
+    formData.append('payslip', this.selectedFile, this.selectedFile.name);
+
+    this.bookClassService.bookClass(formData).subscribe({
+      next: (response) => {
+        this.messageService.showSuccess('Class booked successfully!');
+        this.backButton();
+      },
+      error: (error) => {
+        this.messageService.showError('Failed to book class: ' + error.message);
+      }
+    });
+  }
 
 
 

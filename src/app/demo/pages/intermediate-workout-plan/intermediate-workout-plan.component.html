@@ -56,13 +56,12 @@
   </div>
 
   <div class="cart-actions">
-    <button *ngIf="!isRequestSent" (click)="senRequest()">Send Request</button>
+    <button (click)="senRequest()">Send Request</button>
 
-    <p *ngIf="isRequestSent" class="sent-message">✅ Workout Plan Request Already Sent.</p>
   </div>
 
-  <div class="supplement-description">
+  <!-- <div class="supplement-description">
     <h4>PDF</h4>
     <p>Pdf</p>
-  </div>
+  </div> -->
 </div>

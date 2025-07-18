@@ -49,7 +49,8 @@ export class IntermediateWorkoutPlanComponent implements OnInit {
   }
 
   senRequest(): void {
-
+    console.log("Workout");
+    
 
     const requestPayload = {
       userId: this.memberName,
@@ -62,10 +63,11 @@ export class IntermediateWorkoutPlanComponent implements OnInit {
       trainerId: this.trainerDetails.id,
     };
 
+    
+
     this.workoutService.sendWorkoutRequest(requestPayload).subscribe({
       next: (response) => {
         console.log("response", response);
-        this.isRequestSent = true;
         this.messageService.showSuccess("Request Send Successfully!");
       },
       error: (error) => {

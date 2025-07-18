@@ -16,6 +16,7 @@ export class SupplementCheckoutComponent {
   supplement: any;
   quantity: number = 1;
   checkoutForm!: FormGroup;
+    submitted = false;
 
   constructor(private fb: FormBuilder,
     private route: ActivatedRoute,
@@ -28,7 +29,7 @@ export class SupplementCheckoutComponent {
     // Access quantity passed from product page
     const nav = this.router.getCurrentNavigation();
     this.quantity = nav?.extras?.state?.['quantity'] ?? 1;
-    
+
 
   }
 
@@ -46,71 +47,91 @@ export class SupplementCheckoutComponent {
     }
 
     this.checkoutForm = this.fb.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      address: ['', Validators.required],
-      phone: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      notes: [''],
-
+      firstName: [
+        '',
+        [Validators.required, Validators.pattern(/^[A-Za-z\s]{2,30}$/)]
+      ],
+      lastName: [
+        '',
+        [Validators.required, Validators.pattern(/^[A-Za-z\s]{2,30}$/)]
+      ],
+      address: [
+        '',
+        [Validators.required]
+      ],
+      phone: [
+        '',
+        [
+          Validators.required,
+        ]
+      ],
+      email: [
+        '',
+        [Validators.required, Validators.email]
+      ],
+      notes: [
+        '',
+        [Validators.maxLength(300)] // optional, but limit to reasonable text
+      ]
     });
+
 
   }
 
 
   get shippingAddress(): string {
-  const f = this.checkoutForm.value;
-  return `${f.address}`;
-}
+    const f = this.checkoutForm.value;
+    return `${f.address}`;
+  }
 
   get totalCost(): string {
-  return this.supplement ? (this.supplement.retailPrice * this.quantity).toFixed(2) : '0.00';
-}
-
-placeOrder(): void {
-
-  const userName = this.http.getLoginNameFromCache();
-
-const orderDto = {
-  totalCost: this.supplement.retailPrice * this.quantity,
-  orderedBy: userName, // You can get this from user session if needed
-  orderItems: [
-    {
-      productId: this.supplement.id,
-      quantity: this.quantity,
-      productName: this.supplement.productName,
-      unitPrice: this.supplement.retailPrice,
-      totalPrice: this.supplement.retailPrice * this.quantity
-    }
-  ],
-  billingDetails: {
-    firstName: this.checkoutForm.value.firstName,
-    lastName: this.checkoutForm.value.lastName,
-    address: this.checkoutForm.value.address,
-    phone: this.checkoutForm.value.phone,
-    email: this.checkoutForm.value.email,
-    note: this.checkoutForm.value.notes
+    return this.supplement ? (this.supplement.retailPrice * this.quantity).toFixed(2) : '0.00';
   }
-};
+
+  placeOrder(): void {
+      this.submitted = true;
+    const userName = this.http.getLoginNameFromCache();
+
+    const orderDto = {
+      totalCost: this.supplement.retailPrice * this.quantity,
+      orderedBy: userName, // You can get this from user session if needed
+      orderItems: [
+        {
+          productId: this.supplement.id,
+          quantity: this.quantity,
+          productName: this.supplement.productName,
+          unitPrice: this.supplement.retailPrice,
+          totalPrice: this.supplement.retailPrice * this.quantity
+        }
+      ],
+      billingDetails: {
+        firstName: this.checkoutForm.value.firstName,
+        lastName: this.checkoutForm.value.lastName,
+        address: this.checkoutForm.value.address,
+        phone: this.checkoutForm.value.phone,
+        email: this.checkoutForm.value.email,
+        note: this.checkoutForm.value.notes
+      }
+    };
 
 
-  if(this.checkoutForm.valid) {
+    if (this.checkoutForm.valid) {
 
-  this.supplementService.placeOrder(orderDto).subscribe(
-    (response) => {
-      console.log('Order placed successfully:', response);
-      // displaying success message
-            this.messageService.showSuccess('Order Placed successfully!');
-            window.history.back()
-    },
-    (error) => this.messageService.showError(error)
-    
-  );
-}
-}
+      this.supplementService.placeOrder(orderDto).subscribe(
+        (response) => {
+          console.log('Order placed successfully:', response);
+          // displaying success message
+          this.messageService.showSuccess('Order Placed successfully!');
+          window.history.back()
+        },
+        (error) => this.messageService.showError(error)
+
+      );
+    }
+  }
 
 
-backButton(): void {
-  window.history.back();
-}
+  backButton(): void {
+    window.history.back();
+  }
 }
