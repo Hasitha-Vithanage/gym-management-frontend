@@ -78,7 +78,7 @@
       </mat-form-field>
 
       <!--- Display only if user select Plates or Bars in the Type dropdown-->
-      <mat-form-field appearance="outline" class="half-width" *ngIf="['Plates', 'Bars'].includes(equipmentForm.get('type')?.value) || ['Freeweights'].includes(equipmentForm.get('category')?.value)">
+      <mat-form-field appearance="outline" class="half-width" *ngIf="['Bars'].includes(equipmentForm.get('type')?.value) && ['Freeweights'].includes(equipmentForm.get('category')?.value)">
         <mat-label>Size Standard</mat-label>
         <mat-icon matPrefix>straighten</mat-icon>
         <mat-select formControlName="sizeStandard">
@@ -89,7 +89,7 @@
     </div>
 
     <div class="row">
-      <mat-form-field appearance="outline" class="half-width" *ngIf="['Plates', 'Bars'].includes(equipmentForm.get('type')?.value)">
+      <mat-form-field appearance="outline" class="half-width" *ngIf="['Bars'].includes(equipmentForm.get('type')?.value)">
         <mat-label>Bar Length</mat-label>
         <mat-icon matPrefix>height</mat-icon>
         <mat-select formControlName="barLength">

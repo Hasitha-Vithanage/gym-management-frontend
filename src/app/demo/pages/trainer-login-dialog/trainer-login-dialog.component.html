@@ -1,0 +1,69 @@
+<div class="form-section">
+  <!-- title of the form-->
+  <div class="title">
+    <h2 class="form-title">Employee Login</h2>
+    <button mat-icon-button class="close-icon" style="padding: 0px" (click)="closeDialog()">
+      <mat-icon fontIcon="close"></mat-icon>
+    </button>
+  </div>
+
+  <!--- form -->
+    <form [formGroup]="trainerLoginForm" (ngSubmit)="onSubmit()">
+      <!-- Trainer Select -->
+      <!-- <mat-form-field appearance="outline" class="input-full">
+        <mat-select formControlName="trainerId" placeholder="Select Employee">
+          <mat-option *ngFor="let trainer of trainerList" [value]="trainer.id">
+            {{ trainer.firstName }} {{ trainer.jobTitle }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field> -->
+
+      <mat-form-field appearance="outline" class="input-full">
+        <mat-select formControlName="trainerId" placeholder="Select Trainer">
+          <!-- This shows only the name after selection -->
+          <mat-select-trigger>
+            {{ getTrainerName(trainerLoginForm.get('trainerId')?.value) }}
+          </mat-select-trigger>
+
+          <!-- This shows name + job title in dropdown -->
+          <mat-option *ngFor="let trainer of trainerList" [value]="trainer.id">
+            <div class="option-content">
+              <span class="name">{{ trainer.firstName }} {{ trainer.lastName }}</span>
+              <span class="job-title">{{ trainer.jobTitle }}</span>
+            </div>
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="input-full names">
+        <mat-label>First Name</mat-label>
+        <input matInput type="text" formControlName="firstName" placeholder="Enter First Name" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="input-full names" style="margin-left: 15px;">
+        <mat-label>Last Name</mat-label>
+        <input matInput type="text" formControlName="lastName" placeholder="Enter Last Name" />
+      </mat-form-field>
+
+      <!-- Password Input -->
+      <mat-form-field appearance="outline" class="input-full">
+        <mat-label>Username</mat-label>
+        <input matInput type="text" formControlName="userName" placeholder="Enter UserName" required />
+      </mat-form-field>
+
+      <!-- Password Input -->
+      <mat-form-field appearance="outline" class="input-full">
+        <mat-label>Password</mat-label>
+        <input matInput type="password" formControlName="password" placeholder="Enter Password" />
+      </mat-form-field>
+
+      <!-- Keep me signed in + Forgot -->
+      <div class="login-options">
+        <mat-checkbox>Keep me sign in</mat-checkbox>
+        <a class="forgot-link" href="#">Forgot Password?</a>
+      </div>
+
+      <!-- Login Button -->
+      <button mat-flat-button class="login-btn" [disabled]="trainerLoginForm.invalid">Login</button>
+    </form>
+</div>

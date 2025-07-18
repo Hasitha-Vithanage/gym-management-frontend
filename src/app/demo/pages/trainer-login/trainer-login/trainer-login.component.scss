@@ -1,122 +1,194 @@
-.login-wrapper {
+.container {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  background-color: #f9f9f9;
-  position: relative;
+  gap: 30px;
+  padding: 30px;
+  background: #f3f6f9;
 }
 
-.login-box {
-  background: #fff;
-  padding: 2rem;
+/* "Add New" button */
+.add-new .new-button {
+  background-color: #1976d2;
+  color: white;
+  font-weight: 600;
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+/* Form CSS */
+.form-section {
   width: 100%;
-  max-width: 400px;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #1976d2;
   text-align: center;
 }
 
-.logo {
-  width: 140px;
-  margin-bottom: 1rem;
-}
-
-.title {
-  width: 100%;
+.row {
   display: flex;
-  justify-content: space-between;
-  font-size: 0.8rem;
-  color: #555;
+  gap: 15px;
 }
 
-h2 {
-  margin: 0.5rem 0;
+.half-width {
+  flex: 1;
+  width: 250px;
 }
 
-.register-link {
+mat-radio-group {
+  margin: 20px auto;
+}
+
+mat-radio-button {
+  margin-left: 50px;
+}
+
+.required-message {
+  color: red;
+  font-size: 12px;
+  font-style: italic;
+  margin-top: 4px;
   display: block;
-  color: #1976d2;
-  font-size: 0.9rem;
-  margin-top: 5px;
-  text-decoration: none;
 }
 
-.input-full {
-  width: 100%;
+.reset-button {
+  background-color: #f3f6f9 !important;
+  color: #424242 !important;
 }
 
-.login-options {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
-  font-size: 0.85rem;
-}
-
-.forgot-link {
-  color: #1976d2;
-  text-decoration: none;
-}
-
-.login-btn {
-  width: 100%;
-  font-weight: bold;
+.register-button {
   background-color: #1976d2 !important;
-  color: #fff !important;
 }
 
-.footer {
-  position: absolute;
-  bottom: 10px;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  padding: 0 2rem;
-  font-size: 0.8rem;
-  color: #555;
-}
+/* Table CSS */
 
-.footer-links a {
-  margin-left: 1rem;
-  text-decoration: none;
-  color: #555;
-}
-
-.footer-links a:hover {
-  text-decoration: underline;
-}
-
-.names {
-  display: none;
-}
-
-/* Dropdown Option Content Styling */
-.option-content {
+/* Container for New button and filter section */
+.toolbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
 }
 
-.option-content .name {
-  font-size: 0.95rem;
-  color: #333;
-}
-
-.option-content .job-title {
-  background-color: #e0f2ff;
-  color: #1565c0;
+/* "Add New" button */
+.add-new .new-button {
+  background-color: #1976d2;
+  color: white;
   font-weight: 600;
-  font-size: 0.75rem;
-  padding: 2px 8px;
-  border-radius: 4px;
-  white-space: nowrap;
+  border-radius: 8px;
+  padding: 20px;
 }
 
-.names {
-  display: none;
+/* Table filter section */
+.table-filter {
+  display: flex;
+  gap: 12px;
+}
+
+/* Adjust mat-form-field styling */
+.table-filter mat-form-field {
+  width: 250px;
+  margin: 0;
+  align-items: center;
+}
+
+.table-filter mat-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+  font-size: 14px;
+  color: #555;
+}
+
+/* Style for the search icon */
+.search-icon {
+  font-size: 20px;
+  color: #555;
+}
+
+/* Refresh button styling */
+.refresh-button {
+  background-color: #1976d2;
+  color: white;
+  border-radius: 8px;
+  font-size: 20px;
+  height: 56px;
+  width: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+.table-section {
+  width: 100%;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 
+/* Make table columns distribute space evenly */
+table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+th, td {
+  padding: 16px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  word-wrap: break-word;
+  text-align: center;
+}
+
+th {
+  background-color: #1976d2 !important;
+  color: white;
+}
+
+// /* Set specific widths to columns */
+// th:nth-child(1), td:nth-child(1) { /* Member */
+//   width: 35%;
+// }
+
+// th:nth-child(2), td:nth-child(2) { /* Trainer */
+//   width: 35%;
+// }
+
+// th:nth-child(3), td:nth-child(3) { /* Actions */
+//   width: 30%;
+//   text-align: center;
+// }
+
+/* Better spacing and centering for actions */
+.action-column {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+
+
+
+
+.gray-icon-btn {
+  color: #6e6e6e;
+  transition: background-color 0.2s ease;
+}
+
+.gray-icon-btn:hover {
+  background-color: #f0f0f0;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+}

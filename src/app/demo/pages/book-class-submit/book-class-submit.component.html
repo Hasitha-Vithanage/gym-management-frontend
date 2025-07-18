@@ -50,23 +50,23 @@
     <h2>Class Details</h2>
     <div class="summary-item">
       <strong>Class Title:</strong>
-      {{ class.classTitle }}
+      {{ class?.classTitle }}
     </div>
     <div class="summary-item">
       <strong>Description:</strong>
-      {{ class.description }}
+      {{ class?.description }}
     </div>
     <div class="summary-item">
       <strong>Date:</strong>
-      {{ class.date | date: 'MMM d, y' }}
+      {{ class?.date | date: 'MMM d, y' }}
     </div>
     <div class="summary-item">
       <strong>Time:</strong>
-      {{ formatTime(class.startTime) }} - {{ formatTime(class.endTime) }}
+      {{ formatTime(class?.startTime) }} - {{ formatTime(class?.endTime) }}
     </div>
     <div class="summary-item total">
       <strong>Fee:</strong>
-      {{ class.fee }} LKR
+      {{ class?.fee }} LKR
     </div>
     <button class="place-order-btn" (click)="bookClass()">Book Class</button>
   </div>

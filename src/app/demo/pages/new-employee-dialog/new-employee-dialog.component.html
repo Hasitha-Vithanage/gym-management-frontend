@@ -13,11 +13,11 @@
       <mat-form-field appearance="outline" class="half-width">
         <mat-label>Employee ID</mat-label>
         <mat-icon matPrefix>badge</mat-icon>
-        <input matInput maxlength="5" placeholder="Ex. E001" formControlName="employeeId" />
+        <input matInput maxlength="4" placeholder="Ex. E001" formControlName="employeeId" />
         <span class="required-message" *ngIf="submitted && employeeForm.get('employeeId').invalid">
           <ng-container *ngIf="employeeForm.get('employeeId').hasError('required')">Employee ID is required</ng-container>
-          <ng-container *ngIf="employeeForm.get('employeeId').hasError('minlength')">Minimum 5 characters required</ng-container>
-          <ng-container *ngIf="employeeForm.get('employeeId').hasError('maxlength')">Maximum 5 characters allowed</ng-container>
+          <ng-container *ngIf="employeeForm.get('employeeId').hasError('minlength')">Minimum 4 characters required</ng-container>
+          <ng-container *ngIf="employeeForm.get('employeeId').hasError('maxlength')">Maximum 4 characters allowed</ng-container>
         </span>
       </mat-form-field>
 
