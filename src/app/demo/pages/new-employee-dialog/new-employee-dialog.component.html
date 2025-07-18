@@ -26,7 +26,7 @@
         <mat-icon matPrefix>work</mat-icon>
         <mat-select formControlName="jobTitle">
           <mat-option value="Trainer">Trainer</mat-option>
-          <mat-option value="Admin">Admin</mat-option>
+          <mat-option value="Manager">Manager</mat-option>
           <mat-option value="Receptionist">Receptionist</mat-option>
         </mat-select>
         <span class="required-message" *ngIf="submitted && employeeForm.get('jobTitle').hasError('required')">Job Title is required</span>
@@ -149,6 +149,19 @@
           <ng-container *ngIf="employeeForm.get('address').hasError('required')">Address is required</ng-container>
         </span>
       </mat-form-field>
+    </div>
+
+        <div class="row upload-section">
+      <button [disabled]="submitted" type="button" mat-raised-button (click)="fileInput.click()" class="choose-file-btn">
+        <mat-icon style="margin-right: 6px">image</mat-icon>
+        Choose File
+      </button>
+
+      <div>
+        <img class="image-preview" [src]="selectedImageUrl ? selectedImageUrl : 'assets/images/authentication/google.svg'" alt="Preview" />
+      </div>
+
+      <input hidden (change)="onFileSelected($event)" #fileInput type="file" id="file" />
     </div>
 
     <div class="row">

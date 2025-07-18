@@ -145,6 +145,13 @@ td {
   text-align: left;
   border-bottom: 1px solid #ddd;
 }
+th,
+td {
+  word-wrap: break-word;
+  white-space: normal;
+  max-width: 150px; /* Adjust width as needed */
+}
+
 
 th {
   background-color: #1976d2 !important;

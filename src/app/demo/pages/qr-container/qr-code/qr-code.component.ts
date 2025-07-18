@@ -53,6 +53,7 @@ export class QrCodeComponent {
     if (!canvas) return;
     const employeeData = {
       name: `${this.userData.firstName} ${this.userData.lastName}`,
+      jobTitle: `${this.userData.jobTitle}`,
       email: this.userData.email,
       phone: this.userData.phoneNumber,
       employeeId: this.userData.employeeId || this.userData.memberNo
@@ -79,30 +80,56 @@ export class QrCodeComponent {
 
   simulateQRScan() { }
 
-  public downloadId(): void {
-    const element = this.pdfContent.nativeElement;
+  // public downloadId(): void {
+  //   const element = this.pdfContent.nativeElement;
 
-    try {
-      html2canvas(element).then((canvas) => {
-        const imgData = canvas.toDataURL('image/png');
-        const pdf = new jsPDF('p', 'mm', 'a4');
+  //   try {
+  //     html2canvas(element).then((canvas) => {
+  //       const imgData = canvas.toDataURL('image/png');
+  //       const pdf = new jsPDF('p', 'mm', 'a4');
 
-        const imgProps = pdf.getImageProperties(imgData);
-        const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+  //       const imgProps = pdf.getImageProperties(imgData);
+  //       const pdfWidth = pdf.internal.pageSize.getWidth();
+  //       const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
 
-        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-        pdf.save(`${this.userData.employeeId ? this.userData.employeeId : this.userData.memberNo}.pdf`);
+  //       pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+  //       pdf.save(`${this.userData.employeeId ? this.userData.employeeId : this.userData.memberNo}.pdf`);
 
-        this.closeDialog();
+  //       this.closeDialog();
 
-        // Show success message
-        this.messageService.showSuccess('ID card downloaded successfully!');
-      });
-    } catch (error) {
-      this.messageService.showError(error);
-    }
+  //       // Show success message
+  //       this.messageService.showSuccess('ID card downloaded successfully!');
+  //     });
+  //   } catch (error) {
+  //     this.messageService.showError(error);
+  //   }
+  // }
+
+  public async downloadId(): Promise<void> {
+  const element = this.pdfContent.nativeElement;
+
+  try {
+    // Increase the scale for better quality (2 or 3 is usually enough)
+    const canvas = await html2canvas(element, { scale: 3 });
+
+    const imgData = canvas.toDataURL('image/png');
+    const pdf = new jsPDF('p', 'mm', 'a4');
+
+    const imgProps = pdf.getImageProperties(imgData);
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight, '', 'FAST'); // or 'SLOW' for better quality
+    pdf.save(`${this.userData.employeeId ? this.userData.employeeId : this.userData.memberNo}.pdf`);
+
+    this.closeDialog();
+    this.messageService.showSuccess('ID card downloaded successfully!');
+  } catch (error) {
+    this.messageService.showError('Error downloading ID card');
+    console.error(error);
   }
+}
+
 
   // Dialog close function
   closeDialog(): void {

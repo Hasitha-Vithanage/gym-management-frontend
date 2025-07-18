@@ -24,6 +24,7 @@ export class NewMemberDialogComponent implements OnInit {
   isFileSelected = false;
   submitDisabled;
   membershipCategoryList: any[] = [];  // List of suppliers
+  today = new Date();
 
   dataSource: MatTableDataSource<any>;
 
@@ -114,8 +115,13 @@ export class NewMemberDialogComponent implements OnInit {
 
             // success message
             this.messageService.showSuccess('Member added successfully!');
+          },
+          error: (error) => {
+            const errorMessage =
+              error?.error?.message || error?.error || 'Something went wrong.';
+            this.messageService.showError(errorMessage);
           }
-        });
+          });
       } catch (error) {
         this.messageService.showError(error);
       }
@@ -123,12 +129,15 @@ export class NewMemberDialogComponent implements OnInit {
       try {
         this.memberService.editData(this.selectedData?.id, this.prepareFormData()).subscribe({
           next: (response) => {
+
+            // success message
+            this.messageService.showSuccess('Member edited successfully!');
+
             const index = this.dataSource.data.findIndex((element) => element.id === this.selectedData?.id);
             this.dataSource.data[index] = response;
             this.dataSource = new MatTableDataSource(this.dataSource.data);
 
-            // success message
-            this.messageService.showSuccess('Member edited successfully!');
+
           },
           error: (error) => {
             this.messageService.showError('Action failed with error: ' + error);

@@ -156,7 +156,7 @@ displayedColumns: string[] = [
        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
          width: '350px',
          data: {
-           message: `Are you sure you want to delete ${data.member}?`
+           message: `Are you sure you want to delete ${data.firstName} ${data.lastName}?`
          }
        });
    

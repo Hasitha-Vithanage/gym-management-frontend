@@ -4,7 +4,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MemberServiceService } from 'src/app/services/member-service/member-service.service';
 import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
-import { PrintService } from 'src/app/services/print-service/print.service';
+import { MemberPrintService } from 'src/app/services/print-service/member-print.service';
 
 @Component({
   selector: 'app-member-list',
@@ -35,7 +35,7 @@ displayedColumns: string[] = [
   constructor(
     private memberService: MemberServiceService,
     private messageService: MessageServiceService,
-    private printService: PrintService
+    private memberPrintService: MemberPrintService
   ) {}
 
   ngOnInit(): void {
@@ -84,6 +84,6 @@ displayedColumns: string[] = [
   }
 
   printReport(): void {
-    this.printService.printEmployeeReport(this.filteredMembers);
+    this.memberPrintService.printEmployeeReport(this.filteredMembers);
   }
 }

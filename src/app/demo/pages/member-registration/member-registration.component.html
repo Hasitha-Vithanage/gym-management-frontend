@@ -111,7 +111,7 @@
       <!-- injuries Column -->
       <ng-container matColumnDef="injuries">
         <th mat-header-cell *matHeaderCellDef>Injuries</th>
-        <td mat-cell *matCellDef="let element">{{ element.injuries }}</td>
+        <td mat-cell *matCellDef="let element">{{ element.injuries || "N/A"}}</td>
       </ng-container>
 
       <!-- membershipCategory Column -->

@@ -3,10 +3,10 @@ import { AbstractControl, FormBuilder, FormControl, FormGroup, MinLengthValidato
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { EmployeePrintServiceService } from 'src/app/services/employee-print-service/employee-print-service.service';
 import { EmpolyeeServiceService } from 'src/app/services/employee-service/empolyee-service.service';
 import { HttpService } from 'src/app/services/http.service';
 import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
-import { PrintService } from 'src/app/services/print-service/print.service';
 
 @Component({
   selector: 'app-employee-list',
@@ -38,7 +38,7 @@ export class EmployeeListComponent implements OnInit {
   constructor(
     private employeeService: EmpolyeeServiceService,
     private messageService: MessageServiceService,
-    private printService: PrintService
+    private employeePrintServiceService: EmployeePrintServiceService
   ) {}
 
   ngOnInit(): void {
@@ -87,6 +87,6 @@ export class EmployeeListComponent implements OnInit {
   }
 
   printReport(): void {
-    this.printService.printEmployeeReport(this.filteredEmployees);
+    this.employeePrintServiceService.printEmployeeReport(this.filteredEmployees);
   }
 }

@@ -162,7 +162,28 @@ mat-form-field:hover mat-icon[matPrefix] {
   color: #1976d2;               /* Highlight icon color on focus/hover */
 }
 
+/* Choose file button */
+.upload-section .choose-file-btn {
+  background-color: #1976d2;
+  width: 50%;
+  color: #fff;
+  font-weight: 500;
+  border-radius: 8px;
+  padding: 8px 20px;
+  text-transform: none;
+  transition: background-color 0.3s ease;
+}
 
+.upload-section .choose-file-btn:hover {
+  background-color: #1976d2;
+}
 
-
-
+/* Preview image styling */
+.upload-section .image-preview {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  object-fit: cover;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  border: 2px solid #e0e0e0;
+}

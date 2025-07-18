@@ -61,7 +61,7 @@
       <mat-form-field appearance="outline" class="half-width">
         <mat-label>Date of Birth</mat-label>
         <mat-icon matPrefix>cake</mat-icon>
-        <input matInput [matDatepicker]="dob" placeholder="MM/DD/YYYY" formControlName="dateOfBirth" />
+        <input matInput [matDatepicker]="dob" [max]="today" placeholder="MM/DD/YYYY" formControlName="dateOfBirth" />
         <mat-datepicker-toggle matIconSuffix [for]="dob"></mat-datepicker-toggle>
         <mat-datepicker #dob></mat-datepicker>
         <span class="required-message" *ngIf="submitted && memberForm.get('dateOfBirth').invalid">
@@ -133,7 +133,7 @@
       <mat-form-field appearance="outline" class="half-width">
         <mat-label>Joined Date</mat-label>
         <mat-icon matPrefix>event</mat-icon>
-        <input matInput [matDatepicker]="join" placeholder="MM/DD/YYYY" formControlName="joinedDate" />
+        <input matInput [matDatepicker]="join" [min]="today" placeholder="MM/DD/YYYY" formControlName="joinedDate" />
         <mat-datepicker-toggle matIconSuffix [for]="join"></mat-datepicker-toggle>
         <mat-datepicker #join></mat-datepicker>
         <span class="required-message" *ngIf="submitted && memberForm.get('joinedDate').invalid">

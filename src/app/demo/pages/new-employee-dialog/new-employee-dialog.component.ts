@@ -7,6 +7,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { EmpolyeeServiceService } from 'src/app/services/employee-service/empolyee-service.service';
 import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
 import { NotificationService } from 'src/app/services/notification-service/notification.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-new-employee-dialog',
@@ -26,6 +27,8 @@ export class NewEmployeeDialogComponent {
   dataSource: MatTableDataSource<any>;
   today: Date = new Date();
   submitDisabled;
+    selectedImageUrl;
+      isFileSelected = false;
 
 
   constructor(
@@ -34,6 +37,7 @@ export class NewEmployeeDialogComponent {
     private http: HttpService,
     private employeeService: EmpolyeeServiceService,
     private messageService: MessageServiceService,
+        private sanitizer: DomSanitizer,
     private notificationService: NotificationService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
@@ -59,6 +63,9 @@ export class NewEmployeeDialogComponent {
       email: ['', [Validators.required, Validators.email]],
       phoneNumber: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
       emergencyContactNumber: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
+            image: new FormControl(''),
+      imageName: new FormControl(''),
+      imageType: new FormControl('')
     });
 
   }
@@ -82,50 +89,53 @@ export class NewEmployeeDialogComponent {
       return;
     }
 
-    console.log('Clicked');
-    console.log(this.employeeForm.value);
-    try {
-      // check mode (add or edit)
-      if (this.mode === 'add') {
-        this.employeeService.serviceCall(this.employeeForm.value).subscribe({
-          next: (response: any) => {
+    if (this.mode === 'add') {
+      this.employeeForm.patchValue({ status: 'Active' });
+
+      try {
+        this.employeeService.serviceCall(this.prepareFormData()).subscribe({
+          next: (response) => {
             if (this.dataSource && this.dataSource.data && this.dataSource.data.length > 0) {
               this.dataSource = new MatTableDataSource([response, ...this.dataSource.data]);
             } else {
               this.dataSource = new MatTableDataSource([response]);
             }
-            // displaying success message
-            this.messageService.showSuccess('Employee added successfully!');
 
-            this.addNotification(response);
+            // success message
+            this.messageService.showSuccess('Employee added successfully!');
           },
-          // Displaying error message
           error: (error) => {
-            this.messageService.showError(error);
+            const errorMessage =
+              error?.error?.message || error?.error || 'Something went wrong.';
+            this.messageService.showError(errorMessage);
           }
-        });
-      } else if (this.mode === 'edit') {
-        // Calling editData function to send the request to the backend
-        this.employeeService.editData(this.selectedData?.id, this.employeeForm.value).subscribe({
-          next: (response: any) => {
-            let elementIndex = this.dataSource.data.findIndex((element) => element.id === this.selectedData?.id);
-            this.dataSource.data[elementIndex] = response;
+          });
+      } catch (error) {
+        this.messageService.showError(error);
+      }
+    } else if (this.mode === 'edit') {
+      try {
+        this.employeeService.editData(this.selectedData?.id, this.prepareFormData()).subscribe({
+          next: (response) => {
+
+            // success message
+            this.messageService.showSuccess('Employee edited successfully!');
+
+            const index = this.dataSource.data.findIndex((element) => element.id === this.selectedData?.id);
+            this.dataSource.data[index] = response;
             this.dataSource = new MatTableDataSource(this.dataSource.data);
 
-            // Displaying success message
-            this.messageService.showSuccess('Employee details updated successfully!');
+
           },
           error: (error) => {
-            this.messageService.showError(error);
+            this.messageService.showError('Action failed with error: ' + error);
           }
         });
+      } catch (error) {
+        this.messageService.showError(error);
       }
-      // this.employeeForm.disable();
-      this.isDisabled = true;
-      this.mode = 'add';
-    } catch (error) {
-      this.messageService.showError(error);
     }
+
     this.closeDialog();
   }
 
@@ -143,6 +153,9 @@ export class NewEmployeeDialogComponent {
       email: data.email,
       phoneNumber: data.phoneNumber,
       emergencyContactNumber: data.emergencyContactNumber,
+            image: data.image,
+      imageName: data.imageName,
+      imageType: data.imageType
     });
     this.registerButtonLabel = "Update";
     this.mode = "edit";
@@ -179,5 +192,41 @@ export class NewEmployeeDialogComponent {
 
   public addNotification(details: any): void {
     this.notificationService.addNotification('Employee Added Successfully', 'success', 1);
+  }
+
+    public prepareFormData(): FormData {
+    const employeeFormData = new FormData();
+    // demoFormData.append('demoForm', this.demoForm.value);
+    employeeFormData.append('employeeForm', new Blob([JSON.stringify(this.employeeForm.value)], { type: 'application/json' }));
+
+    if (this.isFileSelected) {
+      employeeFormData.append('image', this.employeeForm.get('image').value, this.employeeForm.get('image').value.name);
+    } else {
+      const imageBlob = this.base64ToBlob(this.employeeForm.get('image').value, this.employeeForm.get('imageType').value);
+      const file = new File([imageBlob], this.employeeForm.get('imageName').value, { type: this.employeeForm.get('imageType').value });
+      employeeFormData.append('image', file, file.name);
+    }
+
+    return employeeFormData;
+  }
+
+  base64ToBlob(base64: string, mimeType: string): Blob {
+    const byteCharacters = atob(base64);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    return new Blob([byteArray], { type: mimeType });
+  }
+  
+  public onFileSelected(event): void {
+    if (event.target.files) {
+      const file = event.target.files[0];
+      const url = this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(file));
+      this.selectedImageUrl = url;
+      this.isFileSelected = true;
+      this.employeeForm.get('image').setValue(file);
+    }
   }
 }
