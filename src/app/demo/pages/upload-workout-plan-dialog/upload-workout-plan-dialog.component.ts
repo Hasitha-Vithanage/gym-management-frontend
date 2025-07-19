@@ -63,6 +63,7 @@ export class UploadWorkoutPlanDialogComponent {
     formData.append('planDescription', this.workoutUploadForm.get('planDescription').value);
     formData.append('pdf', this.selectedFile);
     formData.append('userId', this.workoutUploadForm.get('userId').value);
+    formData.append('reqId', this.data.id);
 
 
     this.uploadWorkoutService.serviceCall(formData).subscribe({

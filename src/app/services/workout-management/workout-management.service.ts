@@ -23,9 +23,9 @@ export class WorkoutManagementService {
   }
 
 
-    getTrainerById(): Observable<any> {
-      const id = 9;
-        const requestUrl = environment.baseUrl + '/trainer/' + id.toString();
+  getTrainerById(memberName: string): Observable<any> {
+
+    const requestUrl = environment.baseUrl + '/get-assign-trainer/' + memberName;
 
     let headers = {};
     if (this.httpService.getAuthToken() !== null) {
@@ -42,8 +42,8 @@ export class WorkoutManagementService {
   }
 
 
-    sendWorkoutRequest(requestPayload: any) {
-        const requestUrl = environment.baseUrl + '/sendRequest';
+  sendWorkoutRequest(requestPayload: any) {
+    const requestUrl = environment.baseUrl + '/sendRequest';
 
     let headers = {};
     if (this.httpService.getAuthToken() !== null) {
@@ -52,6 +52,18 @@ export class WorkoutManagementService {
       };
     }
     return this.http.post(requestUrl, requestPayload, { headers: headers });
+  }
+
+  getTrainerDetails(trainerName: any) {
+        const requestUrl = environment.baseUrl + '/get-trainers-details/' + trainerName;
+
+    let headers = {};
+    if (this.httpService.getAuthToken() !== null) {
+      headers = {
+        Authorization: 'Bearer ' + this.httpService.getAuthToken()
+      };
+    }
+    return this.http.get(requestUrl, { headers: headers });
   }
 
 }

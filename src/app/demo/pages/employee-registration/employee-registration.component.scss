@@ -91,6 +91,12 @@ mat-radio-button {
   gap: 12px;
 }
 
+.table-wrapper {
+  overflow-x: auto;
+  width: 100%;
+}
+
+
 /* Adjust mat-form-field styling */
 .table-filter mat-form-field {
   width: 250px;
