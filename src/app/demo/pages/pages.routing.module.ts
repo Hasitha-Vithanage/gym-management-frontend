@@ -169,7 +169,7 @@ export const PagesRoutes: Routes = [
      { path: 'payments',
     component: PaymentsComponent
   }, 
-     { path: 'order-details',
+     { path: 'order-details/:id',
     component: OrderDetailsComponent
   }, 
 ];

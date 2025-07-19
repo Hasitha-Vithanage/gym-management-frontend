@@ -128,7 +128,7 @@ export const MY_DATE_FORMATS = {
     PaymentsDialogComponent,
     TrainerLoginDialogComponent,
     MemberLoginDialogComponent,
-    OrderDetailsComponent
+    OrderDetailsComponent,
   ],
   imports: [
     CommonModule,

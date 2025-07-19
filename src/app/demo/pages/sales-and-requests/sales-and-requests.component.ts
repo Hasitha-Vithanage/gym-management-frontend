@@ -22,8 +22,9 @@ export interface OrderFlatRow {
   styleUrl: './sales-and-requests.component.scss'
 })
 export class SalesAndRequestsComponent {
-viewOrder(_t73: any) {
- this.router.navigate(['/pages/order-details', this.orders]);
+viewOrder(order: any) {
+  
+ this.router.navigate(['/pages/order-details', order.id]);
 }
 
 orderItemDisplayedColumns: string[] = ['orderedBy', 'productName', 'totalPrice', 'date', 'actions'];
@@ -52,7 +53,7 @@ populateData(): void {
     next: (orders: any[]) => {
       
       this.orders = orders;
-      console.log(orders);
+      console.log("Order Details: ",orders);
       
     },
     error: (err) => {
