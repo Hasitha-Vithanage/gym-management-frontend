@@ -23,7 +23,7 @@
     </div>
 
     <!-- Example Table (You can replace this with your table) -->
-<table mat-table [dataSource]="orderItemsFlattened" class="mat-elevation-z8">
+<table mat-table [dataSource]="orders" class="mat-elevation-z8">
 
   <!-- Ordered By -->
   <ng-container matColumnDef="orderedBy">
@@ -31,29 +31,38 @@
     <td mat-cell *matCellDef="let element"> {{ element.orderedBy }} </td>
   </ng-container>
 
+    <!-- Date -->
+  <ng-container matColumnDef="date">
+    <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Date </th>
+    <td mat-cell *matCellDef="let element" style="text-align: center;"> {{ element.date | date:'dd/MM/yyyy' }} </td>
+  </ng-container>
+
+
   <!-- Product Name -->
   <ng-container matColumnDef="productName">
     <th mat-header-cell *matHeaderCellDef> Product </th>
-    <td mat-cell *matCellDef="let element"> {{ element.productName }} </td>
+    <td mat-cell *matCellDef="let element"> {{ element.status }} </td>
   </ng-container>
 
-  <!-- Quantity -->
-  <ng-container matColumnDef="quantity">
-    <th mat-header-cell *matHeaderCellDef> Qty </th>
-    <td mat-cell *matCellDef="let element"> {{ element.quantity }} </td>
-  </ng-container>
 
   <!-- Total Price -->
   <ng-container matColumnDef="totalPrice">
     <th mat-header-cell *matHeaderCellDef> Total Price </th>
-    <td mat-cell *matCellDef="let element"> {{ element.totalPrice | currency }} </td>
+    <td mat-cell *matCellDef="let element"> {{ element.totalCost }} LKR </td>
   </ng-container>
 
-  <!-- Date -->
-  <ng-container matColumnDef="date">
-    <th mat-header-cell *matHeaderCellDef> Date </th>
-    <td mat-cell *matCellDef="let element"> {{ element.date | date:'dd/MM/yyyy' }} </td>
-  </ng-container>
+        <!-- action Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef style="text-align: center;">Actions</th>
+        <td mat-cell *matCellDef="let element">
+          <div class="action-column">
+            <button mat-icon-button class="gray-icon-btn" matTooltip="Edit" (click)="viewOrder(element)">
+              <mat-icon>visibility</mat-icon>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+
 
   <!-- Rows -->
   <tr mat-header-row *matHeaderRowDef="orderItemDisplayedColumns"></tr>

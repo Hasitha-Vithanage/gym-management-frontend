@@ -170,3 +170,9 @@ th {
 //         background-color 0.2s ease,
 //         transform 0.1s ease;
 // }
+.action-column {
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+  justify-content: center;
+}

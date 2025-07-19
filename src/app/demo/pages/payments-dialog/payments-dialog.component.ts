@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { AssignTrainerServiceService } from 'src/app/services/assign-trainer/assign-trainer-service.service';
@@ -54,11 +54,29 @@ export class PaymentsDialogComponent {
       membershipCategory: new FormControl('', [Validators.required]),
       amount: new FormControl('', [Validators.required]),
       status: new FormControl('', [Validators.required]),
+      paymentDate: new FormControl('', [Validators.required, this.futureDateValidator]),
+      nextPaymentDate: new FormControl('', [Validators.required, this.pastDateValidator]),
     });
 
     // Function for get suppliers
     this.getMembers();
   }
+
+    pastDateValidator(control: AbstractControl) {
+      if (!control.value) return null;
+      const inputDate = new Date(control.value);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      return inputDate < today ? { futureDate: true } : null;
+    }
+
+    futureDateValidator(control: AbstractControl) {
+      if (!control.value) return null;
+      const inputDate = new Date(control.value);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      return inputDate > today ? { futureDate: true } : null;
+    }
 
   /* onsubmit function */
   onSubmit() {
@@ -132,52 +150,52 @@ export class PaymentsDialogComponent {
 
   onMemberSelected(selectedFirstName: string): void {
     console.log("NAme; ", selectedFirstName);
-    
+
     if (selectedFirstName) {
       this.getMembershipByName(selectedFirstName);
     }
   }
 
-// getting membership based on the member name
-public getMembershipByName(member: any): void {
-  this.membershipCategoryService.getMembersByFirstName(member).subscribe({
-    next: (response: any) => {
-      console.log("Membership: ", response);
+  // getting membership based on the member name
+  public getMembershipByName(member: any): void {
+    this.membershipCategoryService.getMembersByFirstName(member).subscribe({
+      next: (response: any) => {
+        console.log("Membership: ", response);
 
-      this.membership = response;
+        this.membership = response;
 
-      const data = Array.isArray(response) ? response[0] : response;
+        const data = Array.isArray(response) ? response[0] : response;
 
-      this.paymentForm.get('membershipCategory')?.setValue(data.membershipCategory);
-      this.getFeeByMembershipCategory(data.membershipCategory);
-    },
-    error: (error) => {
-      console.log('Error fetching membership:', error);
-    }
-  });
-}
-
-// getting based on the Category name
-public getFeeByMembershipCategory(categoryName: string): void {
-  if (!categoryName) {
-    this.paymentForm.get('amount')?.setValue('');
-    return;
+        this.paymentForm.get('membershipCategory')?.setValue(data.membershipCategory);
+        this.getFeeByMembershipCategory(data.membershipCategory);
+      },
+      error: (error) => {
+        console.log('Error fetching membership:', error);
+      }
+    });
   }
-  this.membershipCategoryService.getFeeByCategoryName(categoryName).subscribe({
-    next: (response: any) => {
-      console.log("fee: ", response);
-      const data = Array.isArray(response) ? response[0] : response;
-      console.log("fee amount:", data.fee);
-      
-     this.paymentForm.get('amount')?.setValue(data.fee || 0);
-      
-    },
-    error: (error) => {
-      console.log('Error fetching fee:', error);
+
+  // getting based on the Category name
+  public getFeeByMembershipCategory(categoryName: string): void {
+    if (!categoryName) {
       this.paymentForm.get('amount')?.setValue('');
+      return;
     }
-  });
-}
+    this.membershipCategoryService.getFeeByCategoryName(categoryName).subscribe({
+      next: (response: any) => {
+        console.log("fee: ", response);
+        const data = Array.isArray(response) ? response[0] : response;
+        console.log("fee amount:", data.fee);
+
+        this.paymentForm.get('amount')?.setValue(data.fee || 0);
+
+      },
+      error: (error) => {
+        console.log('Error fetching fee:', error);
+        this.paymentForm.get('amount')?.setValue('');
+      }
+    });
+  }
 
 
 
@@ -199,7 +217,14 @@ public getFeeByMembershipCategory(categoryName: string): void {
       amount: data.amount,
       status: data.status,
       paidData: data.paymentDate,
+      nextPaymentDate: data.nextPaymentDate
     });
+
+    this.paymentForm.patchValue({
+      paymentDate: new Date(data.paymentDate),
+      nextPaymentDate: new Date(data.nextPaymentDate),
+    });
+
     this.registerButtonLabel = "Update";
     this.mode = "edit";
     this.selectedData = data;

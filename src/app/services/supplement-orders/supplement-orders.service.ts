@@ -8,6 +8,21 @@ import { HttpService } from '../http.service';
   providedIn: 'root'
 })
 export class SupplementOrdersService {
+  getOrdersOverLimit() {
+      const requestUrl = environment.baseUrl + '/get-orders-over-limit'; // http://localhost:8080/employee
+  
+      let headers = {};
+  
+      if (this.httpService.getAuthToken() !== null) {
+        headers = {
+          Authorization: 'Bearer ' + this.httpService.getAuthToken()
+        };
+      }
+  
+      // sending GET request to the server
+      return this.http.get(requestUrl, { headers: headers });
+
+  }
 
   constructor(private http: HttpClient, private httpService: HttpService) { }
     

@@ -153,12 +153,7 @@ th {
   color: white;
 }
 
-th:nth-child(1), td:nth-child(1) { width: 20%; } /* Member */
-th:nth-child(2), td:nth-child(2) { width: 20%; } /* Membership */
-th:nth-child(3), td:nth-child(3) { width: 15%; } /* Amount */
-th:nth-child(4), td:nth-child(4) { width: 15%; } /* Status */
-th:nth-child(5), td:nth-child(5) { width: 15%; } /* Paid Date */
-th:nth-child(6), td:nth-child(6) { width: 15%; text-align: center; } /* Actions */
+
 
 
 /* Better spacing and centering for actions */

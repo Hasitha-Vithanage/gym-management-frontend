@@ -35,6 +35,7 @@ export class PaymentsComponent {
       'amount',
       'paymentStatus',
       'paymentDate',
+      'nextPaymentDate',
       'actions'
     ];
   

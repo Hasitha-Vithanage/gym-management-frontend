@@ -202,13 +202,15 @@ export class AddClassDialogComponent {
     this.saveButtonLabel = 'Update';
     this.mode = 'edit';
     this.selectedData = data;
+    const startTimeString = this.formatTimeArray(data.startTime);
+    const endTimeString = this.formatTimeArray(data.endTime);
 
     this.classForm.patchValue({
       classTitle: data.classTitle,
       description: data.description,
       date: new Date(data.date),
-      startTime: data.startTime,
-      endTime: data.endTime,
+      startTime: startTimeString,
+      endTime: endTimeString,
       conductorName: data.conductorName,
       profession: data.profession,
       totalSlots: data.totalSlots,
@@ -216,6 +218,11 @@ export class AddClassDialogComponent {
       fee: data.fee,
       status: data.status
     });
+
+    this.classForm.get('date').clearValidators();
+    this.classForm.get('date').updateValueAndValidity();
+    this.classForm.get('date').setValidators(Validators.required);
+    this.classForm.get('date').updateValueAndValidity();
   }
 
   // reset button function
@@ -246,5 +253,14 @@ export class AddClassDialogComponent {
       const formattedDate = moment(date).format('YYYY-MM-DD');
       this.classForm.patchValue({ date: formattedDate });
     }
+  }
+
+  formatTimeArray(arr: number[]): string {
+    const [h, m] = arr;
+    return `${this.pad(h)}:${this.pad(m)}`;
+  }
+
+  pad(num: number): string {
+    return num.toString().padStart(2, '0'); // ensures two digits
   }
 }

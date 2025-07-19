@@ -59,26 +59,50 @@ export class BookClassSubmitComponent {
     });
   }
 
-  formatTime(data: any[]): string {
-    try {
-      // Split hours/minutes/seconds
-      const time = data.join(':');
-      const [hour, minute, second] = time.split(':').map(Number);
+  // formatTime(data: any[] | null | undefined): string {
+  //   try {
+  //     // Split hours/minutes/seconds
+  //     const time = data.join(':');
+  //     const [hour, minute, second] = time.split(':').map(Number);
 
-      // Create a Date in local time zone (no need to deal with UTC)
-      const date = new Date();
-      date.setHours(hour, minute, second || 0, 0);  // hour, minute, second, ms
+  //     // Create a Date in local time zone (no need to deal with UTC)
+  //     const date = new Date();
+  //     date.setHours(hour, minute, second || 0, 0);  // hour, minute, second, ms
 
-      return date.toLocaleTimeString([], {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: true
-      });
-    } catch (e) {
-      console.error('Time parse error:', e);
+  //     return date.toLocaleTimeString([], {
+  //       hour: '2-digit',
+  //       minute: '2-digit',
+  //       hour12: true
+  //     });
+  //   } catch (e) {
+  //     console.error('Time parse error:', e);
+  //     return 'Invalid Time';
+  //   }
+  // }
+
+  formatTime(data: any[] | null | undefined): string {
+  try {
+    if (!Array.isArray(data) || data.length < 2) {
       return 'Invalid Time';
     }
+
+    const time = data.join(':'); // Safe now
+    const [hour, minute, second = 0] = time.split(':').map(Number);
+
+    const date = new Date();
+    date.setHours(hour, minute, second, 0); // hour, minute, second, ms
+
+    return date.toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    });
+  } catch (e) {
+    console.error('Time parse error:', e);
+    return 'Invalid Time';
   }
+}
+
 
   // bookClass(): void {
   //   this.bookClassService.serviceCall(this.prepareFormData()).subscribe({

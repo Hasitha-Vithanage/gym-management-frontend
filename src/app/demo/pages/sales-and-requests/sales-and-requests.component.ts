@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { Route, Router } from '@angular/router';
 import { EmployeePrintServiceService } from 'src/app/services/employee-print-service/employee-print-service.service';
 import { EmpolyeeServiceService } from 'src/app/services/employee-service/empolyee-service.service';
 import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
@@ -21,17 +22,11 @@ export interface OrderFlatRow {
   styleUrl: './sales-and-requests.component.scss'
 })
 export class SalesAndRequestsComponent {
-viewId(_t84: any) {
-throw new Error('Method not implemented.');
-}
-deleteData(_t84: any) {
-throw new Error('Method not implemented.');
-}
-editData(_t84: any) {
-throw new Error('Method not implemented.');
+viewOrder(_t73: any) {
+ this.router.navigate(['/pages/order-details', this.orders]);
 }
 
-orderItemDisplayedColumns: string[] = ['orderedBy', 'productName', 'quantity', 'totalPrice', 'date'];
+orderItemDisplayedColumns: string[] = ['orderedBy', 'productName', 'totalPrice', 'date', 'actions'];
 
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -42,33 +37,23 @@ orderItemDisplayedColumns: string[] = ['orderedBy', 'productName', 'quantity', '
     private employeeService: EmpolyeeServiceService,
     private supplementOrdersService: SupplementOrdersService,
     private messageService: MessageServiceService,
-    private employeePrintServiceService: EmployeePrintServiceService
+    private employeePrintServiceService: EmployeePrintServiceService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
     this.populateData();
   }
 
-public orderItemsFlattened: OrderFlatRow[] = [];
+public orders: OrderFlatRow[] = [];
 
 populateData(): void {
   this.supplementOrdersService.getOrderDetails().subscribe({
     next: (orders: any[]) => {
-      this.orderItemsFlattened = [];
-
-      orders.forEach(order => {
-        if (order.orderItems && order.orderItems.length > 0) {
-          order.orderItems.forEach(item => {
-            this.orderItemsFlattened.push({
-              orderedBy: order.orderedBy,
-              productName: item.productName,
-              quantity: item.quantity,
-              totalPrice: item.totalPrice,
-              date: order.date
-            });
-          });
-        }
-      });
+      
+      this.orders = orders;
+      console.log(orders);
+      
     },
     error: (err) => {
       console.error('Failed to fetch orders', err);
