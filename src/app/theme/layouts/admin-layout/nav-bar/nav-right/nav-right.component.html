@@ -20,7 +20,7 @@
         <div class="dropdown-header px-0 text-wrap header-notification-scroll">
           <div class="list-group list-group-flush w-100">
             <div
-              *ngFor="let notification of notifications.slice(0, 5)"
+              *ngFor="let notification of notifications"
               class="notification-item"
               [class.unread]="!notification.readStatus"
               (click)="markAsRead(notification.id)"

@@ -14,7 +14,6 @@ import { NotificationService } from 'src/app/services/notification-service/notif
   styleUrls: ['./assign-trainer-dialog.component.scss']
 })
 export class AssignTrainerDialogComponent {
-
   assignTrainerForm: FormGroup;
   registerButtonLabel = 'Assign Trainer';
   mode = 'add';
@@ -26,6 +25,8 @@ export class AssignTrainerDialogComponent {
   memberList: any[] = [];
   trainerList: any[] = [];
   submitDisabled;
+  selectedMember;
+  selectedTrainer;
 
   constructor(
     private fb: FormBuilder,
@@ -35,19 +36,16 @@ export class AssignTrainerDialogComponent {
     private messageService: MessageServiceService,
     private notificationService: NotificationService,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) {
-
-  }
+  ) {}
 
   ngOnInit() {
-
     // Get today's date
     const today = new Date().toISOString().split('T')[0]; // Format as YYYY-MM-DD
     const userName = this.http.getLoginNameFromCache();
 
     this.assignTrainerForm = new FormGroup({
       member: new FormControl('', [Validators.required]),
-      trainer: new FormControl('', [Validators.required]),
+      trainer: new FormControl('', [Validators.required])
     });
 
     // Function for get suppliers
@@ -78,7 +76,7 @@ export class AssignTrainerDialogComponent {
             // displaying success message
             this.messageService.showSuccess('Trainer Assigned successfully!');
 
-            // this.addNotification(response);
+            this.addNotification('add');
           },
           // Displaying error message
           error: (error) => {
@@ -115,7 +113,7 @@ export class AssignTrainerDialogComponent {
     //Call Service to get members
     this.assignTrainerService.getMembers().subscribe({
       next: (response: any[]) => {
-        console.log("Members: ", response);
+        console.log('Members: ', response);
         this.memberList = response;
       },
       error: (error) => {
@@ -129,7 +127,7 @@ export class AssignTrainerDialogComponent {
     //Call Service to get trainers
     this.assignTrainerService.getTrainers().subscribe({
       next: (response: any[]) => {
-        console.log("Trainers: ", response);
+        console.log('Trainers: ', response);
         this.trainerList = response;
       },
       error: (error) => {
@@ -152,16 +150,16 @@ export class AssignTrainerDialogComponent {
   onEdit(data: any): void {
     this.assignTrainerForm.patchValue({
       member: data.member,
-      trainer: data.trainer,
+      trainer: data.trainer
     });
-    this.registerButtonLabel = "Update";
-    this.mode = "edit";
+    this.registerButtonLabel = 'Update';
+    this.mode = 'edit';
     this.selectedData = data;
     this.submitDisabled = true;
 
     this.assignTrainerForm.valueChanges.subscribe(() => {
-    this.submitDisabled = !this.assignTrainerForm.valid || this.assignTrainerForm.pristine;
-  });
+      this.submitDisabled = !this.assignTrainerForm.valid || this.assignTrainerForm.pristine;
+    });
   }
 
   // Dialog close function
@@ -169,7 +167,51 @@ export class AssignTrainerDialogComponent {
     this.dialogRef.close();
   }
 
-  // public addNotification(details: any): void {
-  //   this.notificationService.addNotification('Trainer Assigned Successfully', 'success', 1);
-  // }
+  public addNotification(detail): void {
+    this.assignTrainerService.getTrainerUserId(this.selectedTrainer).subscribe({
+      next: (response: any) => {
+        if (detail === 'add') {
+          this.notificationService.addNotification('New member has been assigned to you', 'info', response.userId);
+        }
+      },
+      error: (error: any) => {
+        this.messageService.showError('Error while sending notification to trainer');
+      }
+    });
+
+    this.assignTrainerService.getMemberUserId(this.selectedMember).subscribe({
+      next: (response: any) => {
+        if (detail === 'add') {
+          this.notificationService.addNotification('Your trainer is assigned to you now', 'info', response.userId);
+        }
+      },
+      error: (error: any) => {
+        this.messageService.showError('Error while sending notification to member');
+      }
+    });
+  }
+
+  public onMemberSelect(data: any): void {
+    const memberName = data?.value;
+
+    if (memberName && memberName != null && memberName != undefined && memberName != '') {
+      const member = this.memberList.find((item: any) => item.firstName == memberName);
+
+      if (member) {
+        this.selectedMember = member.id;
+      }
+    }
+  }
+
+  public onTrainerSelect(data: any): void {
+    const trainerName = data?.value;
+
+    if (trainerName && trainerName != null && trainerName != undefined && trainerName != '') {
+      const trainer = this.trainerList.find((item: any) => item.firstName == trainerName);
+
+      if (trainer) {
+        this.selectedTrainer = trainer.id;
+      }
+    }
+  }
 }
