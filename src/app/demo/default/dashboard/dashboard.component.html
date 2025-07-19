@@ -68,12 +68,12 @@
     </app-card>
   </div>
 
-  <div class="col-md-12 col-xl-8">
+  <!-- <div class="col-md-12 col-xl-8">
     <app-monthly-bar-chart />
   </div>
   <div class="col-md-12 col-xl-4">
     <app-income-overview-chart />
-  </div>
+  </div> -->
 
   <div class="col-md-12 col-xl-8">
     <h5 class="mb-3">Supplement Store</h5>
@@ -97,7 +97,7 @@
               <td>{{ supplement.brand }}</td>
               <td>
                 <span class="d-block text-end">
-                  <i class=" bg-success f-10 m-r-5"></i>
+                  <i class="bg-success f-10 m-r-5"></i>
                   <!-- You can dynamically change class -->
                   {{ supplement.quantityPerUnit }} {{ supplement.unit }}
                 </span>
@@ -110,14 +110,14 @@
       </div>
     </div>
   </div>
-  <div class="col-md-12 col-xl-4">
+  <!-- <div class="col-md-12 col-xl-4">
     <app-analytics-chart />
-  </div>
+  </div> -->
 
-  <div class="col-md-12 col-xl-8">
+  <!-- <div class="col-md-12 col-xl-8">
     <app-sales-report-chart />
-  </div>
-  <div class="col-md-12 col-xl-4">
+  </div> -->
+  <!-- <div class="col-md-12 col-xl-4">
     <h5 class="mb-3">Transaction History</h5>
     <div class="card">
       <div class="list-group list-group-flush">
@@ -162,6 +162,21 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
   <!-- [ sample-page ] end -->
+
+  <!-- Menu Cards Section -->
+  <section class="menu-section">
+    <div class="container">
+      <!-- <h2 class="section-title">Browse Our Collection</h2> -->
+      <div class="cards-grid">
+        <div *ngFor="let item of menuItems" class="menu-card" (click)="navigateToSection(item.route)">
+          <div class="card-icon">{{ item.icon }}</div>
+          <h3 class="card-title">{{ item.title }}</h3>
+          <p class="card-description">{{ item.description }}</p>
+          <div class="card-arrow">→</div>
+        </div>
+      </div>
+    </div>
+  </section>
 </div>
