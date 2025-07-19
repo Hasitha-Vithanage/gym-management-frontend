@@ -45,7 +45,7 @@ export class NavRightComponent implements OnInit {
   screenFull: boolean = true;
 
   userName;
-  role = "Trainer";
+  role = 'Trainer';
 
   notifications: any[] = [];
   unreadCount = 0;
@@ -96,8 +96,12 @@ export class NavRightComponent implements OnInit {
     });
 
     this.notificationService.notifications$.subscribe((notifications) => {
-      this.notifications = notifications;
-      this.unreadCount = notifications.filter((n) => !n.readStatus).length;
+      const currentUserId = this.httpService.getUserId();
+
+      const currentUserNotifications = notifications.filter((noti: any) => noti.targetUser == currentUserId);
+
+      this.notifications = currentUserNotifications;
+      this.unreadCount = currentUserNotifications.filter((n) => !n.readStatus).length;
     });
 
     // Close dropdown when clicking outside
@@ -154,7 +158,7 @@ export class NavRightComponent implements OnInit {
     {
       icon: 'user',
       title: 'View Profile'
-    },
+    }
     // {
     //   icon: 'profile',
     //   title: 'Social Profile'

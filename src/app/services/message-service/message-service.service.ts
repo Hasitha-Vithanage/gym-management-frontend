@@ -16,7 +16,13 @@ export class MessageServiceService {
   }
 
   showError(message: string, duration: number = 8000) {
-    this.toastrService.error(this.extractUserMessage(message), 'Major Error', {
+    this.toastrService.error(this.extractUserMessage(message), 'Error', {
+      timeOut: duration
+    });
+  }
+
+  showInfo(message: string, duration: number = 5000) {
+    this.toastrService.info(message, 'Info', {
       timeOut: duration
     });
   }

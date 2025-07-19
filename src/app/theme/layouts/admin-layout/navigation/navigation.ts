@@ -463,6 +463,26 @@ export const NavigationItems: NavigationItem[] = [
         icon: '',
         auth: [authenticationEnum.Member_Report],
         breadcrumbs: false
+      },
+      {
+        id: 'monthlyAttendance',
+        title: 'Monthly Attendance',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/pages/reports/monthly-attendance',
+        icon: '',
+        auth: [authenticationEnum.Monthly_Attendance],
+        breadcrumbs: false
+      },
+      {
+        id: 'monthlySales',
+        title: 'Monthly Sales',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/pages/reports/monthly-sales',
+        icon: '',
+        auth: [authenticationEnum.Monthly_Sales],
+        breadcrumbs: false
       }
     ]
   },

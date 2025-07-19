@@ -11,7 +11,6 @@ import { WorkoutPlanUploadService } from 'src/app/services/workout-plan-upload/w
   styleUrl: './my-workout-plan.component.scss'
 })
 export class MyWorkoutPlanComponent {
-
   pdfUrl: SafeResourceUrl | null = null;
   isLoading = true;
   hasPdf = false;
@@ -37,7 +36,7 @@ export class MyWorkoutPlanComponent {
     private messageService: MessageServiceService,
     private httpService: HttpService,
     private sanitizer: DomSanitizer
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     // this.loadUserProfile();
@@ -77,7 +76,7 @@ export class MyWorkoutPlanComponent {
   //   });
   // }
 
-   populateData(): void {
+  populateData(): void {
     const userId = this.httpService.getLoginNameFromCache();
 
     this.uploadWorkoutService.getPdf(userId).subscribe({
@@ -87,12 +86,11 @@ export class MyWorkoutPlanComponent {
         this.hasPdf = true;
         this.isLoading = false;
         this.workoutPlanLastUpdated = new Date(); // Set to now or get real timestamp if available
-        
-        console.log("response Data: ", data);
-        
+
+        console.log('response Data: ', data);
       },
       error: (err) => {
-        this.messageService.showError('Workout plan not available for this user.');
+        this.messageService.showInfo('Workout plan not available for this user.');
         this.isLoading = false;
         this.hasPdf = false;
         this.rawPdfBlob = null;
@@ -100,7 +98,6 @@ export class MyWorkoutPlanComponent {
       }
     });
   }
-
 
   downloadPdf(): void {
     if (!this.rawPdfBlob) return;
@@ -136,7 +133,4 @@ export class MyWorkoutPlanComponent {
       }, 1000);
     };
   }
-
-
-
 }

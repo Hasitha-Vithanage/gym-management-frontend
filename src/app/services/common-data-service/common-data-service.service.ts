@@ -4,12 +4,15 @@ import { environment } from 'src/app/environments/environment';
 import { HttpService } from '../http.service';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class CommonDataServiceService implements OnInit {
   public commonDataServiceUrl = '/common-data-service/';
 
-  constructor(private httpService: HttpService, private http: HttpClient) {}
+  constructor(
+    private httpService: HttpService,
+    private http: HttpClient
+  ) {}
 
   ngOnInit(): void {
     this.initializeComponent();
@@ -17,23 +20,14 @@ export class CommonDataServiceService implements OnInit {
 
   public initializeComponent(): void {}
 
-  public getAvailablePrivilegeList(
-    method: string,
-    url: string,
-    groupId: number
-  ): Promise<any> {
-    const requestUrl =
-      environment.baseUrl +
-      this.commonDataServiceUrl +
-      url +
-      '/' +
-      groupId.toString();
+  public getAvailablePrivilegeList(method: string, url: string, groupId: number): Promise<any> {
+    const requestUrl = environment.baseUrl + this.commonDataServiceUrl + url + '/' + groupId.toString();
 
     let headers = {};
 
     if (this.httpService.getAuthToken() !== null) {
       headers = {
-        Authorization: 'Bearer ' + this.httpService.getAuthToken(),
+        Authorization: 'Bearer ' + this.httpService.getAuthToken()
       };
     }
 
@@ -44,23 +38,14 @@ export class CommonDataServiceService implements OnInit {
     }
   }
 
-  public getAssignedPrivilegeList(
-    method: string,
-    url: string,
-    groupId: number
-  ): Promise<any> {
-    const requestUrl =
-      environment.baseUrl +
-      this.commonDataServiceUrl +
-      url +
-      '/' +
-      groupId.toString();
+  public getAssignedPrivilegeList(method: string, url: string, groupId: number): Promise<any> {
+    const requestUrl = environment.baseUrl + this.commonDataServiceUrl + url + '/' + groupId.toString();
 
     let headers = {};
 
     if (this.httpService.getAuthToken() !== null) {
       headers = {
-        Authorization: 'Bearer ' + this.httpService.getAuthToken(),
+        Authorization: 'Bearer ' + this.httpService.getAuthToken()
       };
     }
 
@@ -78,7 +63,7 @@ export class CommonDataServiceService implements OnInit {
 
     if (this.httpService.getAuthToken() !== null) {
       headers = {
-        Authorization: 'Bearer ' + this.httpService.getAuthToken(),
+        Authorization: 'Bearer ' + this.httpService.getAuthToken()
       };
     }
 
@@ -87,5 +72,57 @@ export class CommonDataServiceService implements OnInit {
     } else {
       return this.http.get(requestUrl, { headers: headers }).toPromise();
     }
+  }
+
+  public getMonthlyEmployeeAttendance() {
+    const requestUrl = environment.baseUrl + '/common-data-service/employee-monthly-attendance';
+
+    let headers = {};
+    if (this.httpService.getAuthToken() !== null) {
+      headers = {
+        Authorization: 'Bearer ' + this.httpService.getAuthToken()
+      };
+    }
+
+    return this.http.get(requestUrl, { headers: headers });
+  }
+
+  public getMonthlyMemberAttendance() {
+    const requestUrl = environment.baseUrl + '/common-data-service/member-monthly-attendance';
+
+    let headers = {};
+    if (this.httpService.getAuthToken() !== null) {
+      headers = {
+        Authorization: 'Bearer ' + this.httpService.getAuthToken()
+      };
+    }
+
+    return this.http.get(requestUrl, { headers: headers });
+  }
+
+  public getMonthlySalesCount() {
+    const requestUrl = environment.baseUrl + '/common-data-service/suppliment-orders-count-per-month';
+
+    let headers = {};
+    if (this.httpService.getAuthToken() !== null) {
+      headers = {
+        Authorization: 'Bearer ' + this.httpService.getAuthToken()
+      };
+    }
+
+    return this.http.get(requestUrl, { headers: headers });
+  }
+
+  public getMonthlySalesIncome() {
+    const requestUrl = environment.baseUrl + '/common-data-service/suppliment-orders-income-per-month';
+
+    let headers = {};
+    if (this.httpService.getAuthToken() !== null) {
+      headers = {
+        Authorization: 'Bearer ' + this.httpService.getAuthToken()
+      };
+    }
+
+    return this.http.get(requestUrl, { headers: headers });
   }
 }
