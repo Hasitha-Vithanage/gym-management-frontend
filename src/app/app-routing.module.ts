@@ -6,6 +6,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdminComponent } from './theme/layouts/admin-layout/admin-layout.component';
 import { GuestComponent } from './theme/layouts/guest/guest.component';
 import { AuthGuard } from './guards/auth.guard';
+import { LandComponent } from './demo/land/land.component';
 
 const routes: Routes = [
   {
@@ -33,8 +34,11 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: '/dashboard/default',
-        pathMatch: 'full'
+        component: LandComponent
+      },
+      {
+        path: 'land',
+        component: LandComponent
       },
       {
         path: 'dashboard/default',
