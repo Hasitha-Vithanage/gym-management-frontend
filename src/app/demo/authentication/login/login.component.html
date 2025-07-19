@@ -6,7 +6,13 @@
       </div>
       <div class="card my-5">
         <div class="card-body">
-          <a href="javascript:"><img style="width: 250px; height: 80px; display: block; margin: 0 auto 20px;" src="assets/images/dashboard-logo-dark.png" alt="logo" /></a>
+          <a href="javascript:">
+            <img
+              style="width: 250px; height: 80px; display: block; margin: 0 auto 20px"
+              src="assets/images/dashboard-logo-dark.png"
+              alt="logo"
+            />
+          </a>
           <div class="d-flex justify-content-between align-items-end mb-4">
             <h3 class="mb-0"><b>Login</b></h3>
             <a [routerLink]="['/register']" class="link-primary">Don't have an account?</a>
@@ -38,11 +44,12 @@
             >
               Password is required
             </span>
+            <span class="text-danger m-b-12" *ngIf="userNamePasswordError">Username or password incorrect</span>
           </div>
           <div class="d-flex mt-1 justify-content-between">
             <div class="form-check">
-              <input class="form-check-input input-primary" type="checkbox" id="customCheckc1" checked="" />
-              <label class="form-check-label text-muted" for="customCheckc1">Keep me sign in</label>
+              <!-- <input class="form-check-input input-primary" type="checkbox" id="customCheckc1" checked="" />
+              <label class="form-check-label text-muted" for="customCheckc1">Keep me sign in</label> -->
             </div>
             <h5 class="text-secondary f-w-400"><a href="javascript:">Forgot Password?</a></h5>
           </div>

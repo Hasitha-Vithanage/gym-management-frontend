@@ -136,23 +136,28 @@ export class AddRemoveTableComponent implements OnInit {
   }
 
   saveData() {
-    const addedData = this.getAddedItems();
-    const removedData = this.getRemovedItems();
+    try {
+      const addedData = this.getAddedItems();
+      const removedData = this.getRemovedItems();
 
-    const privilegeGroupId = +this.data.selectedItem.id;
+      const privilegeGroupId = +this.data.selectedItem.id;
 
-    const url = this.data.dataUrl + '/' + privilegeGroupId;
+      const url = this.data.dataUrl + '/' + privilegeGroupId;
 
-    const body = {
-      removedData: removedData,
-      addedData: addedData
-    };
+      const body = {
+        removedData: removedData,
+        addedData: addedData
+      };
 
-    this.commonDataService.saveData('post', url, body).then((response: any) => {
-      this.cacheService.refreshCache(this.httpService.getUserId()!);
-    });
+      this.commonDataService.saveData('post', url, body).then((response: any) => {
+        this.cacheService.refreshCache(this.httpService.getUserId()!);
+        this._messageService.showSuccess('Data saved successfully!');
+      });
 
-    this.isDisableButton = true;
+      this.isDisableButton = true;
+    } catch (error) {
+      this._messageService.showError('Error while saving data');
+    }
   }
 
   public getRemovedItems() {

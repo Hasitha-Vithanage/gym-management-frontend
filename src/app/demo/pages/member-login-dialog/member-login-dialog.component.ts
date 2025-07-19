@@ -74,6 +74,9 @@ export class MemberLoginDialogComponent {
         console.log('Error fetching members:', error);
       }
     });
+
+    this.memberLoginForm.get('firstName').disable();
+    this.memberLoginForm.get('lastName').disable();
   }
 
   //getMemberById function
@@ -105,7 +108,7 @@ export class MemberLoginDialogComponent {
     try {
       // check mode (add or edit)
       if (this.mode === 'add') {
-        this.memberLoginService.serviceCall(this.memberLoginForm.value).subscribe({
+        this.memberLoginService.serviceCall(this.memberLoginForm.getRawValue()).subscribe({
           next: (response: any) => {
             if (this.dataSource && this.dataSource.data && this.dataSource.data.length > 0) {
               this.dataSource = new MatTableDataSource([response, ...this.dataSource.data]);
@@ -124,7 +127,7 @@ export class MemberLoginDialogComponent {
         });
       } else if (this.mode === 'edit') {
         // Calling editData function to send the request to the backend
-        this.memberLoginService.editData(this.selectedData?.id, this.memberLoginForm.value).subscribe({
+        this.memberLoginService.editData(this.selectedData?.id, this.memberLoginForm.getRawValue()).subscribe({
           next: (response: any) => {
             let elementIndex = this.dataSource.data.findIndex((element) => element.id === this.selectedData?.id);
             this.dataSource.data[elementIndex] = response;
@@ -150,6 +153,7 @@ export class MemberLoginDialogComponent {
 
   onEdit(data: any): void {
     this.memberLoginForm.patchValue({
+      memberId: data.id,
       firstName: data.firstName,
       lastName: data.lastName,
       userName: data.userName,

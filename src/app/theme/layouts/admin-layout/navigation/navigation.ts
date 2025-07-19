@@ -18,7 +18,7 @@ export interface NavigationItem {
   link?: string;
   description?: string;
   path?: string;
-  auth?: number;
+  auth?: number[];
   isVisible?: boolean;
 }
 
@@ -28,7 +28,7 @@ export const NavigationItems: NavigationItem[] = [
     title: 'Dashboard',
     type: 'group',
     icon: 'icon-navigation',
-    auth: authenticationEnum.Home,
+    auth: [authenticationEnum.Home_Dashboard],
     children: [
       {
         id: 'default',
@@ -37,7 +37,7 @@ export const NavigationItems: NavigationItem[] = [
         classes: 'nav-item',
         url: '/dashboard/default',
         icon: 'dashboard',
-        auth: authenticationEnum.Home_Dashboard,
+        auth: [authenticationEnum.Home_Dashboard],
         breadcrumbs: false
       }
     ]
@@ -48,7 +48,7 @@ export const NavigationItems: NavigationItem[] = [
     type: 'group',
     icon: 'icon-navigation',
     isVisible: false,
-    auth: authenticationEnum.Privileges,
+    auth: [authenticationEnum.System_Privileges, authenticationEnum.Privilege_Groups],
     children: [
       {
         id: 'systemPrivileges',
@@ -58,29 +58,7 @@ export const NavigationItems: NavigationItem[] = [
         //icon: 'ti ti-dashboard',
         breadcrumbs: false,
         classes: 'nav-item',
-        auth: authenticationEnum.System_Privileges,
-        isVisible: false
-      },
-      {
-        id: 'trainerLogin',
-        title: 'Trainer Login',
-        type: 'item',
-        url: '/pages/trainer-login',
-        //icon: 'ti ti-dashboard',
-        breadcrumbs: false,
-        classes: 'nav-item',
-        auth: authenticationEnum.System_Privileges,
-        isVisible: false
-      },
-      {
-        id: 'memberLogin',
-        title: 'Member Login',
-        type: 'item',
-        url: '/pages/member-login',
-        //icon: 'ti ti-dashboard',
-        breadcrumbs: false,
-        classes: 'nav-item',
-        auth: authenticationEnum.System_Privileges,
+        auth: [authenticationEnum.System_Privileges],
         isVisible: false
       },
       {
@@ -91,7 +69,29 @@ export const NavigationItems: NavigationItem[] = [
         //icon: 'ti ti-dashboard',
         breadcrumbs: false,
         classes: 'nav-item',
-        auth: authenticationEnum.Privilege_Groups,
+        auth: [authenticationEnum.Privilege_Groups],
+        isVisible: false
+      },
+      {
+        id: 'trainerLogin',
+        title: 'Trainer Login',
+        type: 'item',
+        url: '/pages/trainer-login',
+        //icon: 'ti ti-dashboard',
+        breadcrumbs: false,
+        classes: 'nav-item',
+        auth: [authenticationEnum.Trainer_Login],
+        isVisible: false
+      },
+      {
+        id: 'memberLogin',
+        title: 'Member Login',
+        type: 'item',
+        url: '/pages/member-login',
+        //icon: 'ti ti-dashboard',
+        breadcrumbs: false,
+        classes: 'nav-item',
+        auth: [authenticationEnum.Member_Login],
         isVisible: false
       }
     ]
@@ -124,7 +124,12 @@ export const NavigationItems: NavigationItem[] = [
     title: 'User Management',
     type: 'group',
     icon: 'icon-navigation',
-    auth: authenticationEnum.Home,
+    auth: [
+      authenticationEnum.Employee_Registration,
+      authenticationEnum.Member_Registration,
+      authenticationEnum.Mark_Attendance,
+      authenticationEnum.Assign_Trainer
+    ],
     children: [
       {
         id: 'employeeDet',
@@ -133,7 +138,7 @@ export const NavigationItems: NavigationItem[] = [
         classes: 'nav-item',
         url: '/pages/employee',
         icon: '',
-        auth: authenticationEnum.Home_Dashboard,
+        auth: [authenticationEnum.Employee_Registration],
         breadcrumbs: false
       },
       {
@@ -143,7 +148,7 @@ export const NavigationItems: NavigationItem[] = [
         classes: 'nav-item',
         url: '/pages/member',
         icon: '',
-        auth: authenticationEnum.Home_Dashboard,
+        auth: [authenticationEnum.Member_Registration],
         breadcrumbs: false
       },
       {
@@ -153,7 +158,7 @@ export const NavigationItems: NavigationItem[] = [
         classes: 'nav-item',
         url: '/pages/mark-attendance',
         icon: '',
-        auth: authenticationEnum.Home_Dashboard,
+        auth: [authenticationEnum.Mark_Attendance],
         breadcrumbs: false
       },
       {
@@ -163,7 +168,7 @@ export const NavigationItems: NavigationItem[] = [
         classes: 'nav-item',
         url: '/pages/assign-trainer',
         icon: '',
-        auth: authenticationEnum.Home_Dashboard,
+        auth: [authenticationEnum.Assign_Trainer],
         breadcrumbs: false
       }
     ]
@@ -195,7 +200,12 @@ export const NavigationItems: NavigationItem[] = [
     title: 'Workout Management',
     type: 'group',
     icon: 'icon-navigation',
-    auth: authenticationEnum.Home,
+    auth: [
+      authenticationEnum.Workout_Plan,
+      authenticationEnum.Workout_Plan_Upload,
+      authenticationEnum.Workout_Plan_Diet,
+      authenticationEnum.Progress_Tracking
+    ],
     children: [
       {
         id: 'workoutDet',
@@ -204,7 +214,7 @@ export const NavigationItems: NavigationItem[] = [
         classes: 'nav-item',
         url: '/pages/workout',
         icon: '',
-        auth: authenticationEnum.Home_Dashboard,
+        auth: [authenticationEnum.Workout_Plan],
         breadcrumbs: false
       },
       {
@@ -214,7 +224,7 @@ export const NavigationItems: NavigationItem[] = [
         classes: 'nav-item',
         url: '/pages/workout-plan-upload',
         icon: '',
-        auth: authenticationEnum.Home_Dashboard,
+        auth: [authenticationEnum.Workout_Plan_Upload],
         breadcrumbs: false
       },
       {
@@ -224,7 +234,7 @@ export const NavigationItems: NavigationItem[] = [
         classes: 'nav-item',
         url: '/pages/my-workout-plan',
         icon: '',
-        auth: authenticationEnum.Home_Dashboard,
+        auth: [authenticationEnum.Workout_Plan_Diet],
         breadcrumbs: false
       },
       {
@@ -234,7 +244,7 @@ export const NavigationItems: NavigationItem[] = [
         classes: 'nav-item',
         url: '/pages/progress-tracking',
         icon: '',
-        auth: authenticationEnum.Home_Dashboard,
+        auth: [authenticationEnum.Progress_Tracking],
         breadcrumbs: false
       }
     ]
@@ -244,7 +254,7 @@ export const NavigationItems: NavigationItem[] = [
     title: 'Gym Charts',
     type: 'group',
     icon: 'icon-navigation',
-    auth: authenticationEnum.Home,
+    auth: [authenticationEnum.Home_Dashboard],
     children: [
       {
         id: 'charts',
@@ -253,7 +263,7 @@ export const NavigationItems: NavigationItem[] = [
         classes: 'nav-item',
         url: '/pages/charts',
         icon: '',
-        auth: authenticationEnum.Home_Dashboard,
+        auth: [authenticationEnum.Home_Dashboard],
         breadcrumbs: false
       }
     ]
@@ -264,7 +274,7 @@ export const NavigationItems: NavigationItem[] = [
     title: 'Class Scheduling',
     type: 'group',
     icon: 'icon-navigation',
-    auth: authenticationEnum.Home,
+    auth: [authenticationEnum.Schedule_Class, authenticationEnum.Book_Class],
     children: [
       {
         id: 'addClassDet',
@@ -273,7 +283,7 @@ export const NavigationItems: NavigationItem[] = [
         classes: 'nav-item',
         url: '/pages/add-class',
         icon: '',
-        auth: authenticationEnum.Home_Dashboard,
+        auth: [authenticationEnum.Schedule_Class],
         breadcrumbs: false
       },
       {
@@ -283,7 +293,7 @@ export const NavigationItems: NavigationItem[] = [
         classes: 'nav-item',
         url: '/pages/book-class',
         icon: '',
-        auth: authenticationEnum.Home_Dashboard,
+        auth: [authenticationEnum.Book_Class],
         breadcrumbs: false
       }
     ]
@@ -293,7 +303,7 @@ export const NavigationItems: NavigationItem[] = [
     title: 'Nutrition & Meal Plan',
     type: 'group',
     icon: 'icon-navigation',
-    auth: authenticationEnum.Home,
+    auth: [authenticationEnum.Nutrition_Meal_Plan, authenticationEnum.Upload_Nutrition_Meal_Plan],
     children: [
       {
         id: 'nutritionDet',
@@ -302,7 +312,7 @@ export const NavigationItems: NavigationItem[] = [
         classes: 'nav-item',
         url: '/pages/nutrition&meal-plan',
         icon: '',
-        auth: authenticationEnum.Home_Dashboard,
+        auth: [authenticationEnum.Nutrition_Meal_Plan],
         breadcrumbs: false
       },
       {
@@ -312,7 +322,7 @@ export const NavigationItems: NavigationItem[] = [
         classes: 'nav-item',
         url: '/pages/upload-meal-plan',
         icon: '',
-        auth: authenticationEnum.Home_Dashboard,
+        auth: [authenticationEnum.Upload_Nutrition_Meal_Plan],
         breadcrumbs: false
       }
     ]
@@ -343,7 +353,7 @@ export const NavigationItems: NavigationItem[] = [
     title: 'Supplement Store',
     type: 'group',
     icon: 'icon-navigation',
-    auth: authenticationEnum.Home,
+    auth: [authenticationEnum.Inventory_Management],
     children: [
       {
         id: 'inventoryManagementDet',
@@ -352,7 +362,7 @@ export const NavigationItems: NavigationItem[] = [
         classes: 'nav-item',
         url: '/pages/supplement-inventory-management',
         icon: '',
-        auth: authenticationEnum.Home_Dashboard,
+        auth: [authenticationEnum.Inventory_Management],
         breadcrumbs: false
       },
       {
@@ -372,9 +382,9 @@ export const NavigationItems: NavigationItem[] = [
         classes: 'nav-item',
         url: '/pages/browse-supplements',
         icon: '',
-        auth: authenticationEnum.Home_Dashboard,
+        auth: [authenticationEnum.Browse_Suppliment],
         breadcrumbs: false
-      },
+      }
       // {
       //   id: 'myOrdersDet',
       //   title: 'My Orders',
@@ -393,7 +403,7 @@ export const NavigationItems: NavigationItem[] = [
     title: 'Masters',
     type: 'group',
     icon: 'icon-navigation',
-    auth: authenticationEnum.Home,
+    auth: [authenticationEnum.Equipments, authenticationEnum.Suppliers, authenticationEnum.Membership_Category],
     children: [
       {
         id: 'equipmentsDet',
@@ -402,7 +412,7 @@ export const NavigationItems: NavigationItem[] = [
         classes: 'nav-item',
         url: '/pages/equipments',
         icon: '',
-        auth: authenticationEnum.Home_Dashboard,
+        auth: [authenticationEnum.Equipments],
         breadcrumbs: false
       },
       {
@@ -412,7 +422,7 @@ export const NavigationItems: NavigationItem[] = [
         classes: 'nav-item',
         url: '/pages/suppliers',
         icon: '',
-        auth: authenticationEnum.Home_Dashboard,
+        auth: [authenticationEnum.Suppliers],
         breadcrumbs: false
       },
       {
@@ -422,7 +432,7 @@ export const NavigationItems: NavigationItem[] = [
         classes: 'nav-item',
         url: '/pages/membership-categories',
         icon: '',
-        auth: authenticationEnum.Home_Dashboard,
+        auth: [authenticationEnum.Membership_Category],
         breadcrumbs: false
       }
     ]
@@ -432,7 +442,7 @@ export const NavigationItems: NavigationItem[] = [
     title: 'Reports',
     type: 'group',
     icon: 'icon-navigation',
-    auth: authenticationEnum.Home,
+    auth: [authenticationEnum.Employee_Report, authenticationEnum.Member_Report],
     children: [
       {
         id: 'employeeReport',
@@ -441,7 +451,7 @@ export const NavigationItems: NavigationItem[] = [
         classes: 'nav-item',
         url: '/pages/reports/employees-report',
         icon: '',
-        auth: authenticationEnum.Home_Dashboard,
+        auth: [authenticationEnum.Employee_Report],
         breadcrumbs: false
       }, // add other reports to here
       {
@@ -451,7 +461,7 @@ export const NavigationItems: NavigationItem[] = [
         classes: 'nav-item',
         url: '/pages/reports/members-report',
         icon: '',
-        auth: authenticationEnum.Home_Dashboard,
+        auth: [authenticationEnum.Member_Report],
         breadcrumbs: false
       }
     ]
@@ -461,7 +471,7 @@ export const NavigationItems: NavigationItem[] = [
     title: 'Payments',
     type: 'group',
     icon: 'icon-navigation',
-    auth: authenticationEnum.Home,
+    auth: [authenticationEnum.Payments],
     children: [
       {
         id: 'payments',
@@ -470,9 +480,9 @@ export const NavigationItems: NavigationItem[] = [
         classes: 'nav-item',
         url: '/pages/payments',
         icon: '',
-        auth: authenticationEnum.Home_Dashboard,
+        auth: [authenticationEnum.Payments],
         breadcrumbs: false
-      }, // add other reports to here
+      } // add other reports to here
     ]
   },
   {
@@ -480,7 +490,7 @@ export const NavigationItems: NavigationItem[] = [
     title: 'Ratings & Feedback',
     type: 'group',
     icon: 'icon-navigation',
-    auth: authenticationEnum.Home,
+    auth: [authenticationEnum.Ratings_And_Feedback, authenticationEnum.Feedback_History],
     children: [
       {
         id: 'ratingsDet',
@@ -489,7 +499,7 @@ export const NavigationItems: NavigationItem[] = [
         classes: 'nav-item',
         url: '/pages/ratings&feedback',
         icon: '',
-        auth: authenticationEnum.Home_Dashboard,
+        auth: [authenticationEnum.Ratings_And_Feedback],
         breadcrumbs: false
       },
       {
@@ -499,7 +509,7 @@ export const NavigationItems: NavigationItem[] = [
         classes: 'nav-item',
         url: '/pages/all-feedbacks',
         icon: '',
-        auth: authenticationEnum.Home_Dashboard,
+        auth: [authenticationEnum.Feedback_History],
         breadcrumbs: false
       }
     ]

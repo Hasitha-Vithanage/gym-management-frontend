@@ -185,6 +185,7 @@ export class TrainerLoginDialogComponent {
 
   onEdit(data: any): void {
     this.trainerLoginForm.patchValue({
+      trainerId: data.id,
       firstName: data.firstName,
       lastName: data.lastName,
       userName: data.userName,
