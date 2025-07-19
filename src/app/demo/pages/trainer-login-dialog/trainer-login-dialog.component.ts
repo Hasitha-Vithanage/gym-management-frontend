@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
@@ -13,10 +15,11 @@ import { TrainerLoginServiceService } from 'src/app/services/trainer-login/train
   styleUrl: './trainer-login-dialog.component.scss'
 })
 export class TrainerLoginDialogComponent {
-
   trainerLoginForm: FormGroup;
   trainerList: any[] = [];
   dataSource: MatTableDataSource<any>;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
   registerButtonLabel = 'Register';
   mode = 'add';
@@ -28,15 +31,16 @@ export class TrainerLoginDialogComponent {
   submitDisabled;
   isDisabled = false;
 
-  constructor(private fb: FormBuilder,
+  constructor(
+    private fb: FormBuilder,
     private router: Router,
     private trainerLoginService: TrainerLoginServiceService,
     public dialogRef: MatDialogRef<TrainerLoginDialogComponent>,
-    private messageService: MessageServiceService,
-  ) { }
+    private messageService: MessageServiceService
+  ) {}
 
   getTrainerName(id: number): string {
-    const selected = this.trainerList.find(trainer => trainer.id === id);
+    const selected = this.trainerList.find((trainer) => trainer.id === id);
     return selected ? `${selected.firstName} ${selected.lastName}` : '';
   }
 
@@ -47,18 +51,22 @@ export class TrainerLoginDialogComponent {
       lastName: ['', Validators.required],
       userName: ['', Validators.required],
       password: ['', Validators.required],
+      role: ['TRAINER'],
+      userId: [''],
+      employee: ['']
     });
 
     this.getTrainers();
-
+    this.populateData();
 
     // Set firstName and lastName when a trainer is selected
     this.trainerLoginForm.get('trainerId')?.valueChanges.subscribe((selectedId) => {
-      const selectedTrainer = this.trainerList.find(t => t.id === selectedId);
+      const selectedTrainer = this.trainerList.find((t) => t.id === selectedId);
       if (selectedTrainer) {
         this.trainerLoginForm.patchValue({
           firstName: selectedTrainer.firstName || '',
-          lastName: selectedTrainer.lastName || ''
+          lastName: selectedTrainer.lastName || '',
+          employee: selectedId
         });
       } else {
         this.trainerLoginForm.patchValue({ firstName: '', lastName: '' });
@@ -71,18 +79,32 @@ export class TrainerLoginDialogComponent {
     //Call Service to get trainers
     this.trainerLoginService.getTrainers().subscribe({
       next: (response: any[]) => {
-        console.log("Trainers: ", response);
+        console.log('Trainers: ', response);
         this.trainerList = response;
       },
       error: (error) => {
         console.log('Error fetching trainers:', error);
       }
     });
+
+    this.trainerLoginForm.get('firstName').disable();
+    this.trainerLoginForm.get('lastName').disable();
   }
 
+  public populateData(): void {
+    this.trainerLoginService.getData().subscribe({
+      next: (response: any) => {
+        this.dataSource = new MatTableDataSource(response);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      },
+      error: (error: any) => {
+        this.messageService.showError('Error occured while getting data!');
+      }
+    });
+  }
 
-
-    onSubmit() {
+  onSubmit() {
     this.submitted = true;
     // check if form is valid
     if (this.trainerLoginForm.invalid) {
@@ -94,7 +116,7 @@ export class TrainerLoginDialogComponent {
     try {
       // check mode (add or edit)
       if (this.mode === 'add') {
-        this.trainerLoginService.serviceCall(this.trainerLoginForm.value).subscribe({
+        this.trainerLoginService.serviceCall(this.trainerLoginForm.getRawValue()).subscribe({
           next: (response: any) => {
             if (this.dataSource && this.dataSource.data && this.dataSource.data.length > 0) {
               this.dataSource = new MatTableDataSource([response, ...this.dataSource.data]);
@@ -113,12 +135,11 @@ export class TrainerLoginDialogComponent {
         });
       } else if (this.mode === 'edit') {
         // Calling editData function to send the request to the backend
-        this.trainerLoginService.editData(this.selectedData?.id, this.trainerLoginForm.value).subscribe({
+        this.trainerLoginService.editData(this.selectedData?.id, this.trainerLoginForm.getRawValue()).subscribe({
           next: (response: any) => {
-            let elementIndex = this.dataSource.data.findIndex((element) => element.id === this.selectedData?.id);
-            this.dataSource.data[elementIndex] = response;
-            this.dataSource = new MatTableDataSource(this.dataSource.data);
-
+            // let elementIndex = this.dataSource.data.findIndex((element) => element.id === this.selectedData?.id);
+            // this.dataSource.data[elementIndex] = response;
+            // this.dataSource = new MatTableDataSource(this.dataSource.data);
             // Displaying success message
             this.messageService.showSuccess('Record updated successfully!');
           },
@@ -130,12 +151,12 @@ export class TrainerLoginDialogComponent {
       // this.employeeForm.disable();
       this.isDisabled = true;
       this.mode = 'add';
+      this.populateData();
     } catch (error) {
       this.messageService.showError(error);
     }
     this.closeDialog();
   }
-
 
   // login(): void {
   //   if (this.trainerLoginForm.valid) {
@@ -162,21 +183,22 @@ export class TrainerLoginDialogComponent {
   //   }
   // }
 
-    onEdit(data: any): void {
+  onEdit(data: any): void {
     this.trainerLoginForm.patchValue({
       firstName: data.firstName,
       lastName: data.lastName,
       userName: data.userName,
       password: data.password,
+      userId: data.userId
     });
-    this.registerButtonLabel = "Update";
-    this.mode = "edit";
+    this.registerButtonLabel = 'Update';
+    this.mode = 'edit';
     this.selectedData = data;
     this.submitDisabled = true;
 
     this.trainerLoginForm.valueChanges.subscribe(() => {
-    this.submitDisabled = !this.trainerLoginForm.valid || this.trainerLoginForm.pristine;
-  });
+      this.submitDisabled = !this.trainerLoginForm.valid || this.trainerLoginForm.pristine;
+    });
   }
 
   closeDialog(): void {
