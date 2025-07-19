@@ -60,6 +60,7 @@ import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { TrainerLoginDialogComponent } from './trainer-login-dialog/trainer-login-dialog.component';
 import { MemberLoginDialogComponent } from './member-login-dialog/member-login-dialog.component';
 import { MonthlyAttendanceComponent } from './monthly-attendance/monthly-attendance.component';
+import { MonthlySalesComponent } from './monthly-sales/monthly-sales.component';
 // icons
 
 export const MY_DATE_FORMATS = {
@@ -128,7 +129,8 @@ export const MY_DATE_FORMATS = {
     PaymentsDialogComponent,
     TrainerLoginDialogComponent,
     MemberLoginDialogComponent,
-    MonthlyAttendanceComponent
+    MonthlyAttendanceComponent,
+    MonthlySalesComponent
   ],
   imports: [
     CommonModule,

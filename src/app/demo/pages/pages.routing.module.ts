@@ -35,6 +35,7 @@ import { BookClassSubmitComponent } from './book-class-submit/book-class-submit.
 import { MembershipCategoriesComponent } from './membership-categories/membership-categories.component';
 import { PaymentsComponent } from './payments/payments.component';
 import { MonthlyAttendanceComponent } from './monthly-attendance/monthly-attendance.component';
+import { MonthlySalesComponent } from './monthly-sales/monthly-sales.component';
 
 export const PagesRoutes: Routes = [
   {
@@ -145,5 +146,6 @@ export const PagesRoutes: Routes = [
   { path: 'book-class-submit/:id', component: BookClassSubmitComponent },
   { path: 'membership-categories', component: MembershipCategoriesComponent },
   { path: 'payments', component: PaymentsComponent },
-  { path: 'reports/monthly-attendance', component: MonthlyAttendanceComponent }
+  { path: 'reports/monthly-attendance', component: MonthlyAttendanceComponent },
+  { path: 'reports/monthly-sales', component: MonthlySalesComponent }
 ];

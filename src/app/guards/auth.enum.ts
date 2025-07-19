@@ -30,5 +30,7 @@ export enum authenticationEnum {
   Member_Report = 25,
   Payments = 26,
   Ratings_And_Feedback = 27,
-  Feedback_History = 28
+  Feedback_History = 28,
+  Monthly_Attendance = 28,
+  Monthly_Sales = 29
 }
