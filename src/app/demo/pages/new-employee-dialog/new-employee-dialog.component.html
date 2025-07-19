@@ -123,10 +123,10 @@
       <mat-form-field appearance="outline" class="half-width">
         <mat-label>Emergency Contact</mat-label>
         <mat-icon matPrefix>contact_phone</mat-icon>
-        <input matInput formControlName="emergencyContactNumber" placeholder="Ex. 0711234567" />
+        <input matInput maxlength="10" formControlName="emergencyContactNumber" placeholder="Ex. 0711234567" />
         <span class="required-message" *ngIf="submitted && employeeForm.get('emergencyContactNumber').invalid">
-          <ng-container *ngIf="employeeForm.get('emergencyContactNumber').hasError('required')">Emergency contact is required</ng-container>
-          <ng-container *ngIf="employeeForm.get('emergencyContactNumber').hasError('pattern')">Must be a 10-digit number</ng-container>
+          <ng-container *ngIf="employeeForm.get('emergencyContactNumber')?.hasError('required')">Emergency contact is required</ng-container>
+          <ng-container *ngIf="employeeForm.get('emergencyContactNumber')?.hasError('pattern')">Must be a 10-digit number</ng-container>
         </span>
       </mat-form-field>
     </div>

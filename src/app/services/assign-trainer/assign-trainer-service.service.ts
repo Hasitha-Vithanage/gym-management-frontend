@@ -7,6 +7,7 @@ import { environment } from 'src/app/environments/environment';
   providedIn: 'root'
 })
 export class AssignTrainerServiceService {
+
   constructor(
     private http: HttpClient,
     private httpService: HttpService
@@ -130,6 +131,20 @@ export class AssignTrainerServiceService {
 
   public getMemberUserId(id: number) {
     const requestUrl = environment.baseUrl + '/member-user-id/' + id.toString();
+
+    let headers = {};
+
+    if (this.httpService.getAuthToken() !== null) {
+      headers = {
+        Authorization: 'Bearer ' + this.httpService.getAuthToken()
+      };
+    }
+    return this.http.get(requestUrl, { headers: headers });
+  }
+
+
+    getTrainerByMemberId(id: string) {
+          const requestUrl = environment.baseUrl + '/get-trainer-by-member/' + id.toString();
 
     let headers = {};
 

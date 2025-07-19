@@ -73,10 +73,10 @@ export const NavigationItems: NavigationItem[] = [
         isVisible: false
       },
       {
-        id: 'trainerLogin',
-        title: 'Trainer Login',
+        id: 'employeeLogin',
+        title: 'Employee Login',
         type: 'item',
-        url: '/pages/trainer-login',
+        url: '/pages/employee-login',
         //icon: 'ti ti-dashboard',
         breadcrumbs: false,
         classes: 'nav-item',
@@ -249,25 +249,25 @@ export const NavigationItems: NavigationItem[] = [
       }
     ]
   },
-  {
-    id: 'gymChart',
-    title: 'Gym Charts',
-    type: 'group',
-    icon: 'icon-navigation',
-    auth: [authenticationEnum.Home_Dashboard],
-    children: [
-      {
-        id: 'charts',
-        title: 'Gym Chart Examples',
-        type: 'item',
-        classes: 'nav-item',
-        url: '/pages/charts',
-        icon: '',
-        auth: [authenticationEnum.Home_Dashboard],
-        breadcrumbs: false
-      }
-    ]
-  },
+  // {
+  //   id: 'gymChart',
+  //   title: 'Gym Charts',
+  //   type: 'group',
+  //   icon: 'icon-navigation',
+  //   auth: [authenticationEnum.Home_Dashboard],
+  //   children: [
+  //     {
+  //       id: 'charts',
+  //       title: 'Gym Chart Examples',
+  //       type: 'item',
+  //       classes: 'nav-item',
+  //       url: '/pages/charts',
+  //       icon: '',
+  //       auth: [authenticationEnum.Home_Dashboard],
+  //       breadcrumbs: false
+  //     }
+  //   ]
+  // },
   /* side navigation bar item for nutrition & meal plan module */
   {
     id: 'classScheduling',

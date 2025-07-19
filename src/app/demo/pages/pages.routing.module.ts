@@ -124,7 +124,7 @@ export const PagesRoutes: Routes = [
     component: MemberListComponent
   },
   {
-    path: 'trainer-login',
+    path: 'employee-login',
     component: TrainerLoginComponent
   },
   {

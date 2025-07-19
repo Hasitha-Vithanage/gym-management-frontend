@@ -105,8 +105,10 @@ export class EmployeeRegistrationComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
+          this.populateData();
       if (result?.action === 'add') {
         this.dataSource.data = [result.data, ...this.dataSource.data];
+        this.populateData();
       }
     });
   }

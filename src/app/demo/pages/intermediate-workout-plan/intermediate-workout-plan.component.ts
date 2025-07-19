@@ -83,6 +83,7 @@ export class IntermediateWorkoutPlanComponent implements OnInit {
         console.log("response", response);
         this.messageService.showSuccess("Request Send Successfully!");
         this.addNotification("add");
+        this.backToBrowsePage();
       },
       error: (error) => {
         this.messageService.showError(error);

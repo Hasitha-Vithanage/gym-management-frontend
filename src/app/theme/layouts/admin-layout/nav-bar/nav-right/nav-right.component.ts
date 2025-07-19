@@ -31,6 +31,7 @@ import {
 import { HttpService } from 'src/app/services/http.service';
 import { CacheService } from 'src/app/services/CacheService';
 import { NotificationService } from 'src/app/services/notification-service/notification.service';
+import { EmpolyeeServiceService } from 'src/app/services/employee-service/empolyee-service.service';
 
 @Component({
   selector: 'app-nav-right',
@@ -45,7 +46,9 @@ export class NavRightComponent implements OnInit {
   screenFull: boolean = true;
 
   userName;
-  role = 'Trainer';
+  userData;
+
+  
 
   notifications: any[] = [];
   unreadCount = 0;
@@ -56,7 +59,8 @@ export class NavRightComponent implements OnInit {
     private httpService: HttpService,
     private router: Router,
     private cacheService: CacheService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private employeeService: EmpolyeeServiceService,
   ) {
     this.windowWidth = window.innerWidth;
     this.iconService.addIcon(
@@ -112,6 +116,16 @@ export class NavRightComponent implements OnInit {
     });
   }
 
+  // populateData(userId: number) {
+  //   this.employeeService.getUserById(userId).subscribe({
+  //     next: (response) => {
+  //       this.userData = response;
+  //       console.log("UserData", this.userData);
+        
+  //     }
+  //   });
+  // }
+
   toggleDropdown() {
     this.showDropdown = !this.showDropdown;
   }
@@ -155,10 +169,10 @@ export class NavRightComponent implements OnInit {
     //   icon: 'edit',
     //   title: 'Edit Profile'
     // },
-    {
-      icon: 'user',
-      title: 'View Profile'
-    }
+    // {
+    //   icon: 'user',
+    //   title: 'View Profile'
+    // }
     // {
     //   icon: 'profile',
     //   title: 'Social Profile'

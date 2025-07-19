@@ -3,9 +3,12 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { error } from 'console';
+import { subscribe } from 'diagnostics_channel';
+import { AssignTrainerServiceService } from 'src/app/services/assign-trainer/assign-trainer-service.service';
 import { HttpService } from 'src/app/services/http.service';
 import { MealPlanUploadService } from 'src/app/services/meal-plan-upload/meal-plan-upload.service';
 import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
+import { NotificationService } from 'src/app/services/notification-service/notification.service';
 import { NutritionAndMealPlansServiceService } from 'src/app/services/nutrition-and-meal-plans/nutrition-and-meal-plans-service.service';
 
 @Component({
@@ -28,6 +31,8 @@ export class NutritionAndMealPlanComponent implements OnInit {
   pdfUrl: SafeResourceUrl | null = null;
   isLoading = true;
   hasPdf = false;
+  selectedTrainer;
+  trainerid;
 
   private rawPdfBlob: Blob | null = null;
   mealPlanLastUpdated: Date | null = null;
@@ -37,7 +42,9 @@ export class NutritionAndMealPlanComponent implements OnInit {
     private nutritionService: NutritionAndMealPlansServiceService,
     private messageService: MessageServiceService,
     private mealPlanUploadService: MealPlanUploadService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private assignTrainerService: AssignTrainerServiceService,
+    private notificationService: NotificationService,
   ) {
 
     const today = new Date().toISOString().split('T')[0];
@@ -249,7 +256,8 @@ export class NutritionAndMealPlanComponent implements OnInit {
               this.dataSource = new MatTableDataSource([response]);
             }
             // displaying success message
-            this.messageService.showSuccess("Employee added successfully!");
+            this.messageService.showSuccess("Request Sent successfully!");
+            this.addNotification('add');
           },
           // Displaying error message
           error: (error) => {
@@ -297,6 +305,19 @@ export class NutritionAndMealPlanComponent implements OnInit {
     link.click();
 
     URL.revokeObjectURL(url);
+  }
+
+
+  public addNotification(detail): void {
+    const userId = this.http.getUserId();
+    this.assignTrainerService.getTrainerByMemberId(userId).subscribe({
+      next: (response: any) => {
+        this.trainerid = response.id;
+        this.notificationService.addNotification('New meal plan request has been sent to you', 'info', this.trainerid);
+      }
+    });
+  
+
   }
 
 }
