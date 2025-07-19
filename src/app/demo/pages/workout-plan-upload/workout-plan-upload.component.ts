@@ -68,7 +68,7 @@ export class WorkoutPlanUploadComponent implements OnInit {
           }
 
           this.dataSource = new MatTableDataSource(dataList);
-          
+
           // sorting and pagination
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
@@ -100,6 +100,7 @@ export class WorkoutPlanUploadComponent implements OnInit {
   uploadPlan(data: any) {
     const dialogRef = this.dialog.open(UploadWorkoutPlanDialogComponent, {
       autoFocus: false,
+      data: data
     });
 
     dialogRef.afterOpened().subscribe(() => {
@@ -107,16 +108,17 @@ export class WorkoutPlanUploadComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
+      this.populateData();
       if (result?.action === 'edit') {
         const newData = this.dataSource.data.filter(item => item.id !== result.data.id);
         // Add the updated item to the top
         this.dataSource.data = [result.data, ...newData];
-            
-          this.populateData();
+
+
       }
     });
   }
-  
+
 
   // // delete button function
   // public deleteData(data: any): void {
@@ -147,30 +149,30 @@ export class WorkoutPlanUploadComponent implements OnInit {
 
 
   public deleteData(data: any): void {
-  const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-    width: '350px',
-    data: {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '350px',
+      data: {
         message: `Are you sure you want to delete ${data.userId}?`
-    }
-  });
+      }
+    });
 
-  dialogRef.afterClosed().subscribe(result => {
-    if (result) {
-      const id = data.id;
-      this.uploadWorkoutService.deleteRecord(id).subscribe({
-        next: () => {
-          const index = this.dataSource.data.findIndex(item => item.id === id);
-          if (index !== -1) {
-            this.dataSource.data.splice(index, 1);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const id = data.id;
+        this.uploadWorkoutService.deleteRecord(id).subscribe({
+          next: () => {
+            const index = this.dataSource.data.findIndex(item => item.id === id);
+            if (index !== -1) {
+              this.dataSource.data.splice(index, 1);
+            }
+            this.dataSource = new MatTableDataSource(this.dataSource.data);
+            this.messageService.showSuccess('Record deleted successfully!');
+          },
+          error: (error) => {
+            this.messageService.showError(error);
           }
-          this.dataSource = new MatTableDataSource(this.dataSource.data);
-          this.messageService.showSuccess('Record deleted successfully!');
-        },
-        error: (error) => {
-          this.messageService.showError(error);
-        }
-      });
-    }
-  });
-}
+        });
+      }
+    });
+  }
 }
