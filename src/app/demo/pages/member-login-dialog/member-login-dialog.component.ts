@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { MemberLoginServiceService } from 'src/app/services/member-login/member-login-service.service';
@@ -13,10 +15,11 @@ import { MessageServiceService } from 'src/app/services/message-service/message-
   styleUrl: './member-login-dialog.component.scss'
 })
 export class MemberLoginDialogComponent {
-
   memberLoginForm: FormGroup;
   memberList: any[] = [];
   dataSource: MatTableDataSource<any>;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
   registerButtonLabel = 'Register';
   mode = 'add';
@@ -28,23 +31,28 @@ export class MemberLoginDialogComponent {
   submitDisabled;
   isDisabled = false;
 
-  constructor(private fb: FormBuilder,
+  constructor(
+    private fb: FormBuilder,
     private router: Router,
     private memberLoginService: MemberLoginServiceService,
     private messageService: MessageServiceService,
-    public dialogRef: MatDialogRef<MemberLoginDialogComponent>,
-  ) { }
+    public dialogRef: MatDialogRef<MemberLoginDialogComponent>
+  ) {}
 
   ngOnInit(): void {
     this.memberLoginForm = this.fb.group({
       memberId: [null, Validators.required],
-      firstName: ['',],
-      lastName: ['',],
+      firstName: [''],
+      lastName: [''],
       userName: ['', Validators.required],
-      password: ['', Validators.required]
+      password: ['', Validators.required],
+      role: ['MEMBER'],
+      userId: [''],
+      member: ['']
     });
 
     this.getMembers();
+    this.populateData();
 
     //Calling getMemberById when user select the member from the dropdown
     this.memberLoginForm.get('memberId')?.valueChanges.subscribe((selectedId) => {
@@ -59,7 +67,7 @@ export class MemberLoginDialogComponent {
     //Call Service to get members
     this.memberLoginService.getMembers().subscribe({
       next: (response: any[]) => {
-        console.log("Members: ", response);
+        console.log('Members: ', response);
         this.memberList = response;
       },
       error: (error) => {
@@ -72,10 +80,11 @@ export class MemberLoginDialogComponent {
   public getMemberById(memberId: number): void {
     this.memberLoginService.getMemberById(memberId).subscribe({
       next: (response) => {
-        console.log("Selected Member: ", response);
+        console.log('Selected Member: ', response);
         this.memberLoginForm.patchValue({
           firstName: response.firstName,
-          lastName: response.lastName
+          lastName: response.lastName,
+          member: memberId
         });
       },
       error: (error) => {
@@ -83,7 +92,6 @@ export class MemberLoginDialogComponent {
       }
     });
   }
-
 
   onSubmit() {
     this.submitted = true;
@@ -136,9 +144,9 @@ export class MemberLoginDialogComponent {
     } catch (error) {
       this.messageService.showError(error);
     }
+    this.populateData();
     this.closeDialog();
   }
-
 
   onEdit(data: any): void {
     this.memberLoginForm.patchValue({
@@ -146,9 +154,10 @@ export class MemberLoginDialogComponent {
       lastName: data.lastName,
       userName: data.userName,
       password: data.password,
+      userId: data.userId
     });
-    this.registerButtonLabel = "Update";
-    this.mode = "edit";
+    this.registerButtonLabel = 'Update';
+    this.mode = 'edit';
     this.selectedData = data;
     this.submitDisabled = true;
 
@@ -161,4 +170,16 @@ export class MemberLoginDialogComponent {
     this.dialogRef.close();
   }
 
+  public populateData(): void {
+    this.memberLoginService.getData().subscribe({
+      next: (response: any) => {
+        this.dataSource = new MatTableDataSource(response);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      },
+      error: (error: any) => {
+        this.messageService.showError('Error occured while getting data!');
+      }
+    });
+  }
 }
