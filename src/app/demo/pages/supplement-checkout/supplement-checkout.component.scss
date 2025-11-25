@@ -1,0 +1,138 @@
+.checkout-container {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: auto;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Billing form */
+.billing-form {
+  flex: 1;
+  min-width: 350px;
+  max-width: 600px;
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+}
+
+.billing-form h2 {
+  font-size: 1.4rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Order summary */
+.order-summary {
+  flex: 1;
+  min-width: 300px;
+  max-width: 400px;
+  background-color: #fafafa;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  align-self: flex-start;
+}
+
+.order-summary h2 {
+  font-size: 1.4rem;
+  margin-bottom: 1.5rem;
+}
+
+.summary-item {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  line-height: 1.4;
+}
+
+.summary-item.total {
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-top: 1.5rem;
+}
+
+.place-order-btn {
+  margin-top: 1.5rem;
+  background-color: #e67e22;
+  color: white;
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+}
+
+.place-order-btn:hover {
+  background-color: #d35400;
+}
+
+/* Form group layout */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* Field width helpers */
+.half-width {
+  flex: 1 1 45%;
+}
+
+.full-width {
+  flex: 1 1 100%;
+}
+
+/* Responsive behavior */
+@media screen and (max-width: 768px) {
+  .checkout-container {
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  .billing-form,
+  .order-summary {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .half-width {
+    flex: 1 1 100%;
+  }
+}
+
+  mat-icon[matPrefix] {
+  color: #5e5959;
+  margin-right: 8px;
+  font-size: 20px;
+  vertical-align: middle;
+  transition: color 0.3s ease;
+  user-select: none;
+}
+
+mat-form-field.mat-focused mat-icon[matPrefix],
+mat-form-field:hover mat-icon[matPrefix] {
+  color: #1976d2; /* Highlight icon color on focus/hover */
+}
+
+  .required-message {
+  display: block;
+  color: #d32f2f; /* Material red tone for errors */
+  font-size: 13px;
+  font-weight: 500;
+  margin-top: 4px;
+  padding-left: 2px;
+  font-style: normal;
+  transition: all 0.2s ease-in-out;
+  animation: fadeIn 0.25s ease-in-out;
+  line-height: 1.4;
+}
+
+mat-form-field .required-message {
+  margin-left: 0.5rem;
+}

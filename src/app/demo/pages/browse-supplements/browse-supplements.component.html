@@ -1,0 +1,15 @@
+<div class="container">
+   <h2 class="form-title">Browse Supplements</h2>
+
+<div class="supplement-grid">
+  <div class="supplement-card" *ngFor="let supplement of supplements" (click)="viewDetails(supplement)">
+    <div class="image-container">
+      <img [src]="supplement.imageSrc" alt="{{ supplement.name }}" />
+    </div>
+    <div class="info">
+      <h3>{{ supplement.name }}</h3>
+    </div>
+  </div>
+</div>
+</div>
+ 

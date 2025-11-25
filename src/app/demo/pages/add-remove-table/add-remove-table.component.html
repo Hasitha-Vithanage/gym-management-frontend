@@ -1,0 +1,102 @@
+<div class="row p-1">
+  <div class="col-md-5 h-100">
+    <mat-toolbar style="border: 1px solid blue" color="primary">
+      <span>Available Data</span>
+      <span class="example-spacer"></span>
+    </mat-toolbar>
+    <table mat-table [dataSource]="sourceTableData" class="mat-elevation-z8">
+      <!-- Checkbox Column -->
+      <ng-container matColumnDef="sourceSelect">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-checkbox
+            (change)="$event ? toggleAllSourceRows() : null"
+            [checked]="sourceSelection.hasValue() && isAllSourceSelected()"
+            [indeterminate]="sourceSelection.hasValue() && !isAllSourceSelected()"
+            [aria-label]="sourceCheckboxLabel()"
+          ></mat-checkbox>
+        </th>
+        <td mat-cell *matCellDef="let row">
+          <mat-checkbox
+            (click)="$event.stopPropagation(); onSourceTableDataSelect(row)"
+            (change)="$event ? sourceSelection.toggle(row) : null"
+            [checked]="sourceSelection.isSelected(row)"
+            [aria-label]="sourceCheckboxLabel(row)"
+          ></mat-checkbox>
+        </td>
+      </ng-container>
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>Id</th>
+        <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef>Description</th>
+        <td mat-cell *matCellDef="let element">{{ element.description }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="sourceDisplayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: sourceDisplayedColumns" (click)="sourceSelection.toggle(row)"></tr>
+    </table>
+  </div>
+  <div class="col-sm-1">
+    <div class="row p-1">
+      <button type="button" class="btn btn-primary" (click)="moveFromSourceToTarget()">></button>
+    </div>
+    <div class="row p-1">
+      <button type="button" class="btn btn-primary" (click)="moveFromTargetToSource()"><</button>
+    </div>
+  </div>
+  <div class="col-md-6 h-100">
+    <mat-toolbar style="border: 1px solid blue" color="primary">
+      <span>Assigned Data</span>
+      <span class="example-spacer"></span>
+    </mat-toolbar>
+    <table mat-table [dataSource]="targetTableData" class="mat-elevation-z8">
+      <!-- Checkbox Column -->
+      <ng-container matColumnDef="targetSelect">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-checkbox
+            (change)="$event ? toggleAllTargetRows() : null"
+            [checked]="targetSelection.hasValue() && isAllTargetSelected()"
+            [indeterminate]="targetSelection.hasValue() && !isAllTargetSelected()"
+            [aria-label]="targetCheckboxLabel()"
+          ></mat-checkbox>
+        </th>
+        <td mat-cell *matCellDef="let row">
+          <mat-checkbox
+            (click)="$event.stopPropagation(); onTargetTableDataSelect(row)"
+            (change)="$event ? targetSelection.toggle(row) : null"
+            [checked]="targetSelection.isSelected(row)"
+            [aria-label]="targetCheckboxLabel(row)"
+          ></mat-checkbox>
+        </td>
+      </ng-container>
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>Id</th>
+        <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef>Description</th>
+        <td mat-cell *matCellDef="let element">{{ element.description }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="targetDisplayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: targetDisplayedColumns" (click)="targetSelection.toggle(row)"></tr>
+    </table>
+  </div>
+</div>
+
+<div class="row p-1">
+  <div class="btn-group" role="group">
+    <button type="button" class="btn btn-success m-1" (click)="saveData()" [disabled]="isDisableButton">Save</button>
+    <button type="button" class="btn btn-danger m-1" (click)="resetData()" [disabled]="isDisableButton">Reset</button>
+    <button type="button" class="btn btn-secondary m-1" mat-dialog-close (click)="closeDialog()" [disabled]="isDisableButton">Close</button>
+  </div>
+</div>

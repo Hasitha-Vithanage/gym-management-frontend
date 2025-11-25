@@ -1,0 +1,30 @@
+<div class="progress-charts">
+  <div class="charts-grid">
+    <div class="chart-card">
+      <h3>Monthly Sales Count</h3>
+      <apx-chart
+        [series]="monthlySalesCountOptions.series"
+        [chart]="monthlySalesCountOptions.chart"
+        [xaxis]="monthlySalesCountOptions.xaxis"
+        [yaxis]="monthlySalesCountOptions.yaxis"
+        [colors]="monthlySalesCountOptions.colors"
+        [plotOptions]="monthlySalesCountOptions.plotOptions"
+        [grid]="monthlySalesCountOptions.grid"
+        [title]="monthlySalesCountOptions.title"
+      ></apx-chart>
+    </div>
+    <div class="chart-card">
+      <h3>Monthly Sales Income</h3>
+      <apx-chart
+        [series]="monthlySalesIncomeOptions.series"
+        [chart]="monthlySalesIncomeOptions.chart"
+        [xaxis]="monthlySalesIncomeOptions.xaxis"
+        [yaxis]="monthlySalesIncomeOptions.yaxis"
+        [colors]="monthlySalesIncomeOptions.colors"
+        [plotOptions]="monthlySalesIncomeOptions.plotOptions"
+        [grid]="monthlySalesIncomeOptions.grid"
+        [title]="monthlySalesIncomeOptions.title"
+      ></apx-chart>
+    </div>
+  </div>
+</div>

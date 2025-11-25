@@ -1,0 +1,106 @@
+<!--- Supplier-->
+<div class="table-section">
+  <!-- Title of the-->
+  <h2 class="form-title">Supplier</h2>
+
+  <!-- Container for new button and filter -->
+  <div class="toolbar">
+    <!-- add-new on the left -->
+    <div class="add-new">
+      <button type="reset" mat-raised-button class="new-button half-width" (click)="openDialog()">
+        <mat-icon>add</mat-icon>
+        New
+      </button>
+    </div>
+
+    <!-- table-filter on the right -->
+    <div class="table-filter">
+      <mat-form-field appearance="outline">
+        <mat-label>
+          <mat-icon class="search-icon">search</mat-icon>
+          Search...
+        </mat-label>
+        <input matInput placeholder="" #input />
+      </mat-form-field>
+
+      <!-- refresh button -->
+      <div>
+        <button mat-icon-button matTooltip="Refresh" class="refresh-button" (click)="refreshData()">
+          <mat-icon>refresh</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!--- Table -->
+  <div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource">
+      <!-- Supplier Name Column -->
+      <ng-container matColumnDef="supplierName">
+        <th mat-header-cell *matHeaderCellDef>Supplier Name</th>
+        <td mat-cell *matCellDef="let element">{{ element.supplierName }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="contactPerson">
+        <th mat-header-cell *matHeaderCellDef>Contact Person</th>
+        <td mat-cell *matCellDef="let element">{{ element.contactPerson }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="contactNo">
+        <th mat-header-cell *matHeaderCellDef>Contact No</th>
+        <td mat-cell *matCellDef="let element">{{ element.contactNo }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="emailAddress">
+        <th mat-header-cell *matHeaderCellDef>Email Address</th>
+        <td mat-cell *matCellDef="let element">{{ element.emailAddress }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="officeAddress">
+        <th mat-header-cell *matHeaderCellDef>Office Address</th>
+        <td mat-cell *matCellDef="let element">{{ element.officeAddress }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="postalAddress">
+        <th mat-header-cell *matHeaderCellDef>Postal Address</th>
+        <td mat-cell *matCellDef="let element">{{ element.postalAddress }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="equipmentType">
+        <th mat-header-cell *matHeaderCellDef>Equipment Type</th>
+        <td mat-cell *matCellDef="let element">{{ element.equipmentType }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>Status</th>
+        <td mat-cell *matCellDef="let element">{{ element.status ? 'Active' : 'Inactive' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="remarks">
+        <th mat-header-cell *matHeaderCellDef>Remarks</th>
+        <td mat-cell *matCellDef="let element">{{ element.remarks }}</td>
+      </ng-container>
+
+      <!-- action Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef style="text-align: center">Actions</th>
+        <td mat-cell *matCellDef="let element">
+          <div class="action-column">
+            <button mat-icon-button class="gray-icon-btn" matTooltip="Edit" (click)="editData(element)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <!-- <button mat-icon-button class="gray-icon-btn" matTooltip="Delete" (click)="deleteData(element)">
+              <mat-icon>delete</mat-icon>
+            </button> -->
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+
+    <!-- pagination-->
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users" class="pagination"></mat-paginator>
+  </div>
+</div>

@@ -1,0 +1,165 @@
+<div class="container">
+  <div class="form-section">
+    <!-- title of the form-->
+    <h2 class="form-title">Ratings & Feedback</h2>
+
+    <!--- form -->
+    <form [formGroup]="feedbackForm" class="example-form" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <mat-form-field appearance="outline" class="half-width">
+          <mat-label>Category</mat-label>
+          <mat-icon matPrefix>category</mat-icon>
+          <mat-select formControlName="category">
+            <mat-option value="Gym">Gym</mat-option>
+            <mat-option value="Trainer">Trainer</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="half-width" *ngIf="showTrainerField">
+          <mat-label>Trainer</mat-label>
+          <mat-icon matPrefix>person</mat-icon>
+          <mat-select formControlName="trainer">
+         <mat-option *ngFor="let trainer of trainerList" [value]="trainer.firstName">
+            {{ trainer.firstName }}
+          </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="row">
+        <div class="star-rating half-width">
+          <mat-label>Rating</mat-label>
+          <div>
+            <mat-icon *ngFor="let star of stars; let i = index" (click)="setRating(i + 1)" [class.filled]="i < rating">
+              {{ i < rating ? 'star' : 'star_border' }}
+            </mat-icon>
+          </div>
+        </div>
+
+        <div class="checkbox-options half-width">
+          <mat-checkbox formControlName="anonymous">Submit anonymously</mat-checkbox>
+        </div>
+      </div>
+
+     <div class="row">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Feedback</mat-label>
+        <mat-icon matPrefix>chat</mat-icon>
+        <textarea matInput rows="2" maxlength="1000" placeholder="Enter Feedback" formControlName="feedback"></textarea>
+      </mat-form-field>
+    </div>
+
+
+      <div class="row">
+        <mat-form-field appearance="outline" class="half-width">
+          <mat-label>Date</mat-label>
+          <mat-icon matPrefix>event</mat-icon>
+          <input matInput [matDatepicker]="join" placeholder="MM/DD/YYYY" formControlName="date"/>
+          <mat-datepicker-toggle matSuffix [for]="join"></mat-datepicker-toggle>
+          <mat-datepicker #join></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="half-width">
+          <mat-label>Submitted By</mat-label>
+          <mat-icon matPrefix>account_circle</mat-icon>
+          <input matInput maxlength="50" placeholder="Enter your username" formControlName="username" type="text" readonly/>
+        </mat-form-field>
+      </div>
+
+      <div class="row">
+        <button type="submit" mat-raised-button color="primary" class="register-button half-width">{{registerButtonLabel}}</button>
+        <button type="button" mat-raised-button class="reset-button half-width" (click)="resetForm()">Reset</button>
+      </div>
+    </form>
+  </div>
+
+
+    <!-- Table Section to the Right of Form -->
+  <div class="table-section">
+    <!-- title of the-->
+    <h2 class="form-title">My Feedback Records</h2>
+
+    <!-- table filter-->
+    <div class="table-filter">
+      <mat-form-field appearance="outline">
+        <mat-label>
+          <mat-icon class="search-icon">search</mat-icon>
+          Search...
+        </mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="" #input />
+      </mat-form-field>
+
+      <!-- refresh button-->
+      <div>
+        <button mat-icon-button (click)="refreshData()" class="refresh-button">
+          <mat-icon>refresh</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <!-- Example Table (You can replace this with your table) -->
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <!--- Note that these columns can be defined in any order.
+            The actual rendered columns are set as a property on the row definition" -->
+
+      <!-- employeeId Column -->
+      <ng-container matColumnDef="category">
+        <th mat-header-cell *matHeaderCellDef>Category</th>
+        <td mat-cell *matCellDef="let element">{{ element.category }}</td>
+      </ng-container>
+
+      <!-- jobTitle Column -->
+      <ng-container matColumnDef="trainer">
+        <th mat-header-cell *matHeaderCellDef>Trainer</th>
+        <td mat-cell *matCellDef="let element">{{ element.trainer }}</td>
+      </ng-container>
+
+      <!-- jobTitle Column -->
+      <ng-container matColumnDef="rating">
+        <th mat-header-cell *matHeaderCellDef>Rating</th>
+        <td mat-cell *matCellDef="let element">{{ element.rating }} Stars</td>
+      </ng-container>
+
+      <!-- jobTitle Column -->
+      <ng-container matColumnDef="feedback">
+        <th mat-header-cell *matHeaderCellDef>Feedback</th>
+        <td mat-cell *matCellDef="let element">{{ element.feedback }}</td>
+      </ng-container>
+
+      <!-- dateOfJoining Column -->
+      <!-- | date:'dd/MM/yyyy' -->
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef>Submitted Date</th>
+        <td mat-cell *matCellDef="let element">{{ element.date | date: 'dd/MM/yyyy' }}</td>
+      </ng-container>
+
+      <!-- firstName Column -->
+      <ng-container matColumnDef="username">
+        <th mat-header-cell *matHeaderCellDef>Submitted By</th>
+        <td mat-cell *matCellDef="let element">{{ element.username }}</td>
+      </ng-container>
+
+      <!-- action Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let element">
+          <div class="action-column">
+            <button mat-icon-button class="gray-icon-btn" matTooltip="Edit" (click)="editData(element)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <!-- <button mat-icon-button class="gray-icon-btn" matTooltip="Delete" (click)="deleteData(element)">
+              <mat-icon>delete</mat-icon>
+            </button> -->
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+
+    <!-- pagination-->
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users" class="pagination"></mat-paginator>
+  </div>
+
+</div>

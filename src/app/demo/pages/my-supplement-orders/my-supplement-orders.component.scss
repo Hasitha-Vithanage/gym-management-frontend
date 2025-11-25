@@ -1,0 +1,146 @@
+.my-orders-container {
+  padding: 24px;
+  display: flex;
+  justify-content: center;
+
+  .orders-card {
+    width: 100%;
+    max-width: 900px;
+    padding: 24px;
+    min-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .page-title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .order-summary {
+    font-size: 16px;
+    color: #444;
+    margin-bottom: 16px;
+  }
+
+  .orders-list-container {
+    max-height: 400px;
+    overflow-y: auto;
+    margin-bottom: 16px;
+  }
+
+  .order-details {
+  padding: 12px;
+
+  .summary {
+    margin-bottom: 16px;
+    font-size: 14px;
+    color: #444;
+  }
+
+  .order-items-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 12px;
+
+    th {
+      font-weight: 600;
+      background-color: #f8f9fa;
+    }
+
+    td, th {
+      padding: 10px 12px;
+      font-size: 14px;
+    }
+
+    tr.mat-header-row {
+      border-bottom: 1px solid #ddd;
+    }
+
+    tr.mat-row {
+      transition: background-color 0.2s ease;
+    }
+
+    tr.mat-row:hover {
+      background-color: #f5f5f5;
+    }
+  }
+
+  .product-image {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 6px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .order-actions {
+    margin-top: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: flex-end;
+
+    .view-button {
+      font-size: 13px;
+          background-color: #1976d2 !important;
+    color: #fff;
+    }
+    .download-button {
+  font-size: 13px;
+  background-color: #388e3c !important; // Material green 600
+  color: #fff;
+}
+
+  }
+}
+
+::ng-deep mat-expansion-panel {
+  margin-bottom: 12px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+
+  .mat-expansion-panel-header {
+    background-color: #f0f3f8;
+    font-weight: 500;
+    font-size: 15px;
+
+    .mat-panel-title {
+      color: #333;
+    }
+
+    .mat-panel-description {
+      color: #777;
+    }
+  }
+}
+
+
+  .recommendations-section {
+    margin-top: 24px;
+
+    h3 {
+      font-weight: 500;
+      margin-bottom: 12px;
+    }
+
+    .recommendations-grid {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+
+      .product-card {
+        width: 250px;
+      }
+    }
+  }
+}
+.product-image {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 4px;
+}

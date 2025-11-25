@@ -1,0 +1,166 @@
+/* Form CSS */
+.form-section {
+    width: 700px;
+    box-sizing: border-box;
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow-x: hidden;
+  }
+
+  .title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .form-title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #1976d2;
+    text-align: left;
+  }
+
+  .close-icon {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #1976d2;
+  }
+  
+  .row {
+    display: flex;
+    gap: 15px;
+  }
+  
+  .half-width {
+    flex: 1;
+    width: 250px;
+  }
+
+  .width {
+    flex: 1;
+    padding-left: 205px;
+  }
+
+  .full-width {
+    flex: 1;
+    width: 500px;
+    margin-top: 20px;
+  }
+  
+  mat-radio-group {
+    margin: 20px auto;
+  }
+  
+  mat-radio-button {
+    margin-left: 50px;
+  }
+
+  // Checkbox Style
+  .checkbox-options {
+    display: flex;
+    flex-direction: row;
+    gap: 1px;
+  }
+
+  // Status toggle style
+  .status-toggle {
+    display: flex;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    width: fit-content;
+    height: 42px;
+    background-color: #f5f5f5;
+  }
+
+  .status-toggle .mat-button-toggle {
+    flex: 1;
+    height: 100%;
+    border: none !important;
+    font-weight: 500;
+    color: #555;
+    background-color: transparent;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .status-toggle .mat-button-toggle-checked {
+    background-color: #1976d2 !important;
+    color: white !important;
+    font-weight: bold;
+  }
+  
+  .status-toggle .mat-button-toggle:not(.mat-button-toggle-checked):hover {
+    background-color: rgba(0, 0, 0, 0.06);
+  }
+  
+  .status-toggle .mat-button-toggle-label-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+  
+  .required-message {
+  display: block;
+  color: #d32f2f; /* Material red tone for errors */
+  font-size: 13px;
+  font-weight: 500;
+  margin-top: 4px;
+  padding-left: 2px;
+  font-style: normal;
+  transition: all 0.2s ease-in-out;
+  animation: fadeIn 0.25s ease-in-out;
+  line-height: 1.4;
+}
+
+mat-form-field .required-message {
+  margin-left: 0.5rem;
+}
+
+  .submit-button {
+    background-color: #1976d2 !important;
+    color: #fff;
+  }
+  
+  .close-button {
+    background-color: #f3f6f9 !important;
+    color: #1976d2 !important;
+  }
+  
+.file-upload-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.choose-file-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #1976d2 !important;
+  color: white !important;
+}
+
+.file-name {
+  font-size: 14px;
+  color: #555;
+}
+
+
+  mat-icon[matPrefix] {
+  color: #5e5959;
+  margin-right: 8px;
+  font-size: 20px;
+  vertical-align: middle;
+  transition: color 0.3s ease;
+  user-select: none;
+}
+
+mat-form-field.mat-focused mat-icon[matPrefix],
+mat-form-field:hover mat-icon[matPrefix] {
+  color: #1976d2; /* Highlight icon color on focus/hover */
+}

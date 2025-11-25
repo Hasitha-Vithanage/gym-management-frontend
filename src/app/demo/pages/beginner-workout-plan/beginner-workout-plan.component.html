@@ -1,0 +1,43 @@
+<div class="container">
+  <div class="beginner-workout-container">
+    <h2>🔥 Beginner Workout Plan - Day 1</h2>
+  
+    <!-- Back Button -->
+    <button mat-button class="back-button" (click)="backButton()"><mat-icon>arrow_back</mat-icon> Back</button>
+    
+    <!-- Warm-up Section -->
+    <section class="warmup-section">
+      <h3>Warm-Up (5–10 minutes)</h3>
+      <ul>
+        <li>
+          <mat-icon>directions_run</mat-icon>
+          Jumping jacks or treadmill walking
+        </li>
+        <li>
+          <mat-icon>accessibility_new</mat-icon>
+          Arm swings, squats, hip circles
+        </li>
+      </ul>
+    </section>
+  
+    <!-- Main Workout Grid -->
+    <section class="main-workout-grid">
+      <div class="exercise-card" *ngFor="let exercise of exercises">
+        <h4>{{ exercise.number }}. {{ exercise.title }}</h4>
+        <p class="sets-reps">{{ exercise.sets }}</p>
+  
+        <!--- Tips -->
+        <mat-accordion [multi]="false">
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>💡 Tips</mat-panel-title>
+            </mat-expansion-panel-header>
+            <p>{{ exercise.tip }}</p>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+    </section>
+  </div>
+</div>
+
+  

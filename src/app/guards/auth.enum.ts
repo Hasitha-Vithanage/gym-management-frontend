@@ -1,0 +1,36 @@
+const checkUserAuthentication = (val: number) => {
+  return 2;
+};
+
+export enum authenticationEnum {
+  Super_Admin = 1,
+  Home_Dashboard = 2,
+  System_Privileges = 3,
+  Privilege_Groups = 4,
+  Member_Login = 5,
+  Trainer_Login = 6,
+  Employee_Registration = 7,
+  Member_Registration = 8,
+  Mark_Attendance = 9,
+  Assign_Trainer = 10,
+  Workout_Plan = 11,
+  Workout_Plan_Upload = 12,
+  Workout_Plan_Diet = 13,
+  Progress_Tracking = 14,
+  Schedule_Class = 15,
+  Book_Class = 16,
+  Nutrition_Meal_Plan = 17,
+  Upload_Nutrition_Meal_Plan = 18,
+  Inventory_Management = 19,
+  Browse_Suppliment = 20,
+  Equipments = 21,
+  Suppliers = 22,
+  Membership_Category = 23,
+  Employee_Report = 24,
+  Member_Report = 25,
+  Payments = 26,
+  Ratings_And_Feedback = 27,
+  Feedback_History = 28,
+  Monthly_Attendance = 28,
+  Monthly_Sales = 29
+}

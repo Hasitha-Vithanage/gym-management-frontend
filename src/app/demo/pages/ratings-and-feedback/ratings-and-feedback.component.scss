@@ -1,0 +1,199 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding: 30px;
+  background: #f3f6f9;
+}
+
+/* Form CSS */
+.form-section {
+  width: 100%;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #1976d2;
+  text-align: center;
+}
+
+.row {
+  display: flex;
+  gap: 15px;
+}
+
+.half-width {
+  flex: 1;
+  width: 250px;
+}
+
+mat-radio-group {
+  margin: 20px auto;
+}
+
+mat-radio-button {
+  margin-left: 50px;
+}
+
+.required-message {
+  color: red; 
+  font-size: 12px;
+  font-style: italic;
+  margin-top: 4px;
+  display: block;
+}
+
+.reset-button {
+  background-color: #f3f6f9 !important;
+  color: #424242 !important;
+}
+
+.register-button {
+  background-color: #1976d2 !important;
+}
+
+/* Star Ratings - Improved */
+.star-rating {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+.star-rating mat-label {
+  margin-bottom: 10px;
+  display: block;
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.star-rating mat-icon {
+  font-size: 28px;
+  height: 28px;
+  width: 28px;
+  cursor: pointer;
+  color: #bdbdbd;
+  transition: color 0.2s ease, transform 0.2s ease;
+  margin-right: 20px;
+}
+
+.star-rating mat-icon:hover {
+  color: #ffc107;
+  transform: scale(1.1);
+}
+
+.star-rating mat-icon.filled {
+  color: #ffca28; /* amber filled */
+}
+
+/* Checkbox styling */
+.checkbox-options {
+  display: flex;
+  align-items: center;
+  padding-top: 24px;
+}
+
+/* Table CSS */
+
+.table-filter {    
+    display: flex;
+    justify-content: end;
+}
+
+.table-filter mat-form-field{    
+    width: 25%;
+    height: 70px;
+    margin-right: 10px;
+}
+
+.table-filter mat-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+  font-size: 14px;
+  color: #555;
+}
+
+/* Style for the search icon */
+.search-icon {
+  font-size: 20px;
+  color: #555;
+}
+
+
+/* Refresh button styling */
+.refresh-button {
+  background-color: #1976d2;
+  color: white;
+  border-radius: 8px;
+  font-size: 20px;
+  height: 56px;
+  width: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+.table-section {
+  width: 100%;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #1976d2 !important;
+  color: white;
+}
+
+.action-column {
+  display: flex;
+  flex-direction: row;
+}
+
+.gray-icon-btn {
+  color: #6e6e6e;
+  transition: background-color 0.2s ease;
+}
+
+.gray-icon-btn:hover {
+  background-color: #f0f0f0;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+}
+
+    mat-icon[matPrefix] {
+  color: #5e5959;
+  margin-right: 8px;
+  font-size: 20px;
+  vertical-align: middle;
+  transition: color 0.3s ease;
+  user-select: none;
+}
+
+mat-form-field.mat-focused mat-icon[matPrefix],
+mat-form-field:hover mat-icon[matPrefix] {
+  color: #1976d2; /* Highlight icon color on focus/hover */
+}

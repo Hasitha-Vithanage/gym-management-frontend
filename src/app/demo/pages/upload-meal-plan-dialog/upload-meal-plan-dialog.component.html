@@ -1,0 +1,54 @@
+<div class="form-section">
+  <!-- title of the form-->
+  <div class="title">
+    <h2 class="form-title">Upload Meal Plan</h2>
+    <button mat-icon-button class="close-icon" style="padding: 0px" (click)="closeDialog()">
+      <mat-icon fontIcon="close"></mat-icon>
+    </button>
+  </div>
+
+  <!--- form -->
+  <form [formGroup]="mealUploadForm" class="example-form" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Meal Plan Title</mat-label>
+        <mat-icon matPrefix>restaurant</mat-icon>
+        <input matInput maxlength="50" placeholder="4-Week Strength Plan" formControlName="mealPlanTitle" />
+        <span class="required-message" *ngIf="submitted && mealUploadForm.get('mealPlanTitle').invalid">
+          <ng-container *ngIf="mealUploadForm.get('mealPlanTitle').hasError('required')">
+            Meal Plan Title ID is required
+          </ng-container>
+          <ng-container *ngIf="mealUploadForm.get('mealPlanTitle').hasError('minlength')">Minimum 5 characters required</ng-container>
+        </span>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Plan Description</mat-label>
+        <mat-icon matPrefix>notes</mat-icon>
+        <input matInput maxlength="50" placeholder="Optional notes..." formControlName="planDescription" />
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Member</mat-label>
+        <mat-icon matPrefix>person</mat-icon>
+        <input matInput maxlength="50" placeholder="" formControlName="userId" readonly />
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <div class="half-width pdf-upload-wrapper">
+        <label for="pdfUpload">Upload Meal Plan (PDF)</label>
+        <input type="file" id="pdfUpload" accept="application/pdf" (change)="onFileSelected($event)" required />
+        <!-- <span class="required-message" *ngIf="submitted && !workoutUploadForm.valid">
+          <ng-container>Workout Plan (PDF) is required</ng-container>
+        </span> -->
+      </div>
+    </div>
+
+    <div class="row">
+      <button type="submit" mat-raised-button class="register-button half-width" [disabled]="isDisabled" style="color: #fff">
+        {{ registerButtonLabel }}
+      </button>
+      <button type="reset" mat-raised-button class="reset-button half-width" (click)="resetData()">Reset</button>
+    </div>
+  </form>
+</div>

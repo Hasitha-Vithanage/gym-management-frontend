@@ -1,0 +1,182 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding: 30px;
+  background: #f3f6f9;
+}
+
+/* "Add New" button */
+.add-new .new-button {
+  background-color: #1976d2;
+  color: white;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+/* Form CSS */
+.form-section {
+  width: 100%;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #1976d2;
+  text-align: center;
+}
+
+.row {
+  display: flex;
+  gap: 15px;
+}
+
+.half-width {
+  flex: 1;
+  width: 250px;
+}
+
+mat-radio-group {
+  margin: 20px auto;
+}
+
+mat-radio-button {
+  margin-left: 50px;
+}
+
+.required-message {
+  color: red;
+  font-size: 12px;
+  font-style: italic;
+  margin-top: 4px;
+  display: block;
+}
+
+.reset-button {
+  background-color: #f3f6f9 !important;
+  color: #424242 !important;
+}
+
+.register-button {
+  background-color: #1976d2 !important;
+}
+
+/* Table CSS */
+
+/* Container for New button and filter section */
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* "Add New" button */
+.add-new .new-button {
+  background-color: #1976d2;
+  color: white;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+/* Table filter section */
+.table-filter {
+  display: flex;
+  gap: 12px;
+}
+
+/* Adjust mat-form-field styling */
+.table-filter mat-form-field {
+  width: 250px;
+  margin: 0;
+  align-items: center;
+}
+
+.table-filter mat-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+  font-size: 14px;
+  color: #555;
+}
+
+/* Style for the search icon */
+.search-icon {
+  font-size: 20px;
+  color: #555;
+}
+
+/* Refresh button styling */
+.refresh-button {
+  background-color: #1976d2;
+  color: white;
+  border-radius: 8px;
+  font-size: 20px;
+  height: 56px;
+  width: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+.table-section {
+  width: 100%;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Make table columns distribute space evenly */
+table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+th, td {
+  padding: 16px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  word-wrap: break-word;
+}
+
+th {
+  background-color: #1976d2 !important;
+  color: white;
+}
+
+
+
+
+/* Better spacing and centering for actions */
+.action-column {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+
+
+
+
+.gray-icon-btn {
+  color: #6e6e6e;
+  transition: background-color 0.2s ease;
+}
+
+.gray-icon-btn:hover {
+  background-color: #f0f0f0;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+}

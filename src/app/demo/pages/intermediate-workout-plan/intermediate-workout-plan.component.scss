@@ -1,0 +1,207 @@
+.supplement-details-container {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  color: #333;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  text-align: center;
+  color: #1976d2;
+}
+
+.section {
+    display: flex;
+    flex-direction: column;
+}
+
+.back-button {
+  float: left;
+  padding: 20px 20px 20px 0px;
+  margin-bottom: 10px;
+  font-weight: bold;
+  font-size: medium;
+  width: 10%;
+}
+
+
+.supplement-main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2.5rem;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.supplement-image {
+  flex: 0 0 320px;
+  width: 100%;
+  max-width: 320px;
+
+}
+
+.cart-actions {
+  margin-top: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.cart-actions label {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #34495e;
+}
+
+.cart-actions input[type="number"] {
+  width: 70px;
+  padding: 0.4rem 0.6rem;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1.5px solid #ccc;
+  transition: border-color 0.3s ease;
+}
+
+.cart-actions input[type="number"]:focus {
+  outline: none;
+  border-color: #2980b9;
+}
+
+// .cart-actions button {
+//   background-color: #2980b9;
+//   color: white;
+//   border: none;
+//   padding: 0.6rem 1.3rem;
+//   font-size: 1rem;
+//   font-weight: 600;
+//   border-radius: 8px;
+//   cursor: pointer;
+//   transition: background-color 0.3s ease;
+//   box-shadow: 0 4px 12px rgba(41, 128, 185, 0.4);
+// }
+
+// .cart-actions button:hover {
+//   background-color: #1c5980;
+// }
+
+// .cart-actions .checkoutButton {
+//   background: linear-gradient(135deg, #f39c12, #e67e22);
+//   color: #fff;
+//   border: none;
+//   padding: 0.7rem 1.5rem;
+//   font-size: 1rem;
+//   font-weight: 600;
+//   border-radius: 10px;
+//   cursor: pointer;
+//   transition: all 0.3s ease;
+//   box-shadow: 0 6px 16px rgba(243, 156, 18, 0.4);
+// }
+
+// .cart-actions .checkoutButton:hover {
+//   background: linear-gradient(135deg, #e67e22, #d35400);
+//   box-shadow: 0 8px 20px rgba(231, 76, 60, 0.5);
+//   transform: translateY(-2px);
+// }
+
+/* Base styles for all cart action buttons */
+.cart-actions button,
+.cart-actions .checkoutButton {
+  border: none;
+  padding: 0.75rem 1.6rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Add to Cart button */
+.cart-actions button {
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  color: #ffffff;
+  box-shadow: 0 6px 14px rgba(41, 128, 185, 0.4);
+}
+
+.cart-actions button:hover {
+  background: linear-gradient(135deg, #2980b9, #1c5980);
+  box-shadow: 0 8px 20px rgba(41, 128, 185, 0.5);
+  transform: translateY(-2px);
+}
+
+/* Checkout button */
+.cart-actions .checkoutButton {
+  background: linear-gradient(135deg, #f39c12, #e67e22);
+  color: #ffffff;
+  box-shadow: 0 6px 16px rgba(243, 156, 18, 0.4);
+}
+
+.cart-actions .checkoutButton:hover {
+  background: linear-gradient(135deg, #e67e22, #d35400);
+  box-shadow: 0 10px 22px rgba(231, 76, 60, 0.4);
+  transform: translateY(-2px) scale(1.02);
+}
+
+
+.supplement-description {
+  margin-top: 3rem;
+  background: #f7f9fc;
+  padding: 1.5rem 2rem;
+  border-radius: 10px;
+  box-shadow: inset 0 0 10px #d1e3f0;
+}
+
+.supplement-description h4 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 0.75rem;
+}
+
+.supplement-description p {
+  font-size: 1rem;
+  color: #444;
+  line-height: 1.5;
+}
+
+/* Responsive */
+
+@media (max-width: 720px) {
+  .supplement-main {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .supplement-image {
+    max-width: 100%;
+    width: 300px;
+  }
+
+  .supplement-info {
+    width: 100%;
+    text-align: center;
+  }
+
+  .cart-actions {
+    justify-content: center;
+  }
+}
+
+
+.sent-message {
+  margin-top: 10px;
+  color: green;
+  font-weight: bold;
+}

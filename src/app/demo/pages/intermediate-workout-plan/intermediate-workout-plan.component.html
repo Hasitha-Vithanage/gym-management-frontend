@@ -1,0 +1,67 @@
+<div class="supplement-details-container">
+  <h2 class="page-title">Request Workout Plan</h2>
+
+  <div class="section">
+    <div class="back">
+      <!-- Back Button -->
+      <button mat-button class="back-button" (click)="backToBrowsePage()">
+        <mat-icon>arrow_back</mat-icon>
+        Back
+      </button>
+    </div>
+
+    <div class="supplement-main">
+      <div class="supplement-image">
+        <h3>User Information</h3>
+
+        <p>
+          <strong>Age:</strong>
+          {{ userDetails.age }}
+        </p>
+        <p>
+          <strong>Weight:</strong>
+          {{ userDetails.weight }}
+        </p>
+        <p>
+          <strong>Height:</strong>
+          {{ userDetails.height }} cm
+        </p>
+        <p>
+          <strong>Primary Fitness Goal:</strong>
+          {{ userDetails.fitnessGoal }}
+        </p>
+        <p>
+          <strong>Fitness Experience Level:</strong>
+          {{ userDetails.experienceLevel }}
+        </p>
+      </div>
+
+      <div class="supplement-info">
+        <h3>Trainer Information</h3>
+
+        <p>
+          <strong>Name:</strong>
+          {{ trainerDetails.trainer }} {{ trainer.lastName }}
+        </p>
+        <p>
+          <strong>Email:</strong>
+          {{ trainer.email }}
+        </p>
+        <p>
+          <strong>Contact:</strong>
+          {{ trainer.phoneNumber }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="cart-actions">
+    <button (click)="senRequest()">Send Request</button>
+
+  </div>
+
+  <!-- <div class="supplement-description">
+    <h4>PDF</h4>
+    <p>Pdf</p>
+  </div> -->
+</div>

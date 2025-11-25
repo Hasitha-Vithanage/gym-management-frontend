@@ -1,0 +1,89 @@
+<div class="progress-charts">
+  <!-- <h2 class="form-title">Progress Tracking</h2> -->
+
+  <div class="header">
+    <h2>Progress Tracking</h2>
+    <p>Visual insights into your fitness journey</p>
+    <div class="add-new">
+      <button type="reset" mat-raised-button class="new-button half-width" (click)="openDialog()">
+        <mat-icon>add</mat-icon>
+        Add Progress
+      </button>
+    </div>
+  </div>
+
+  <!-- <div class="toolbar">
+    <div class="add-new">
+      <button type="reset" mat-raised-button class="new-button half-width" (click)="openDialog()">
+        <mat-icon>add</mat-icon>
+        Add Progress
+      </button>
+    </div>
+  </div> -->
+
+  <div class="charts-grid">
+    <div class="chart-card">
+      <h3>Body Weight Trends</h3>
+      <apx-chart
+        [series]="weightChartOptions?.series"
+        [chart]="weightChartOptions?.chart"
+        [xaxis]="weightChartOptions?.xaxis"
+        [yaxis]="weightChartOptions?.yaxis"
+        [colors]="weightChartOptions?.colors"
+        [stroke]="weightChartOptions?.stroke"
+        [markers]="weightChartOptions?.markers"
+        [grid]="weightChartOptions?.grid"
+      ></apx-chart>
+    </div>
+
+    <div class="chart-card">
+      <h3>BMI Over Time</h3>
+      <apx-chart
+        [series]="bmiChartOptions?.series"
+        [chart]="bmiChartOptions?.chart"
+        [xaxis]="bmiChartOptions?.xaxis"
+        [yaxis]="bmiChartOptions?.yaxis"
+        [colors]="bmiChartOptions?.colors"
+        [stroke]="bmiChartOptions?.stroke"
+        [markers]="bmiChartOptions?.markers"
+        [grid]="bmiChartOptions?.grid"
+      ></apx-chart>
+    </div>
+
+    <div class="chart-card">
+      <h3>Body Fat Percentage Over Time</h3>
+      <apx-chart
+        [series]="bodyFatChartOptions?.series"
+        [chart]="bodyFatChartOptions?.chart"
+        [xaxis]="bodyFatChartOptions?.xaxis"
+        [yaxis]="bodyFatChartOptions?.yaxis"
+        [colors]="bodyFatChartOptions?.colors"
+        [stroke]="bodyFatChartOptions?.stroke"
+        [markers]="bodyFatChartOptions?.markers"
+        [grid]="bodyFatChartOptions?.grid"
+      ></apx-chart>
+    </div>
+  </div>
+<!-- 
+  <div class="photo-comparison-section">
+  <h3>Progress Photo Comparison</h3>
+  <div class="comparison-grid" *ngIf="latestImage && previousImage; else noImage">
+    <div class="comparison-card">
+      <h4>{{ previousImage.date | date: 'mediumDate' }}</h4>
+      <img *ngIf="previousImage.frontImage" [src]="previousImage.frontImage" alt="Front Before" />
+      <img *ngIf="previousImage.sideImage" [src]="previousImage.sideImage" alt="Side Before" />
+      <img *ngIf="previousImage.backImage" [src]="previousImage.backImage" alt="Back Before" />
+    </div>
+    <div class="comparison-card">
+      <h4>{{ latestImage.date | date: 'mediumDate' }}</h4>
+      <img *ngIf="latestImage.frontImage" [src]="latestImage.frontImage" alt="Front After" />
+      <img *ngIf="latestImage.sideImage" [src]="latestImage.sideImage" alt="Side After" />
+      <img *ngIf="latestImage.backImage" [src]="latestImage.backImage" alt="Back After" />
+    </div>
+  </div>
+  <ng-template #noImage>
+    <p class="no-image-msg">Not enough image data to compare.</p>
+  </ng-template>
+</div> -->
+
+</div>

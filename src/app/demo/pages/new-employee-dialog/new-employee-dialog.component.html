@@ -1,0 +1,184 @@
+<div class="form-section">
+
+  <!-- Title + Close -->
+  <div class="title">
+    <h2 class="form-title">Add New Employee</h2>
+    <button class="close-icon" (click)="closeDialog()">
+      ✖
+    </button>
+  </div>
+
+  <form [formGroup]="employeeForm" class="example-form" (ngSubmit)="onSubmit()">
+
+    <!-- Row 1 -->
+    <div class="row">
+      <div class="input-group half-width">
+        <label>Employee ID</label>
+        <input type="text" placeholder="Ex. E001" maxlength="4" formControlName="employeeId" />
+        <span class="required-message" *ngIf="submitted && employeeForm.get('employeeId').invalid">
+          <ng-container *ngIf="employeeForm.get('employeeId').hasError('required')">Employee ID is
+            required</ng-container>
+          <ng-container *ngIf="employeeForm.get('employeeId').hasError('minlength')">Minimum 4 characters
+            required</ng-container>
+          <ng-container *ngIf="employeeForm.get('employeeId').hasError('maxlength')">Maximum 4 characters
+            allowed</ng-container>
+        </span>
+      </div>
+
+      <div class="input-group half-width">
+        <label>Select Job Title</label>
+        <select formControlName="jobTitle">
+          <option value="">~ Select ~</option>
+          <option value="Trainer">Trainer</option>
+          <option value="Manager">Manager</option>
+          <option value="Receptionist">Receptionist</option>
+        </select>
+        <span class="required-message" *ngIf="submitted && employeeForm.get('jobTitle').hasError('required')">
+          Job Title is required
+        </span>
+      </div>
+    </div>
+
+    <!-- Row 2 -->
+    <div class="row">
+      <div class="input-group half-width">
+        <label>Date of Joining</label>
+        <input type="date" formControlName="dateOfJoining" />
+        <span class="required-message" *ngIf="submitted && employeeForm.get('dateOfJoining').invalid">
+          <ng-container *ngIf="employeeForm.get('dateOfJoining').hasError('required')">Date of Joining is
+            required</ng-container>
+          <ng-container *ngIf="employeeForm.get('dateOfJoining').hasError('futureDate')">Future dates not
+            allowed</ng-container>
+        </span>
+      </div>
+
+      <div class="input-group half-width">
+        <label>Date of Birth</label>
+        <input type="date" [max]="today" formControlName="dateOfBirth" />
+        <span class="required-message" *ngIf="submitted && employeeForm.get('dateOfBirth').invalid">
+          <ng-container *ngIf="employeeForm.get('dateOfBirth').hasError('required')">Date of Birth is
+            required</ng-container>
+          <ng-container *ngIf="employeeForm.get('dateOfBirth').hasError('futureDate')">Future dates not
+            allowed</ng-container>
+        </span>
+      </div>
+    </div>
+
+    <!-- Row 3 -->
+    <div class="row">
+      <div class="input-group half-width">
+        <label>First Name</label>
+        <input type="text" placeholder="Ex. James" formControlName="firstName" />
+        <span class="required-message" *ngIf="submitted && employeeForm.get('firstName').invalid">
+          <ng-container *ngIf="employeeForm.get('firstName').hasError('required')">First Name is required</ng-container>
+          <ng-container *ngIf="employeeForm.get('firstName').hasError('minlength')">Minimum 3 characters</ng-container>
+          <ng-container *ngIf="employeeForm.get('firstName').hasError('pattern')">Only letters allowed</ng-container>
+        </span>
+      </div>
+
+      <div class="input-group half-width">
+        <label>Last Name</label>
+        <input type="text" placeholder="Ex. Smith" formControlName="lastName" />
+        <span class="required-message" *ngIf="submitted && employeeForm.get('lastName').invalid">
+          <ng-container *ngIf="employeeForm.get('lastName').hasError('required')">Last Name is required</ng-container>
+          <ng-container *ngIf="employeeForm.get('lastName').hasError('minlength')">Minimum 3 characters</ng-container>
+          <ng-container *ngIf="employeeForm.get('lastName').hasError('pattern')">Only letters allowed</ng-container>
+        </span>
+      </div>
+    </div>
+
+    <!-- Row 4 -->
+    <div class="row">
+      <div class="input-group half-width">
+        <label>NIC</label>
+        <input type="text" maxlength="12" placeholder="Ex. 991234567V" formControlName="nic" />
+        <span class="required-message" *ngIf="submitted && employeeForm.get('nic').invalid">
+          <ng-container *ngIf="employeeForm.get('nic').hasError('required')">NIC is required</ng-container>
+          <ng-container *ngIf="employeeForm.get('nic').hasError('pattern')">Invalid NIC format</ng-container>
+        </span>
+      </div>
+
+      <div class="input-group half-width">
+        <label>Phone Number</label>
+        <input type="text" maxlength="10" placeholder="Ex. 0771234567" formControlName="phoneNumber" />
+        <span class="required-message" *ngIf="submitted && employeeForm.get('phoneNumber').invalid">
+          <ng-container *ngIf="employeeForm.get('phoneNumber').hasError('required')">Phone Number is
+            required</ng-container>
+          <ng-container *ngIf="employeeForm.get('phoneNumber').hasError('pattern')">Must be a 10-digit
+            number</ng-container>
+        </span>
+      </div>
+    </div>
+
+    <!-- Row 5 -->
+    <div class="row">
+      <div class="input-group half-width">
+        <label>Email</label>
+        <input type="email" placeholder="Ex. abc@example.com" formControlName="email" />
+        <span class="required-message" *ngIf="submitted && employeeForm.get('email').invalid">
+          <ng-container *ngIf="employeeForm.get('email').hasError('required')">Email is required</ng-container>
+          <ng-container *ngIf="employeeForm.get('email').hasError('email')">Invalid email format</ng-container>
+        </span>
+      </div>
+
+      <div class="input-group half-width">
+        <label>Emergency Contact</label>
+        <input type="text" maxlength="10" placeholder="Ex. 0711234567" formControlName="emergencyContactNumber" />
+        <span class="required-message" *ngIf="submitted && employeeForm.get('emergencyContactNumber').invalid">
+          <ng-container *ngIf="employeeForm.get('emergencyContactNumber').hasError('required')">Emergency contact is
+            required</ng-container>
+          <ng-container *ngIf="employeeForm.get('emergencyContactNumber').hasError('pattern')">Must be a 10-digit
+            number</ng-container>
+        </span>
+      </div>
+    </div>
+
+    <!-- Row 6 -->
+    <div class="row">
+      <div class="input-group half-width">
+        <label>Gender</label>
+        <div class="radio-group">
+          <label><input type="radio" value="Male" formControlName="gender" /> Male</label>
+          <label><input type="radio" value="Female" formControlName="gender" /> Female</label>
+        </div>
+        <span class="required-message" *ngIf="submitted && employeeForm.get('gender').invalid">
+          Gender is required
+        </span>
+      </div>
+
+      <div class="input-group half-width">
+        <label>Address</label>
+        <textarea placeholder="Ex. 123, Main Street, Colombo" formControlName="address"></textarea>
+        <span class="required-message" *ngIf="submitted && employeeForm.get('address').invalid">
+          Address is required
+        </span>
+      </div>
+    </div>
+
+    <!-- Image Upload -->
+    <div class="row upload-section">
+      <label class="lable">Add Profile Picture</label>
+      <button type="button" class="choose-file-btn" (click)="fileInput.click()">
+        📷 Choose File
+      </button>
+
+      <div>
+        <img *ngIf="selectedImageUrl" class="image-preview" [src]="selectedImageUrl" />
+      </div>
+
+      <input hidden type="file" #fileInput (change)="onFileSelected($event)" />
+    </div>
+
+    <!-- Buttons -->
+    <div class="row">
+      <button type="submit" class="register-button half-width" [disabled]="submitDisabled">
+        {{ registerButtonLabel }}
+      </button>
+
+      <button type="reset" class="reset-button half-width" (click)="resetData()">
+        Reset
+      </button>
+    </div>
+
+  </form>
+</div>

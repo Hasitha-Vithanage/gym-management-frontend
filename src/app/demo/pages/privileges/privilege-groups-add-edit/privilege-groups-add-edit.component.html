@@ -1,0 +1,23 @@
+<div mat-dialog-title>
+  <h5>{{ data ? 'Update' : 'Add' }} Privilege Group</h5>
+</div>
+<form [formGroup]="privilegeGroupForm" (ngSubmit)="onFormSubmit()">
+  <div mat-dialog-content class="content">
+    <div class="row">
+      <mat-form-field appearance="outline">
+        <mat-label>Group name</mat-label>
+        <input matInput type="text" placeholder="Ex. Admin" formControlName="groupName" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Group Description</mat-label>
+        <input matInput placeholder="Ex. Admin Group" formControlName="groupDescription" />
+      </mat-form-field>
+    </div>
+  </div>
+  <div mat-dialog-actions class="action">
+    <button mat-raised-button type="button" [mat-dialog-close]="false">Cancel</button>
+    <button mat-raised-button color="primary" type="submit">
+      {{ data ? 'Update' : 'Save' }}
+    </button>
+  </div>
+</form>

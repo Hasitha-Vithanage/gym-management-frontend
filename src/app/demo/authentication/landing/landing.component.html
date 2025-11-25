@@ -1,0 +1,179 @@
+<div class="landing-page">
+
+    <!-- Top Navigation Bar -->
+    <nav class="top-nav">
+        <div class="nav-container">
+            <a href="#hero" class="nav-logo">
+                <img src="assets/images/dashboard-logo-dark.png" alt="Combat Fitness Logo" />
+            </a>
+            <ul class="nav-links">
+                <li><a (click)="scrollToSection('hero')">Home</a></li>
+                <li><a (click)="scrollToSection('general-features')">Features</a></li>
+                <li><a (click)="scrollToSection('request-form')">Free Trial</a></li>
+                <li><a (click)="scrollToSection('contact')">Contact Us</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero">
+
+        <div class="hero-content">
+            <div class="hero-text">
+
+                <!-- Logo above heading -->
+                <!-- <a href="javascript:" class="b-brand">
+                    <img style="height: 70px; width: 250px; margin-bottom: 50px"
+                        src="assets/images/dashboard-logo-dark.png" alt="Combat Fitness Logo"
+                        class="logo logo-white logo-lg" />
+                </a> -->
+
+                <h1>Combat Fitness Gym Management System</h1>
+                <p>
+                    Simplify every aspect of running your gym — manage memberships, schedule classes, track trainer
+                    activities,
+                    handle payments, and monitor attendance — all from one intuitive web platform.
+                </p>
+
+                <!-- Call-to-actions -->
+                <button class="btn-primary" (click)="scrollToForm()">Request Free Trial</button>
+                <button class="btn-primary" style="margin-left: 10px;" (click)="goToLogin()">Login</button>
+            </div>
+
+            <!-- Dashboard carousel -->
+            <div class="hero-image">
+                <img [src]="dashboardImages[currentImageIndex]" alt="Gym Dashboard Screenshot">
+
+                <!-- Indicator dots -->
+                <div class="dots">
+                    <span *ngFor="let img of dashboardImages; let i = index" [class.active]="i === currentImageIndex"
+                        (click)="goToImage(i)">
+                    </span>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <h2>Why Choose Combat Fitness</h2>
+        <div class="feature-cards">
+
+            <div class="feature-card">
+                <mat-icon class="feature-icon membership">groups</mat-icon>
+                <h3>Smart Membership Management</h3>
+                <p>
+                    Easily track member subscriptions, renewals, and expiry dates. Automated reminders ensure no lapses.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <mat-icon class="feature-icon scheduling">schedule</mat-icon>
+                <h3>Class & Trainer Scheduling</h3>
+                <p>
+                    Schedule fitness classes, assign trainers, and let members book sessions online with ease.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <mat-icon class="feature-icon billing">payment</mat-icon>
+                <h3>Payment & Billing Automation</h3>
+                <p>
+                    Accept online payments, generate invoices, and track revenue effortlessly from a single dashboard.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <mat-icon class="feature-icon attendance">how_to_reg</mat-icon>
+                <h3>Attendance & Progress Tracking</h3>
+                <p>
+                    Monitor member check-ins, trainer sessions, and gym usage to improve service and engagement.
+                </p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- General Features Section -->
+    <section id="general-features" class="general-features">
+        <h2>General Features</h2>
+        <div class="general-feature-cards">
+            <div class="general-feature-card scroll-animate">
+                <mat-icon class="general-feature-icon">analytics</mat-icon>
+                <h3>Analytics Dashboard</h3>
+                <p>Visualize gym performance, member activity, and revenue trends at a glance.</p>
+            </div>
+
+            <div class="general-feature-card scroll-animate">
+                <mat-icon class="general-feature-icon">support_agent</mat-icon>
+                <h3>Customer Support</h3>
+                <p>Quick support for members and staff to handle issues efficiently.</p>
+            </div>
+
+            <div class="general-feature-card scroll-animate">
+                <mat-icon class="general-feature-icon">security</mat-icon>
+                <h3>Secure Access</h3>
+                <p>Role-based access and encrypted data for complete security.</p>
+            </div>
+
+            <div class="general-feature-card scroll-animate">
+                <mat-icon class="general-feature-icon">cloud_upload</mat-icon>
+                <h3>Cloud Backup</h3>
+                <p>Automatic backups to protect all your important gym data.</p>
+            </div>
+
+            <div class="general-feature-card scroll-animate">
+                <mat-icon class="general-feature-icon">schedule</mat-icon>
+                <h3>Automated Scheduling</h3>
+                <p>Schedule classes, trainers, and personal sessions efficiently.</p>
+            </div>
+
+            <div class="general-feature-card scroll-animate">
+                <mat-icon class="general-feature-icon">payment</mat-icon>
+                <h3>Payment Integration</h3>
+                <p>Accept online payments and generate invoices automatically.</p>
+            </div>
+
+            <div class="general-feature-card scroll-animate">
+                <mat-icon class="general-feature-icon">fitness_center</mat-icon>
+                <h3>Workout Plans</h3>
+                <p>Create personalized plans for each member and track progress.</p>
+            </div>
+
+            <div class="general-feature-card scroll-animate">
+                <mat-icon class="general-feature-icon">insights</mat-icon>
+                <h3>Insights & Reports</h3>
+                <p>Generate detailed reports for trainers, attendance, and finances.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Request Form Section -->
+    <section id="request-form" class="request-form" #formSection>
+        <h2>Request a Free Trial</h2>
+        <p>Sign up now to explore Combat Fitness and see how it can simplify your gym management.</p>
+        <form [formGroup]="requestForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <input type="text" placeholder="Full Name" formControlName="name" required>
+            </div>
+            <div class="form-group">
+                <input type="email" placeholder="Email" formControlName="email" required>
+            </div>
+            <div class="form-group">
+                <input type="text" placeholder="Gym Name (optional)" formControlName="company">
+            </div>
+            <div class="form-group">
+                <textarea placeholder="Message (optional)" formControlName="message"></textarea>
+            </div>
+            <button type="submit" class="btn-primary">Send Request</button>
+        </form>
+    </section>
+
+    <!-- Contact Section (optional) -->
+    <section id="contact" class="contact">
+        <h2>Contact Us</h2>
+        <p>Email: <span><a href="mailto:contact.combatfitness@gmail.com">contact.combatfitness&#64;gmail.com</a></span> | Phone: <span><a href="tel:+94742602358">+94 74 260 2358</a></span></p>
+    </section>
+
+</div>

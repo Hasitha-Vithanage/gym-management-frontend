@@ -1,0 +1,193 @@
+<div class="form-section">
+  <!-- title of the form-->
+  <div class="title">
+    <h2 class="form-title">Add New Equipment</h2>
+    <button mat-icon-button class="close-icon" style="padding: 0px" (click)="closeDialog()">
+      <mat-icon fontIcon="close"></mat-icon>
+    </button>
+  </div>
+
+  <!--- form -->
+  <form class="example-form" [formGroup]="equipmentForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Category</mat-label>
+        <mat-icon matPrefix>category</mat-icon>
+        <mat-select formControlName="category">
+          <mat-option value="Machines">Machines</mat-option>
+          <mat-option value="Freeweights">Freeweights & Bars</mat-option>
+          <mat-option value="Other">Other</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Supplier</mat-label>
+        <mat-icon matPrefix>local_shipping</mat-icon>
+        <mat-select formControlName="supplier">
+          <mat-option *ngFor="let supplier of supplierList" [value]="supplier.id">
+            {{ supplier.supplierName }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <!--- Machine Name - Model will display only if user select Machines in the Category dropdown -->
+      <mat-form-field appearance="outline" class="half-width" *ngIf="equipmentForm.get('category')?.value === 'Machines'">
+        <mat-label>Machine Name</mat-label>
+        <mat-icon matPrefix>fitness_center</mat-icon>
+        <input matInput maxlength="20" placeholder="Enter Machine Name" type="text" formControlName="machineName" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="half-width" *ngIf="equipmentForm.get('category')?.value === 'Machines'">
+        <mat-label>Muscle Groups</mat-label>
+        <mat-icon matPrefix>sports_gymnastics</mat-icon>
+        <mat-select multiple formControlName="muscleGroups">
+          <mat-option *ngFor="let group of muscleGroupsList" [value]="group">
+            {{ group }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Brand Name</mat-label>
+        <mat-icon matPrefix>branding_watermark</mat-icon>
+        <input matInput maxlength="20" placeholder="Enter Brand Name" type="text" formControlName="brandName" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="half-width" *ngIf="equipmentForm.get('category')?.value === 'Machines'">
+        <mat-label>Model</mat-label>
+        <mat-icon matPrefix>model_training</mat-icon>
+        <input matInput maxlength="50" placeholder="Enter Model Name or Number" type="text" formControlName="model" />
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <!--- Display only if the user select Freeweights & Bars in the Category dropdown-->
+      <mat-form-field appearance="outline" class="half-width" *ngIf="equipmentForm.get('category')?.value === 'Freeweights'">
+        <mat-label>Type</mat-label>
+        <mat-icon matPrefix>sports_handball</mat-icon>
+        <mat-select formControlName="type">
+          <mat-option value="Dumbbells">Dumbbells</mat-option>
+          <mat-option value="Plates">Plates</mat-option>
+          <mat-option value="Kettlebells">Kettlebells</mat-option>
+          <mat-option value="Bars">Bars</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!--- Display only if user select Plates or Bars in the Type dropdown-->
+      <mat-form-field appearance="outline" class="half-width" *ngIf="['Bars'].includes(equipmentForm.get('type')?.value) && ['Freeweights'].includes(equipmentForm.get('category')?.value)">
+        <mat-label>Size Standard</mat-label>
+        <mat-icon matPrefix>straighten</mat-icon>
+        <mat-select formControlName="sizeStandard">
+          <mat-option value="Olympic">Olympic Bars</mat-option>
+          <mat-option value="Regular">Regular Bars</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field appearance="outline" class="half-width" *ngIf="['Bars'].includes(equipmentForm.get('type')?.value)">
+        <mat-label>Bar Length</mat-label>
+        <mat-icon matPrefix>height</mat-icon>
+        <mat-select formControlName="barLength">
+          <!-- Display only if selected Olympic in Size Standard -->
+          <mat-option *ngIf="equipmentForm.get('sizeStandard')?.value === 'Olympic'" value="7 feet">
+            7 feet (Standard Olympic Bar)
+          </mat-option>
+          <mat-option *ngIf="equipmentForm.get('sizeStandard')?.value === 'Olympic'" value="6.5 feet">
+            6.5 feet (Short Olympic Bar)
+          </mat-option>
+          <mat-option *ngIf="equipmentForm.get('sizeStandard')?.value === 'Olympic'" value="8 feet">8 feet (Long Olympic Bar)</mat-option>
+          <mat-option *ngIf="equipmentForm.get('sizeStandard')?.value === 'Olympic'" value="5 feet">5 feet (Mini Olympic Bar)</mat-option>
+          <mat-option *ngIf="equipmentForm.get('sizeStandard')?.value === 'Olympic'" value="12 inches">
+            12 inches (Standard Olympic Dumbbell Bar)
+          </mat-option>
+
+          <!-- Display only if selected Regular in Size Standard -->
+          <mat-option *ngIf="equipmentForm.get('sizeStandard')?.value === 'Regular'" value="12 inches">12 inches (Dumbbell Bar)</mat-option>
+          <mat-option *ngIf="equipmentForm.get('sizeStandard')?.value === 'Regular'" value="14 inches">14 inches (Dumbbell Bar)</mat-option>
+          <mat-option *ngIf="equipmentForm.get('sizeStandard')?.value === 'Regular'" value="16 inches">16 inches (Dumbbell Bar)</mat-option>
+          <mat-option *ngIf="equipmentForm.get('sizeStandard')?.value === 'Regular'" value="18 inches">18 inches (Dumbbell Bar)</mat-option>
+          <mat-option *ngIf="equipmentForm.get('sizeStandard')?.value === 'Regular'" value="20 inches">20 inches (Dumbbell Bar)</mat-option>
+          <mat-option *ngIf="equipmentForm.get('sizeStandard')?.value === 'Regular'" value="5 feet">5 feet (Standard Bar)</mat-option>
+          <mat-option *ngIf="equipmentForm.get('sizeStandard')?.value === 'Regular'" value="6 feet">6 feet (Standard Bar)</mat-option>
+          <mat-option *ngIf="equipmentForm.get('sizeStandard')?.value === 'Regular'" value="4 feet">4 feet (Curl Bar)</mat-option>
+          <mat-option *ngIf="equipmentForm.get('sizeStandard')?.value === 'Regular'" value="5 feet">5 feet (Curl Bar)</mat-option>
+          <mat-option *ngIf="equipmentForm.get('sizeStandard')?.value === 'Regular'" value="7 feet">7 feet (Trap Bar)</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Display only if selected Dumbbells, Plates, Kettlebells in Type dropdown -->
+      <mat-form-field appearance="outline" class="half-width" *ngIf="['Dumbbells', 'Plates', 'Kettlebells'].includes(equipmentForm.get('type')?.value)">
+        <mat-label>Weight</mat-label>
+        <mat-icon matPrefix>fitness_center</mat-icon>
+        <input matInput maxlength="3" placeholder="Enter Weight (kg)" type="number" formControlName="weight" />
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <!-- Display only if selected Other in Category dropdown -->
+      <mat-form-field appearance="outline" class="half-width" *ngIf="equipmentForm.get('category')?.value === 'Other'">
+        <mat-label>Equipment Name</mat-label>
+        <mat-icon matPrefix>build</mat-icon>
+        <input matInput maxlength="20" placeholder="Enter Equipment Name" type="text" formControlName="equipmentName" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Quantity</mat-label>
+        <mat-icon matPrefix>format_list_numbered</mat-icon>
+        <input matInput maxlength="20" placeholder="Enter Quantity" type="number" formControlName="quantity" />
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Condition</mat-label>
+        <mat-icon matPrefix>check_circle</mat-icon>
+        <mat-select formControlName="condition">
+          <mat-option value="New">New</mat-option>
+          <mat-option value="Good">Good</mat-option>
+          <mat-option value="Poor">Poor</mat-option>
+          <mat-option value="Out of Service">Out of Service</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Purchase Date</mat-label>
+        <mat-icon matPrefix>calendar_today</mat-icon>
+        <input matInput [matDatepicker]="join" placeholder="MM/DD/YYYY" formControlName="purchaseDate" />
+        <mat-datepicker-toggle matSuffix [for]="join"></mat-datepicker-toggle>
+        <mat-datepicker #join></mat-datepicker>
+      </mat-form-field>
+
+      <!--- Display the users who have the permission to add equipments -->
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Added by</mat-label>
+        <mat-icon matPrefix>person</mat-icon>
+        <input matInput maxlength="20" placeholder="" type="text" formControlName="addedBy" />
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Remarks</mat-label>
+        <mat-icon matPrefix>note</mat-icon>
+        <textarea matInput rows="4" maxlength="1000" placeholder="Enter Remarks" formControlName="remarks"></textarea>
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <button type="reset" mat-raised-button class="close-button half-width" (click)="closeDialog()">
+        <mat-icon>close</mat-icon>
+        Close
+      </button>
+      <button type="submit" mat-raised-button color="primary" class="submit-button half-width" [disabled]="!equipmentForm.valid">
+        <mat-icon>check</mat-icon>
+        {{ saveButtonLabel }}
+      </button>
+    </div>
+  </form>
+</div>

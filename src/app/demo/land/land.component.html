@@ -1,0 +1,50 @@
+<section id="about" class="about">
+  <div class="container">
+    <div class="about-content">
+      <div class="about-text">
+        <h2>WELCOME TO COMBAT FITNESS</h2>
+        <p class="lead">
+          We believe fitness is not just about physical transformation—it's about building confidence, discipline, and a community that
+          supports your journey to becoming the best version of yourself.
+        </p>
+
+        <p>"The body achieves what the mind believes"</p>
+
+        <div class="values">
+          <h3>Our Values</h3>
+          <div class="values-grid">
+            <div class="value-item" *ngFor="let value of values">
+              <div class="value-icon">{{ value.icon }}</div>
+              <h4>{{ value.title }}</h4>
+              <p>{{ value.description }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="about-features">
+        <div class="feature-card" *ngFor="let feature of features">
+          <div class="feature-icon">{{ feature.icon }}</div>
+          <div class="feature-content">
+            <h4>{{ feature.title }}</h4>
+            <p>{{ feature.description }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="team-section">
+      <h3>Meet Our Team</h3>
+      <div class="team-grid">
+        <div class="team-member" *ngFor="let member of team">
+          <div class="member-photo">
+            <div class="placeholder-photo">{{ member.initials }}</div>
+          </div>
+          <h4>{{ member.name }}</h4>
+          <p class="member-role">{{ member.role }}</p>
+          <p class="member-bio">{{ member.bio }}</p>
+        </div>
+      </div>
+    </div> -->
+  </div>
+</section>

@@ -1,0 +1,45 @@
+<div class="container">
+  <h2 class="form-title">Browse Classes</h2>
+
+  <div class="supplement-grid">
+    <div class="supplement-card" *ngFor="let class of classes">
+      <!-- Header -->
+      <div class="card-header">
+        <h3>{{ class.classTitle }}</h3>
+        <span class="badge" [ngClass]="class.status.toLowerCase()">{{ class.status }}</span>
+      </div>
+
+      <!-- Description -->
+      <p class="description">{{ class.description }}</p>
+
+      <!-- Body -->
+      <div class="card-body">
+        <div class="row">
+          <span class="label">📅 Date:</span>
+          <span class="value">{{ class.date | date: 'MMM d, y' }}</span>
+        </div>
+        <div class="row">
+          <span class="label">🕒 Time:</span>
+          <span class="value">{{ formatTime(class.endTime) }} - {{ formatTime(class.endTime) }}</span>
+        </div>
+        <div class="row">
+          <span class="label">👤 Trainer:</span>
+          <span class="value">{{ class.conductorName }}</span>
+        </div>
+        <div class="row">
+          <span class="label">💰 Fee:</span>
+          <span class="value">LKR {{ class.fee }}</span>
+        </div>
+        <div class="row">
+          <span class="label">🎟️ Slots Left:</span>
+          <span class="value">{{ class.remainingSlots }} / {{ class.totalSlots }}</span>
+        </div>
+      </div>
+
+      <!-- Book Button -->
+      <div class="card-footer">
+        <button mat-raised-button color="primary" (click)="bookClass(class)">Book Class</button>
+      </div>
+    </div>
+  </div>
+</div>

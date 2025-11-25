@@ -1,0 +1,87 @@
+.example-spacer {
+    flex: 1 1 auto;
+  }
+  
+  .main-body {
+    padding-top: 20px;
+    margin: 0 auto;
+    max-width: 1348px;
+    mat-form-field {
+      width: 100%;
+    }
+  }
+  
+  .relative {
+    position: relative;
+  }
+
+  .action {
+    display: flex;
+    gap: 5px;
+  }
+
+  .dropdown-content {
+    position: absolute;
+    background-color: aliceblue;
+    min-width: 221px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    border-radius: 9px;
+    padding: 8px;
+    box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.302), 0 1px 3px 1px rgba(60, 64, 67,0.1);
+  }
+
+  ul {
+    list-style: none;
+  }
+
+  .contextmenu {
+    position: absolute;
+    border: 3;
+    border-style: solid;
+    border-color: #000;
+  }
+
+  .menu {
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgb(64 64 64  %5)
+  }
+
+  .menu > li > a {
+    font: inherit;
+    border: 0;
+    padding: 10px 30px 10px 15px;
+    width: 100%;
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+    position: relative;
+    text-decoration: unset;
+    color: #000;
+    font-weight: 500;
+    transition: 0.5s linear;
+    -webkit-transition: 0.5s linear;
+    -moz-transition: 0.5s linear;
+    -ms-transition: 0.5s linear;
+    -o-transition: 0.5s linear;
+  }
+
+  .menu > li > a:hover {
+    background: #b1b3b6;
+    color: #4b00ff;
+  }
+
+  .menu > li > a > i {
+    padding-right: 10px;
+  }
+
+  .menu > li.trash > a:hover {
+    color: red;
+  }
+
+  .highlight{
+    background: #DCDCDC; /* green */
+  }

@@ -1,0 +1,45 @@
+<div class="user-profile-wrapper">
+  <div class="profile-card mat-elevation-z4">
+    <!-- Left: Avatar and Basic Info -->
+    <div class="left-panel">
+      <img
+        [src]="user.profileImageUrl || 'assets/images/user/avatar-2.jpg'"
+        class="profile-image"
+        alt="User"
+      />
+      <h2>{{ user.firstName }} {{ user.lastName }}</h2>
+      <p class="membership">{{ user.membershipType || 'Standard Member' }}</p>
+      <button mat-raised-button color="primary" class="edit-button">
+        <mat-icon>edit</mat-icon> Edit Profile
+      </button>
+    </div>
+
+    <!-- Right: Detailed Info -->
+    <div class="right-panel">
+      <div class="info-item">
+        <mat-icon>email</mat-icon>
+        <span>{{ user.email }}</span>
+      </div>
+      <div class="info-item">
+        <mat-icon>phone</mat-icon>
+        <span>{{ user.phoneNumber }}</span>
+      </div>
+      <div class="info-item">
+        <mat-icon>cake</mat-icon>
+        <span>{{ user.dateOfBirth }}</span>
+      </div>
+      <div class="info-item">
+        <mat-icon>wc</mat-icon>
+        <span>{{ user.gender }}</span>
+      </div>
+      <div class="info-item">
+        <mat-icon>home</mat-icon>
+        <span>{{ user.address }}</span>
+      </div>
+      <div class="info-item">
+        <mat-icon>calendar_today</mat-icon>
+        <span>Joined: {{ user.joinedDate }}</span>
+      </div>
+    </div>
+  </div>
+</div>
