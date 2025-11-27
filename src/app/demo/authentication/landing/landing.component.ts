@@ -39,9 +39,10 @@ export class LandingComponent implements OnInit {
 
   ngOnInit(): void {
     this.requestForm = this.fb.group({
-      name: [''],
+      firstName: [''],
+      lastName: [''],
       email: [''],
-      company: [''],
+      phoneNumber: [''],
       message: ['']
     });
     this.startImageLoop();
@@ -94,7 +95,7 @@ export class LandingComponent implements OnInit {
         this.requestForm.reset();
       }
     })
-    console.log('User Request:', this.requestForm.value);
+    // console.log('User Request:', this.requestForm.value);
   }
 
   // Navigate to login page

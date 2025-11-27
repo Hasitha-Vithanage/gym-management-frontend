@@ -39,6 +39,7 @@ const ELEMENT_DATA: any[] = [
 export class EmployeeRegistrationComponent implements OnInit {
   /* creating form group variable */
   employeeForm: FormGroup;
+  
 
   displayedColumns: string[] = [
     'employeeId',
@@ -117,6 +118,7 @@ export class EmployeeRegistrationComponent implements OnInit {
   // implementation of populateData function
   public populateData(): void {
     try {
+      
       this.employeeService.getData().subscribe({
         next: (dataList: any[]) => {
           if (dataList.length <= 0) {

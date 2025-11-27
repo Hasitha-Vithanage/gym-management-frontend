@@ -19,12 +19,12 @@ export class EmailServiceService {
 
     const requestUrl = environment.baseUrl + '/email/request-trial';
 
-    let headers = {};
-    if (this.httpService.getAuthToken() !== null) {
-      headers = {
-        Authorization: 'Bearer ' + this.httpService.getAuthToken()
-      };
-    }
-    return this.http.post(requestUrl, data, { headers: headers });
+    // let headers = {};
+    // if (this.httpService.getAuthToken() !== null) {
+    //   headers = {
+    //     Authorization: 'Bearer ' + this.httpService.getAuthToken()
+    //   };
+    // }
+    return this.http.post(requestUrl, data);
   }
 }

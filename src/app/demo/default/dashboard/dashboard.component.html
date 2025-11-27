@@ -68,6 +68,28 @@
     </app-card>
   </div>
 
+<div class="row g-3"> <!-- first row of cards -->
+  <div class="col-md-6 col-xl-3">
+    <app-card [showHeader]="false" blockClass="dashboard-card">
+      <h6 class="mb-2 text-muted">Today's Check-ins</h6>
+      <h4 class="mb-3">47</h4>
+    </app-card>
+  </div>
+
+  <div class="col-md-6 col-xl-9">
+    <div class="quick-actions card p-3 h-90">
+      <h5 class="mb-3">Quick Actions</h5>
+      <div class="qa-grid d-flex gap-2 flex-wrap">
+        <button class="btn btn-outline-dark btn-sm" (click)="navigateToSection('/pages/member')">+ Member</button>
+        <button class="btn btn-outline-dark btn-sm" (click)="navigateToSection('/pages/employee')">+ Employee</button>
+        <button class="btn btn-outline-dark btn-sm" (click)="navigateToSection('/pages/mark-attendance')">Mark Attendance</button>
+        <button class="btn btn-outline-dark btn-sm" (click)="navigateToSection('/pages/supplement-inventory-management')">Add Product</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
   <!-- <div class="col-md-12 col-xl-8">
     <app-monthly-bar-chart />
   </div>
@@ -75,7 +97,7 @@
     <app-income-overview-chart />
   </div> -->
 
-  <div class="col-md-12 col-xl-8">
+  <div class="col-md-6 col-xl-6">
     <h5 class="mb-3">Supplement Store</h5>
     <div class="card tbl-card">
       <div class="table-responsive">
@@ -107,6 +129,96 @@
             </tr>
           </tbody>
         </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6 col-xl-6">
+    <h5 class="mb-3">Supplement Store</h5>
+    <div class="card tbl-card">
+      <div class="table-responsive">
+        <table class="table table-hover mb-0">
+          <thead>
+            <tr>
+              <th>PRODUCT NAME</th>
+              <th>BRAND</th>
+              <th class="text-end">QUANTITY PER UNIT</th>
+              <th class="text-end">QUANTITY IN STOCK</th>
+              <th class="text-end">PRICE</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let supplement of dataSource.data">
+              <td>
+                <a href="javascript:" class="">{{ supplement.productName }}</a>
+              </td>
+              <td>{{ supplement.brand }}</td>
+              <td>
+                <span class="d-block text-end">
+                  <i class="bg-success f-10 m-r-5"></i>
+                  <!-- You can dynamically change class -->
+                  {{ supplement.quantityPerUnit }} {{ supplement.unit }}
+                </span>
+              </td>
+              <td class="text-end">{{ supplement.quantityInStock }}</td>
+              <td class="text-end">{{ supplement.retailPrice | currency: 'LKR' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPIRING SOON -->
+  <div class="col-md-12 col-xl-6 mt-4">
+    <h5 class="mb-3">Expiring Soon</h5>
+    <div class="card tbl-card">
+      <div class="table-responsive">
+        <table class="table table-hover mb-0">
+          <thead>
+            <tr>
+              <th>NAME</th>
+              <th>PLAN</th>
+              <th class="text-end">EXPIRY</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Kasun Perera</td>
+              <td>Gold</td>
+              <td class="text-end">2025-02-02</td>
+            </tr>
+            <tr>
+              <td>Nimal Silva</td>
+              <td>Basic</td>
+              <td class="text-end">2025-02-05</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+
+    <!-- UPCOMING CLASSES -->
+  <div class="col-md-12 col-xl-6 mt-4">
+    <h5 class="mb-3">Upcoming Classes</h5>
+    <div class="card tbl-card">
+      <div class="list-group list-group-flush">
+        <div class="list-group-item">
+          <div class="d-flex justify-content-between">
+            <strong>Yoga</strong>
+            <span>6:00 PM</span>
+          </div>
+          <p class="mb-0 text-muted">Trainer: Shalini</p>
+        </div>
+
+        <div class="list-group-item">
+          <div class="d-flex justify-content-between">
+            <strong>HIIT</strong>
+            <span>7:00 PM</span>
+          </div>
+          <p class="mb-0 text-muted">Trainer: Dilshan</p>
+        </div>
       </div>
     </div>
   </div>

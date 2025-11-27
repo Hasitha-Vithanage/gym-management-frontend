@@ -32,8 +32,11 @@ export class MarkAttendanceComponent {
 
   ngOnInit(): void {
 
+      const today = new Date();
+  const formattedToday = today.toISOString().split('T')[0];
+
     this.attendanceForm = this.fb.group({
-      attendanceDate: [new Date(), Validators.required],
+      attendanceDate: [formattedToday, Validators.required],
       attendanceType: ['', Validators.required],
       employee: [null],
       member: [null],

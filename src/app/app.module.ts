@@ -16,6 +16,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatIconModule } from '@angular/material/icon';
 import { LandComponent } from './demo/land/land.component';
+import { LoadingBarComponent } from "./demo/shared/loading-bar/loading-bar.component";
 
 @NgModule({
   declarations: [AppComponent, LandComponent],
@@ -29,7 +30,8 @@ import { LandComponent } from './demo/land/land.component';
     MatNativeDateModule,
     ToastrModule.forRoot(),
     MatIconModule,
-  ],
+    LoadingBarComponent
+],
   providers: [
     provideHttpClient(withInterceptorsFromDi()),
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

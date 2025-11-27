@@ -4,7 +4,7 @@
 
     <form [formGroup]="attendanceForm" class="example-form" (ngSubmit)="onSubmit()">
       <!-- Date Picker -->
-      <mat-form-field appearance="outline" class="full-width">
+      <!-- <mat-form-field appearance="outline" class="full-width">
         <mat-label>Attendance Date</mat-label>
         <mat-icon matPrefix>event</mat-icon>
         <input matInput [matDatepicker]="picker" formControlName="attendanceDate" />
@@ -13,10 +13,10 @@
         </span>
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
-      </mat-form-field>
+      </mat-form-field> -->
 
       <!-- Attendance Type -->
-      <mat-form-field appearance="outline" class="full-width">
+      <!-- <mat-form-field appearance="outline" class="full-width">
         <mat-label>Select Attendance Type</mat-label>
         <mat-icon matPrefix>how_to_reg</mat-icon>
         <mat-select formControlName="attendanceType">
@@ -26,41 +26,101 @@
         <span class="required-message" *ngIf="submitted && attendanceForm.get('attendanceType').invalid">
           <ng-container *ngIf="attendanceForm.get('attendanceType').hasError('required')">Attendance type ID is required</ng-container>
         </span>
-      </mat-form-field>
+      </mat-form-field> -->
 
       <!-- Conditional Dropdowns -->
-      <ng-container *ngIf="attendanceForm.get('attendanceType')?.value === 'employee'">
+      <!-- <ng-container *ngIf="attendanceForm.get('attendanceType')?.value === 'employee'">
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Select Employee</mat-label>
           <mat-select formControlName="employee">
-            <mat-option *ngFor="let emp of employeeList" [value]="emp.employeeId">{{ emp.firstName }} {{ emp.lastName }}</mat-option>
+            <mat-option *ngFor="let emp of employeeList" [value]="emp.employeeId">{{ emp.firstName }} {{ emp.lastName
+              }}</mat-option>
           </mat-select>
         </mat-form-field>
-      </ng-container>
+      </ng-container> -->
 
-      <ng-container *ngIf="attendanceForm.get('attendanceType')?.value === 'member'">
+      <!-- <ng-container *ngIf="attendanceForm.get('attendanceType')?.value === 'member'">
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Select Member</mat-label>
           <mat-select formControlName="member">
-            <mat-option *ngFor="let mem of memberList" [value]="mem.memberNo">{{ mem.firstName }} {{ mem.lastName }}</mat-option>
+            <mat-option *ngFor="let mem of memberList" [value]="mem.memberNo">{{ mem.firstName }} {{ mem.lastName
+              }}</mat-option>
           </mat-select>
         </mat-form-field>
-      </ng-container>
+      </ng-container> -->
 
       <!-- Status Radio -->
-      <div class="status-radio-group">
+      <!-- <div class="status-radio-group">
         <label>Attendance Status:</label>
         <mat-radio-group class="radio-options" formControlName="attendanceStatus">
           <mat-radio-button value="present" class="present">Present</mat-radio-button>
           <mat-radio-button value="absent" class="absent">Absent</mat-radio-button>
           <span class="required-message" *ngIf="submitted && attendanceForm.get('attendanceStatus').invalid">
-            <ng-container *ngIf="attendanceForm.get('attendanceStatus').hasError('required')">Attendance status is required</ng-container>
+            <ng-container *ngIf="attendanceForm.get('attendanceStatus').hasError('required')">Attendance status is
+              required</ng-container>
           </span>
         </mat-radio-group>
+      </div> -->
+
+      <div class="input-group">
+        <label>Attendance Date</label>
+        <input type="date" formControlName="attendanceDate" />
+        <span class="required-message" *ngIf="submitted && attendanceForm.get('attendanceDate').invalid">
+          <ng-container *ngIf="attendanceForm.get('attendanceDate').hasError('required')">Attendance Date is
+            required</ng-container>
+          <ng-container *ngIf="attendanceForm.get('attendanceDate').hasError('futureDate')">Future dates not
+            allowed</ng-container>
+        </span>
+      </div>
+
+      <div class="input-group">
+        <label>Select Attendance Type</label>
+        <select formControlName="attendanceType">
+          <option value="">~ Select ~</option>
+          <option value="employee">Employee</option>
+          <option value="member">Member</option>
+        </select>
+        <span class="required-message" *ngIf="submitted && attendanceForm.get('attendanceType').hasError('required')">
+          Attendance type is required
+        </span>
+      </div>
+
+      <div class="input-group" *ngIf="attendanceForm.get('attendanceType')?.value === 'employee'">
+        <label>Select Employee</label>
+        <select formControlName="employee">
+          <option value="">~ Select ~</option>
+          <option *ngFor="let emp of employeeList" [value]="emp.employeeId">{{ emp.firstName }} {{ emp.lastName }}
+          </option>
+        </select>
+        <span class="required-message" *ngIf="submitted && attendanceForm.get('attendanceType').hasError('required')">
+          Attendance type is required
+        </span>
+      </div>
+
+      <div class="input-group" *ngIf="attendanceForm.get('attendanceType')?.value === 'member'">
+        <label>Select Member</label>
+        <select formControlName="member">
+          <option value="">~ Select ~</option>
+          <option *ngFor="let mem of memberList" [value]="mem.memberNo">{{ mem.firstName }} {{ mem.lastName }}</option>
+        </select>
+        <span class="required-message" *ngIf="submitted && attendanceForm.get('attendanceType').hasError('required')">
+          Attendance type is required
+        </span>
+      </div>
+
+      <div class="input-group half-width">
+        <label>Attendance Status:</label>
+        <div class="radio-group">
+          <label><input type="radio" value="Present" formControlName="attendanceStatus" /> Present</label>
+          <label><input type="radio" value="Absent" formControlName="attendanceStatus" /> Absent</label>
+        </div>
+        <span class="required-message" *ngIf="submitted && attendanceForm.get('attendanceStatus').invalid">
+          Attendance status is required
+        </span>
       </div>
 
       <!-- Submit -->
-      <button mat-raised-button color="primary" class="submit-btn full-width">Submit Attendance</button>
+      <button mat-raised-button color="" class="submit-btn full-width">Submit Attendance</button>
     </form>
   </mat-card>
 </div>
