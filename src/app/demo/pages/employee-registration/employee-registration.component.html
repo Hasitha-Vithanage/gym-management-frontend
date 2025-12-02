@@ -2,13 +2,13 @@
   <!-- Table Section to the Right of Form -->
   <div class="table-section">
     <!-- title of the-->
-    <h2 class="form-title">Employee Registration</h2>
+    <h2 class="form-title"><img src="../../../../assets/images/icon/employees.png" style="margin-right: 5px;"> Employee Registration</h2>
 
     <div class="toolbar">
       <!-- add-new on the left -->
       <div class="add-new">
         <button type="reset" mat-raised-button class="new-button half-width" (click)="openDialog()">
-          <mat-icon>add</mat-icon>
+          <img src="../../../../assets/images/icon/add-light-icon.png" style="margin-right: 5px;">
           Add New Employee
         </button>
       </div>
@@ -17,13 +17,13 @@
       <div class="table-filter">
         <!-- Search bar -->
         <div class="search-bar">
-          <mat-icon>search</mat-icon>
+          <img src="../../../../assets/images/icon/search-icon.png" style="margin-right: 5px;">
           <input type="text" placeholder="Search..." (keyup)="applyFilter($event)" />
         </div>
 
         <!-- refresh button-->
         <button mat-icon-button class="refresh-button" (click)="refreshData()">
-          <mat-icon>refresh</mat-icon>
+          <img src="../../../../assets/images/icon/refresh-icon.png" style="margin-right: 5px;">
         </button>
       </div>
     </div>
@@ -109,13 +109,13 @@
           <td mat-cell *matCellDef="let element">
             <div class="action-column">
               <button mat-icon-button class="gray-icon-btn" matTooltip="Edit" (click)="editData(element)">
-                <mat-icon>edit</mat-icon>
+                <img src="../../../../assets/images/icon/edit-icon.png" style="margin-right: 5px;">
               </button>
               <button mat-icon-button class="gray-icon-btn" matTooltip="Delete" (click)="deleteData(element)">
-                <mat-icon>delete</mat-icon>
+                <img src="../../../../assets/images/icon/delete-icon.png" style="margin-right: 5px;">
               </button>
               <button mat-icon-button class="gray-icon-btn" matTooltip="View Id" (click)="viewId(element)">
-                <mat-icon>qr_code</mat-icon>
+                <img src="../../../../assets/images/icon/qr-icon.png" style="margin-right: 5px;">
               </button>
             </div>
           </td>

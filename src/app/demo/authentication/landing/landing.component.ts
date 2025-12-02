@@ -24,7 +24,8 @@ export class LandingComponent implements OnInit {
   ];
 
   currentImageIndex = 0;
-  requestForm: FormGroup;
+  registerForm: FormGroup;
+  submitted = false;
 
   // Reference to the request form section
   @ViewChild('formSection') formSection!: ElementRef;
@@ -38,12 +39,15 @@ export class LandingComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.requestForm = this.fb.group({
+    this.registerForm = this.fb.group({
       firstName: [''],
       lastName: [''],
+      login: [''],
       email: [''],
-      phoneNumber: [''],
-      message: ['']
+      password: [''],
+      role: ['MEMBER'],
+      status: ['APPROVAL PENDING'],
+      confirmPassword: ['']
     });
     this.startImageLoop();
   }
@@ -80,22 +84,57 @@ export class LandingComponent implements OnInit {
 
   // Handle form submission
   onSubmit(): void {
-    if (this.requestForm.invalid) {
+    if (this.registerForm.invalid) {
       return;
     }
-    this.emailService.sendTrialRequest(this.requestForm.value).subscribe({
-      next: (Response: string) => {
-        console.log('Trial request sent successfully:', Response);
-        this.messageService.showSuccess('Your trial request has been sent successfully!');
-        this.requestForm.reset();
-      },
-      error: (error) => {
-        // console.error('Error sending trial request:', error);
-        this.messageService.showSuccess('Your trial request has been sent successfully!');
-        this.requestForm.reset();
-      }
-    })
-    // console.log('User Request:', this.requestForm.value);
+    if (this.registerForm.value.password === this.registerForm.value.confirmPassword) {
+      // Passwords match, proceed with submission
+      this.onSubmitRegister();
+      this.emailService.sendTrialRequest(this.registerForm.value).subscribe({
+        next: (Response: string) => {
+          console.log('Trial request sent successfully:', Response);
+          this.messageService.showSuccess('Your trial request has been sent successfully!');
+          this.registerForm.reset();
+        },
+        error: (error) => {
+          // console.error('Error sending trial request:', error);
+          // this.messageService.showSuccess('Your trial request has been sent successfully!');
+          this.registerForm.reset();
+        }
+      })
+      // console.log('User Request:', this.registerForm.value);
+    }
+    else {
+      // Passwords do not match, show error message
+      this.messageService.showError('Passwords do not match. Please try again.');
+    }
+
+  }
+
+  // Handle registration form submission
+  onSubmitRegister() {
+    this.submitted = true;
+    if (this.registerForm?.valid) {
+      this.httpService
+        .request('POST', '/register', {
+          firstName: this.registerForm.value.firstName,
+          lastName: this.registerForm.value.lastName,
+          login: this.registerForm.value.login,
+          email: this.registerForm.value.email,
+          password: this.registerForm.value.password,
+          role: this.registerForm.value.role,
+          status: this.registerForm.value.status
+        })
+        .then((response: any) => {
+          this.httpService.setAuthToken(response.token);
+          // this.router.navigate(['/login']);
+          this.messageService.showSuccess('Registration successful! Please log in.');
+          this.registerForm.reset();
+        })
+        .catch((error) => {
+          this.submitted = false;
+        });
+    }
   }
 
   // Navigate to login page

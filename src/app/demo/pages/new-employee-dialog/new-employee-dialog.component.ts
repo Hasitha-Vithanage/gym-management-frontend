@@ -26,7 +26,7 @@ export class NewEmployeeDialogComponent {
   userName;
   dataSource: MatTableDataSource<any>;
   today: Date = new Date();
-  submitDisabled: boolean = true;
+  submitDisabled: boolean;
   selectedImageUrl;
   isFileSelected = false;
 
@@ -67,13 +67,8 @@ export class NewEmployeeDialogComponent {
       imageName: new FormControl(''),
       imageType: new FormControl('')
     });
-
-    // Enable submit button only when form is valid
-    if (this.employeeForm.valid) {
-      this.submitDisabled = false;
-    }
-
   }
+
 
   futureDateValidator(control: AbstractControl) {
     if (!control.value) return null;

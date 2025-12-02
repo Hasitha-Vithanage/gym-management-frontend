@@ -153,7 +153,7 @@
     <section id="request-form" class="request-form" #formSection>
         <h2>Request a Free Trial</h2>
         <p>Sign up now to explore Combat Fitness and see how it can simplify your gym management.</p>
-        <form [formGroup]="requestForm" (ngSubmit)="onSubmit()">
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
             <div class="row">
                 <div class="form-group">
                     <input type="text" placeholder="First Name" formControlName="firstName" required>
@@ -162,14 +162,20 @@
                     <input type="text" placeholder="Last Name" formControlName="lastName" required>
                 </div>
             </div>
-            <div class="form-group">
-                <input type="email" placeholder="Email" formControlName="email" required>
+            <div class="row">
+                <div class="form-group">
+                    <input type="text" placeholder="User Name" formControlName="login" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" placeholder="Email" formControlName="email" required>
+                </div>
             </div>
             <div class="form-group">
-                <input type="text" placeholder="Phone Number" formControlName="phoneNumber" required>
+                <input type="password" placeholder="Password" formControlName="password" required
+                    autocomplete="new-password">
             </div>
             <div class="form-group">
-                <textarea placeholder="Message (optional)" formControlName="message"></textarea>
+                <input type="password" placeholder="Confirm Password" formControlName="confirmPassword" required>
             </div>
             <button type="submit" class="btn-primary">Send Request</button>
         </form>
