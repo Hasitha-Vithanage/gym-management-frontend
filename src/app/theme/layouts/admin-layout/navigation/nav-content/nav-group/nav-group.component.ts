@@ -9,22 +9,28 @@ import { NavCollapseComponent } from '../nav-collapse/nav-collapse.component';
 import { NavItemComponent } from '../nav-item/nav-item.component';
 
 @Component({
-    selector: 'app-nav-group',
-    imports: [CommonModule, SharedModule, NavCollapseComponent, NavItemComponent],
-    templateUrl: './nav-group.component.html',
-    styleUrls: ['./nav-group.component.scss']
+  selector: 'app-nav-group',
+  imports: [CommonModule, SharedModule, NavCollapseComponent, NavItemComponent],
+  templateUrl: './nav-group.component.html',
+  styleUrls: ['./nav-group.component.scss']
 })
 export class NavGroupComponent implements OnInit {
   // public props
 
   // All Version in Group Name
   @Input() item!: NavigationItem;
+  @Input() isFirst: boolean = false;
+  isExpanded: boolean = false;
 
   // Constructor
-  constructor(private location: Location) {}
+  constructor(private location: Location) { }
 
   // Life cycle events
   ngOnInit() {
+
+    if (this.isFirst) {
+      this.isExpanded = true;
+    }
     // at reload time active and trigger link
     let current_url = this.location.path();
     // eslint-disable-next-line
@@ -60,5 +66,11 @@ export class NavGroupComponent implements OnInit {
       }
       last_parent.classList.add('active');
     }
+  }
+
+  
+
+  toggleGroup() {
+    this.isExpanded = !this.isExpanded;
   }
 }
