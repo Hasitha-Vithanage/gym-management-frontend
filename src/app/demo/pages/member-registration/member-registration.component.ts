@@ -101,7 +101,7 @@ export class MemberRegistrationComponent {
 
   // Dialog Box
   readonly dialog = inject(MatDialog);
-  openDialog(): void {
+  openMemberDialog(): void {
     const dialogRef = this.dialog.open(NewMemberDialogComponent, {
       autoFocus: false,
     });

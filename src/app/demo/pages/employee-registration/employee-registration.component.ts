@@ -101,7 +101,7 @@ export class EmployeeRegistrationComponent implements OnInit {
 
   // Dialog Box
   readonly dialog = inject(MatDialog);
-  openDialog(): void {
+  openEmployeeDialog(): void {
     const dialogRef = this.dialog.open(NewEmployeeDialogComponent, {
       autoFocus: false,
     });

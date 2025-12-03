@@ -1,7 +1,8 @@
 <div class="row">
+  <h2 class="form-title"><img src="../../../../assets/images/icon/dashboard-icon.png" style="margin-right: 12px; height: 25px; width: 25px;">Dashboard</h2>
   <div class="col-md-6 col-xl-3">
     <app-card [showHeader]="false" blockClass="dashboard-card">
-      <h6 class="mb-2 f-w-400 text-muted">Total Employees</h6>
+      <h6 class="mb-2 f-w-400 text-muted">Total Employees<img src="../../../../assets/images/icon/employees.png" style="margin-left: 10px;"></h6>
       <h4 class="mb-3">
         {{ employeeCount }}
         <!-- <span class="badge bg-light-primary border border-primary ">
@@ -18,7 +19,7 @@
   </div>
   <div class="col-md-6 col-xl-3">
     <app-card [showHeader]="false" blockClass="dashboard-card">
-      <h6 class="mb-2 f-w-400 text-muted">Total Members</h6>
+      <h6 class="mb-2 f-w-400 text-muted">Total Members <img src="../../../../assets/images/icon/members.png" style="margin-left: 10px;"></h6>
       <h4 class="mb-3">
         {{ memberCount }}
         <!-- <span class="badge bg-light-primary border border-primary ">
@@ -35,7 +36,7 @@
   </div>
   <div class="col-md-6 col-xl-3">
     <app-card [showHeader]="false" blockClass="dashboard-card">
-      <h6 class="mb-2 f-w-400 text-muted">Total Suppliers</h6>
+      <h6 class="mb-2 f-w-400 text-muted">Total Suppliers <img src="../../../../assets/images/icon/suppliers.png" style="margin-left: 10px;"></h6>
       <h4 class="mb-3">
         {{ supplierCount }}
         <!-- <span class="badge bg-light-primary border border-primary ">
@@ -52,7 +53,7 @@
   </div>
   <div class="col-md-6 col-xl-3">
     <app-card [showHeader]="false" blockClass="dashboard-card">
-      <h6 class="mb-2 f-w-400 text-muted">New Members This Month</h6>
+      <h6 class="mb-2 f-w-400 text-muted">New Members This Month <img src="../../../../assets/images/icon/month.png" style="margin-left: 10px;"></h6>
       <h4 class="mb-3">
         {{ newMembersInThisMonth }}
         <!-- <span class="badge bg-light-primary border border-primary ">
@@ -83,7 +84,7 @@
         <button class="btn btn-outline-dark btn-sm" (click)="navigateToSection('/pages/member')">+ Member</button>
         <button class="btn btn-outline-dark btn-sm" (click)="navigateToSection('/pages/employee')">+ Employee</button>
         <button class="btn btn-outline-dark btn-sm" (click)="navigateToSection('/pages/mark-attendance')">Mark Attendance</button>
-        <button class="btn btn-outline-dark btn-sm" (click)="navigateToSection('/pages/supplement-inventory-management')">Add Product</button>
+        <button class="btn btn-outline-dark btn-sm" (click)="navigateToSection('/pages/supplement-inventory-management')">+ Add Product</button>
       </div>
     </div>
   </div>
