@@ -1,117 +1,118 @@
-<mat-toolbar color="primary">
-  <span>System Privileges</span>
-  <span class="example-spacer"></span>
-</mat-toolbar>
-<br />
+<div class="privilege-container">
+  <!-- Title -->
+  <h2 class="form-title">
+    <img src="../../../../assets/images/icon/system-privileges-dark-icon.png" style="margin-right: 5px;"
+      class="title-icon" />
+    System Privileges
+  </h2>
 
-<div class="row">
-  <div class="col-md-5 h-80">
-    <mat-toolbar style="border: 1px solid blue" color="primary">
-      <span>Available Privileges</span>
-      <span class="example-spacer"></span>
-    </mat-toolbar>
+  <div class="privilege-content">
 
-    <!-- Source Table -->
+    <!-- Available Privileges Table -->
+    <div class="table-card">
+      <mat-toolbar class="table-header">
+        <span>Available Privileges</span>
+      </mat-toolbar>
 
-    <table mat-table [dataSource]="sourceTableData" class="mat-elevation-z8" #sourceSort="matSort" matSort>
-      <!-- Checkbox Column -->
-      <ng-container matColumnDef="sourceSelect">
-        <th mat-header-cell *matHeaderCellDef>
-          <mat-checkbox
-            (change)="$event ? toggleAllSourceRows() : null"
-            [checked]="sourceSelection.hasValue() && isAllSourceSelected()"
-            [indeterminate]="sourceSelection.hasValue() && !isAllSourceSelected()"
-            [aria-label]="sourceCheckboxLabel()"
-          ></mat-checkbox>
-        </th>
-        <td mat-cell *matCellDef="let row">
-          <mat-checkbox
-            (click)="$event.stopPropagation(); onSourceTableDataSelect(row)"
-            (change)="$event ? sourceSelection.toggle(row) : null"
-            [checked]="sourceSelection.isSelected(row)"
-            [aria-label]="sourceCheckboxLabel(row)"
-          ></mat-checkbox>
-        </td>
-      </ng-container>
+      <div class="table-wrapper">
+        <table mat-table [dataSource]="sourceTableData" #sourceSort="matSort" matSort class="priv-table ">
+          <!-- Checkbox Column -->
+          <ng-container matColumnDef="sourceSelect">
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-checkbox (change)="$event ? toggleAllSourceRows() : null"
+                [checked]="sourceSelection.hasValue() && isAllSourceSelected()"
+                [indeterminate]="sourceSelection.hasValue() && !isAllSourceSelected()"
+                [aria-label]="sourceCheckboxLabel()"></mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let row">
+              <mat-checkbox (click)="$event.stopPropagation(); onSourceTableDataSelect(row)"
+                (change)="$event ? sourceSelection.toggle(row) : null" [checked]="sourceSelection.isSelected(row)"
+                [aria-label]="sourceCheckboxLabel(row)"></mat-checkbox>
+            </td>
+          </ng-container>
 
-      <!-- Id Column -->
-      <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Id</th>
-        <td mat-cell *matCellDef="let element">{{ element.id }}</td>
-      </ng-container>
+          <!-- ID Column -->
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Id</th>
+            <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+          </ng-container>
 
-      <!-- Dwcription Column -->
-      <ng-container matColumnDef="description">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
-        <td mat-cell *matCellDef="let element">{{ element.description }}</td>
-      </ng-container>
+          <!-- Description -->
+          <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+            <td mat-cell *matCellDef="let element">{{ element.description }}</td>
+          </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="sourceDisplayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: sourceDisplayedColumns" (click)="sourceSelection.toggle(row)"></tr>
-    </table>
-    <mat-paginator #sourcePaginator="matPaginator" [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
-  </div>
+          <tr mat-header-row *matHeaderRowDef="sourceDisplayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: sourceDisplayedColumns" (click)="sourceSelection.toggle(row)"></tr>
+        </table>
 
-  <div class="col-sm-1">
-    <div class="row p-1">
-      <button type="button" class="btn btn-primary" (click)="moveFromSourceToTarget()">></button>
+        <mat-paginator #sourcePaginator="matPaginator" [pageSizeOptions]="[5, 10, 25, 100]"
+          aria-label="Select page"></mat-paginator>
+      </div>
     </div>
-    <div class="row p-1">
-      <button type="button" class="btn btn-primary" (click)="moveFromTargetToSource()"><</button>
+
+    <!-- Buttons (Move) -->
+    <div class="transfer-buttons">
+      <button type="button" class="btn btn-dark move-btn" (click)="moveFromSourceToTarget()">></button>
+      <button type="button" class="btn btn-dark move-btn" (click)="moveFromTargetToSource()"><</button>
+    </div>
+
+    <!-- Assigned Privileges Table -->
+    <div class="table-card">
+      <mat-toolbar class="table-header">
+        <span>Assigned Privileges</span>
+      </mat-toolbar>
+
+      <div class="table-wrapper">
+        <table mat-table [dataSource]="targetTableData" #targetSort="matSort" matSort class="priv-table">
+          <!-- Checkbox Column -->
+          <ng-container matColumnDef="targetSelect">
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-checkbox (change)="$event ? toggleAllTargetRows() : null"
+                [checked]="targetSelection.hasValue() && isAllTargetSelected()"
+                [indeterminate]="targetSelection.hasValue() && !isAllTargetSelected()"></mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let row">
+              <mat-checkbox (click)="$event.stopPropagation(); onTargetTableDataSelect(row)"
+                (change)="$event ? targetSelection.toggle(row) : null"
+                [checked]="targetSelection.isSelected(row)"></mat-checkbox>
+            </td>
+          </ng-container>
+
+          <!-- ID Column -->
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Id</th>
+            <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+          </ng-container>
+
+          <!-- Description Column -->
+          <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+            <td mat-cell *matCellDef="let element">{{ element.description }}</td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="targetDisplayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: targetDisplayedColumns" (click)="targetSelection.toggle(row)"></tr>
+        </table>
+
+        <mat-paginator #targetPaginator="matPaginator" [pageSizeOptions]="[5, 10, 25, 100]"
+          aria-label="Select page"></mat-paginator>
+      </div>
     </div>
   </div>
 
-  <div class="col-md-6 h-80">
-    <mat-toolbar style="border: 1px solid blue" color="primary">
-      <span>Assigned Privileges</span>
-      <span class="example-spacer"></span>
-    </mat-toolbar>
+  <!-- Save / Reset -->
+  <!-- <div class="action-buttons">
+    <button type="button" class="btn save-btn" >Save</button>
+    <button type="button" class="btn reset-btn" >Reset</button>
+  </div> -->
 
-    <!-- Target Table -->
+  <!-- Buttons -->
+  <div class="action-buttons">
+    <button type="submit" class="register-button half-width" (click)="saveData()">Save</button>
 
-    <table mat-table [dataSource]="targetTableData" class="mat-elevation-z8" #targeteSort="matSort" matSort>
-      <!-- Checkbox Column -->
-      <ng-container matColumnDef="targetSelect">
-        <th mat-header-cell *matHeaderCellDef>
-          <mat-checkbox
-            (change)="$event ? toggleAllTargetRows() : null"
-            [checked]="targetSelection.hasValue() && isAllTargetSelected()"
-            [indeterminate]="targetSelection.hasValue() && !isAllTargetSelected()"
-            [aria-label]="targetCheckboxLabel()"
-          ></mat-checkbox>
-        </th>
-        <td mat-cell *matCellDef="let row">
-          <mat-checkbox
-            (click)="$event.stopPropagation(); onTargetTableDataSelect(row)"
-            (change)="$event ? targetSelection.toggle(row) : null"
-            [checked]="targetSelection.isSelected(row)"
-            [aria-label]="targetCheckboxLabel(row)"
-          ></mat-checkbox>
-        </td>
-      </ng-container>
-
-      <!-- Position Column -->
-      <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Id</th>
-        <td mat-cell *matCellDef="let element">{{ element.id }}</td>
-      </ng-container>
-
-      <!-- Name Column -->
-      <ng-container matColumnDef="description">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
-        <td mat-cell *matCellDef="let element">{{ element.description }}</td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="targetDisplayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: targetDisplayedColumns" (click)="targetSelection.toggle(row)"></tr>
-    </table>
-    <mat-paginator #targetPaginator="matPaginator" [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+    <button type="reset" class="reset-button half-width" (click)="resetData()">Reset</button>
   </div>
-</div>
 
-<div class="container w-100 m-3">
-  <div class="btn-group w-100" role="group">
-    <button type="button" class="btn btn-success m-1" (click)="saveData()">Save</button>
-    <button type="button" class="btn btn-danger m-1" (click)="resetData()">Reset</button>
-  </div>
 </div>

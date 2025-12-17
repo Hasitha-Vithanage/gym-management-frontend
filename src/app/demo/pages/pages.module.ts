@@ -62,6 +62,7 @@ import { MemberLoginDialogComponent } from './member-login-dialog/member-login-d
 import { OrderDetailsComponent } from './order-details/order-details.component';
 import { MonthlyAttendanceComponent } from './monthly-attendance/monthly-attendance.component';
 import { MonthlySalesComponent } from './monthly-sales/monthly-sales.component';
+import { ForYourApprovalComponent } from './for-your-approval/for-your-approval.component';
 // icons
 
 export const MY_DATE_FORMATS = {
@@ -132,7 +133,8 @@ export const MY_DATE_FORMATS = {
     MemberLoginDialogComponent,
     OrderDetailsComponent,
     MonthlyAttendanceComponent,
-    MonthlySalesComponent
+    MonthlySalesComponent,
+    ForYourApprovalComponent
   ],
   imports: [
     CommonModule,

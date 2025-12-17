@@ -26,4 +26,19 @@ export class UserProfileService {
     // sending GET request to the server
     return this.http.get(requestUrl, { headers: headers });
   }
+
+  getAllUsers() {
+    const requestUrl = environment.baseUrl + '/get-all-users';
+
+    let headers = {};
+
+    if (this.httpService.getAuthToken() !== null) {
+      headers = {
+        Authorization: 'Bearer ' + this.httpService.getAuthToken()
+      };
+    }
+
+    // sending GET request to the server
+    return this.http.get(requestUrl, { headers: headers });
+  }
 }

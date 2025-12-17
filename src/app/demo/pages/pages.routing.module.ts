@@ -37,6 +37,7 @@ import { PaymentsComponent } from './payments/payments.component';
 import { OrderDetailsComponent } from './order-details/order-details.component';
 import { MonthlyAttendanceComponent } from './monthly-attendance/monthly-attendance.component';
 import { MonthlySalesComponent } from './monthly-sales/monthly-sales.component';
+import { ForYourApprovalComponent } from './for-your-approval/for-your-approval.component';
 
 export const PagesRoutes: Routes = [
   {
@@ -54,6 +55,10 @@ export const PagesRoutes: Routes = [
   {
     path: 'employee',
     component: EmployeeRegistrationComponent
+  },
+  {
+    path: 'for-your-approval',
+    component: ForYourApprovalComponent
   },
   {
     path: 'member',
@@ -135,19 +140,64 @@ export const PagesRoutes: Routes = [
     path: 'charts',
     component: GymChartsComponent
   },
-  { path: 'intermediate-workout-plan', component: IntermediateWorkoutPlanComponent },
-  { path: 'workout-plan-upload', component: WorkoutPlanUploadComponent },
-  { path: 'my-workout-plan', component: MyWorkoutPlanComponent },
-  { path: 'user-profile', component: UserProfileComponent },
-  { path: 'mark-attendance', component: MarkAttendanceComponent },
-  { path: 'all-feedbacks', component: AllFeedbacksComponent },
-  { path: 'upload-meal-plan', component: UploadMealPlanComponent },
-  { path: 'add-class', component: AddClassComponent },
-  { path: 'book-class', component: BookClassComponent },
-  { path: 'book-class-submit/:id', component: BookClassSubmitComponent },
-  { path: 'membership-categories', component: MembershipCategoriesComponent },
-  { path: 'payments', component: PaymentsComponent },
-  { path: 'order-details/:id', component: OrderDetailsComponent },
-  { path: 'reports/monthly-attendance', component: MonthlyAttendanceComponent },
-  { path: 'reports/monthly-sales', component: MonthlySalesComponent }
+  {
+    path: 'intermediate-workout-plan',
+    component: IntermediateWorkoutPlanComponent
+  },
+  {
+    path: 'workout-plan-upload',
+    component: WorkoutPlanUploadComponent
+  },
+  {
+    path: 'my-workout-plan',
+    component: MyWorkoutPlanComponent
+  },
+  {
+    path: 'user-profile',
+    component: UserProfileComponent
+  },
+  {
+    path: 'mark-attendance',
+    component: MarkAttendanceComponent
+  },
+  {
+    path: 'all-feedbacks',
+    component: AllFeedbacksComponent
+  },
+  {
+    path: 'upload-meal-plan',
+    component: UploadMealPlanComponent
+  },
+  {
+    path: 'add-class',
+    component: AddClassComponent
+  },
+  {
+    path: 'book-class',
+    component: BookClassComponent
+  },
+  {
+    path: 'book-class-submit/:id',
+    component: BookClassSubmitComponent
+  },
+  {
+    path: 'membership-categories',
+    component: MembershipCategoriesComponent
+  },
+  {
+    path: 'payments',
+    component: PaymentsComponent
+  },
+  {
+    path: 'order-details/:id',
+    component: OrderDetailsComponent
+  },
+  {
+    path: 'reports/monthly-attendance',
+    component: MonthlyAttendanceComponent
+  },
+  {
+    path: 'reports/monthly-sales',
+    component: MonthlySalesComponent
+  },
 ];

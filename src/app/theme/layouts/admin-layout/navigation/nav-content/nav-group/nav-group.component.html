@@ -1,6 +1,7 @@
 <li class="nav-item coded-menu-caption" style="color: #fff;">
   <label (click)="toggleGroup()" class="menu-label">
-    <span class="menu-title">{{ item.title }}</span>
+    
+    <span class="menu-title"><img src={{item.icon}} style="margin-right: 5px; width:16px; height:16px;">{{ item.title }}</span>
     <!-- <span class="menu-arrow">{{ isExpanded ? '▼' : '▶' }}</span> -->
     <img class="menu-arrow" src="../../../../assets/images/icon/{{isExpanded ? 'collapse-light.png' : 'expand-light.png'}}">
   </label>

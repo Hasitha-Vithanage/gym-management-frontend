@@ -1,31 +1,141 @@
-section {
-    display: table;
-  }
-  
-  .example-label {
-    display: table-cell;
-    font-size: 14px;
-    margin-left: 8px;
-    min-width: 120px;
-  }
-  
-  .example-button-row {
-    display: table-cell;
-    max-width: 600px;
-  }
-  
-  .example-button-row .mat-mdc-button-base {
-    margin: 8px 8px 8px 0;
-  }
-  
-  .example-flex-container {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-  }
-  
-  .example-button-container {
-    display: flex;
-    justify-content: center;
-    width: 120px;
-  }
+/* Main Container */
+.privilege-container {
+  width: 100%;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Title */
+.form-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.title-icon {
+  width: 26px;
+  height: 26px;
+}
+
+/* Flex Layout */
+.privilege-content {
+  display: flex;
+  width: 100%;
+  gap: 20px;
+  align-items: center;
+}
+
+/* Table Cards */
+.table-card {
+  flex: 1;
+  background: #fff;
+  border-radius: 12px;
+  padding: 0;
+  border: 1px solid #e1e1e1;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+/* Toolbar */
+.table-header {
+  background: #f8f8f8;
+  border-bottom: 1px solid #e5e5e5;
+  border-radius: 12px 12px 0 0 !important;
+  height: 48px;
+}
+
+/* Table Wrapper */
+.table-wrapper {
+  padding: 12px;
+  overflow-x: auto;
+}
+
+/* Table Styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-height: 500px;
+}
+
+th {
+  background: #f5f5f5;
+  font-weight: 600;
+  color: #444;
+  padding: 10px;
+}
+
+td {
+  padding: 10px;
+}
+
+.mat-row:hover {
+  background: #fafafa;
+}
+
+/* Move Buttons */
+.transfer-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+}
+
+.move-btn {
+  width: 45px;
+  height: 40px;
+  border-radius: 8px;
+  background: #222 !important;
+  color: #fff !important;
+  font-size: 16px;
+}
+
+/* Save/Reset Buttons */
+.action-buttons {
+  margin-top: 20px;
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+/* Buttons */
+button {
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 20px;
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.register-button {
+  background-color: #222;
+  color: #fff;
+}
+
+.register-button:hover {
+  background-color: #444;
+}
+
+.register-button:disabled {
+  background-color: #a1a1aa;
+  cursor: not-allowed;
+}
+
+.reset-button {
+  background-color: #f3f4f6;
+  color: #222;
+}
+
+.reset-button:hover {
+  background-color: #e5e7eb;
+}

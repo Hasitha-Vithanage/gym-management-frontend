@@ -3,11 +3,12 @@
     <a [target]="item.target ? '_blank' : '_self'" [routerLink]="[item.url]" (click)="closeOtherMenu($event)">
       @if (item.icon) {
         <span class="coded-micon">
-          <i antIcon type="{{ item.icon }}" theme="outline"></i>
+          <!-- <i antIcon type="{{ item.icon }}" theme="outline"></i> -->
+           
         </span>
       }
       @if (item.icon) {
-        <span class="coded-mtext">{{ item.title }}</span>
+        <span class="coded-mtext"><img src={{item.icon}} style="margin-right: 8px; width:16px; height:16px;">{{ item.title }}</span>
       } @else {
         {{ item.title }}
       }
