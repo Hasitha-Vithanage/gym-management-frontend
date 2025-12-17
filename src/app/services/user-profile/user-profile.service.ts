@@ -41,4 +41,19 @@ export class UserProfileService {
     // sending GET request to the server
     return this.http.get(requestUrl, { headers: headers });
   }
+
+  approveUser(userId: any) {
+    const requestUrl = environment.baseUrl + '/approve-user/' + userId.toString();
+
+    let headers = {};
+
+    if (this.httpService.getAuthToken() !== null) {
+      headers = {
+        Authorization: 'Bearer ' + this.httpService.getAuthToken()
+      };
+    }
+
+    // sending GET request to the server
+    return this.http.put(requestUrl, { headers: headers });
+  }
 }

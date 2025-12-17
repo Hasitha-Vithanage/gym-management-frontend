@@ -39,7 +39,7 @@ const ELEMENT_DATA: any[] = [
 export class EmployeeRegistrationComponent implements OnInit {
   /* creating form group variable */
   employeeForm: FormGroup;
-  
+
 
   displayedColumns: string[] = [
     'employeeId',
@@ -57,8 +57,12 @@ export class EmployeeRegistrationComponent implements OnInit {
     'actions'
   ];
   dataSource: MatTableDataSource<any>;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
 
   registerButtonLabel = 'Register';
   mode = 'add';
@@ -118,7 +122,7 @@ export class EmployeeRegistrationComponent implements OnInit {
   // implementation of populateData function
   public populateData(): void {
     try {
-      
+
       this.employeeService.getData().subscribe({
         next: (dataList: any[]) => {
           if (dataList.length <= 0) {

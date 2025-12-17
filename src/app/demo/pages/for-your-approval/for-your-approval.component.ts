@@ -12,6 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { QrCodeComponent } from '../qr-container/qr-code/qr-code.component';
 import { UserProfileService } from 'src/app/services/user-profile/user-profile.service';
+import { title } from 'process';
 
 @Component({
   selector: 'app-for-your-approval',
@@ -20,12 +21,6 @@ import { UserProfileService } from 'src/app/services/user-profile/user-profile.s
   styleUrl: './for-your-approval.component.scss'
 })
 export class ForYourApprovalComponent {
-
-    @ViewChild(MatPaginator) paginator: MatPaginator;
-
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-  }
 
   displayedColumns: string[] = [
     '#',
@@ -40,8 +35,12 @@ export class ForYourApprovalComponent {
   ];
 
   dataSource: MatTableDataSource<any>;
-  // @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
 
   registerButtonLabel = 'Register';
   mode = 'add';
@@ -121,21 +120,22 @@ export class ForYourApprovalComponent {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '350px',
       data: {
-        message: `Are you sure you want to delete ${data.firstName} ${data.lastName}?`
+        title: 'Approve User Request',
+        message: `Are you sure you want to approve ${data.firstName} ${data.lastName}?`
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         const id = data.id;
-        this.employeeService.deleteData(id).subscribe({
+        this.userProfileService.approveUser(id).subscribe({
           next: () => {
             const index = this.dataSource.data.findIndex(item => item.id === id);
             if (index !== -1) {
               this.dataSource.data.splice(index, 1);
             }
             this.dataSource = new MatTableDataSource(this.dataSource.data);
-            this.messageService.showSuccess('Record deleted successfully!');
+            this.messageService.showSuccess('User approved successfully!');
           },
           error: (error) => {
             this.messageService.showError(error);
@@ -156,9 +156,10 @@ export class ForYourApprovalComponent {
           }
 
           console.log("Users: ", dataList);
-          // const activeEmployees = dataList.filter(emp => !emp.isDeleted);
-          // this.dataSource = new MatTableDataSource(activeEmployees);
-          this.dataSource = new MatTableDataSource(dataList);
+
+          // getting only approval pending users
+          const pendingUsers = dataList.filter(user => user.status === 'APPROVAL PENDING');
+          this.dataSource = new MatTableDataSource(pendingUsers);
 
           // sorting and pagination
           this.dataSource.paginator = this.paginator;

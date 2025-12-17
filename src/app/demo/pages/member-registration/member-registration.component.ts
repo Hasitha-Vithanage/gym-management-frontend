@@ -35,8 +35,12 @@ export class MemberRegistrationComponent {
   selectedImageUrl;
   isFileSelected = false;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
 
   displayedColumns: string[] = ['memberNo', 'firstName', 'lastName', 'nic', 'dateOfBirth', 'address', 'phoneNumber', 'email', 'emergencyContactNumber', 'bloodType',
     'joinedDate', 'gender', 'injuries', 'membershipCategory', 'actions'];
@@ -133,7 +137,7 @@ export class MemberRegistrationComponent {
     });
   }
 
-public deleteData(data: any): void {
+  public deleteData(data: any): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '350px',
       data: {
