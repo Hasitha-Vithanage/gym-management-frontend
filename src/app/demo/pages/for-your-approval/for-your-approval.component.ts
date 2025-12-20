@@ -136,6 +136,7 @@ export class ForYourApprovalComponent {
             }
             this.dataSource = new MatTableDataSource(this.dataSource.data);
             this.messageService.showSuccess('User approved successfully!');
+            this.populateData();
           },
           error: (error) => {
             this.messageService.showError(error);
@@ -200,6 +201,7 @@ export class ForYourApprovalComponent {
             }
             this.dataSource = new MatTableDataSource(this.dataSource.data);
             this.messageService.showSuccess('User rejected successfully!');
+            this.populateData();
           },
           error: (error) => {
             this.messageService.showError(error);
