@@ -39,17 +39,19 @@ export class LandingComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    const date = new Date();
     this.registerForm = this.fb.group({
       firstName: [''],
       lastName: [''],
       login: [''],
       email: [''],
       password: [''],
-      role: ['MEMBER'],
-      status: ['APPROVAL PENDING'],
-      confirmPassword: ['']
+      role: ['Member'],
+      status: ['Approval Pending'],
+      confirmPassword: [''],
+      requestedDate: [date]
     });
-    this.startImageLoop();
+    this.startImageLoop();    
   }
 
   ngAfterViewInit() {
@@ -123,7 +125,8 @@ export class LandingComponent implements OnInit {
           email: this.registerForm.value.email,
           password: this.registerForm.value.password,
           role: this.registerForm.value.role,
-          status: this.registerForm.value.status
+          status: this.registerForm.value.status,
+          requestedDate: this.registerForm.value.requestedDate,
         })
         .then((response: any) => {
           this.httpService.setAuthToken(response.token);

@@ -28,8 +28,8 @@ export class ForYourApprovalComponent {
     'lastName',
     'role',
     'requestedDate',
-    'approvedDate',
-    'approvedBy',
+    // 'approvedDate',
+    // 'approvedBy',
     'status',
     'actions'
   ];
@@ -116,12 +116,12 @@ export class ForYourApprovalComponent {
     });
   }
 
-  public deleteData(data: any): void {
+  public approveRequest(data: any): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '350px',
       data: {
         title: 'Approve User Request',
-        message: `Are you sure you want to approve ${data.firstName} ${data.lastName}?`
+        message: `Are you sure you want to approve ${data.firstName} ${data.lastName} request?`
       }
     });
 
@@ -158,7 +158,7 @@ export class ForYourApprovalComponent {
           console.log("Users: ", dataList);
 
           // getting only approval pending users
-          const pendingUsers = dataList.filter(user => user.status === 'APPROVAL PENDING');
+          const pendingUsers = dataList.filter(user => user.status === 'Approval Pending' && user.role === 'Member');
           this.dataSource = new MatTableDataSource(pendingUsers);
 
           // sorting and pagination
@@ -180,11 +180,32 @@ export class ForYourApprovalComponent {
     this.populateData();
   }
 
-  public viewId(data: any) {
-    console.log(data);
+  public rejectRequest(data: any): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '350px',
+      data: {
+        title: 'Reject User Request',
+        message: `Are you sure you want to reject ${data.firstName} ${data.lastName} request?`
+      }
+    });
 
-    this.dialog.open(QrCodeComponent, {
-      data: { value: data }
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const id = data.id;
+        this.userProfileService.rejectUser(id).subscribe({
+          next: () => {
+            const index = this.dataSource.data.findIndex(item => item.id === id);
+            if (index !== -1) {
+              this.dataSource.data.splice(index, 1);
+            }
+            this.dataSource = new MatTableDataSource(this.dataSource.data);
+            this.messageService.showSuccess('User rejected successfully!');
+          },
+          error: (error) => {
+            this.messageService.showError(error);
+          }
+        });
+      }
     });
   }
 }

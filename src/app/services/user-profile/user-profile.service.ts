@@ -56,4 +56,19 @@ export class UserProfileService {
     // sending GET request to the server
     return this.http.put(requestUrl, { headers: headers });
   }
+
+  rejectUser(userId: any) {
+    const requestUrl = environment.baseUrl + '/reject-user/' + userId.toString();
+
+    let headers = {};
+
+    if (this.httpService.getAuthToken() !== null) {
+      headers = {
+        Authorization: 'Bearer ' + this.httpService.getAuthToken()
+      };
+    }
+
+    // sending GET request to the server
+    return this.http.put(requestUrl, { headers: headers });
+  }
 }
