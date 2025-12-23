@@ -27,6 +27,7 @@
         </button>
       </div>
     </div>
+    
     <div class="table-wrapper">
       <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
         <!-- employeeId Column -->
@@ -127,7 +128,7 @@
 
       <!-- No data row -->
       <ng-container *ngIf="dataSource.data.length === 0">
-        <ng-container matColumnDef="noData">
+        <ng-container matColumnDef="noData" class="no-data">
           <td mat-cell [attr.colspan]="displayedColumns.length" class="no-data">No records found</td>
         </ng-container>
 

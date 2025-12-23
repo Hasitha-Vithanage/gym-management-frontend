@@ -1,87 +1,199 @@
-.example-spacer {
-    flex: 1 1 auto;
-  }
-  
-  .main-body {
-    padding-top: 20px;
-    margin: 0 auto;
-    max-width: 1348px;
-    mat-form-field {
-      width: 100%;
-    }
-  }
-  
-  .relative {
-    position: relative;
-  }
+/* Container */
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 16px;
+}
 
-  .action {
-    display: flex;
-    gap: 5px;
-  }
+/* Title */
+.form-title {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #333;
+}
 
-  .dropdown-content {
-    position: absolute;
-    background-color: aliceblue;
-    min-width: 221px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-    border-radius: 9px;
-    padding: 8px;
-    box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.302), 0 1px 3px 1px rgba(60, 64, 67,0.1);
-  }
+/* Toolbar (Left + Right) */
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
 
-  ul {
-    list-style: none;
-  }
+/* Add New Button */
+.add-new .new-button {
+  background: #222;
+  color: white;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
 
-  .contextmenu {
-    position: absolute;
-    border: 3;
-    border-style: solid;
-    border-color: #000;
-  }
+/* Search + Refresh Wrapper */
+.table-filter {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
 
-  .menu {
-    display: flex;
-    flex-direction: column;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 10px 20px rgb(64 64 64  %5)
-  }
+/* Search Bar */
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 0 12px;
+  height: 38px;
+  width: 200px;
+}
 
-  .menu > li > a {
-    font: inherit;
-    border: 0;
-    padding: 10px 30px 10px 15px;
-    width: 100%;
-    display: flex;
-    cursor: pointer;
-    align-items: center;
-    position: relative;
-    text-decoration: unset;
-    color: #000;
-    font-weight: 500;
-    transition: 0.5s linear;
-    -webkit-transition: 0.5s linear;
-    -moz-transition: 0.5s linear;
-    -ms-transition: 0.5s linear;
-    -o-transition: 0.5s linear;
-  }
+.search-bar mat-icon {
+  font-size: 20px;
+  color: #666;
+}
 
-  .menu > li > a:hover {
-    background: #b1b3b6;
-    color: #4b00ff;
-  }
+.search-bar input {
+  border: none;
+  outline: none;
+  flex: 1;
+  font-size: 14px;
+  color: #333;
+}
 
-  .menu > li > a > i {
-    padding-right: 10px;
-  }
+/* Refresh Button */
+.refresh-button {
+  height: 38px !important;
+  width: 38px !important;
+  border-radius: 8px !important;
+  border: 1px solid #ccc !important;
+  background: #fff !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  padding: 0 !important;
+}
 
-  .menu > li.trash > a:hover {
-    color: red;
-  }
+.refresh-button mat-icon {
+  font-size: 22px;
+  color: #444;
+}
 
-  .highlight{
-    background: #DCDCDC; /* green */
-  }
+/* Table Wrapper */
+.table-wrapper {
+  overflow-x: auto;
+  border-radius: 10px;
+}
+
+/* Table Styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  font-weight: 600;
+  background: #f5f5f5;
+  color: #444;
+  white-space: nowrap;
+}
+
+td {
+  white-space: nowrap;
+}
+
+/* Sticky Action Column */
+.mat-column-actions {
+  position: sticky !important;
+  right: 0;
+  background: white;
+  z-index: 10;
+  border-left: 1px solid #ddd;
+}
+
+/* Action Buttons */
+.action-column {
+  display: flex;
+  // gap: 2px;  
+}
+
+.gray-icon-btn {
+  color: #555 !important;
+}
+
+.gray-icon-btn:hover {
+  background: #eee;
+  border-radius: 8px;
+}
+
+/* Context Menu Container */
+.menu {
+  min-width: 220px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  padding: 6px 0;
+  margin: 0;
+  list-style: none;
+  border: 1px solid #e0e0e0;
+}
+
+/* Menu Items */
+.menu li {
+  cursor: pointer;
+}
+
+/* Menu Item Link */
+.menu li a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  font-size: 14px;
+  color: #333;
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+/* Icon Styling */
+.menu li a i {
+  font-size: 14px;
+  color: #666;
+  width: 18px;
+  text-align: center;
+}
+
+/* Hover State */
+.menu li:hover a {
+  background: #f5f5f5;
+  color: #000;
+}
+
+/* Active / Click Feedback */
+.menu li:active a {
+  background: #eaeaea;
+}
+
+/* Optional: Divider support if you add more items later */
+.menu li.divider {
+  height: 1px;
+  margin: 6px 0;
+  background: #e0e0e0;
+  pointer-events: none;
+}
+
+/* Pagination */
+.pagination {
+  margin-top: 12px;
+}
+
+.no-data {
+  text-align: center;
+  padding: 16px;
+  font-style: italic;
+  color: #777;
+}

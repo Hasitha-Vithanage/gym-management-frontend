@@ -33,7 +33,7 @@ export class PrivilegeGroupsComponent implements OnInit {
     private _privilegesService: PrivilegesService, // private _empService: EmployeeService, // private _coreService: CoreService
     private _messageService: MessageServiceService,
     private _authService: AuthServiceService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     try {
@@ -50,6 +50,10 @@ export class PrivilegeGroupsComponent implements OnInit {
     }
     this.getPrivilegeGroupList();
     this.closeContextMenu();
+  }
+
+  public refreshData() {
+    this.getPrivilegeGroupList();
   }
 
   public setPrivilegesGroupList(groupListDetails: any[]) {

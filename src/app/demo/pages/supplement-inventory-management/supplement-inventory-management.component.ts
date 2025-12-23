@@ -6,6 +6,7 @@ import { NewSupplementServiceService } from 'src/app/services/new-supplement/new
 import { MatPaginator } from '@angular/material/paginator';
 import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { MatSort } from '@angular/material/sort';
 
 const ELEMENT_DATA: any[] = [
   {
@@ -58,7 +59,12 @@ export class SupplementInventoryManagementComponent {
 
   dataSource = new MatTableDataSource<any>;
 
+  @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
 
   constructor(
     private newSupplementService: NewSupplementServiceService,
@@ -83,10 +89,6 @@ export class SupplementInventoryManagementComponent {
       this.dataSource.paginator = this.paginator;
       console.log("Get Data Response: ", response);
     });
-  }
-
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
   }
 
   /* table filter function */

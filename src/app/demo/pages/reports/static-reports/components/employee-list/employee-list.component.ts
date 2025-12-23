@@ -28,11 +28,16 @@ export class EmployeeListComponent implements OnInit {
     'address',
     'email',
     'phoneNumber',
-    'emergencyContactNumber'
+    'emergencyContactNumber',
   ];
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+ 
+    ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
+  
   filteredEmployees: any[] = [];
 
   constructor(

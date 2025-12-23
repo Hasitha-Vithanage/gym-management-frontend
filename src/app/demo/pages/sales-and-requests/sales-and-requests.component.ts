@@ -30,15 +30,17 @@ viewOrder(order: any) {
 orderItemDisplayedColumns: string[] = ['orderedBy', 'productName', 'totalPrice', 'date', 'actions'];
 
   dataSource: MatTableDataSource<any>;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
+  
   filteredEmployees: any[] = [];
 
   constructor(
-    private employeeService: EmpolyeeServiceService,
     private supplementOrdersService: SupplementOrdersService,
-    private messageService: MessageServiceService,
-    private employeePrintServiceService: EmployeePrintServiceService,
     private router: Router
   ) { }
 

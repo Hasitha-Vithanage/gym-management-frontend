@@ -12,8 +12,8 @@ import { MemberPrintService } from 'src/app/services/print-service/member-print.
   templateUrl: './member-list.component.html',
   styleUrl: './member-list.component.scss'
 })
-export class MemberListComponent implements OnInit{
-displayedColumns: string[] = [
+export class MemberListComponent implements OnInit {
+  displayedColumns: string[] = [
     'employeeId',
     // 'jobTitle',
     // 'dateOfJoining',
@@ -30,13 +30,18 @@ displayedColumns: string[] = [
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
+
   filteredMembers: any[] = [];
 
   constructor(
     private memberService: MemberServiceService,
     private messageService: MessageServiceService,
     private memberPrintService: MemberPrintService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.populateData();

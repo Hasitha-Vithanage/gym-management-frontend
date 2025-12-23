@@ -35,6 +35,11 @@ export class RatingsAndFeedbackComponent {
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+ 
+    ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
+  
   readonly dialog = inject(MatDialog);
 
 

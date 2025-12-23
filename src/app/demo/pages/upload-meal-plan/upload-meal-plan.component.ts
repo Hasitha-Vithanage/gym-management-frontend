@@ -30,8 +30,12 @@ export class UploadMealPlanComponent {
   }
 
   dataSource: MatTableDataSource<any>;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
 
   displayedColumns: string[] = ['member', 'requestedDate', 'fitnessGoal', 'allergies', 'dietaryPreferences', 'status', 'actions'];
 

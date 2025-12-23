@@ -34,6 +34,10 @@ export class AllFeedbacksComponent {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
+    ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
+
   registerButtonLabel = 'Register';
   mode = 'add';
   selectedData;

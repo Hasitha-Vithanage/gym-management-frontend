@@ -2,93 +2,109 @@
   <!-- Table Section to the Right of Form -->
   <div class="table-section">
     <!-- title of the-->
-    <h2 class="form-title">Upload Meal Plan</h2>
+    <h2 class="form-title"><img src="../../../../assets/images/icon/upload-icon-dark.png"
+        style="margin-right: 5px;">Upload Meal Plan</h2>
 
     <div class="toolbar">
       <!-- add-new on the left -->
       <div class="add-new">
-
+        <button type="reset" mat-raised-button class="new-button half-width" style="display: none;">
+          <img src="../../../../assets/images/icon/add-light-icon.png"
+            style="margin-right: 5px; height: 18px; width: 18px;">
+          Add New Employee
+        </button>
       </div>
 
       <!-- table filter-->
       <div class="table-filter">
-        <mat-form-field appearance="outline">
-          <mat-label>
-            <mat-icon class="search-icon">search</mat-icon>
-            Search...
-          </mat-label>
-          <input matInput (keyup)="applyFilter($event)" placeholder="" #input />
-        </mat-form-field>
+        <!-- Search bar -->
+        <div class="search-bar">
+          <img src="../../../../assets/images/icon/search-icon.png"
+            style="margin-right: 5px; height: 18px; width: 18px;">
+          <input type="text" placeholder="Search..." (keyup)="applyFilter($event)" />
+        </div>
 
         <!-- refresh button-->
-        <div>
-          <button mat-icon-button (click)="refreshData()" class="refresh-button">
-            <mat-icon>refresh</mat-icon>
-          </button>
-        </div>
+        <button mat-icon-button class="refresh-button" (click)="refreshData()">
+          <img src="../../../../assets/images/icon/refresh-icon.png"
+            style="margin-right: 5px; height: 18px; width: 18px;">
+        </button>
       </div>
     </div>
 
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <div class="table-wrapper">
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
-      <!-- employeeId Column -->
-      <ng-container matColumnDef="member">
-        <th mat-header-cell *matHeaderCellDef>Member</th>
-        <td mat-cell *matCellDef="let element">{{ element.userId }}</td>
-      </ng-container>
+        <!-- employeeId Column -->
+        <ng-container matColumnDef="member">
+          <th mat-header-cell *matHeaderCellDef>Member</th>
+          <td mat-cell *matCellDef="let element">{{ element.userId }}</td>
+        </ng-container>
 
-      <!-- dateOfJoining Column -->
-      <!-- | date:'dd/MM/yyyy' -->
-      <ng-container matColumnDef="requestedDate">
-        <th mat-header-cell *matHeaderCellDef>Requested Date</th>
-        <td mat-cell *matCellDef="let element">{{ element.requestedDate | date: 'dd/MM/yyyy' }}</td>
-      </ng-container>
+        <!-- dateOfJoining Column -->
+        <!-- | date:'dd/MM/yyyy' -->
+        <ng-container matColumnDef="requestedDate">
+          <th mat-header-cell *matHeaderCellDef>Requested Date</th>
+          <td mat-cell *matCellDef="let element">{{ element.requestedDate | date: 'dd/MM/yyyy' }}</td>
+        </ng-container>
 
-      <!-- firstName Column -->
-      <ng-container matColumnDef="fitnessGoal">
-        <th mat-header-cell *matHeaderCellDef>Fitness Goal</th>
-        <td mat-cell *matCellDef="let element">{{ element.fitnessGoal }}</td>
-      </ng-container>
+        <!-- firstName Column -->
+        <ng-container matColumnDef="fitnessGoal">
+          <th mat-header-cell *matHeaderCellDef>Fitness Goal</th>
+          <td mat-cell *matCellDef="let element">{{ element.fitnessGoal }}</td>
+        </ng-container>
 
-      <!-- firstName Column -->
-      <ng-container matColumnDef="allergies">
-        <th mat-header-cell *matHeaderCellDef>Allergies</th>
-        <td mat-cell *matCellDef="let element">{{ element.allergies || 'N/A' }}</td>
-      </ng-container>
+        <!-- firstName Column -->
+        <ng-container matColumnDef="allergies">
+          <th mat-header-cell *matHeaderCellDef>Allergies</th>
+          <td mat-cell *matCellDef="let element">{{ element.allergies || 'N/A' }}</td>
+        </ng-container>
 
-      <!-- firstName Column -->
-      <ng-container matColumnDef="dietaryPreferences">
-        <th mat-header-cell *matHeaderCellDef>Dietary Preferences</th>
-        <td mat-cell *matCellDef="let element">{{ element.dietaryPreferences }}</td>
-      </ng-container>
+        <!-- firstName Column -->
+        <ng-container matColumnDef="dietaryPreferences">
+          <th mat-header-cell *matHeaderCellDef>Dietary Preferences</th>
+          <td mat-cell *matCellDef="let element">{{ element.dietaryPreferences }}</td>
+        </ng-container>
 
-      <!-- firstName Column -->
-      <ng-container matColumnDef="status">
-        <th mat-header-cell *matHeaderCellDef>Status</th>
-        <td mat-cell *matCellDef="let element">{{ element.status }}</td>
-      </ng-container>
+        <!-- firstName Column -->
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>Status</th>
+          <td mat-cell *matCellDef="let element">{{ element.status }}</td>
+        </ng-container>
 
-      <!-- action Column -->
-      <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef style="text-align: center;">Actions</th>
-        <td mat-cell *matCellDef="let element">
-          <div class="action-column" style="justify-content: center;">
-            <!-- <button mat-icon-button class="gray-icon-btn" matTooltip="View" (click)="viewData(element)">
+        <!-- action Column -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef style="text-align: center;">Actions</th>
+          <td mat-cell *matCellDef="let element">
+            <div class="action-column" style="justify-content: center;">
+              <!-- <button mat-icon-button class="gray-icon-btn" matTooltip="View" (click)="viewData(element)">
               <mat-icon>visibility</mat-icon>
             </button> -->
-            <button mat-icon-button class="gray-icon-btn" matTooltip="Upload Plan" (click)="uploadPlan(element)">
-              <mat-icon>upload</mat-icon>
-            </button>
+              <button mat-icon-button class="gray-icon-btn" matTooltip="Upload Plan" (click)="uploadPlan(element)">
+                <img src="../../../../assets/images/icon/upload-dark.png"
+                  style="margin-right: 5px; height: 18px; width: 18px;">
+              </button>
 
-          </div>
-        </td>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+
+      <!-- No data row -->
+      <ng-container *ngIf="dataSource.data.length === 0">
+        <ng-container matColumnDef="noData" class="no-data">
+          <td mat-cell [attr.colspan]="displayedColumns.length" class="no-data">No records found</td>
+        </ng-container>
+
+        <tr mat-row *matRowDef="let row; columns: ['noData']"></tr>
       </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-    </table>
+    </div>
 
     <!-- pagination-->
-    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users" class="pagination"></mat-paginator>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"
+      class="pagination"></mat-paginator>
   </div>
 </div>
