@@ -1,0 +1,172 @@
+<div class="container">
+    <!-- Title -->
+    <h2 class="form-title">
+        <img src="../../../../assets/images/icon/calories-icon-dark.png" style="margin-right: 6px" />
+        Goal-Based Calorie Target
+    </h2>
+
+    <!-- Stepper Header -->
+    <div class="stepper-header">
+        <div class="step" [class.active]="currentStep === 1">1 Basic Info</div>
+        <div class="step" [class.active]="currentStep === 2">2 Activity</div>
+        <div class="step" [class.active]="currentStep === 3">3 Goal</div>
+    </div>
+
+    <!-- FORM -->
+    <form [formGroup]="calorieForm">
+        <div class="calorie-card">
+
+            <!-- STEP 1 -->
+            <div *ngIf="currentStep === 1">
+                <h3 class="section-title">Basic Body Information</h3>
+
+                <div class="form-grid" style="margin-left: 325px;">
+                    <div class="row">
+                        <div class="form-field input-group half-width">
+                            <label>Age</label>
+                            <input class="input" type="number" formControlName="age" />
+                        </div>
+
+                        <div class="form-field input-group half-width">
+                            <label>Gender</label>
+                            <select class="input" formControlName="gender">
+                                <option value="">~ Select ~</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <br />
+
+                    <div class="row">
+                        <div class="form-field input-group half-width">
+                            <label>Height (cm)</label>
+                            <input class="input" type="number" formControlName="height" />
+                        </div>
+
+                        <div class="form-field input-group half-width">
+                            <label>Weight (kg)</label>
+                            <input class="input" type="number" formControlName="weight" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button type="button" class="primary-btn" (click)="nextStep()" [disabled]="!isStep1Valid()">
+                        Next
+                    </button>
+                </div>
+            </div>
+
+            <!-- STEP 2 -->
+            <div *ngIf="currentStep === 2">
+                <h3 class="section-title">Activity Level</h3>
+
+                <div class="radio-list">
+                    <label>
+                        <input type="radio" value="sedentary" formControlName="activity" />
+                        Sedentary
+                    </label>
+
+                    <label>
+                        <input type="radio" value="light" formControlName="activity" />
+                        Lightly Active
+                    </label>
+
+                    <label>
+                        <input type="radio" value="moderate" formControlName="activity" />
+                        Moderately Active
+                    </label>
+
+                    <label>
+                        <input type="radio" value="very" formControlName="activity" />
+                        Very Active
+                    </label>
+                </div>
+
+                <div class="actions">
+                    <button type="button" class="secondary-btn" (click)="prevStep()">
+                        Back
+                    </button>
+
+                    <button type="button" class="primary-btn" (click)="nextStep()"
+                        [disabled]="calorieForm.get('activity')?.invalid">
+                        Next
+                    </button>
+                </div>
+            </div>
+
+            <!-- STEP 3 -->
+            <div *ngIf="currentStep === 3">
+                <h3 class="section-title">Fitness Goal</h3>
+
+                <div class="goal-buttons">
+                    <button type="button" class="goal-btn" [class.selected]="calorieForm.value.goal === 'loss'"
+                        (click)="calorieForm.patchValue({ goal: 'loss' })">
+                        Weight Loss
+                    </button>
+
+                    <button type="button" class="goal-btn" [class.selected]="calorieForm.value.goal === 'maintain'"
+                        (click)="calorieForm.patchValue({ goal: 'maintain' })">
+                        Maintain
+                    </button>
+
+                    <button type="button" class="goal-btn" [class.selected]="calorieForm.value.goal === 'gain'"
+                        (click)="calorieForm.patchValue({ goal: 'gain' })">
+                        Weight Gain
+                    </button>
+                </div>
+
+                <div class="actions">
+                    <button type="button" class="secondary-btn" (click)="prevStep()">
+                        Back
+                    </button>
+
+                    <button type="button" class="primary-btn" (click)="calculate()"
+                        [disabled]="calorieForm.get('goal')?.invalid">
+                        Calculate My Calories
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </form>
+
+    <!-- RESULT -->
+    <div *ngIf="result" class="calorie-card result-card">
+        <div class="title">
+            <h3 class="section-title">Your Daily Nutrition Plan</h3>
+            <button type="button" class="primary-btn">Save Result</button>
+        </div>
+
+        <div class="result-row">
+            <span>Calories</span>
+            <strong>{{ result.calories }} kcal / day</strong>
+        </div>
+
+        <div class="macro">
+            <label>Protein</label>
+            <div class="bar">
+                <div class="fill protein" [style.width.%]="70"></div>
+            </div>
+            <span>{{ result.protein }} g</span>
+        </div>
+
+        <div class="macro">
+            <label>Carbohydrates</label>
+            <div class="bar">
+                <div class="fill carbs" [style.width.%]="80"></div>
+            </div>
+            <span>{{ result.carbs }} g</span>
+        </div>
+
+        <div class="macro">
+            <label>Fat</label>
+            <div class="bar">
+                <div class="fill fat" [style.width.%]="45"></div>
+            </div>
+            <span>{{ result.fat }} g</span>
+        </div>
+    </div>
+</div>

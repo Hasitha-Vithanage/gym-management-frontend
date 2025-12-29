@@ -38,6 +38,7 @@ import { OrderDetailsComponent } from './order-details/order-details.component';
 import { MonthlyAttendanceComponent } from './monthly-attendance/monthly-attendance.component';
 import { MonthlySalesComponent } from './monthly-sales/monthly-sales.component';
 import { ForYourApprovalComponent } from './for-your-approval/for-your-approval.component';
+import { GoalBasedCalorieTargetComponent } from './goal-based-calorie-target/goal-based-calorie-target.component';
 
 export const PagesRoutes: Routes = [
   {
@@ -91,6 +92,10 @@ export const PagesRoutes: Routes = [
   {
     path: 'nutrition&meal-plan',
     component: NutritionAndMealPlanComponent
+  },
+  {
+    path: 'goal-based-calorie-target',
+    component: GoalBasedCalorieTargetComponent
   },
   {
     path: 'supplement-inventory-management',

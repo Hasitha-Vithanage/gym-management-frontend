@@ -316,6 +316,16 @@ export const NavigationItems: NavigationItem[] = [
         breadcrumbs: false
       },
       {
+        id: 'goalBasedCalorieTargetDet',
+        title: 'Goal-Based Calorie Target',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/pages/goal-based-calorie-target',
+        icon: '../../../../assets/images/icon/nutrition-and-meal-plans.png',
+        auth: [authenticationEnum.Nutrition_Meal_Plan],
+        breadcrumbs: false
+      },
+      {
         id: 'uploadNutritionDet',
         title: 'Upload Meal Plan',
         type: 'item',
