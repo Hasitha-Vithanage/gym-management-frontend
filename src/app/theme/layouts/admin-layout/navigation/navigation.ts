@@ -209,11 +209,21 @@ export const NavigationItems: NavigationItem[] = [
     children: [
       {
         id: 'workoutDet',
-        title: 'Workout Plan',
+        title: 'Workout Plan Requests',
         type: 'item',
         classes: 'nav-item',
         url: '/pages/workout',
         icon: '../../../../assets/images/icon/workout-plan-icon.png',
+        auth: [authenticationEnum.Workout_Plan],
+        breadcrumbs: false
+      },
+      {
+        id: 'workoutDet',
+        title: 'Workout Plan Generator',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/pages/workout-plan-generator',
+        icon: '../../../../assets/images/icon/workout-plan-generator-light.png',
         auth: [authenticationEnum.Workout_Plan],
         breadcrumbs: false
       },

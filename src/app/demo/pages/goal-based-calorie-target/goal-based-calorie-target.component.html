@@ -1,13 +1,17 @@
-<div class="container">
-    <!-- Title -->
-    <h2 class="form-title">
-        <img src="../../../../assets/images/icon/calories-icon-dark.png" style="margin-right: 6px" />
-        Goal-Based Calorie Target
-    </h2>
+<div class="calorie-generator-container">
 
-    <!-- Stepper Header -->
+    <!-- HEADER -->
+    <div class="hero">
+        <h1>Goal-Based Calorie Target</h1>
+        <p>
+            Based on your body details, activity level, and fitness goal,
+            we’ll calculate a daily calorie target that supports your training.
+        </p>
+    </div>
+
+    <!-- STEPPER -->
     <div class="stepper-header">
-        <div class="step" [class.active]="currentStep === 1">1 Basic Info</div>
+        <div class="step" [class.active]="currentStep === 1">1 Body Info</div>
         <div class="step" [class.active]="currentStep === 2">2 Activity</div>
         <div class="step" [class.active]="currentStep === 3">3 Goal</div>
     </div>
@@ -18,79 +22,80 @@
 
             <!-- STEP 1 -->
             <div *ngIf="currentStep === 1">
-                <h3 class="section-title">Basic Body Information</h3>
+                <h3 class="section-title">Your Body Basics</h3>
+                <p class="step-desc">
+                    These details help us estimate your baseline energy needs.
+                </p>
 
-                <div class="form-grid" style="margin-left: 325px;">
-                    <div class="row">
-                        <div class="form-field input-group half-width">
-                            <label>Age</label>
-                            <input class="input" type="number" formControlName="age" />
-                        </div>
-
-                        <div class="form-field input-group half-width">
-                            <label>Gender</label>
-                            <select class="input" formControlName="gender">
-                                <option value="">~ Select ~</option>
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
-                            </select>
-                        </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Age</label>
+                        <input type="number" formControlName="age" />
                     </div>
 
-                    <br />
+                    <div class="form-group">
+                        <label>Gender</label>
+                        <select formControlName="gender">
+                            <option value="">Select</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
 
-                    <div class="row">
-                        <div class="form-field input-group half-width">
-                            <label>Height (cm)</label>
-                            <input class="input" type="number" formControlName="height" />
-                        </div>
+                    <div class="form-group">
+                        <label>Height (cm)</label>
+                        <input type="number" formControlName="height" />
+                    </div>
 
-                        <div class="form-field input-group half-width">
-                            <label>Weight (kg)</label>
-                            <input class="input" type="number" formControlName="weight" />
-                        </div>
+                    <div class="form-group">
+                        <label>Weight (kg)</label>
+                        <input type="number" formControlName="weight" />
                     </div>
                 </div>
 
                 <div class="actions">
-                    <button type="button" class="primary-btn" (click)="nextStep()" [disabled]="!isStep1Valid()">
-                        Next
+                    <button class="primary-btn" type="button" (click)="nextStep()" [disabled]="!isStep1Valid()">
+                        Continue
                     </button>
                 </div>
             </div>
 
             <!-- STEP 2 -->
             <div *ngIf="currentStep === 2">
-                <h3 class="section-title">Activity Level</h3>
+                <h3 class="section-title">Daily Activity Level</h3>
+                <p class="step-desc">
+                    Choose the option that best matches your average daily movement.
+                </p>
 
-                <div class="radio-list">
-                    <label>
+                <div class="radio-cards">
+                    <label class="radio-card">
                         <input type="radio" value="sedentary" formControlName="activity" />
-                        Sedentary
+                        <strong>Sedentary</strong>
+                        <span>Little to no exercise</span>
                     </label>
 
-                    <label>
+                    <label class="radio-card">
                         <input type="radio" value="light" formControlName="activity" />
-                        Lightly Active
+                        <strong>Lightly Active</strong>
+                        <span>Light exercise 1–3 days/week</span>
                     </label>
 
-                    <label>
+                    <label class="radio-card">
                         <input type="radio" value="moderate" formControlName="activity" />
-                        Moderately Active
+                        <strong>Moderately Active</strong>
+                        <span>Training 3–5 days/week</span>
                     </label>
 
-                    <label>
+                    <label class="radio-card">
                         <input type="radio" value="very" formControlName="activity" />
-                        Very Active
+                        <strong>Very Active</strong>
+                        <span>Intense training or physical job</span>
                     </label>
                 </div>
 
                 <div class="actions">
-                    <button type="button" class="secondary-btn" (click)="prevStep()">
-                        Back
-                    </button>
-
-                    <button type="button" class="primary-btn" (click)="nextStep()"
+                    <button class="secondary-btn" type="button" (click)="prevStep()">Back</button>
+                    <button class="primary-btn" type="button" (click)="nextStep()"
                         [disabled]="calorieForm.get('activity')?.invalid">
                         Next
                     </button>
@@ -99,33 +104,36 @@
 
             <!-- STEP 3 -->
             <div *ngIf="currentStep === 3">
-                <h3 class="section-title">Fitness Goal</h3>
+                <h3 class="section-title">Your Fitness Goal</h3>
+                <p class="step-desc">
+                    This determines whether we create a calorie deficit, surplus, or balance.
+                </p>
 
-                <div class="goal-buttons">
-                    <button type="button" class="goal-btn" [class.selected]="calorieForm.value.goal === 'loss'"
+                <div class="goal-cards">
+                    <div class="goal-card" [class.active]="calorieForm.value.goal === 'loss'"
                         (click)="calorieForm.patchValue({ goal: 'loss' })">
-                        Weight Loss
-                    </button>
+                        <h4>Weight Loss</h4>
+                        <p>Calorie deficit for fat reduction</p>
+                    </div>
 
-                    <button type="button" class="goal-btn" [class.selected]="calorieForm.value.goal === 'maintain'"
+                    <div class="goal-card" [class.active]="calorieForm.value.goal === 'maintain'"
                         (click)="calorieForm.patchValue({ goal: 'maintain' })">
-                        Maintain
-                    </button>
+                        <h4>Maintain</h4>
+                        <p>Calories to sustain your current weight</p>
+                    </div>
 
-                    <button type="button" class="goal-btn" [class.selected]="calorieForm.value.goal === 'gain'"
+                    <div class="goal-card" [class.active]="calorieForm.value.goal === 'gain'"
                         (click)="calorieForm.patchValue({ goal: 'gain' })">
-                        Weight Gain
-                    </button>
+                        <h4>Weight Gain</h4>
+                        <p>Calorie surplus to support muscle growth</p>
+                    </div>
                 </div>
 
                 <div class="actions">
-                    <button type="button" class="secondary-btn" (click)="prevStep()">
-                        Back
-                    </button>
-
-                    <button type="button" class="primary-btn" (click)="calculate()"
+                    <button class="secondary-btn" type="button" (click)="prevStep()">Back</button>
+                    <button class="primary-btn" type="button" (click)="calculate()"
                         [disabled]="calorieForm.get('goal')?.invalid">
-                        Calculate My Calories
+                        Calculate Calories
                     </button>
                 </div>
             </div>
@@ -135,20 +143,20 @@
 
     <!-- RESULT -->
     <div *ngIf="result" class="calorie-card result-card">
-        <div class="title">
-            <h3 class="section-title">Your Daily Nutrition Plan</h3>
-            <button type="button" class="primary-btn">Save Result</button>
+        <div class="result-header">
+            <h3>Your Daily Nutrition Target</h3>
+            <button class="primary-btn">Save</button>
         </div>
 
         <div class="result-row">
-            <span>Calories</span>
-            <strong>{{ result.calories }} kcal / day</strong>
+            <span>Daily Calories</span>
+            <strong>{{ result.calories }} kcal</strong>
         </div>
 
         <div class="macro">
             <label>Protein</label>
             <div class="bar">
-                <div class="fill protein" [style.width.%]="70"></div>
+                <div class="fill protein"></div>
             </div>
             <span>{{ result.protein }} g</span>
         </div>
@@ -156,7 +164,7 @@
         <div class="macro">
             <label>Carbohydrates</label>
             <div class="bar">
-                <div class="fill carbs" [style.width.%]="80"></div>
+                <div class="fill carbs"></div>
             </div>
             <span>{{ result.carbs }} g</span>
         </div>
@@ -164,9 +172,10 @@
         <div class="macro">
             <label>Fat</label>
             <div class="bar">
-                <div class="fill fat" [style.width.%]="45"></div>
+                <div class="fill fat"></div>
             </div>
             <span>{{ result.fat }} g</span>
         </div>
     </div>
+
 </div>

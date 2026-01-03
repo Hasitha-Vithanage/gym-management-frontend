@@ -64,6 +64,7 @@ import { MonthlyAttendanceComponent } from './monthly-attendance/monthly-attenda
 import { MonthlySalesComponent } from './monthly-sales/monthly-sales.component';
 import { ForYourApprovalComponent } from './for-your-approval/for-your-approval.component';
 import { GoalBasedCalorieTargetComponent } from './goal-based-calorie-target/goal-based-calorie-target.component';
+import { WorkoutPlanGeneratorComponent } from './workout-plan-generator/workout-plan-generator.component';
 // icons
 
 export const MY_DATE_FORMATS = {
@@ -136,7 +137,8 @@ export const MY_DATE_FORMATS = {
     MonthlyAttendanceComponent,
     MonthlySalesComponent,
     ForYourApprovalComponent,
-    GoalBasedCalorieTargetComponent
+    GoalBasedCalorieTargetComponent,
+    WorkoutPlanGeneratorComponent
   ],
   imports: [
     CommonModule,
