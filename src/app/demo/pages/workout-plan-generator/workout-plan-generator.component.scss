@@ -75,12 +75,12 @@
 
 .goal-card:hover {
   transform: scale(1.01);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
 }
 
 .goal-card.active {
   border: 3px solid #fff;
-  box-shadow: 0 12px 24px rgba(0,0,0,0.35);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.35);
 }
 
 .goal-icon {
@@ -96,7 +96,8 @@
   color: #fff;
 }
 
-.goal-meta, .recommended {
+.goal-meta,
+.recommended {
   font-size: 0.8rem;
   margin-top: 6px;
   opacity: 0.85;
@@ -113,14 +114,14 @@
   background: #fff;
   border-radius: 16px;
   padding: 20px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
   position: relative;
 }
 
 .review-card:hover {
   transform: scale(1.03);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
 .card-header {
@@ -162,7 +163,6 @@
   font-weight: 500;
 }
 
-
 .step-actions {
   display: flex;
   justify-content: flex-end;
@@ -173,4 +173,23 @@
 .primary-button {
   background-color: #333 !important;
   color: #fff !important;
+}
+
+.workout-output {
+  background: #0f172a;
+  color: #e5e7eb;
+  padding: 24px;
+  border-radius: 12px;
+  font-family: ui-monospace, monospace;
+  line-height: 1.6;
+}
+
+.workout-output h1,
+.workout-output h2,
+.workout-output h3 {
+  color: #38bdf8;
+}
+
+.workout-output strong {
+  color: #facc15;
 }

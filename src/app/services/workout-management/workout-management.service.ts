@@ -8,11 +8,12 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class WorkoutManagementService {
-
   private userDetails: any;
 
-  constructor(private http: HttpClient,
-    private httpService: HttpService) { }
+  constructor(
+    private http: HttpClient,
+    private httpService: HttpService
+  ) {}
 
   setWorkoutData(data: any) {
     this.userDetails = data;
@@ -22,9 +23,7 @@ export class WorkoutManagementService {
     return this.userDetails;
   }
 
-
   getTrainerById(memberName: string): Observable<any> {
-
     const requestUrl = environment.baseUrl + '/get-assign-trainer/' + memberName;
 
     let headers = {};
@@ -36,11 +35,9 @@ export class WorkoutManagementService {
     return this.http.get(requestUrl, { headers: headers });
   }
 
-
   clearWorkoutData() {
     this.userDetails = null;
   }
-
 
   sendWorkoutRequest(requestPayload: any) {
     const requestUrl = environment.baseUrl + '/sendRequest';
@@ -55,7 +52,7 @@ export class WorkoutManagementService {
   }
 
   getTrainerDetails(trainerName: any) {
-        const requestUrl = environment.baseUrl + '/get-trainers-details/' + trainerName;
+    const requestUrl = environment.baseUrl + '/get-trainers-details/' + trainerName;
 
     let headers = {};
     if (this.httpService.getAuthToken() !== null) {
@@ -66,4 +63,36 @@ export class WorkoutManagementService {
     return this.http.get(requestUrl, { headers: headers });
   }
 
+  async generateWorkoutPlan(payload: any, onMessage: (msg: string) => void) {
+    const response = await fetch(environment.baseUrl + '/workout-plan-generate', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (!response.body) {
+      throw new Error('ReadableStream not supported');
+    }
+
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split('\n');
+      buffer = lines.pop()!;
+
+      for (const line of lines) {
+        if (line.startsWith('data:')) {
+          onMessage(line.replace('data:', '').trim());
+        }
+      }
+    }
+  }
 }

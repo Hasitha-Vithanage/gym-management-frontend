@@ -1,5 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { WorkoutManagementService } from 'src/app/services/workout-management/workout-management.service';
+import { marked } from 'marked';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-workout-plan-generator',
@@ -8,52 +11,59 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
   styleUrl: './workout-plan-generator.component.scss'
 })
 export class WorkoutPlanGeneratorComponent {
-
   bodyForm!: FormGroup;
   goalForm!: FormGroup;
   lifestyleForm!: FormGroup;
 
-fitnessGoals = [
-  {
-    label: 'Lose Fat',
-    value: 'fat_loss',
-    desc: 'Burn calories and reduce body fat with cardio, HIIT, and full-body workouts.',
-    meta: 'Higher calorie burn, shorter rest periods',
-    color: '#FF6B6B', // energetic red/orange
-    icon: 'run', // can map to an SVG or icon component
-    recommendedSessions: '3–5 sessions/week, 30–45 min each'
-  },
-  {
-    label: 'Build Muscle',
-    value: 'muscle_gain',
-    desc: 'Increase lean muscle mass using progressive overload and strength-focused routines.',
-    meta: 'Hypertrophy-focused, compound lifts',
-    color: '#4D96FF', // blue/teal
-    icon: 'dumbbell',
-    recommendedSessions: '4–5 sessions/week, 45–60 min each'
-  },
-  {
-    label: 'Increase Strength',
-    value: 'strength',
-    desc: 'Maximize strength with low-rep, high-intensity lifts and heavier weights.',
-    meta: 'Low reps, longer rest, heavy weights',
-    color: '#6A0DAD', // dark blue/purple
-    icon: 'barbell',
-    recommendedSessions: '3–4 sessions/week, 60–75 min each'
-  },
-  {
-    label: 'Stay Fit',
-    value: 'fitness',
-    desc: 'Maintain general health and activity with balanced routines including strength, cardio, and mobility.',
-    meta: 'Balanced and sustainable',
-    color: '#4CAF50', // green
-    icon: 'heart',
-    recommendedSessions: '3–4 sessions/week, 30–45 min each'
-  }
-];
+  fitnessGoals = [
+    {
+      label: 'Lose Fat',
+      value: 'fat_loss',
+      desc: 'Burn calories and reduce body fat with cardio, HIIT, and full-body workouts.',
+      meta: 'Higher calorie burn, shorter rest periods',
+      color: '#FF6B6B', // energetic red/orange
+      icon: 'run', // can map to an SVG or icon component
+      recommendedSessions: '3–5 sessions/week, 30–45 min each'
+    },
+    {
+      label: 'Build Muscle',
+      value: 'muscle_gain',
+      desc: 'Increase lean muscle mass using progressive overload and strength-focused routines.',
+      meta: 'Hypertrophy-focused, compound lifts',
+      color: '#4D96FF', // blue/teal
+      icon: 'dumbbell',
+      recommendedSessions: '4–5 sessions/week, 45–60 min each'
+    },
+    {
+      label: 'Increase Strength',
+      value: 'strength',
+      desc: 'Maximize strength with low-rep, high-intensity lifts and heavier weights.',
+      meta: 'Low reps, longer rest, heavy weights',
+      color: '#6A0DAD', // dark blue/purple
+      icon: 'barbell',
+      recommendedSessions: '3–4 sessions/week, 60–75 min each'
+    },
+    {
+      label: 'Stay Fit',
+      value: 'fitness',
+      desc: 'Maintain general health and activity with balanced routines including strength, cardio, and mobility.',
+      meta: 'Balanced and sustainable',
+      color: '#4CAF50', // green
+      icon: 'heart',
+      recommendedSessions: '3–4 sessions/week, 30–45 min each'
+    }
+  ];
+  output = '';
+  private buffer = '';
+  htmlOutput!: SafeHtml;
+  private textBuffer = '';
 
-
-  constructor(private fb: FormBuilder) { }
+  constructor(
+    private fb: FormBuilder,
+    private workoutManagementService: WorkoutManagementService,
+    private zone: NgZone,
+    private sanitizer: DomSanitizer
+  ) {}
 
   ngOnInit(): void {
     this.bodyForm = this.fb.group({
@@ -77,7 +87,6 @@ fitnessGoals = [
 
   // Dynamic recommendation of workout days per week
   get recommendedDays(): string | null {
-
     // Extract form values
     const age = this.bodyForm.get('age')?.value;
     const gender = this.bodyForm.get('gender')?.value;
@@ -133,9 +142,7 @@ fitnessGoals = [
     minDays = Math.max(minDays, 2);
     maxDays = Math.min(maxDays, 6);
 
-    return minDays === maxDays
-      ? `${minDays} days`
-      : `${minDays}–${maxDays} days`;
+    return minDays === maxDays ? `${minDays} days` : `${minDays}–${maxDays} days`;
   }
 
   // Handle goal selection
@@ -144,16 +151,109 @@ fitnessGoals = [
   }
 
   // Generate workout plan
-  generateWorkoutPlan(): void {
+  async generateWorkoutPlan() {
+    // const payload = {
+    //   ...this.bodyForm.value,
+    //   ...this.goalForm.value,
+    //   ...this.lifestyleForm.value
+    // };
+
+    // console.log('Workout Plan Input:', payload);
+
+    this.textBuffer = '';
+    this.htmlOutput = '';
+
     const payload = {
-      ...this.bodyForm.value,
-      ...this.goalForm.value,
-      ...this.lifestyleForm.value
+      age: this.bodyForm.value.age,
+      gender: this.bodyForm.value.gender,
+      height: this.bodyForm.value.height,
+      weight: this.bodyForm.value.weight,
+      fitnessLevel: this.lifestyleForm.value.experience,
+      goal: this.goalForm.value.goal,
+      equipment: this.lifestyleForm.value.location,
+      daysPerWeek: this.lifestyleForm.value.daysPerWeek,
+      limitation: this.lifestyleForm.value.limitations
     };
 
     console.log('Workout Plan Input:', payload);
+
+    const response = await fetch('http://localhost:8080/workout-plan-generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    const reader = response.body!.getReader();
+    const decoder = new TextDecoder();
+    let streamBuffer = '';
+
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+
+      streamBuffer += decoder.decode(value, { stream: true });
+      const lines = streamBuffer.split('\n');
+      streamBuffer = lines.pop()!;
+
+      for (const line of lines) {
+        if (line.startsWith('data:')) {
+          const token = line.replace('data:', '');
+          this.appendToken(token);
+
+          // 🔥 Force Angular to update UI
+          this.zone.run(() => {
+            const cleanText = this.normalizeMarkdown(this.textBuffer);
+            console.log('Clean Text:', cleanText);
+            const html: any = marked.parse(cleanText);
+            console.log('html:', html);
+            this.htmlOutput = this.sanitizer.bypassSecurityTrustHtml(html);
+            console.log('htmlOutput:', this.htmlOutput);
+          });
+        }
+      }
+    }
   }
 
-  
+  private appendToken(token: string) {
+    token = token.replace(/\r/g, '');
 
+    // 1. Fix broken hyphen spacing: "5- 10" → "5–10"
+    token = token.replace(/-\s+/g, '–');
+
+    // 2. Fix space before punctuation
+    token = token.replace(/\s+([.,:;!?])/g, '$1');
+
+    // 3. Fix broken words (letter + space + letter)
+    if (this.textBuffer.length > 0 && /[a-zA-Z]$/.test(this.textBuffer) && /^[a-zA-Z]/.test(token)) {
+      this.textBuffer += token;
+      return;
+    }
+
+    // 4. Ensure space between words
+    if (this.textBuffer.length > 0 && !this.textBuffer.endsWith(' ') && !token.startsWith(' ') && /^[a-zA-Z0-9]/.test(token)) {
+      this.textBuffer += ' ';
+    }
+
+    this.textBuffer += token;
+  }
+
+  private normalizeMarkdown(text: string): string {
+    return (
+      text
+        // Headings
+        .replace(/\*\*\s*(.+?)\s*\*\*/g, '\n\n## $1\n')
+        // Bullet points
+        .replace(/\*\s+/g, '\n- ')
+        // Day headers
+        .replace(/Day\s(\d+):/g, '\n\n### Day $1\n')
+        // Remove excessive spaces
+        .replace(/\s{2,}/g, ' ')
+        // Paragraph spacing
+        .replace(/\n{3,}/g, '\n\n')
+    );
+  }
+
+  // private renderMarkdown() {
+  //   this.htmlOutput = marked.parse(this.textBuffer);
+  // }
 }
