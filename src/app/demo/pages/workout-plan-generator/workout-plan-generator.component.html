@@ -119,6 +119,9 @@
               <option value="intermediate">Intermediate</option>
               <option value="advanced">Advanced</option>
             </select>
+            <span class="required-message" *ngIf="bodyFormSubmitted && lifestyleForm.get('experience').invalid">
+              <ng-container *ngIf="lifestyleForm.get('experience').hasError('required')">Experience is required</ng-container>
+            </span>
             <small>Determines training volume and complexity</small>
           </div>
 
@@ -146,7 +149,7 @@
 
         <div class="step-actions">
           <button mat-button matStepperPrevious>Back</button>
-          <button mat-raised-button matStepperNext class="primary-button">Review</button>
+          <button mat-raised-button matStepperNext class="primary-button" (click)="lifestyleFormSubmit()">Review</button>
         </div>
       </form>
     </mat-step>
@@ -178,7 +181,7 @@
 
       <div class="generation-hint">
         Estimated session time:
-        <strong>45–60 minutes</strong>
+        <strong>{{ estimatedSessionDuration }}</strong>
       </div>
 
       <div class="step-actions">

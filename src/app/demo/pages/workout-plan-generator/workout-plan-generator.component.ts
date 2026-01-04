@@ -8,16 +8,16 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
   styleUrl: './workout-plan-generator.component.scss'
 })
 export class WorkoutPlanGeneratorComponent {
-
   bodyForm!: FormGroup;
   goalForm!: FormGroup;
   lifestyleForm!: FormGroup;
   bodyFormSubmitted = false;
+  lifestyleFormSubmitted = false;
 
   fitnessGoals = [
     {
       label: 'Lose Fat',
-      value: 'fat_loss',  
+      value: 'fat_loss',
       desc: 'Burn calories and reduce body fat with cardio, HIIT, and full-body workouts.',
       meta: 'Higher calorie burn, shorter rest periods',
       color: '#FF6B6B', // energetic red/orange
@@ -53,8 +53,7 @@ export class WorkoutPlanGeneratorComponent {
     }
   ];
 
-
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.bodyForm = this.fb.group({
@@ -80,9 +79,43 @@ export class WorkoutPlanGeneratorComponent {
     this.bodyFormSubmitted = true;
   }
 
+  lifestyleFormSubmit(): void {
+    this.lifestyleFormSubmitted = true;
+  }
+
+  get estimatedSessionDuration(): string | null {
+    const goal = this.goalForm.get('goal')?.value;
+    const experience = this.lifestyleForm.get('experience')?.value;
+
+    if (!goal || !experience) {
+      return null;
+    }
+
+    // Default duration
+    let duration = 45;
+
+    switch (goal) {
+      case 'fat_loss':
+        duration = experience === 'beginner' ? 30 : experience === 'intermediate' ? 40 : experience === 'advanced' ? 50 : 45;
+        break;
+
+      case 'muscle_gain':
+        duration = experience === 'beginner' ? 45 : experience === 'intermediate' ? 50 : experience === 'advanced' ? 70 : 60;
+        break;
+
+      case 'strength':
+        duration = experience === 'beginner' ? 50 : experience === 'intermediate' ? 60 : experience === 'advanced' ? 90 : 75;
+        break;
+
+      case 'fitness':
+        duration = experience === 'beginner' ? 30 : experience === 'intermediate' ? 40 : experience === 'advanced' ? 50 : 45;
+        break;
+    }
+    return `${duration} minutes`;
+  }
+
   // Dynamic recommendation of workout days per week
   get recommendedDays(): string | null {
-
     // Extract form values
     const age = this.bodyForm.get('age')?.value;
     const gender = this.bodyForm.get('gender')?.value;
@@ -138,9 +171,7 @@ export class WorkoutPlanGeneratorComponent {
     minDays = Math.max(minDays, 2);
     maxDays = Math.min(maxDays, 6);
 
-    return minDays === maxDays
-      ? `${minDays} days`
-      : `${minDays}–${maxDays} days`;
+    return minDays === maxDays ? `${minDays} days` : `${minDays}–${maxDays} days`;
   }
 
   // Handle goal selection
@@ -158,7 +189,4 @@ export class WorkoutPlanGeneratorComponent {
 
     console.log('Workout Plan Input:', payload);
   }
-
-
-
 }
