@@ -12,45 +12,46 @@ export class WorkoutPlanGeneratorComponent {
   bodyForm!: FormGroup;
   goalForm!: FormGroup;
   lifestyleForm!: FormGroup;
+  bodyFormSubmitted = false;
 
-fitnessGoals = [
-  {
-    label: 'Lose Fat',
-    value: 'fat_loss',
-    desc: 'Burn calories and reduce body fat with cardio, HIIT, and full-body workouts.',
-    meta: 'Higher calorie burn, shorter rest periods',
-    color: '#FF6B6B', // energetic red/orange
-    icon: 'run', // can map to an SVG or icon component
-    recommendedSessions: '3–5 sessions/week, 30–45 min each'
-  },
-  {
-    label: 'Build Muscle',
-    value: 'muscle_gain',
-    desc: 'Increase lean muscle mass using progressive overload and strength-focused routines.',
-    meta: 'Hypertrophy-focused, compound lifts',
-    color: '#4D96FF', // blue/teal
-    icon: 'dumbbell',
-    recommendedSessions: '4–5 sessions/week, 45–60 min each'
-  },
-  {
-    label: 'Increase Strength',
-    value: 'strength',
-    desc: 'Maximize strength with low-rep, high-intensity lifts and heavier weights.',
-    meta: 'Low reps, longer rest, heavy weights',
-    color: '#6A0DAD', // dark blue/purple
-    icon: 'barbell',
-    recommendedSessions: '3–4 sessions/week, 60–75 min each'
-  },
-  {
-    label: 'Stay Fit',
-    value: 'fitness',
-    desc: 'Maintain general health and activity with balanced routines including strength, cardio, and mobility.',
-    meta: 'Balanced and sustainable',
-    color: '#4CAF50', // green
-    icon: 'heart',
-    recommendedSessions: '3–4 sessions/week, 30–45 min each'
-  }
-];
+  fitnessGoals = [
+    {
+      label: 'Lose Fat',
+      value: 'fat_loss',  
+      desc: 'Burn calories and reduce body fat with cardio, HIIT, and full-body workouts.',
+      meta: 'Higher calorie burn, shorter rest periods',
+      color: '#FF6B6B', // energetic red/orange
+      icon: '../../../../assets/images/icon/workout-management-icon.png', // can map to an SVG or icon component
+      recommendedSessions: '3–5 sessions/week, 30–45 min each'
+    },
+    {
+      label: 'Build Muscle',
+      value: 'muscle_gain',
+      desc: 'Increase lean muscle mass using progressive overload and strength-focused routines.',
+      meta: 'Hypertrophy-focused, compound lifts',
+      color: '#4D96FF', // blue/teal
+      icon: '../../../../assets/images/icon/dumbbell-icon-light.png',
+      recommendedSessions: '4–5 sessions/week, 45–60 min each'
+    },
+    {
+      label: 'Increase Strength',
+      value: 'strength',
+      desc: 'Maximize strength with low-rep, high-intensity lifts and heavier weights.',
+      meta: 'Low reps, longer rest, heavy weights',
+      color: '#6A0DAD', // dark blue/purple
+      icon: '../../../../assets/images/icon/barbell-icon-light.png',
+      recommendedSessions: '3–4 sessions/week, 60–75 min each'
+    },
+    {
+      label: 'Stay Fit',
+      value: 'fitness',
+      desc: 'Maintain general health and activity with balanced routines including strength, cardio, and mobility.',
+      meta: 'Balanced and sustainable',
+      color: '#4CAF50', // green
+      icon: '../../../../assets/images/icon/heart-icon-light.png',
+      recommendedSessions: '3–4 sessions/week, 30–45 min each'
+    }
+  ];
 
 
   constructor(private fb: FormBuilder) { }
@@ -58,9 +59,9 @@ fitnessGoals = [
   ngOnInit(): void {
     this.bodyForm = this.fb.group({
       gender: ['', Validators.required],
-      age: ['', Validators.required],
-      height: ['', Validators.required],
-      weight: ['', Validators.required]
+      age: ['', Validators.required, Validators.min(10), Validators.max(80)],
+      height: ['', Validators.required, Validators.min(120), Validators.max(220)],
+      weight: ['', Validators.required, Validators.min(30), Validators.max(200)]
     });
 
     this.goalForm = this.fb.group({
@@ -73,6 +74,10 @@ fitnessGoals = [
       location: ['gym'],
       limitations: ['']
     });
+  }
+
+  bodyFormSubmit(): void {
+    this.bodyFormSubmitted = true;
   }
 
   // Dynamic recommendation of workout days per week
@@ -154,6 +159,6 @@ fitnessGoals = [
     console.log('Workout Plan Input:', payload);
   }
 
-  
+
 
 }
