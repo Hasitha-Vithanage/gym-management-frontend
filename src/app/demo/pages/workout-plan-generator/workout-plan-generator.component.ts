@@ -83,6 +83,12 @@ export class WorkoutPlanGeneratorComponent {
     this.lifestyleFormSubmitted = true;
   }
 
+  get selectedGoal() {
+  return this.fitnessGoals.find(
+    g => g.value === this.goalForm.value.goal
+  );
+}
+
   get estimatedSessionDuration(): string | null {
     const goal = this.goalForm.get('goal')?.value;
     const experience = this.lifestyleForm.get('experience')?.value;

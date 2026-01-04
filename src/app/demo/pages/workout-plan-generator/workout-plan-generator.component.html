@@ -155,7 +155,7 @@
     </mat-step>
 
     <!-- STEP 4: REVIEW -->
-    <mat-step>
+    <!-- <mat-step>
       <ng-template matStepLabel>Review & Generate</ng-template>
 
       <p class="step-desc">Double-check your details. You can always go back and tweak anything before generating your plan.</p>
@@ -188,6 +188,101 @@
         <button mat-button matStepperPrevious>Back</button>
         <button mat-raised-button class="primary-button" (click)="generateWorkoutPlan()">Generate My Workout Plan</button>
       </div>
-    </mat-step>
+    </mat-step> -->
+
+    <!-- STEP 4: REVIEW -->
+<mat-step>
+  <ng-template matStepLabel>Review & Generate</ng-template>
+
+  <p class="step-desc">
+    Here’s a snapshot of your personalized workout profile.
+    You can edit anything before generating your plan.
+  </p>
+
+  <!-- PROFILE SNAPSHOT -->
+  <div class="review-grid enhanced">
+    <!-- BODY -->
+    <div class="review-card goal-preview-2" style="background: #EAF2FF;">
+      <img [src]=" '../../../../assets/images/icon/person-icon-dark.png'" class="goal-preview-icon" />
+      <h4>Body Stats</h4>
+      <p class="primary">
+        {{ bodyForm.value.height }} cm · {{ bodyForm.value.weight }} kg
+      </p>
+      <p class="secondary">Age {{ bodyForm.value.age }}</p>
+      <!-- <button mat-button class="edit-btn" matStepperPrevious>Edit</button> -->
+    </div>
+
+    <!-- GOAL -->
+    <div
+      class="review-card goal-preview"
+      [style.background]="selectedGoal?.color"
+    >
+      <img [src]="selectedGoal?.icon" class="goal-preview-icon" />
+      <h4>{{ selectedGoal?.label }}</h4>
+      <p>{{ selectedGoal?.meta }}</p>
+      <small>{{ selectedGoal?.recommendedSessions }}</small>
+    </div>
+
+    <!-- TRAINING -->
+    <div class="review-card goal-preview-2" style="background-color: #EAF7F0;">
+      <img [src]=" '../../../../assets/images/icon/training-icon-dark.png'" class="review-icon" />
+      <h4>Training Style</h4>
+      <p class="primary">{{ lifestyleForm.value.experience | titlecase }}</p>
+      <p class="secondary">
+        {{ lifestyleForm.value.daysPerWeek }} days / week
+      </p>
+      <!-- <button mat-button class="edit-btn" matStepperPrevious>Edit</button> -->
+    </div>
+  </div>
+
+  <!-- PLAN PREVIEW -->
+  <div class="plan-preview">
+    <h4 style="margin-top: 10px;">What this plan includes</h4>
+
+    <ul>
+      <li>
+        <mat-icon>schedule</mat-icon>
+        Average session: <strong>{{ estimatedSessionDuration }}</strong>
+      </li>
+      <li>
+        <mat-icon>calendar_today</mat-icon>
+        Structured weekly split
+      </li>
+      <li>
+        <mat-icon>trending_up</mat-icon>
+        Progressive overload & recovery balance
+      </li>
+      <li *ngIf="lifestyleForm.value.location === 'home'">
+        <mat-icon>home</mat-icon>
+        Optimized for home workouts
+      </li>
+      <li *ngIf="lifestyleForm.value.location === 'gym'">
+        <mat-icon>apartment</mat-icon>
+        Gym-based compound movements
+      </li>
+    </ul>
+  </div>
+
+  <!-- PERSONALIZED MESSAGE -->
+  <div class="confidence-banner">
+          <img [src]=" '../../../../assets/images/icon/verify-icon-light.png'"/>
+     Designed for an<strong>{{lifestyleForm.value.experience}}</strong>aiming to<strong>{{selectedGoal?.label.toLowerCase()}}</strong>, optimized for consistency and recovery.
+  </div>
+
+  <!-- ACTIONS -->
+  <div class="step-actions">
+    <button mat-button matStepperPrevious>Back</button>
+    <button
+      mat-raised-button
+      class="primary-button"
+      (click)="generateWorkoutPlan()"
+    >
+      Generate My Personalized Plan
+    </button>
+    <small class="hint-text">Takes less than 2 seconds</small>
+  </div>
+</mat-step>
+
+
   </mat-horizontal-stepper>
 </div>
