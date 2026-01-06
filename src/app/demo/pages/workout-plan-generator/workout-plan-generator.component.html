@@ -5,7 +5,7 @@
     <p>Answer a few simple questions and we’ll generate a workout plan tailored to your body, goals, and lifestyle.</p>
   </div>
 
-  <mat-horizontal-stepper linear>
+  <mat-horizontal-stepper>
     <!-- STEP 1: BODY DETAILS -->
     <mat-step [stepControl]="bodyForm">
       <form [formGroup]="bodyForm">
@@ -21,26 +21,44 @@
               <option value="male">Male</option>
               <option value="female">Female</option>
             </select>
+            <span class="required-message" *ngIf="bodyFormSubmitted && bodyForm.get('gender').invalid">
+              <ng-container *ngIf="bodyForm.get('gender').hasError('required')">Gender is required</ng-container>
+            </span>
           </div>
 
           <div class="form-group">
             <label>Age</label>
             <input type="number" min="14" max="70" formControlName="age" />
+            <span class="required-message" *ngIf="bodyFormSubmitted && bodyForm.get('age').invalid">
+              <ng-container *ngIf="bodyForm.get('age').hasError('required')">Age is required</ng-container>
+              <ng-container *ngIf="bodyForm.get('age').hasError('min')">Age must be at least 10</ng-container>
+              <ng-container *ngIf="bodyForm.get('age').hasError('max')">Age must be at most 80</ng-container>
+            </span>
           </div>
 
           <div class="form-group">
             <label>Height (cm)</label>
             <input type="number" min="120" max="220" formControlName="height" />
+            <span class="required-message" *ngIf="bodyFormSubmitted && bodyForm.get('height').invalid">
+              <ng-container *ngIf="bodyForm.get('height').hasError('required')">Height is required</ng-container>
+              <ng-container *ngIf="bodyForm.get('height').hasError('min')">Height must be at least 120</ng-container>
+              <ng-container *ngIf="bodyForm.get('height').hasError('max')">Height must be at most 220</ng-container>
+            </span>
           </div>
 
           <div class="form-group">
             <label>Weight (kg)</label>
             <input type="number" min="30" max="200" formControlName="weight" />
+            <span class="required-message" *ngIf="bodyFormSubmitted && bodyForm.get('weight').invalid">
+              <ng-container *ngIf="bodyForm.get('weight').hasError('required')">Weight is required</ng-container>
+              <ng-container *ngIf="bodyForm.get('weight').hasError('min')">Weight must be at least 30</ng-container>
+              <ng-container *ngIf="bodyForm.get('weight').hasError('max')">Weight must be at most 200</ng-container>
+            </span>
           </div>
         </div>
 
         <div class="step-actions">
-          <button mat-raised-button matStepperNext class="primary-button">Continue</button>
+          <button mat-raised-button matStepperNext class="primary-button" (click)="bodyFormSubmit()">Continue</button>
         </div>
       </form>
     </mat-step>
@@ -64,7 +82,7 @@
             [style.background]="goal.color"
           >
             <div class="goal-icon">
-              <mat-icon>{{ goal.icon }}</mat-icon>
+              <img src="{{ goal.icon }}" style="margin-right: 5px" />
             </div>
 
             <h3>{{ goal.label }}</h3>
@@ -101,6 +119,9 @@
               <option value="intermediate">Intermediate</option>
               <option value="advanced">Advanced</option>
             </select>
+            <span class="required-message" *ngIf="bodyFormSubmitted && lifestyleForm.get('experience').invalid">
+              <ng-container *ngIf="lifestyleForm.get('experience').hasError('required')">Experience is required</ng-container>
+            </span>
             <small>Determines training volume and complexity</small>
           </div>
 
@@ -128,7 +149,7 @@
 
         <div class="step-actions">
           <button mat-button matStepperPrevious>Back</button>
-          <button mat-raised-button matStepperNext class="primary-button">Review</button>
+          <button mat-raised-button matStepperNext class="primary-button" (click)="lifestyleFormSubmit()">Review</button>
         </div>
       </form>
     </mat-step>
@@ -160,7 +181,7 @@
 
       <div class="generation-hint">
         Estimated session time:
-        <strong>45–60 minutes</strong>
+        <strong>{{ estimatedSessionDuration }}</strong>
       </div>
 
       <div class="step-actions">

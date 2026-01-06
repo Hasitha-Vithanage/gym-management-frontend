@@ -150,7 +150,7 @@
 
 .goal-meta {
   font-size: 0.85rem;
-  color: #666;
+  color: #bab6b6;
 }
 
 .generation-hint {
@@ -192,4 +192,12 @@
 
 .workout-output strong {
   color: #facc15;
+}
+/* Error messages */
+.required-message {
+  color: #dc2626;
+  font-size: 12px;
+  margin-top: 4px;
+  font-weight: 500;
+  line-height: 1.3;
 }
