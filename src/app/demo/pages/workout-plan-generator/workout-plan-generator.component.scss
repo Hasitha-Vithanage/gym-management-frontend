@@ -103,6 +103,10 @@
   opacity: 0.85;
 }
 
+.review-grid.enhanced {
+  margin-top: 30px;
+}
+
 .review-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -111,12 +115,47 @@
 }
 
 .review-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   background: #fff;
   border-radius: 16px;
   padding: 20px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
   position: relative;
+}
+
+.review-icon {
+  font-size: 32px;
+  color: #3f51b5;
+  width: 30px;
+  height: 30px;
+  margin-bottom: 10px;
+}
+
+.review-card .primary {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 6px 0;
+}
+
+.edit-btn {
+  align-self: flex-start;
+  margin-top: 10px;
+  padding: 0;
+  font-size: 0.75rem;
+  color: #3f51b5;
+  visibility: hidden;
+}
+
+.review-card:hover .edit-btn {
+  visibility: visible;
+}
+
+.review-card .secondary {
+  font-size: 0.9rem;
+  color: #666;
 }
 
 .review-card:hover {
@@ -142,6 +181,92 @@
 
 .review-card:hover .edit-btn {
   visibility: visible;
+}
+
+.goal-preview {
+  color: #fff;
+  text-align: center;
+  align-items: center;
+}
+
+.goal-preview-2 {
+  text-align: center;
+  align-items: center;
+}
+
+.goal-preview h4 {
+  margin-top: 10px;
+  margin-bottom: 6px;
+}
+
+.goal-preview p {
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+
+.goal-preview small {
+  font-size: 0.75rem;
+  opacity: 0.85;
+}
+
+.goal-preview-icon {
+  width: 30px;
+  height: 30px;
+}
+
+.plan-preview {
+  margin-top: 30px;
+  padding: 20px;
+  background: #f9fafb;
+  border-radius: 16px;
+  box-shadow: inset 0 0 0 1px #e5e7eb;
+}
+
+.plan-preview h4 {
+  margin-bottom: 14px;
+  font-size: 1rem;
+}
+
+.plan-preview ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.plan-preview li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+}
+
+.plan-preview mat-icon {
+  font-size: 20px;
+  color: #3f51b5;
+}
+
+.confidence-banner {
+  margin-top: 25px;
+  padding: 14px 18px;
+  background: linear-gradient(135deg, #3f51b5, #5c6bc0);
+  color: #fff;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+}
+
+.confidence-banner mat-icon {
+  font-size: 22px;
+}
+
+.step-actions small.hint-text {
+  margin-left: auto;
+  font-size: 0.75rem;
+  color: #666;
+  align-self: center;
 }
 
 .card-body p {
