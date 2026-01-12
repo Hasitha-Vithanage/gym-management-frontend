@@ -326,3 +326,128 @@
   font-weight: 500;
   line-height: 1.3;
 }
+
+
+
+/* Workout Output Enhancements */
+.workout-header h2 {
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+.workout-sub {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  margin-top: 4px;
+}
+
+/* Meta section */
+.workout-meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.meta-card {
+  background: #020617;
+  border-radius: 12px;
+  padding: 14px;
+  text-align: center;
+  border: 1px solid #1e293b;
+}
+
+.meta-card span {
+  display: block;
+  font-size: 0.75rem;
+  color: #94a3b8;
+}
+
+.meta-card strong {
+  font-size: 1rem;
+  color: #facc15;
+}
+
+/* Exercise list */
+.exercise-list {
+  margin-top: 20px;
+}
+
+.exercise-item {
+  background: #020617;
+  border: 1px solid #1e293b;
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 14px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.exercise-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 0 1px #38bdf8;
+}
+
+.exercise-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+/* Muscle chip */
+.muscle-chip {
+  background: #0ea5e9;
+  color: #020617;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+/* Stats */
+.exercise-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.exercise-stats div {
+  text-align: center;
+}
+
+.exercise-stats span {
+  display: block;
+  font-size: 0.7rem;
+  color: #94a3b8;
+}
+
+.exercise-stats strong {
+  font-size: 0.95rem;
+  color: #facc15;
+}
+
+/* Notes */
+.workout-notes {
+  margin-top: 24px;
+  background: #020617;
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid #1e293b;
+}
+
+.workout-notes p {
+  margin-top: 6px;
+  font-size: 0.85rem;
+  color: #cbd5f5;
+}
+
+/* Empty state */
+.empty-workout {
+  text-align: center;
+  padding: 30px;
+  font-size: 0.85rem;
+  color: #64748b;
+}

@@ -3,7 +3,7 @@
   <div class="title">
     <h2 class="form-title">Schedule New Class</h2>
     <button mat-icon-button class="close-icon" style="padding: 0px" (click)="closeDialog()">
-      <mat-icon fontIcon="close"></mat-icon>
+      <img src="../../../../assets/images/icon/close-icon.png">
     </button>
   </div>
 
@@ -11,22 +11,21 @@
   <form [formGroup]="classForm" class="example-form" (ngSubmit)="onSubmit()">
     <div class="row">
       <mat-form-field appearance="outline" class="half-width">
-        <mat-label>Class Title</mat-label>
-        <mat-icon matPrefix>fitness_center</mat-icon>
         <input matInput placeholder="Ex: Cardio" formControlName="classTitle" />
         <span class="required-message" *ngIf="submitted && classForm.get('classTitle').invalid">
           <ng-container *ngIf="classForm.get('classTitle').hasError('required')">Class Title is required</ng-container>
-          <ng-container *ngIf="classForm.get('classTitle').hasError('maxlength')">Maximum 50 characters allowed</ng-container>
+          <ng-container *ngIf="classForm.get('classTitle').hasError('maxlength')">Maximum 50 characters
+            allowed</ng-container>
         </span>
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="half-width">
         <mat-label>Description</mat-label>
-        <mat-icon matPrefix>description</mat-icon>
         <input matInput placeholder="Ex: 2 hour cardio session" formControlName="description" />
         <span class="required-message" *ngIf="submitted && classForm.get('description').invalid">
           <ng-container *ngIf="classForm.get('description').hasError('required')">Class Title is required</ng-container>
-          <ng-container *ngIf="classForm.get('description').hasError('maxlength')">Maximum 200 characters allowed</ng-container>
+          <ng-container *ngIf="classForm.get('description').hasError('maxlength')">Maximum 200 characters
+            allowed</ng-container>
         </span>
       </mat-form-field>
     </div>
@@ -35,8 +34,8 @@
     <div class="row">
       <mat-form-field appearance="outline" class="half-width">
         <mat-label>Date</mat-label>
-        <mat-icon matPrefix>event</mat-icon>
-        <input matInput [matDatepicker]="date" formControlName="date" placeholder="MM/DD/YYYY" (dateChange)="onDateChange($event)" />
+        <input matInput [matDatepicker]="date" formControlName="date" placeholder="MM/DD/YYYY"
+          (dateChange)="onDateChange($event)" />
         <span class="required-message" *ngIf="submitted && classForm.get('date').invalid">
           <ng-container *ngIf="classForm.get('date').hasError('required')">Date is required</ng-container>
           <ng-container *ngIf="classForm.get('date').errors?.['invalidDate']">Invalid date format</ng-container>
@@ -50,14 +49,15 @@
 
       <mat-form-field appearance="outline" class="half-width">
         <mat-label>Start Time</mat-label>
-        <mat-icon matPrefix>schedule</mat-icon>
         <input matInput placeholder="" formControlName="startTime" type="time" />
         <span class="required-message" *ngIf="submitted && classForm.get('startTime').invalid">
           <ng-container *ngIf="classForm.get('startTime').hasError('required')">Start Time is required</ng-container>
-          <ng-container *ngIf="classForm.errors?.['startTimeBeforeEndTimeValidator']">Start Time is required</ng-container>
+          <ng-container *ngIf="classForm.errors?.['startTimeBeforeEndTimeValidator']">Start Time is
+            required</ng-container>
         </span>
         <span class="required-message" *ngIf="submitted && classForm.errors">
-          <ng-container *ngIf="classForm.errors?.['startTimeBeforeEndTimeValidator']">Start time must be before end time</ng-container>
+          <ng-container *ngIf="classForm.errors?.['startTimeBeforeEndTimeValidator']">Start time must be before end
+            time</ng-container>
         </span>
       </mat-form-field>
     </div>
@@ -66,23 +66,24 @@
     <div class="row">
       <mat-form-field appearance="outline" class="half-width">
         <mat-label>End Time</mat-label>
-        <mat-icon matPrefix>schedule</mat-icon>
         <input matInput placeholder="" formControlName="endTime" type="time" />
         <span class="required-message" *ngIf="submitted && classForm.get('endTime').invalid">
           <ng-container *ngIf="classForm.get('endTime').hasError('required')">End Time is required</ng-container>
         </span>
         <span class="required-message" *ngIf="submitted && classForm.errors">
-          <ng-container *ngIf="classForm.errors?.['startTimeBeforeEndTimeValidator']">End time must be after start time</ng-container>
+          <ng-container *ngIf="classForm.errors?.['startTimeBeforeEndTimeValidator']">End time must be after start
+            time</ng-container>
         </span>
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="half-width">
         <mat-label>Conductor Name</mat-label>
-        <mat-icon matPrefix>person</mat-icon>
         <input matInput formControlName="conductorName" placeholder="Ex. Smith" />
         <span class="required-message" *ngIf="submitted && classForm.get('conductorName').invalid">
-          <ng-container *ngIf="classForm.get('conductorName').hasError('required')">Conductor Name is required</ng-container>
-          <ng-container *ngIf="classForm.get('conductorName').hasError('maxlength')">Maximum 50 characters allowed</ng-container>
+          <ng-container *ngIf="classForm.get('conductorName').hasError('required')">Conductor Name is
+            required</ng-container>
+          <ng-container *ngIf="classForm.get('conductorName').hasError('maxlength')">Maximum 50 characters
+            allowed</ng-container>
           <ng-container *ngIf="classForm.get('conductorName').hasError('pattern')">
             Numbers and special characters are not allowed
           </ng-container>
@@ -94,11 +95,11 @@
     <div class="row">
       <mat-form-field appearance="outline" class="half-width">
         <mat-label>Profession</mat-label>
-        <mat-icon matPrefix>work_outline</mat-icon>
         <input matInput formControlName="profession" placeholder="" />
         <span class="required-message" *ngIf="submitted && classForm.get('profession').invalid">
           <ng-container *ngIf="classForm.get('profession').hasError('required')">Profession is required</ng-container>
-          <ng-container *ngIf="classForm.get('profession').hasError('maxlength')">Maximum 50 characters allowed</ng-container>
+          <ng-container *ngIf="classForm.get('profession').hasError('maxlength')">Maximum 50 characters
+            allowed</ng-container>
           <ng-container *ngIf="classForm.get('profession').hasError('pattern')">
             Numbers and special characters are not allowed
           </ng-container>
@@ -107,13 +108,14 @@
 
       <mat-form-field appearance="outline" class="half-width">
         <mat-label>Number of Slots</mat-label>
-        <mat-icon matPrefix>group</mat-icon>
         <input matInput formControlName="totalSlots" placeholder="" type="number" />
         <span class="required-message" *ngIf="submitted && classForm.get('totalSlots').invalid">
-          <ng-container *ngIf="classForm.get('totalSlots').hasError('required')">Number of Slots is required</ng-container>
+          <ng-container *ngIf="classForm.get('totalSlots').hasError('required')">Number of Slots is
+            required</ng-container>
           <ng-container *ngIf="classForm.get('totalSlots').hasError('min')">Minimum 1 slot is required</ng-container>
           <ng-container *ngIf="classForm.get('totalSlots').hasError('max')">Maximum allowed slots is 25</ng-container>
-          <ng-container *ngIf="classForm.get('totalSlots').hasError('pattern')">Only numeric values are allowed.</ng-container>
+          <ng-container *ngIf="classForm.get('totalSlots').hasError('pattern')">Only numeric values are
+            allowed.</ng-container>
         </span>
       </mat-form-field>
     </div>
@@ -122,7 +124,6 @@
     <div class="row">
       <mat-form-field appearance="outline" class="half-width">
         <mat-label>Class fee (LKR)</mat-label>
-        <mat-icon matPrefix>attach_money</mat-icon>
         <input matInput formControlName="fee" placeholder="" />
         <span class="required-message" *ngIf="submitted && classForm.get('fee').invalid">
           <ng-container *ngIf="classForm.get('fee').hasError('required')">Class fee is required</ng-container>
@@ -135,7 +136,6 @@
 
       <mat-form-field appearance="outline" class="half-width">
         <mat-label>Status</mat-label>
-        <mat-icon matPrefix>event_note</mat-icon>
         <mat-select formControlName="status">
           <mat-option value="Scheduled">Scheduled</mat-option>
           <mat-option value="Cancelled">Cancelled</mat-option>

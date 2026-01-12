@@ -3,7 +3,7 @@
   <div class="title">
     <h2 class="form-title">Assign Trainer</h2>
     <button mat-icon-button class="close-icon" style="padding: 0px" (click)="closeDialog()">
-      <mat-icon fontIcon="close"></mat-icon>
+<img src="../../../../assets/images/icon/close-icon.png">
     </button>
   </div>
 
@@ -12,7 +12,6 @@
     <div class="row">
       <mat-form-field appearance="outline" class="half-width">
         <mat-label>Select Member</mat-label>
-        <mat-icon matPrefix>person</mat-icon>
         <mat-select formControlName="member" (selectionChange)="onMemberSelect($event)">
           <mat-option *ngFor="let member of memberList" [value]="member.firstName">
             {{ member.firstName }}
@@ -25,7 +24,6 @@
 
       <mat-form-field appearance="outline" class="half-width">
         <mat-label>Select Trainer</mat-label>
-        <mat-icon matPrefix>fitness_center</mat-icon>
         <mat-select formControlName="trainer" (selectionChange)="onTrainerSelect($event)">
           <mat-option *ngFor="let trainer of trainerList" [value]="trainer.firstName">
             {{ trainer.firstName }}

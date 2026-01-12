@@ -71,16 +71,12 @@
         <!-- <p class="step-desc">
                     Choose what you want to focus on. This will define your workout structure.
                 </p> -->
-        <p class="step-desc">Your goal defines how your workouts are structured — from exercise selection to rest periods.</p>
+        <p class="step-desc">Your goal defines how your workouts are structured — from exercise selection to rest
+          periods.</p>
 
         <div class="goal-cards">
-          <div
-            class="goal-card"
-            *ngFor="let goal of fitnessGoals"
-            [class.active]="goalForm.value.goal === goal.value"
-            (click)="selectGoal(goal.value)"
-            [style.background]="goal.color"
-          >
+          <div class="goal-card" *ngFor="let goal of fitnessGoals" [class.active]="goalForm.value.goal === goal.value"
+            (click)="selectGoal(goal.value)" [style.background]="goal.color">
             <div class="goal-icon">
               <img src="{{ goal.icon }}" style="margin-right: 5px" />
             </div>
@@ -108,19 +104,21 @@
       <form [formGroup]="lifestyleForm">
         <ng-template matStepLabel>Lifestyle & Experience</ng-template>
 
-        <p class="step-desc">This step keeps your plan realistic. The best plan is the one you can stick to consistently.</p>
+        <p class="step-desc">This step keeps your plan realistic. The best plan is the one you can stick to
+          consistently.</p>
 
         <div class="form-grid">
           <div class="form-group">
             <label>Experience Level</label>
             <select formControlName="experience">
               <option value="">Select</option>
-              <option value="beginner">Beginner</option>
-              <option value="intermediate">Intermediate</option>
-              <option value="advanced">Advanced</option>
+              <option value="Beginner">Beginner</option>
+              <option value="Intermediate">Intermediate</option>
+              <option value="Advanced">Advanced</option>
             </select>
             <span class="required-message" *ngIf="bodyFormSubmitted && lifestyleForm.get('experience').invalid">
-              <ng-container *ngIf="lifestyleForm.get('experience').hasError('required')">Experience is required</ng-container>
+              <ng-container *ngIf="lifestyleForm.get('experience').hasError('required')">Experience is
+                required</ng-container>
             </span>
             <small>Determines training volume and complexity</small>
           </div>
@@ -134,8 +132,8 @@
           <div class="form-group">
             <label>Workout Location</label>
             <select formControlName="location">
-              <option value="gym">Gym</option>
-              <option value="home">Home</option>
+              <option value="Gym">Gym</option>
+              <option value="Home">Home</option>
             </select>
             <small>Equipment availability will be considered</small>
           </div>
@@ -149,7 +147,8 @@
 
         <div class="step-actions">
           <button mat-button matStepperPrevious>Back</button>
-          <button mat-raised-button matStepperNext class="primary-button" (click)="lifestyleFormSubmit()">Review</button>
+          <button mat-raised-button matStepperNext class="primary-button"
+            (click)="lifestyleFormSubmit()">Review</button>
         </div>
       </form>
     </mat-step>
@@ -191,100 +190,157 @@
     </mat-step> -->
 
     <!-- STEP 4: REVIEW -->
-<mat-step>
-  <ng-template matStepLabel>Review & Generate</ng-template>
+    <mat-step>
+      <ng-template matStepLabel>Review & Generate</ng-template>
 
-  <p class="step-desc">
-    Here’s a snapshot of your personalized workout profile.
-    You can edit anything before generating your plan.
-  </p>
-
-  <!-- PROFILE SNAPSHOT -->
-  <div class="review-grid enhanced">
-    <!-- BODY -->
-    <div class="review-card goal-preview-2" style="background: #EAF2FF;">
-      <img [src]=" '../../../../assets/images/icon/person-icon-dark.png'" class="goal-preview-icon" />
-      <h4>Body Stats</h4>
-      <p class="primary">
-        {{ bodyForm.value.height }} cm · {{ bodyForm.value.weight }} kg
+      <p class="step-desc">
+        Here’s a snapshot of your personalized workout profile.
+        You can edit anything before generating your plan.
       </p>
-      <p class="secondary">Age {{ bodyForm.value.age }}</p>
-      <!-- <button mat-button class="edit-btn" matStepperPrevious>Edit</button> -->
-    </div>
 
-    <!-- GOAL -->
-    <div
-      class="review-card goal-preview"
-      [style.background]="selectedGoal?.color"
-    >
-      <img [src]="selectedGoal?.icon" class="goal-preview-icon" />
-      <h4>{{ selectedGoal?.label }}</h4>
-      <p>{{ selectedGoal?.meta }}</p>
-      <small>{{ selectedGoal?.recommendedSessions }}</small>
-    </div>
+      <!-- PROFILE SNAPSHOT -->
+      <div class="review-grid enhanced">
+        <!-- BODY -->
+        <div class="review-card goal-preview-2" style="background: #EAF2FF;">
+          <img [src]=" '../../../../assets/images/icon/person-icon-dark.png'" class="goal-preview-icon" />
+          <h4>Body Stats</h4>
+          <p class="primary">
+            {{ bodyForm.value.height }} cm · {{ bodyForm.value.weight }} kg
+          </p>
+          <p class="secondary">Age {{ bodyForm.value.age }}</p>
+          <!-- <button mat-button class="edit-btn" matStepperPrevious>Edit</button> -->
+        </div>
 
-    <!-- TRAINING -->
-    <div class="review-card goal-preview-2" style="background-color: #EAF7F0;">
-      <img [src]=" '../../../../assets/images/icon/training-icon-dark.png'" class="review-icon" />
-      <h4>Training Style</h4>
-      <p class="primary">{{ lifestyleForm.value.experience | titlecase }}</p>
-      <p class="secondary">
-        {{ lifestyleForm.value.daysPerWeek }} days / week
-      </p>
-      <!-- <button mat-button class="edit-btn" matStepperPrevious>Edit</button> -->
-    </div>
-  </div>
+        <!-- GOAL -->
+        <div class="review-card goal-preview" [style.background]="selectedGoal?.color">
+          <img [src]="selectedGoal?.icon" class="goal-preview-icon" />
+          <h4>{{ selectedGoal?.label }}</h4>
+          <p>{{ selectedGoal?.meta }}</p>
+          <small>{{ selectedGoal?.recommendedSessions }}</small>
+        </div>
 
-  <!-- PLAN PREVIEW -->
-  <div class="plan-preview">
-    <h4 style="margin-top: 10px;">What this plan includes</h4>
+        <!-- TRAINING -->
+        <div class="review-card goal-preview-2" style="background-color: #EAF7F0;">
+          <img [src]=" '../../../../assets/images/icon/training-icon-dark.png'" class="review-icon" />
+          <h4>Training Style</h4>
+          <p class="primary">{{ lifestyleForm.value.experience | titlecase }}</p>
+          <p class="secondary">
+            {{ lifestyleForm.value.daysPerWeek }} days / week
+          </p>
+          <!-- <button mat-button class="edit-btn" matStepperPrevious>Edit</button> -->
+        </div>
+      </div>
 
-    <ul>
-      <li>
-        <mat-icon>schedule</mat-icon>
-        Average session: <strong>{{ estimatedSessionDuration }}</strong>
-      </li>
-      <li>
-        <mat-icon>calendar_today</mat-icon>
-        Structured weekly split
-      </li>
-      <li>
-        <mat-icon>trending_up</mat-icon>
-        Progressive overload & recovery balance
-      </li>
-      <li *ngIf="lifestyleForm.value.location === 'home'">
-        <mat-icon>home</mat-icon>
-        Optimized for home workouts
-      </li>
-      <li *ngIf="lifestyleForm.value.location === 'gym'">
-        <mat-icon>apartment</mat-icon>
-        Gym-based compound movements
-      </li>
-    </ul>
-  </div>
+      <!-- PLAN PREVIEW -->
+      <div class="plan-preview">
+        <h4 style="margin-top: 10px;">What this plan includes</h4>
 
-  <!-- PERSONALIZED MESSAGE -->
-  <div class="confidence-banner">
-          <img [src]=" '../../../../assets/images/icon/verify-icon-light.png'"/>
-     Designed for an<strong>{{lifestyleForm.value.experience}}</strong>aiming to<strong>{{selectedGoal?.label.toLowerCase()}}</strong>, optimized for consistency and recovery.
-  </div>
+        <ul>
+          <li>
+            <mat-icon>schedule</mat-icon>
+            Average session: <strong>{{ estimatedSessionDuration }}</strong>
+          </li>
+          <li>
+            <mat-icon>calendar_today</mat-icon>
+            Structured weekly split
+          </li>
+          <li>
+            <mat-icon>trending_up</mat-icon>
+            Progressive overload & recovery balance
+          </li>
+          <li *ngIf="lifestyleForm.value.location === 'home'">
+            <mat-icon>home</mat-icon>
+            Optimized for home workouts
+          </li>
+          <li *ngIf="lifestyleForm.value.location === 'gym'">
+            <mat-icon>apartment</mat-icon>
+            Gym-based compound movements
+          </li>
+        </ul>
+      </div>
 
-  <!-- ACTIONS -->
-  <div class="step-actions">
-    <button mat-button matStepperPrevious>Back</button>
-    <button
-      mat-raised-button
-      class="primary-button"
-      (click)="generateWorkoutPlan()"
-    >
-      Generate My Personalized Plan
-    </button>
-    <small class="hint-text">Takes less than 2 seconds</small>
-  </div>
-</mat-step>
+      <!-- PERSONALIZED MESSAGE -->
+      <div class="confidence-banner">
+        <img [src]=" '../../../../assets/images/icon/verify-icon-light.png'" />
+        Designed for an<strong>{{lifestyleForm.value.experience}}</strong>aiming
+        to<strong>{{selectedGoal?.label.toLowerCase()}}</strong>, optimized for consistency and recovery.
+      </div>
+
+      <!-- ACTIONS -->
+      <div class="step-actions">
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-raised-button class="primary-button" (click)="workoutGenerate()">
+          Generate My Personalized Plan
+        </button>
+        <small class="hint-text">Takes less than 2 seconds</small>
+      </div>
+    </mat-step>
 
 
   </mat-horizontal-stepper>
-  <p>Workout plan</p>
-  <div class="workout-output" [innerHTML]="htmlOutput"></div>
+
+  <div class="workout-output" *ngIf="workoutPlan">
+
+  <!-- Header -->
+  <div class="workout-header">
+    <h2>{{ workoutPlan.goal }} Workout Plan</h2>
+    <p class="workout-sub">
+      {{ workoutPlan.level }} • {{ workoutPlan.split }} • {{ workoutPlan.daysPerWeek }} days/week
+    </p>
+  </div>
+
+  <!-- Meta Info -->
+  <div class="workout-meta">
+    <div class="meta-card">
+      <span>Duration</span>
+      <strong>{{ workoutPlan.duration }}</strong>
+    </div>
+    <div class="meta-card">
+      <span>Progression</span>
+      <strong>{{ workoutPlan.progression }}</strong>
+    </div>
+  </div>
+
+  <!-- Workout List -->
+  <div class="exercise-list" *ngIf="workoutPlan.workouts?.length; else noWorkouts">
+
+    <div class="exercise-item" *ngFor="let w of workoutPlan.workouts">
+      <div class="exercise-title">
+        {{ w.exercise }}
+        <span class="muscle-chip">{{ w.muscle }}</span>
+      </div>
+
+      <div class="exercise-stats">
+        <div>
+          <span>Sets</span>
+          <strong>{{ w.sets }}</strong>
+        </div>
+        <div>
+          <span>Reps</span>
+          <strong>{{ w.reps[0] }}–{{ w.reps[1] }}</strong>
+        </div>
+        <div>
+          <span>Rest</span>
+          <strong>{{ w.restSeconds }}s</strong>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Empty -->
+  <ng-template #noWorkouts>
+    <div class="empty-workout">
+      No exercises available for selected inputs.
+    </div>
+  </ng-template>
+
+  <!-- Notes -->
+  <div class="workout-notes">
+    <strong>Coach Notes</strong>
+    <p>{{ workoutPlan.notes }}</p>
+  </div>
+
+</div>
+
 </div>

@@ -16,6 +16,7 @@ export class WorkoutPlanGeneratorComponent {
   lifestyleForm!: FormGroup;
   bodyFormSubmitted = false;
   lifestyleFormSubmitted = false;
+  workoutPlan: any;
 
   fitnessGoals = [
     {
@@ -65,7 +66,7 @@ export class WorkoutPlanGeneratorComponent {
     private workoutManagementService: WorkoutManagementService,
     private zone: NgZone,
     private sanitizer: DomSanitizer
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.bodyForm = this.fb.group({
@@ -96,10 +97,10 @@ export class WorkoutPlanGeneratorComponent {
   }
 
   get selectedGoal() {
-  return this.fitnessGoals.find(
-    g => g.value === this.goalForm.value.goal
-  );
-}
+    return this.fitnessGoals.find(
+      g => g.value === this.goalForm.value.goal
+    );
+  }
 
   get estimatedSessionDuration(): string | null {
     const goal = this.goalForm.get('goal')?.value;
@@ -198,19 +199,249 @@ export class WorkoutPlanGeneratorComponent {
   }
 
   // Generate workout plan
-  async generateWorkoutPlan() {
-    // const payload = {
-    //   ...this.bodyForm.value,
-    //   ...this.goalForm.value,
-    //   ...this.lifestyleForm.value
-    // };
+  // async generateWorkoutPlan() {
+  //   // const payload = {
+  //   //   ...this.bodyForm.value,
+  //   //   ...this.goalForm.value,
+  //   //   ...this.lifestyleForm.value
+  //   // };
 
-    // console.log('Workout Plan Input:', payload);
+  //   // console.log('Workout Plan Input:', payload);
 
-    this.textBuffer = '';
-    this.htmlOutput = '';
+  //   this.textBuffer = '';
+  //   this.htmlOutput = '';
 
-    const payload = {
+  //   const payload = {
+  //     age: this.bodyForm.value.age,
+  //     gender: this.bodyForm.value.gender,
+  //     height: this.bodyForm.value.height,
+  //     weight: this.bodyForm.value.weight,
+  //     fitnessLevel: this.lifestyleForm.value.experience,
+  //     goal: this.goalForm.value.goal,
+  //     equipment: this.lifestyleForm.value.location,
+  //     daysPerWeek: this.lifestyleForm.value.daysPerWeek,
+  //     limitation: this.lifestyleForm.value.limitations
+  //   };
+
+  //   console.log('Workout Plan Input:', payload);
+
+  //   const response = await fetch('http://localhost:8080/workout-plan-generate', {
+  //     method: 'POST',
+  //     headers: { 'Content-Type': 'application/json' },
+  //     body: JSON.stringify(payload)
+  //   });
+
+  //   const reader = response.body!.getReader();
+  //   const decoder = new TextDecoder();
+  //   let streamBuffer = '';
+
+  //   while (true) {
+  //     const { value, done } = await reader.read();
+  //     if (done) break;
+
+  //     streamBuffer += decoder.decode(value, { stream: true });
+  //     const lines = streamBuffer.split('\n');
+  //     streamBuffer = lines.pop()!;
+
+  //     for (const line of lines) {
+  //       if (line.startsWith('data:')) {
+  //         const token = line.replace('data:', '');
+  //         this.appendToken(token);
+
+  //         // 🔥 Force Angular to update UI
+  //         this.zone.run(() => {
+  //           const cleanText = this.normalizeMarkdown(this.textBuffer);
+  //           console.log('Clean Text:', cleanText);
+  //           const html: any = marked.parse(cleanText);
+  //           console.log('html:', html);
+  //           this.htmlOutput = this.sanitizer.bypassSecurityTrustHtml(html);
+  //           console.log('htmlOutput:', this.htmlOutput);
+  //         });
+  //       }
+  //     }
+  //   }
+  // }
+
+  // private appendToken(token: string) {
+  //   token = token.replace(/\r/g, '');
+
+  //   // 1. Fix broken hyphen spacing: "5- 10" → "5–10"
+  //   token = token.replace(/-\s+/g, '–');
+
+  //   // 2. Fix space before punctuation
+  //   token = token.replace(/\s+([.,:;!?])/g, '$1');
+
+  //   // 3. Fix broken words (letter + space + letter)
+  //   if (this.textBuffer.length > 0 && /[a-zA-Z]$/.test(this.textBuffer) && /^[a-zA-Z]/.test(token)) {
+  //     this.textBuffer += token;
+  //     return;
+  //   }
+
+  //   // 4. Ensure space between words
+  //   if (this.textBuffer.length > 0 && !this.textBuffer.endsWith(' ') && !token.startsWith(' ') && /^[a-zA-Z0-9]/.test(token)) {
+  //     this.textBuffer += ' ';
+  //   }
+
+  //   this.textBuffer += token;
+  // }
+
+  // private normalizeMarkdown(text: string): string {
+  //   return (
+  //     text
+  //       // Headings
+  //       .replace(/\*\*\s*(.+?)\s*\*\*/g, '\n\n## $1\n')
+  //       // Bullet points
+  //       .replace(/\*\s+/g, '\n- ')
+  //       // Day headers
+  //       .replace(/Day\s(\d+):/g, '\n\n### Day $1\n')
+  //       // Remove excessive spaces
+  //       .replace(/\s{2,}/g, ' ')
+  //       // Paragraph spacing
+  //       .replace(/\n{3,}/g, '\n\n')
+  //   );
+  // }
+
+  // private renderMarkdown() {
+  //   this.htmlOutput = marked.parse(this.textBuffer);
+  // }
+
+
+
+
+  // GOAL CONFIGURATION
+  GOAL_CONFIG = {
+    'fat_loss': {
+      reps: [12, 20],
+      sets: 3,
+      rest: 30,
+      cardio: true
+    },
+    'muscle_gain': {
+      reps: [8, 12],
+      sets: 4,
+      rest: 90,
+      cardio: false
+    },
+    'strength': {
+      reps: [3, 6],
+      sets: 5,
+      rest: 180,
+      cardio: false
+    },
+    'fitness': {
+      reps: [10, 15],
+      sets: 3,
+      rest: 60,
+      cardio: true
+    }
+  };
+
+  // EXERCISE MASTER
+  EXERCISES = [
+    // Beginner Legs Exercises
+    { name: 'Bodyweight Squat', muscle: 'Legs', equipment: 'Home', level: 'Beginner', injuries: ['Knee'] },
+    { name: 'Lunges', muscle: 'Legs', equipment: 'Home', level: 'Beginner', injuries: ['Knee'] },
+    { name: 'Glute Bridge', muscle: 'Glutes', equipment: 'Home', level: 'Beginner', injuries: ['Lower Back'] },
+
+    // Intermediate Legs Exercises
+    { name: 'Leg Press', muscle: 'Legs', equipment: 'Gym', level: 'Intermediate', injuries: ['Knee'] },
+    { name: 'Deadlift', muscle: 'Back', equipment: 'Gym', level: 'Intermediate', injuries: ['Lower Back'] },
+    { name: 'Squat', muscle: 'Legs', equipment: 'Gym', level: 'Intermediate', injuries: ['Knee', 'Lower Back'] },
+
+    // Advanced Legs Exercises
+    { name: 'Barbell Back Squat', muscle: 'Legs', equipment: 'Gym', level: 'Advanced', injuries: ['Knee', 'Lower Back'] },
+    { name: 'Romanian Deadlift', muscle: 'Hamstrings', equipment: 'Gym', level: 'Advanced', injuries: ['Lower Back'] },
+    { name: 'Bulgarian Split Squat', muscle: 'Legs', equipment: 'Gym', level: 'Advanced', injuries: ['Knee'] },
+
+    // Beginner Chest Exercises
+    { name: 'Push-up', muscle: 'Chest', equipment: 'Home', level: 'Beginner', injuries: ['Shoulder', 'Wrist'] },
+    { name: 'Chest Fly (Resistance Band)', muscle: 'Chest', equipment: 'Home', level: 'Beginner', injuries: ['Shoulder'] },
+    { name: 'Incline Push-up', muscle: 'Chest', equipment: 'Home', level: 'Beginner', injuries: ['Shoulder', 'Wrist'] },
+
+    // Intermediate Chest Exercises
+    { name: 'Dumbbell Bench Press', muscle: 'Chest', equipment: 'Gym', level: 'Intermediate', injuries: ['Shoulder'] },
+    { name: 'Chest Dip', muscle: 'Chest', equipment: 'Gym', level: 'Intermediate', injuries: ['Shoulder'] },
+    { name: 'Incline Dumbbell Press', muscle: 'Chest', equipment: 'Gym', level: 'Intermediate', injuries: ['Shoulder'] },
+
+    // Advanced Chest Exercises
+    { name: 'Barbell Bench Press', muscle: 'Chest', equipment: 'Gym', level: 'Advanced', injuries: ['Shoulder'] },
+    { name: 'Weighted Chest Dip', muscle: 'Chest', equipment: 'Gym', level: 'Advanced', injuries: ['Shoulder'] },
+    { name: 'Incline Barbell Press', muscle: 'Chest', equipment: 'Gym', level: 'Advanced', injuries: ['Shoulder'] },
+
+    // Beginner Back Exercises
+    { name: 'Superman', muscle: 'Back', equipment: 'Home', level: 'Beginner', injuries: ['Lower Back'] },
+    { name: 'Bird Dog', muscle: 'Back', equipment: 'Home', level: 'Beginner', injuries: ['Lower Back'] },
+    { name: 'Wall Angels', muscle: 'Back', equipment: 'Home', level: 'Beginner', injuries: ['Shoulder'] },
+    { name: 'Lat Pulldown', muscle: 'Back', equipment: 'Gym', level: 'Beginner', injuries: [] },
+
+    // Intermediate Back Exercises
+    { name: 'Dumbbell Row', muscle: 'Back', equipment: 'Gym', level: 'Intermediate', injuries: ['Shoulder'] },
+    { name: 'Pull-up', muscle: 'Back', equipment: 'Gym', level: 'Intermediate', injuries: ['Shoulder'] },
+    { name: 'Seated Cable Row', muscle: 'Back', equipment: 'Gym', level: 'Intermediate', injuries: ['Shoulder'] },
+
+    // Advanced Back Exercises
+    { name: 'Barbell Row', muscle: 'Back', equipment: 'Gym', level: 'Advanced', injuries: ['Shoulder'] },
+    { name: 'Weighted Pull-up', muscle: 'Back', equipment: 'Gym', level: 'Advanced', injuries: ['Shoulder'] },
+    { name: 'T-Bar Row', muscle: 'Back', equipment: 'Gym', level: 'Advanced', injuries: ['Shoulder'] },
+
+    // Beginner Shoulder Exercises
+    { name: 'Arm Circles', muscle: 'Shoulders', equipment: 'Home', level: 'Beginner', injuries: ['Shoulder'] },
+    { name: 'Wall Push-up', muscle: 'Shoulders', equipment: 'Home', level: 'Beginner', injuries: ['Shoulder', 'Wrist'] },
+    { name: 'Shoulder Press (Resistance Band)', muscle: 'Shoulders', equipment: 'Home', level: 'Beginner', injuries: ['Shoulder'] },
+
+    // Intermediate Shoulder Exercises
+    { name: 'Dumbbell Shoulder Press', muscle: 'Shoulders', equipment: 'Gym', level: 'Intermediate', injuries: ['Shoulder'] },
+    { name: 'Lateral Raise', muscle: 'Shoulders', equipment: 'Gym', level: 'Intermediate', injuries: ['Shoulder'] },
+    { name: 'Front Raise', muscle: 'Shoulders', equipment: 'Gym', level: 'Intermediate', injuries: ['Shoulder'] },
+
+    // Advanced Shoulder Exercises
+    { name: 'Barbell Overhead Press', muscle: 'Shoulders', equipment: 'Gym', level: 'Advanced', injuries: ['Shoulder'] },
+    { name: 'Arnold Press', muscle: 'Shoulders', equipment: 'Gym', level: 'Advanced', injuries: ['Shoulder'] },
+    { name: 'Upright Row', muscle: 'Shoulders', equipment: 'Gym', level: 'Advanced', injuries: ['Shoulder'] },
+
+    // Beginner Arms Exercises
+    { name: 'Tricep Dips (Chair)', muscle: 'Arms', equipment: 'Home', level: 'Beginner', injuries: ['Elbow'] },
+    { name: 'Bicep Curl', muscle: 'Arms', equipment: 'Gym', level: 'Beginner', injuries: ['Wrist'] },
+    { name: 'Push-up (Wall)', muscle: 'Arms', equipment: 'Home', level: 'Beginner', injuries: ['Shoulder'] },
+
+    // Intermediate Arms Exercises
+    { name: 'Tricep Pushdown', muscle: 'Arms', equipment: 'Gym', level: 'Intermediate', injuries: ['Elbow'] },
+    { name: 'Hammer Curl', muscle: 'Arms', equipment: 'Gym', level: 'Intermediate', injuries: ['Wrist'] },
+    { name: 'Close-Grip Bench Press', muscle: 'Arms', equipment: 'Gym', level: 'Intermediate', injuries: ['Shoulder'] },
+
+    // Advanced Arms Exercises
+    { name: 'Skull Crushers', muscle: 'Arms', equipment: 'Gym', level: 'Advanced', injuries: ['Elbow'] },
+    { name: 'Concentration Curl', muscle: 'Arms', equipment: 'Gym', level: 'Advanced', injuries: ['Wrist'] },
+    { name: 'Weighted Dips', muscle: 'Arms', equipment: 'Gym', level: 'Advanced', injuries: ['Shoulder'] },
+
+    // Beginner Core Exercises
+    { name: 'Crunches', muscle: 'Core', equipment: 'Home', level: 'Beginner', injuries: ['Neck'] },
+    { name: 'Leg Raises', muscle: 'Core', equipment: 'Home', level: 'Beginner', injuries: ['Lower Back'] },
+    { name: 'Mountain Climbers', muscle: 'Core', equipment: 'Home', level: 'Beginner', injuries: ['Knee'] },
+
+    // Intermediate Core Exercises
+    { name: 'Plank with Arm Lift', muscle: 'Core', equipment: 'Home', level: 'Intermediate', injuries: ['Lower Back'] },
+    { name: 'Russian Twists', muscle: 'Core', equipment: 'Home', level: 'Intermediate', injuries: ['Lower Back'] },
+    { name: 'Hanging Leg Raise', muscle: 'Core', equipment: 'Gym', level: 'Intermediate', injuries: ['Lower Back'] },
+
+    // Advanced Core Exercises
+    { name: 'Dragon Flag', muscle: 'Core', equipment: 'Gym', level: 'Advanced', injuries: ['Lower Back'] },
+    { name: 'Cable Woodchopper', muscle: 'Core', equipment: 'Gym', level: 'Advanced', injuries: ['Lower Back'] },
+    { name: 'Ab Rollout', muscle: 'Core', equipment: 'Gym', level: 'Advanced', injuries: ['Lower Back'] },
+
+    // Cardio Exercises
+    { name: 'Running', muscle: 'Cardio', equipment: 'Outdoor', level: 'All', injuries: ['Knee', 'Ankle'] },
+    { name: 'Cycling', muscle: 'Cardio', equipment: 'Outdoor', level: 'All', injuries: ['Knee'] },
+    { name: 'Swimming', muscle: 'Cardio', equipment: 'Pool', level: 'All', injuries: ['Shoulder'] },
+  ];
+
+  // PAYLOAD BUILDER
+  buildPayload() {
+    if (this.bodyForm.invalid || this.goalForm.invalid || this.lifestyleForm.invalid) {
+      return null;
+    }
+
+    return {
       age: this.bodyForm.value.age,
       gender: this.bodyForm.value.gender,
       height: this.bodyForm.value.height,
@@ -219,88 +450,139 @@ export class WorkoutPlanGeneratorComponent {
       goal: this.goalForm.value.goal,
       equipment: this.lifestyleForm.value.location,
       daysPerWeek: this.lifestyleForm.value.daysPerWeek,
-      limitation: this.lifestyleForm.value.limitations
+      limitations: this.lifestyleForm.value.limitations || []
     };
+  }
 
-    console.log('Workout Plan Input:', payload);
+  // MAIN GENERATOR
+  workoutGenerate(): void {
+    const payload = this.buildPayload();
+    if (!payload) return;
 
-    const response = await fetch('http://localhost:8080/workout-plan-generate', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
+    switch (payload.fitnessLevel) {
+      case 'Beginner':
+        this.workoutPlan = this.generateBeginnerPlan(payload);
+        break;
 
-    const reader = response.body!.getReader();
-    const decoder = new TextDecoder();
-    let streamBuffer = '';
+      case 'Intermediate':
+        this.workoutPlan = this.generateIntermediatePlan(payload);
+        break;
 
-    while (true) {
-      const { value, done } = await reader.read();
-      if (done) break;
-
-      streamBuffer += decoder.decode(value, { stream: true });
-      const lines = streamBuffer.split('\n');
-      streamBuffer = lines.pop()!;
-
-      for (const line of lines) {
-        if (line.startsWith('data:')) {
-          const token = line.replace('data:', '');
-          this.appendToken(token);
-
-          // 🔥 Force Angular to update UI
-          this.zone.run(() => {
-            const cleanText = this.normalizeMarkdown(this.textBuffer);
-            console.log('Clean Text:', cleanText);
-            const html: any = marked.parse(cleanText);
-            console.log('html:', html);
-            this.htmlOutput = this.sanitizer.bypassSecurityTrustHtml(html);
-            console.log('htmlOutput:', this.htmlOutput);
-          });
-        }
-      }
+      case 'Advanced':
+        this.workoutPlan = this.generateAdvancedPlan(payload);
+        break;
     }
   }
 
-  private appendToken(token: string) {
-    token = token.replace(/\r/g, '');
+  // PLAN GENERATORS
+  generateBeginnerPlan(payload) {
+    let workout = {
+      level: 'Beginner',
+      duration: '4 weeks',
+      split: 'Full Body',
+      daysPerWeek: payload.daysPerWeek,
+      progression: 'Linear',
+      goal: payload.goal,
+      workouts: this.buildWorkout(payload),
+      notes: 'Beginner-friendly full body routine with safety focus'
+    };
+    console.log("Workout Created: ", workout);
 
-    // 1. Fix broken hyphen spacing: "5- 10" → "5–10"
-    token = token.replace(/-\s+/g, '–');
-
-    // 2. Fix space before punctuation
-    token = token.replace(/\s+([.,:;!?])/g, '$1');
-
-    // 3. Fix broken words (letter + space + letter)
-    if (this.textBuffer.length > 0 && /[a-zA-Z]$/.test(this.textBuffer) && /^[a-zA-Z]/.test(token)) {
-      this.textBuffer += token;
-      return;
-    }
-
-    // 4. Ensure space between words
-    if (this.textBuffer.length > 0 && !this.textBuffer.endsWith(' ') && !token.startsWith(' ') && /^[a-zA-Z0-9]/.test(token)) {
-      this.textBuffer += ' ';
-    }
-
-    this.textBuffer += token;
+    return workout;
   }
 
-  private normalizeMarkdown(text: string): string {
-    return (
-      text
-        // Headings
-        .replace(/\*\*\s*(.+?)\s*\*\*/g, '\n\n## $1\n')
-        // Bullet points
-        .replace(/\*\s+/g, '\n- ')
-        // Day headers
-        .replace(/Day\s(\d+):/g, '\n\n### Day $1\n')
-        // Remove excessive spaces
-        .replace(/\s{2,}/g, ' ')
-        // Paragraph spacing
-        .replace(/\n{3,}/g, '\n\n')
+  generateIntermediatePlan(payload) {
+    const split = this.getSplitByDays(payload.daysPerWeek);
+    const workout = {
+      level: 'Intermediate',
+      duration: '4 weeks',
+      split,
+      daysPerWeek: payload.daysPerWeek,
+      progression: 'Periodized',
+      goal: payload.goal,
+      workouts: this.buildWorkout(payload),
+      notes: 'Goal-oriented plan with balanced volume and intensity'
+    };
+    console.log("Workout Created: ", workout);
+    return workout;
+  }
+
+  generateAdvancedPlan(payload) {
+    const split = this.getSplitByDays(payload.daysPerWeek);
+    const workout = {
+      level: 'Advanced',
+      duration: '4 weeks',
+      split,
+      daysPerWeek: payload.daysPerWeek,
+      progression: 'Undulating Periodization',
+      goal: payload.goal,
+      workouts: this.buildWorkout(payload),
+      notes: 'High-intensity structured program for advanced trainees'
+    };
+    console.log("Workout Created: ", workout);
+    return workout;
+  }
+
+  // SPLIT LOGIC
+  getSplitByDays(daysPerWeek: number): string {
+    if (daysPerWeek <= 3) return 'Full Body';
+    if (daysPerWeek === 4) return 'Upper/Lower';
+    return 'Push/Pull/Legs';
+  }
+
+  // EXERCISE FILTERING
+  filterExercises(payload) {
+    return this.EXERCISES.filter(ex =>
+      ex.equipment === payload.equipment &&
+      this.isLevelAllowed(ex.level, payload.fitnessLevel) &&
+      !payload.limitations.some(limitation => ex.injuries.includes(limitation))
     );
   }
 
-  // private renderMarkdown() {
-  //   this.htmlOutput = marked.parse(this.textBuffer);
+  isLevelAllowed(exerciseLevel: string, userLevel: string): boolean {
+    const levels = ['Beginner', 'Intermediate', 'Advanced'];
+    return levels.indexOf(exerciseLevel) <= levels.indexOf(this.capitalize(userLevel));
+  }
+
+  capitalize(value: string): string {
+    return value.charAt(0).toUpperCase() + value.slice(1);
+  }
+
+  // WORKOUT BUILDER
+  buildWorkout(payload) {
+    const goalConfig = this.GOAL_CONFIG[payload.goal];
+    const exercises = this.filterExercises(payload);
+
+    return exercises.slice(0, 5).map(ex => ({
+      exercise: ex.name,
+      muscle: ex.muscle,
+      sets: goalConfig.sets,
+      reps: goalConfig.reps,
+      restSeconds: goalConfig.rest
+    }));
+  }
+
+
+
+
+
+
+
+  // generateWorkoutPlan(payload): void {
+
+  //   if (payload.fitnessLevel === 'beginner') {
+  //     // Get beginner workout plan for 1 month even the goal is different
+  //     // Should consider the injury limitations
+
+  //     // Will gets a one day split that covers full body workout for days that user can train per week
+  //   } else if (payload.fitnessLevel === 'intermediate') {
+  //     // Get intermediate workout plan for 1 month should consider the gender, age, starting weight, goal, days per week, equipment availability and injury limitations
+
+  //     // Workout split will vary based on the user inputs (Ex: If user can train 3 days per week, it will be like Day 01: Upper Body Day 02: Lower Body Day 03: Full Body 
+  //     // If user can train 4 days per week, it will be an upper/lower split. If user can train 5 days per week, it will be a push/pull/legs split.)
+  //   } else if (payload.fitnessLevel === 'advanced') {
+  //     // Get advanced workout plan for 1 month should consider the gender, age, starting weight, goal, days per week, equipment availability and injury limitations
+  //   }
+
   // }
 }

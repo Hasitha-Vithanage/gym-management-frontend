@@ -3,16 +3,15 @@
   <div class="title">
     <h2 class="form-title">Add New Progress</h2>
     <button mat-icon-button class="close-icon" style="padding: 0px" (click)="closeDialog()">
-      <mat-icon fontIcon="close"></mat-icon>
+      <img src="../../../../assets/images/icon/close-icon.png">
     </button>
   </div>
 
   <!--- form -->
   <form class="example-form" [formGroup]="progressForm" (ngSubmit)="onSubmit()">
-    <div class="row">
+    <div class="row"> 
       <mat-form-field appearance="outline" class="half-width">
         <mat-label>Date</mat-label>
-        <mat-icon matPrefix>event</mat-icon>
         <input matInput [matDatepicker]="join" placeholder="MM/DD/YYYY" formControlName="date" />
         <mat-datepicker-toggle matSuffix [for]="join"></mat-datepicker-toggle>
         <mat-datepicker #join></mat-datepicker>
@@ -20,7 +19,6 @@
 
       <mat-form-field appearance="outline" class="half-width">
         <mat-label>Weight (Kg)</mat-label>
-        <mat-icon matPrefix>fitness_center</mat-icon>
         <input matInput maxlength="20" placeholder="Enter Weight" type="number" formControlName="weight" />
       </mat-form-field>
     </div>
@@ -28,50 +26,46 @@
     <div class="row">
       <mat-form-field appearance="outline" class="half-width">
         <mat-label>Height (cm)</mat-label>
-        <mat-icon matPrefix>straighten</mat-icon>
         <input matInput maxlength="20" placeholder="Enter Height" type="number" formControlName="height" />
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="half-width">
         <mat-label>Waist Circumference (cm)</mat-label>
-        <!-- <mat-icon matPrefix>accessibility</mat-icon> -->
-        <mat-icon matPrefix>accessibility_new</mat-icon>
-        <input matInput maxlength="50" placeholder="Enter Waist Circumference (cm)" type="number" formControlName="waist" />
+        <input matInput maxlength="50" placeholder="Enter Waist Circumference (cm)" type="number"
+          formControlName="waist" />
       </mat-form-field>
     </div>
 
     <div class="row">
       <mat-form-field appearance="outline" class="half-width">
         <mat-label>Hip Circumference (cm)</mat-label>
-        <mat-icon matPrefix>accessibility</mat-icon>
         <input matInput maxlength="50" placeholder="Enter Hip Circumference (cm)" type="number" formControlName="hip" />
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="half-width">
         <mat-label>Neck Circumference (cm)</mat-label>
-        <mat-icon matPrefix>account_circle</mat-icon>
-        <input matInput maxlength="50" placeholder="Enter Neck Circumference (cm)" type="number" formControlName="neck" />
+        <input matInput maxlength="50" placeholder="Enter Neck Circumference (cm)" type="number"
+          formControlName="neck" />
       </mat-form-field>
     </div>
 
     <div class="row">
       <mat-form-field appearance="outline" class="half-width">
         <mat-label>BMI</mat-label>
-        <mat-icon matPrefix>calculate</mat-icon>
-        <input matInput maxlength="20" placeholder="Auto-calculated" [readonly]="true" type="number" formControlName="bmi" />
+        <input matInput maxlength="20" placeholder="Auto-calculated" [readonly]="true" type="number"
+          formControlName="bmi" />
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="half-width">
         <mat-label>Body Fat %</mat-label>
-        <mat-icon matPrefix>percent</mat-icon>
-        <input matInput maxlength="20" placeholder="Auto-calculated" [readonly]="true" type="number" formControlName="bodyFat" />
+        <input matInput maxlength="20" placeholder="Auto-calculated" [readonly]="true" type="number"
+          formControlName="bodyFat" />
       </mat-form-field>
     </div>
 
     <div class="row">
       <mat-form-field appearance="outline" class="half-width">
         <mat-label>Gender</mat-label>
-        <mat-icon matPrefix>wc</mat-icon>
         <mat-select formControlName="gender">
           <mat-option value="Male">Male</mat-option>
           <mat-option value="Female">Female</mat-option>
@@ -79,7 +73,6 @@
       </mat-form-field>
       <mat-form-field appearance="outline" class="half-width">
         <mat-label>Remarks</mat-label>
-        <mat-icon matPrefix>notes</mat-icon>
         <textarea matInput maxlength="1000" placeholder="Enter Remarks" formControlName="remarks"></textarea>
       </mat-form-field>
     </div>
@@ -93,7 +86,8 @@
       <div class="half-width">
         <mat-label>Front View</mat-label>
         <br />
-        <button [disabled]="submitted" type="button" mat-raised-button (click)="frontFileInput.click()" class="mb-2">Choose File</button>
+        <button [disabled]="submitted" type="button" mat-raised-button (click)="frontFileInput.click()"
+          class="mb-2">Choose File</button>
         <div>
           <img [src]="frontImageUrl || 'assets/images/authentication/google.svg'" width="50px" height="50px" />
         </div>
@@ -104,7 +98,8 @@
       <div class="half-width">
         <mat-label>Side View</mat-label>
         <br />
-        <button [disabled]="submitted" type="button" mat-raised-button (click)="sideFileInput.click()" class="mb-2">Choose File</button>
+        <button [disabled]="submitted" type="button" mat-raised-button (click)="sideFileInput.click()"
+          class="mb-2">Choose File</button>
         <div>
           <img [src]="sideImageUrl || 'assets/images/authentication/google.svg'" width="50px" height="50px" />
         </div>
@@ -115,7 +110,8 @@
       <div class="half-width">
         <mat-label>Back View</mat-label>
         <br />
-        <button [disabled]="submitted" type="button" mat-raised-button (click)="backFileInput.click()" class="mb-2">Choose File</button>
+        <button [disabled]="submitted" type="button" mat-raised-button (click)="backFileInput.click()"
+          class="mb-2">Choose File</button>
         <div>
           <img [src]="backImageUrl || 'assets/images/authentication/google.svg'" width="50px" height="50px" />
         </div>
@@ -125,11 +121,10 @@
 
     <div class="row">
       <button type="reset" mat-raised-button class="close-button half-width" (click)="closeDialog()">
-        <mat-icon>close</mat-icon>
         Close
       </button>
-      <button type="submit" mat-raised-button color="primary" class="submit-button half-width" [disabled]="!progressForm.valid">
-        <mat-icon>check</mat-icon>
+      <button type="submit" mat-raised-button color="primary" class="submit-button half-width" style="color: white;"
+        [disabled]="!progressForm.valid">
         {{ saveButtonLabel }}
       </button>
     </div>
