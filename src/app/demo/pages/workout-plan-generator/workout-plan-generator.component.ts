@@ -340,33 +340,13 @@ export class WorkoutPlanGeneratorComponent {
   EXERCISES = [
     // Beginner Legs Exercises
     { name: 'Bodyweight Squat', muscle: 'Legs', equipment: 'Home', level: 'Beginner', injuries: ['Knee'] },
-    { name: 'Lunges', muscle: 'Legs', equipment: 'Home', level: 'Beginner', injuries: ['Knee'] },
+    { name: 'Lunges', muscle: 'Legs', equipment: ['Home', 'Gym'], level: 'Beginner', injuries: ['Knee'] },
     { name: 'Glute Bridge', muscle: 'Glutes', equipment: 'Home', level: 'Beginner', injuries: ['Lower Back'] },
-
-    // Intermediate Legs Exercises
-    { name: 'Leg Press', muscle: 'Legs', equipment: 'Gym', level: 'Intermediate', injuries: ['Knee'] },
-    { name: 'Deadlift', muscle: 'Back', equipment: 'Gym', level: 'Intermediate', injuries: ['Lower Back'] },
-    { name: 'Squat', muscle: 'Legs', equipment: 'Gym', level: 'Intermediate', injuries: ['Knee', 'Lower Back'] },
-
-    // Advanced Legs Exercises
-    { name: 'Barbell Back Squat', muscle: 'Legs', equipment: 'Gym', level: 'Advanced', injuries: ['Knee', 'Lower Back'] },
-    { name: 'Romanian Deadlift', muscle: 'Hamstrings', equipment: 'Gym', level: 'Advanced', injuries: ['Lower Back'] },
-    { name: 'Bulgarian Split Squat', muscle: 'Legs', equipment: 'Gym', level: 'Advanced', injuries: ['Knee'] },
 
     // Beginner Chest Exercises
     { name: 'Push-up', muscle: 'Chest', equipment: 'Home', level: 'Beginner', injuries: ['Shoulder', 'Wrist'] },
     { name: 'Chest Fly (Resistance Band)', muscle: 'Chest', equipment: 'Home', level: 'Beginner', injuries: ['Shoulder'] },
     { name: 'Incline Push-up', muscle: 'Chest', equipment: 'Home', level: 'Beginner', injuries: ['Shoulder', 'Wrist'] },
-
-    // Intermediate Chest Exercises
-    { name: 'Dumbbell Bench Press', muscle: 'Chest', equipment: 'Gym', level: 'Intermediate', injuries: ['Shoulder'] },
-    { name: 'Chest Dip', muscle: 'Chest', equipment: 'Gym', level: 'Intermediate', injuries: ['Shoulder'] },
-    { name: 'Incline Dumbbell Press', muscle: 'Chest', equipment: 'Gym', level: 'Intermediate', injuries: ['Shoulder'] },
-
-    // Advanced Chest Exercises
-    { name: 'Barbell Bench Press', muscle: 'Chest', equipment: 'Gym', level: 'Advanced', injuries: ['Shoulder'] },
-    { name: 'Weighted Chest Dip', muscle: 'Chest', equipment: 'Gym', level: 'Advanced', injuries: ['Shoulder'] },
-    { name: 'Incline Barbell Press', muscle: 'Chest', equipment: 'Gym', level: 'Advanced', injuries: ['Shoulder'] },
 
     // Beginner Back Exercises
     { name: 'Superman', muscle: 'Back', equipment: 'Home', level: 'Beginner', injuries: ['Lower Back'] },
@@ -374,55 +354,77 @@ export class WorkoutPlanGeneratorComponent {
     { name: 'Wall Angels', muscle: 'Back', equipment: 'Home', level: 'Beginner', injuries: ['Shoulder'] },
     { name: 'Lat Pulldown', muscle: 'Back', equipment: 'Gym', level: 'Beginner', injuries: [] },
 
-    // Intermediate Back Exercises
-    { name: 'Dumbbell Row', muscle: 'Back', equipment: 'Gym', level: 'Intermediate', injuries: ['Shoulder'] },
-    { name: 'Pull-up', muscle: 'Back', equipment: 'Gym', level: 'Intermediate', injuries: ['Shoulder'] },
-    { name: 'Seated Cable Row', muscle: 'Back', equipment: 'Gym', level: 'Intermediate', injuries: ['Shoulder'] },
-
-    // Advanced Back Exercises
-    { name: 'Barbell Row', muscle: 'Back', equipment: 'Gym', level: 'Advanced', injuries: ['Shoulder'] },
-    { name: 'Weighted Pull-up', muscle: 'Back', equipment: 'Gym', level: 'Advanced', injuries: ['Shoulder'] },
-    { name: 'T-Bar Row', muscle: 'Back', equipment: 'Gym', level: 'Advanced', injuries: ['Shoulder'] },
-
     // Beginner Shoulder Exercises
     { name: 'Arm Circles', muscle: 'Shoulders', equipment: 'Home', level: 'Beginner', injuries: ['Shoulder'] },
     { name: 'Wall Push-up', muscle: 'Shoulders', equipment: 'Home', level: 'Beginner', injuries: ['Shoulder', 'Wrist'] },
     { name: 'Shoulder Press (Resistance Band)', muscle: 'Shoulders', equipment: 'Home', level: 'Beginner', injuries: ['Shoulder'] },
-
-    // Intermediate Shoulder Exercises
-    { name: 'Dumbbell Shoulder Press', muscle: 'Shoulders', equipment: 'Gym', level: 'Intermediate', injuries: ['Shoulder'] },
-    { name: 'Lateral Raise', muscle: 'Shoulders', equipment: 'Gym', level: 'Intermediate', injuries: ['Shoulder'] },
-    { name: 'Front Raise', muscle: 'Shoulders', equipment: 'Gym', level: 'Intermediate', injuries: ['Shoulder'] },
-
-    // Advanced Shoulder Exercises
-    { name: 'Barbell Overhead Press', muscle: 'Shoulders', equipment: 'Gym', level: 'Advanced', injuries: ['Shoulder'] },
-    { name: 'Arnold Press', muscle: 'Shoulders', equipment: 'Gym', level: 'Advanced', injuries: ['Shoulder'] },
-    { name: 'Upright Row', muscle: 'Shoulders', equipment: 'Gym', level: 'Advanced', injuries: ['Shoulder'] },
 
     // Beginner Arms Exercises
     { name: 'Tricep Dips (Chair)', muscle: 'Arms', equipment: 'Home', level: 'Beginner', injuries: ['Elbow'] },
     { name: 'Bicep Curl', muscle: 'Arms', equipment: 'Gym', level: 'Beginner', injuries: ['Wrist'] },
     { name: 'Push-up (Wall)', muscle: 'Arms', equipment: 'Home', level: 'Beginner', injuries: ['Shoulder'] },
 
-    // Intermediate Arms Exercises
-    { name: 'Tricep Pushdown', muscle: 'Arms', equipment: 'Gym', level: 'Intermediate', injuries: ['Elbow'] },
-    { name: 'Hammer Curl', muscle: 'Arms', equipment: 'Gym', level: 'Intermediate', injuries: ['Wrist'] },
-    { name: 'Close-Grip Bench Press', muscle: 'Arms', equipment: 'Gym', level: 'Intermediate', injuries: ['Shoulder'] },
-
-    // Advanced Arms Exercises
-    { name: 'Skull Crushers', muscle: 'Arms', equipment: 'Gym', level: 'Advanced', injuries: ['Elbow'] },
-    { name: 'Concentration Curl', muscle: 'Arms', equipment: 'Gym', level: 'Advanced', injuries: ['Wrist'] },
-    { name: 'Weighted Dips', muscle: 'Arms', equipment: 'Gym', level: 'Advanced', injuries: ['Shoulder'] },
-
     // Beginner Core Exercises
     { name: 'Crunches', muscle: 'Core', equipment: 'Home', level: 'Beginner', injuries: ['Neck'] },
     { name: 'Leg Raises', muscle: 'Core', equipment: 'Home', level: 'Beginner', injuries: ['Lower Back'] },
     { name: 'Mountain Climbers', muscle: 'Core', equipment: 'Home', level: 'Beginner', injuries: ['Knee'] },
 
+
+    // Intermediate Legs Exercises
+    { name: 'Leg Press', muscle: 'Legs', equipment: 'Gym', level: 'Intermediate', injuries: ['Knee'] },
+    { name: 'Deadlift', muscle: 'Back', equipment: 'Gym', level: 'Intermediate', injuries: ['Lower Back'] },
+    { name: 'Squat', muscle: 'Legs', equipment: 'Gym', level: 'Intermediate', injuries: ['Knee', 'Lower Back'] },
+
+    // Intermediate Chest Exercises
+    { name: 'Dumbbell Bench Press', muscle: 'Chest', equipment: 'Gym', level: 'Intermediate', injuries: ['Shoulder'] },
+    { name: 'Chest Dip', muscle: 'Chest', equipment: 'Gym', level: 'Intermediate', injuries: ['Shoulder'] },
+    { name: 'Incline Dumbbell Press', muscle: 'Chest', equipment: 'Gym', level: 'Intermediate', injuries: ['Shoulder'] },
+
+    // Intermediate Back Exercises
+    { name: 'Dumbbell Row', muscle: 'Back', equipment: 'Gym', level: 'Intermediate', injuries: ['Shoulder'] },
+    { name: 'Pull-up', muscle: 'Back', equipment: 'Gym', level: 'Intermediate', injuries: ['Shoulder'] },
+    { name: 'Seated Cable Row', muscle: 'Back', equipment: 'Gym', level: 'Intermediate', injuries: ['Shoulder'] },
+
+    // Intermediate Shoulder Exercises
+    { name: 'Dumbbell Shoulder Press', muscle: 'Shoulders', equipment: 'Gym', level: 'Intermediate', injuries: ['Shoulder'] },
+    { name: 'Lateral Raise', muscle: 'Shoulders', equipment: 'Gym', level: 'Intermediate', injuries: ['Shoulder'] },
+    { name: 'Front Raise', muscle: 'Shoulders', equipment: 'Gym', level: 'Intermediate', injuries: ['Shoulder'] },
+
+    // Intermediate Arms Exercises
+    { name: 'Tricep Pushdown', muscle: 'Arms', equipment: 'Gym', level: 'Intermediate', injuries: ['Elbow'] },
+    { name: 'Hammer Curl', muscle: 'Arms', equipment: 'Gym', level: 'Intermediate', injuries: ['Wrist'] },
+    { name: 'Close-Grip Bench Press', muscle: 'Arms', equipment: 'Gym', level: 'Intermediate', injuries: ['Shoulder'] },
+
     // Intermediate Core Exercises
     { name: 'Plank with Arm Lift', muscle: 'Core', equipment: 'Home', level: 'Intermediate', injuries: ['Lower Back'] },
     { name: 'Russian Twists', muscle: 'Core', equipment: 'Home', level: 'Intermediate', injuries: ['Lower Back'] },
     { name: 'Hanging Leg Raise', muscle: 'Core', equipment: 'Gym', level: 'Intermediate', injuries: ['Lower Back'] },
+
+
+    // Advanced Legs Exercises
+    { name: 'Barbell Back Squat', muscle: 'Legs', equipment: 'Gym', level: 'Advanced', injuries: ['Knee', 'Lower Back'] },
+    { name: 'Romanian Deadlift', muscle: 'Hamstrings', equipment: 'Gym', level: 'Advanced', injuries: ['Lower Back'] },
+    { name: 'Bulgarian Split Squat', muscle: 'Legs', equipment: 'Gym', level: 'Advanced', injuries: ['Knee'] },
+
+    // Advanced Chest Exercises
+    { name: 'Barbell Bench Press', muscle: 'Chest', equipment: 'Gym', level: 'Advanced', injuries: ['Shoulder'] },
+    { name: 'Weighted Chest Dip', muscle: 'Chest', equipment: 'Gym', level: 'Advanced', injuries: ['Shoulder'] },
+    { name: 'Incline Barbell Press', muscle: 'Chest', equipment: 'Gym', level: 'Advanced', injuries: ['Shoulder'] },
+
+    // Advanced Back Exercises
+    { name: 'Barbell Row', muscle: 'Back', equipment: 'Gym', level: 'Advanced', injuries: ['Shoulder'] },
+    { name: 'Weighted Pull-up', muscle: 'Back', equipment: 'Gym', level: 'Advanced', injuries: ['Shoulder'] },
+    { name: 'T-Bar Row', muscle: 'Back', equipment: 'Gym', level: 'Advanced', injuries: ['Shoulder'] },
+
+    // Advanced Shoulder Exercises
+    { name: 'Barbell Overhead Press', muscle: 'Shoulders', equipment: 'Gym', level: 'Advanced', injuries: ['Shoulder'] },
+    { name: 'Arnold Press', muscle: 'Shoulders', equipment: 'Gym', level: 'Advanced', injuries: ['Shoulder'] },
+    { name: 'Upright Row', muscle: 'Shoulders', equipment: 'Gym', level: 'Advanced', injuries: ['Shoulder'] },
+
+    // Advanced Arms Exercises
+    { name: 'Skull Crushers', muscle: 'Arms', equipment: 'Gym', level: 'Advanced', injuries: ['Elbow'] },
+    { name: 'Concentration Curl', muscle: 'Arms', equipment: 'Gym', level: 'Advanced', injuries: ['Wrist'] },
+    { name: 'Weighted Dips', muscle: 'Arms', equipment: 'Gym', level: 'Advanced', injuries: ['Shoulder'] },
 
     // Advanced Core Exercises
     { name: 'Dragon Flag', muscle: 'Core', equipment: 'Gym', level: 'Advanced', injuries: ['Lower Back'] },
@@ -432,7 +434,6 @@ export class WorkoutPlanGeneratorComponent {
     // Cardio Exercises
     { name: 'Running', muscle: 'Cardio', equipment: 'Outdoor', level: 'All', injuries: ['Knee', 'Ankle'] },
     { name: 'Cycling', muscle: 'Cardio', equipment: 'Outdoor', level: 'All', injuries: ['Knee'] },
-    { name: 'Swimming', muscle: 'Cardio', equipment: 'Pool', level: 'All', injuries: ['Shoulder'] },
   ];
 
   // PAYLOAD BUILDER

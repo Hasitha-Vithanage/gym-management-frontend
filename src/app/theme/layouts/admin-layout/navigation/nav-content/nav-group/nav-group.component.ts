@@ -1,5 +1,5 @@
 // Angular import
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 
 // project import
@@ -7,6 +7,8 @@ import { NavigationItem } from '../../navigation';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { NavCollapseComponent } from '../nav-collapse/nav-collapse.component';
 import { NavItemComponent } from '../nav-item/nav-item.component';
+import { NavigationStateService } from 'src/app/services/navigation-state.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-nav-group',
@@ -14,23 +16,28 @@ import { NavItemComponent } from '../nav-item/nav-item.component';
   templateUrl: './nav-group.component.html',
   styleUrls: ['./nav-group.component.scss']
 })
-export class NavGroupComponent implements OnInit {
+export class NavGroupComponent implements OnInit, OnDestroy {
   // public props
 
   // All Version in Group Name
   @Input() item!: NavigationItem;
   @Input() isFirst: boolean = false;
   isExpanded: boolean = false;
+  private stateSubscription: Subscription | null = null;
 
   // Constructor
-  constructor(private location: Location) { }
+  constructor(
+    private location: Location,
+    private navigationStateService: NavigationStateService
+  ) { }
 
   // Life cycle events
   ngOnInit() {
+    // Subscribe to navigation state changes
+    this.stateSubscription = this.navigationStateService.expandedGroupId$.subscribe((expandedId) => {
+      this.isExpanded = expandedId === this.item.id;
+    });
 
-    if (this.isFirst) {
-      this.isExpanded = true;
-    }
     // at reload time active and trigger link
     let current_url = this.location.path();
     // eslint-disable-next-line
@@ -68,9 +75,16 @@ export class NavGroupComponent implements OnInit {
     }
   }
 
-  
+  ngOnDestroy() {
+    // Unsubscribe to prevent memory leaks
+    if (this.stateSubscription) {
+      this.stateSubscription.unsubscribe();
+    }
+  }
 
   toggleGroup() {
-    this.isExpanded = !this.isExpanded;
+    // If this group is already expanded, collapse it; otherwise, expand it
+    const newGroupId = this.isExpanded ? null : this.item.id;
+    this.navigationStateService.setExpandedGroup(newGroupId);
   }
 }
