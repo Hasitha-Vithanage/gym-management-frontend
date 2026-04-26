@@ -1,14 +1,10 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewChild, inject } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { EmpolyeeServiceService } from 'src/app/services/employee-service/empolyee-service.service';
-import { HttpService } from 'src/app/services/http.service';
 import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
-import { NotificationService } from 'src/app/services/notification-service/notification.service';
-import { NewEmployeeDialogComponent } from '../new-employee-dialog/new-employee-dialog.component';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { AddExerciseComponent } from './add-exercise/add-exercise.component';
 
@@ -50,7 +46,6 @@ export class ManageExerciseComponent implements OnInit {
   constructor(
     private employeeService: EmpolyeeServiceService,
     private messageService: MessageServiceService,
-    private http: HttpService
   ) {}
 
   ngOnInit(): void {
@@ -88,7 +83,6 @@ export class ManageExerciseComponent implements OnInit {
             return;
           }
 
-          console.log('Employees: ', dataList);
           const activeEmployees = dataList.filter((emp) => !emp.isDeleted);
           this.dataSource = new MatTableDataSource(activeEmployees);
 
@@ -105,7 +99,7 @@ export class ManageExerciseComponent implements OnInit {
   }
 
   editData(data: any): void {
-    const dialogRef = this.dialog.open(NewEmployeeDialogComponent, {
+    const dialogRef = this.dialog.open(AddExerciseComponent, {
       autoFocus: false
     });
 
