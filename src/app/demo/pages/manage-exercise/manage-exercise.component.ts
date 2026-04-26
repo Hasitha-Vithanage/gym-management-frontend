@@ -35,7 +35,6 @@ export class ManageExerciseComponent implements OnInit {
   selectedData: any;
   isDisabled: boolean = false;
   submitted: boolean = false;
-  userName: string = '';
   noData: boolean = false;
 
   readonly dialog: MatDialog = inject(MatDialog);
@@ -56,8 +55,6 @@ export class ManageExerciseComponent implements OnInit {
 
   ngOnInit(): void {
     this.populateData();
-    this.userName = this.http.getLoginNameFromCache();
-    console.log(this.userName);
   }
 
   applyFilter(event: Event) {

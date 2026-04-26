@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -9,6 +9,8 @@ import { AddRemoveTableComponent } from '../../add-remove-table/add-remove-table
 import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
 import { AuthServiceService } from 'src/app/services/auth-service/auth-service.service';
 import { authenticationEnum } from 'src/app/guards/auth.enum';
+import { ConfirmDialogComponent } from '../../confirm-dialog/confirm-dialog.component';
+
 
 @Component({
   selector: 'app-privilege-groups',
@@ -20,8 +22,13 @@ export class PrivilegeGroupsComponent implements OnInit {
   displayedColumns: string[] = ['id', 'groupName', 'groupDescription', 'action'];
   dataSource!: MatTableDataSource<any>;
 
+  dataList: any[] = [];
+filteredData: any[] = [];
+searchText = '';
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild('searchInput') searchInput!: ElementRef<HTMLInputElement>;
 
   rightPanelStyle: any = {};
   selectedRecord: any;
@@ -52,24 +59,15 @@ export class PrivilegeGroupsComponent implements OnInit {
     this.closeContextMenu();
   }
 
-  public refreshData() {
-    this.getPrivilegeGroupList();
-  }
+public refreshData() {
+  this.getPrivilegeGroupList();
+  this.searchText = '';
+}
 
-  public setPrivilegesGroupList(groupListDetails: any[]) {
-    try {
-      if (groupListDetails.length <= 0) {
-        return;
-      }
-
-      this.dataSource = new MatTableDataSource(groupListDetails);
-      this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
-    } catch (error) {
-      console.log(error);
-      this.handleCatch();
-    }
-  }
+public setPrivilegesGroupList(groupListDetails: any[]) {
+  this.dataList = groupListDetails || [];
+  this.filteredData = [...this.dataList];
+}
 
   public openPrivilegeGroupAddEditClick(): void {
     try {
@@ -107,13 +105,30 @@ export class PrivilegeGroupsComponent implements OnInit {
   }
 
   public onDeletePrivilageGroupClick(id: number, data: any): void {
+    const dialogRef = this._dialog.open(ConfirmDialogComponent, {
+      width: '350px',
+      data: {
+        title: 'Delete Privilege Group',
+        message: `Are you sure you want to delete "${data.groupName}"?`
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        this.performDelete(id, data);
+      }
+    });
+  }
+
+  private performDelete(id: number, data: any): void {
     try {
-      this._privilegesService.deletePrivilegeGroup(id, data).then((response) => {
-        console.log(response);
+      this._privilegesService.deletePrivilegeGroup(id, data).then(() => {
+        this._messageService.showSuccess('Privilege Group deleted successfully!');
         this.getPrivilegeGroupList();
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      this._messageService.showError('Delete failed.');
     }
   }
 
@@ -133,15 +148,16 @@ export class PrivilegeGroupsComponent implements OnInit {
     }
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+applyFilter(event: Event) {
+  const value = (event.target as HTMLInputElement).value.toLowerCase();
+  this.searchText = value;
 
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
-  }
-
+  this.filteredData = this.dataList.filter(x =>
+    x.groupName?.toLowerCase().includes(value) ||
+    x.groupDescription?.toLowerCase().includes(value) ||
+    x.id?.toString().includes(value)
+  );
+}
   detectRightMouseClick($event: any, privilegeGroup: any) {
     this.selectedRowIndex = privilegeGroup.id;
     if ($event.which === 3) {

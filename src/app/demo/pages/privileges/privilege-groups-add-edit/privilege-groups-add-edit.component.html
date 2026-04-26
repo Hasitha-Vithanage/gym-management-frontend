@@ -1,23 +1,35 @@
-<div mat-dialog-title>
-  <h5>{{ data ? 'Update' : 'Add' }} Privilege Group</h5>
-</div>
-<form [formGroup]="privilegeGroupForm" (ngSubmit)="onFormSubmit()">
-  <div mat-dialog-content class="content">
+<div class="dialog-container">
+
+  <!-- Header -->
+  <div class="dialog-header">
+    <h3>{{ data ? 'Update' : 'Add' }} Privilege Group</h3>
+  </div>
+
+  <!-- Form -->
+  <form [formGroup]="privilegeGroupForm" (ngSubmit)="onFormSubmit()" class="dialog-body">
+
     <div class="row">
-      <mat-form-field appearance="outline">
-        <mat-label>Group name</mat-label>
-        <input matInput type="text" placeholder="Ex. Admin" formControlName="groupName" />
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Group Description</mat-label>
-        <input matInput placeholder="Ex. Admin Group" formControlName="groupDescription" />
-      </mat-form-field>
+
+      <div class="field">
+        <label>Group Name *</label>
+        <input type="text" placeholder="Ex. Admin" formControlName="groupName" />
+      </div>
+
+      <div class="field">
+        <label>Group Description</label>
+        <input type="text" placeholder="Ex. Admin Group" formControlName="groupDescription" />
+      </div>
+
     </div>
-  </div>
-  <div mat-dialog-actions class="action">
-    <button mat-raised-button type="button" [mat-dialog-close]="false">Cancel</button>
-    <button mat-raised-button color="primary" type="submit">
-      {{ data ? 'Update' : 'Save' }}
-    </button>
-  </div>
-</form>
+
+    <!-- Actions -->
+    <div class="action">
+      <button type="button" class="btn secondary" (click)="closeDialog()">Cancel</button>
+      <button type="submit" class="btn primary">
+        {{ data ? 'Update' : 'Save' }}
+      </button>
+    </div>
+
+  </form>
+
+</div>
