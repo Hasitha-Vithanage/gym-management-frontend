@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -18,14 +18,9 @@ import { ConfirmDialogComponent } from '../../confirm-dialog/confirm-dialog.comp
   templateUrl: './privilege-groups.component.html',
   styleUrl: './privilege-groups.component.scss'
 })
-export class PrivilegeGroupsComponent implements OnInit {
+export class PrivilegeGroupsComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = ['id', 'groupName', 'groupDescription', 'action'];
-  dataSource!: MatTableDataSource<any>;
-
-  dataList: any[] = [];
-filteredData: any[] = [];
-searchText = '';
-
+  dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild('searchInput') searchInput!: ElementRef<HTMLInputElement>;
@@ -50,6 +45,20 @@ searchText = '';
     }
   }
 
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+
+    this.dataSource.filterPredicate = (data: any, filter: string) => {
+      const value = filter.trim().toLowerCase();
+      return (
+        data.groupName?.toLowerCase().includes(value) ||
+        data.groupDescription?.toLowerCase().includes(value) ||
+        data.id?.toString().includes(value)
+      );
+    };
+  }
+
   public checkAuthorization() {
     this.display = this._authService.checkAuthorization(authenticationEnum.Privilege_Groups);
     if (!this.display) {
@@ -59,15 +68,21 @@ searchText = '';
     this.closeContextMenu();
   }
 
-public refreshData() {
-  this.getPrivilegeGroupList();
-  this.searchText = '';
-}
+  public refreshData() {
+    this.getPrivilegeGroupList();
 
-public setPrivilegesGroupList(groupListDetails: any[]) {
-  this.dataList = groupListDetails || [];
-  this.filteredData = [...this.dataList];
-}
+    if (this.searchInput) {
+      this.searchInput.nativeElement.value = '';
+    }
+
+    this.dataSource.filter = '';
+
+    this.dataSource.paginator?.firstPage();
+  }
+
+  public setPrivilegesGroupList(groupListDetails: any[]) {
+    this.dataSource.data = groupListDetails || [];
+  }
 
   public openPrivilegeGroupAddEditClick(): void {
     try {
@@ -139,25 +154,26 @@ public setPrivilegesGroupList(groupListDetails: any[]) {
   }
 
   getPrivilegeGroupList() {
-    try {
-      this._privilegesService.getPrivilegeGroupList().then((response: any) => {
+    this._privilegesService.getPrivilegeGroupList()
+      .then((response: any) => {
         this.setPrivilegesGroupList(response);
+      })
+      .catch((error) => {
+        console.log(error);
+        this.dataSource.data = [];
       });
-    } catch (error) {
-      console.log(error);
+  }
+
+  applyFilter(event: Event) {
+    const value = (event.target as HTMLInputElement).value;
+
+    this.dataSource.filter = value.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
     }
   }
 
-applyFilter(event: Event) {
-  const value = (event.target as HTMLInputElement).value.toLowerCase();
-  this.searchText = value;
-
-  this.filteredData = this.dataList.filter(x =>
-    x.groupName?.toLowerCase().includes(value) ||
-    x.groupDescription?.toLowerCase().includes(value) ||
-    x.id?.toString().includes(value)
-  );
-}
   detectRightMouseClick($event: any, privilegeGroup: any) {
     this.selectedRowIndex = privilegeGroup.id;
     if ($event.which === 3) {
