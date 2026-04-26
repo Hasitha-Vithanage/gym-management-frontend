@@ -1,0 +1,34 @@
+<div class="form-container">
+
+  <!-- Header -->
+  <div class="form-header">
+    <h2>Add Membership Category</h2>
+    <button class="close-btn" (click)="closeDialog()">✕</button>
+  </div>
+
+  <form [formGroup]="membershipCategoryForm" (ngSubmit)="onSubmit()" class="form-body">
+
+    <!-- SECTION -->
+
+    <div class="grid">
+
+      <div class="field full">
+        <label>Category Name <span class="required">*</span></label>
+        <input type="text" placeholder="Enter category name" formControlName="categoryName" />
+      </div>
+
+      <div class="field full">
+        <label>Membership Fee (LKR) <span class="required">*</span></label>
+        <input type="number" placeholder="Enter fee" formControlName="fee" />
+      </div>
+
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="action-buttons">
+      <button type="submit" class="register-button">Save</button>
+      <button type="button" class="reset-button" (click)="resetData()">Reset</button>
+    </div>
+
+  </form>
+</div>

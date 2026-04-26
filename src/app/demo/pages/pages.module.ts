@@ -52,7 +52,7 @@ import { AddClassDialogComponent } from './add-class-dialog/add-class-dialog.com
 import { BookClassComponent } from './book-class/book-class.component';
 import { BookClassSubmitComponent } from './book-class-submit/book-class-submit.component';
 import { MembershipCategoriesComponent } from './membership-categories/membership-categories.component';
-import { MembershipCategoriesDialogComponent } from './membership-categories-dialog/membership-categories-dialog.component';
+import { MembershipCategoriesDialogComponent } from './membership-categories/membership-categories-dialog/membership-categories-dialog.component';
 import { PaymentsComponent } from './payments/payments.component';
 import { PaymentsDialogComponent } from './payments-dialog/payments-dialog.component';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';

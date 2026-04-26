@@ -1,6 +1,6 @@
-import { Component, inject, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Inject, inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -10,13 +10,13 @@ import { MessageServiceService } from 'src/app/services/message-service/message-
 import { NotificationService } from 'src/app/services/notification-service/notification.service';
 import { AssignTrainerDialogComponent } from '../assign-trainer-dialog/assign-trainer-dialog.component';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
-import { MembershipCategoriesDialogComponent } from '../membership-categories-dialog/membership-categories-dialog.component';
+import { MembershipCategoriesDialogComponent } from './membership-categories-dialog/membership-categories-dialog.component';
 import { MembershipCategoryService } from 'src/app/services/membership-category/membership-category.service';
 
 const ELEMENT_DATA: any[] = [
   {
     member: 1,
-    trainer: 'Hydrogen',
+    trainer: 'Hydrogen'
   }
 ];
 
@@ -26,15 +26,10 @@ const ELEMENT_DATA: any[] = [
   templateUrl: './membership-categories.component.html',
   styleUrl: './membership-categories.component.scss'
 })
-export class MembershipCategoriesComponent {
+export class MembershipCategoriesComponent implements OnInit {
+  displayedColumns: string[] = ['membershipCategory', 'fee', 'actions'];
 
-  displayedColumns: string[] = [
-    'membershipCategory',
-    'fee',
-    'actions'
-  ];
-
-  dataSource: MatTableDataSource<any>;
+  dataSource = new MatTableDataSource<any>([]);
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
@@ -44,45 +39,31 @@ export class MembershipCategoriesComponent {
     private membershipCategoryService: MembershipCategoryService,
     private messageService: MessageServiceService,
     private http: HttpService,
-    private notificationService: NotificationService,
+    private notificationService: NotificationService
     // private dialog: MatDialog
-  ) {
-  }
+  ) {}
 
   // runs when load the page
   ngOnInit(): void {
     // get data request
     // calling populate data function
     this.populateData();
-
-
   }
 
   // implementation of populateData function
   public populateData(): void {
-    try {
-      this.membershipCategoryService.getData().subscribe({
-        next: (dataList: any[]) => {
-          if (dataList.length <= 0) {
-            return;
-          }
+    this.membershipCategoryService.getData().subscribe({
+      next: (dataList: any[]) => {
+        this.dataSource.data = dataList ?? [];
 
-          this.dataSource = new MatTableDataSource(dataList);
-
-          // sorting and pagination
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
-        },
-        // displaying error message
-        error: (error) => {
-          this.messageService.showError(error);
-        }
-      });
-    } catch (error) {
-      this.messageService.showError(error);
-    }
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      },
+      error: (error) => {
+        this.messageService.showError(error);
+      }
+    });
   }
-
   // table filter function
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -94,40 +75,32 @@ export class MembershipCategoriesComponent {
     }
   }
 
-
   // Dialog Box
   readonly dialog = inject(MatDialog);
   openDialog(): void {
     const dialogRef = this.dialog.open(MembershipCategoriesDialogComponent, {
-      autoFocus: false,
+      autoFocus: false
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result?.action === 'add') {
-        this.dataSource.data = [result.data, ...this.dataSource.data];
+      if (result) {
+        this.dataSource.data = [result, ...this.dataSource.data];
       }
     });
   }
-
 
   editData(data: any): void {
     const dialogRef = this.dialog.open(MembershipCategoriesDialogComponent, {
       autoFocus: false,
-    });
-
-    dialogRef.afterOpened().subscribe(() => {
-      dialogRef.componentInstance.onEdit(data);
+      data
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result?.action === 'edit') {
-        const newData = this.dataSource.data.filter(item => item.id !== result.data.id);
-        // Add the updated item to the top
-        this.dataSource.data = [result.data, ...newData];
-      }
+      if (!result) return;
+
+      this.dataSource.data = this.dataSource.data.map((item) => (item.id === result.id ? result : item));
     });
   }
-
   public deleteData(data: any): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '350px',
@@ -136,23 +109,18 @@ export class MembershipCategoriesComponent {
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        const id = data.id;
-        this.membershipCategoryService.deleteData(id).subscribe({
-          next: () => {
-            const index = this.dataSource.data.findIndex(item => item.id === id);
-            if (index !== -1) {
-              this.dataSource.data.splice(index, 1);
-            }
-            this.dataSource = new MatTableDataSource(this.dataSource.data);
-            this.messageService.showSuccess('Record deleted successfully!');
-          },
-          error: (error) => {
-            this.messageService.showError(error);
-          }
-        });
-      }
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result !== true) return;
+
+      const id = data.id;
+
+      this.membershipCategoryService.deleteData(id).subscribe({
+        next: () => {
+          this.dataSource.data = this.dataSource.data.filter((x) => x.id !== id);
+          this.messageService.showSuccess('Record deleted successfully!');
+        },
+        error: (error) => this.messageService.showError(error)
+      });
     });
   }
 
@@ -164,5 +132,4 @@ export class MembershipCategoriesComponent {
   public addNotification(details: any): void {
     this.notificationService.addNotification('Employee Added Successfully', 'success', 1);
   }
-
 }

@@ -5,7 +5,7 @@
     <h2 class="form-title">
       <img src="../../../../assets/images/icon/membership-categories-icon-dark.png"
         style="margin-right: 5px; height: 18px; width: 18px" />
-      Trainer Assignment
+      Membership Categories
     </h2>
 
     <div class="toolbar">
@@ -67,16 +67,14 @@
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+        <tr *ngIf="dataSource?.data?.length === 0">
+          <td [attr.colspan]="displayedColumns.length" class="no-data">
+            No records found
+          </td>
+        </tr>
       </table>
 
-      <!-- No data row -->
-      <ng-container *ngIf="dataSource.data.length === 0">
-        <ng-container matColumnDef="noData" class="no-data">
-          <td mat-cell [attr.colspan]="displayedColumns.length" class="no-data">No records found</td>
-        </ng-container>
-
-        <tr mat-row *matRowDef="let row; columns: ['noData']"></tr>
-      </ng-container>
     </div>
 
     <!-- pagination-->
