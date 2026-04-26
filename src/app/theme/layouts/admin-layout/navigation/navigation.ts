@@ -208,6 +208,16 @@ export const NavigationItems: NavigationItem[] = [
     ],
     children: [
       {
+        id: 'exerciseDet',
+        title: 'Manage Exercise',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/pages/manage-exercise',
+        icon: '../../../../assets/images/icon/exercise.png',
+        auth: [authenticationEnum.Manage_Exercises],
+        breadcrumbs: false
+      },
+      {
         id: 'workoutDet',
         title: 'Workout Plan Requests',
         type: 'item',

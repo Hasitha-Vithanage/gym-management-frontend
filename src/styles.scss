@@ -39,3 +39,9 @@ File: style.css
 @import 'scss/themes/layouts/footer/footer.scss';
 
 @import 'scss/themes/preset-style.scss';
+
+.required {
+  color: #ef4444; /* nice red */
+  font-weight: 600;
+  margin-left: 2px;
+}

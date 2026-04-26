@@ -40,6 +40,7 @@ import { MonthlySalesComponent } from './monthly-sales/monthly-sales.component';
 import { ForYourApprovalComponent } from './for-your-approval/for-your-approval.component';
 import { GoalBasedCalorieTargetComponent } from './goal-based-calorie-target/goal-based-calorie-target.component';
 import { WorkoutPlanGeneratorComponent } from './workout-plan-generator/workout-plan-generator.component';
+import { ManageExerciseComponent } from './manage-exercise/manage-exercise.component';
 
 export const PagesRoutes: Routes = [
   {
@@ -73,6 +74,10 @@ export const PagesRoutes: Routes = [
   {
     path: 'workout-plan-generator',
     component: WorkoutPlanGeneratorComponent
+  },
+  {
+    path: 'manage-exercise',
+    component: ManageExerciseComponent
   },
   {
     path: 'suppliers',

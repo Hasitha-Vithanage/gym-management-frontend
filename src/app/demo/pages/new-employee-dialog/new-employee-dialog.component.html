@@ -13,7 +13,7 @@
     <!-- Row 1 -->
     <div class="row">
       <div class="input-group half-width">
-        <label>Employee ID</label>
+        <label>Employee ID<span class="required">*</span></label>
         <input type="text" placeholder="Ex. E001" maxlength="4" formControlName="employeeId" />
         <span class="required-message" *ngIf="submitted && employeeForm.get('employeeId').invalid">
           <ng-container *ngIf="employeeForm.get('employeeId').hasError('required')">Employee ID is
@@ -26,7 +26,7 @@
       </div>
 
       <div class="input-group half-width">
-        <label>Select Job Title</label>
+        <label>Select Job Title<span class="required">*</span></label>
         <select formControlName="jobTitle">
           <option value="">~ Select ~</option>
           <option value="Trainer">Trainer</option>
@@ -42,7 +42,7 @@
     <!-- Row 2 -->
     <div class="row">
       <div class="input-group half-width">
-        <label>Date of Joining</label>
+        <label>Date of Joining<span class="required">*</span></label>
         <input type="date" formControlName="dateOfJoining" />
         <span class="required-message" *ngIf="submitted && employeeForm.get('dateOfJoining').invalid">
           <ng-container *ngIf="employeeForm.get('dateOfJoining').hasError('required')">Date of Joining is
@@ -53,7 +53,7 @@
       </div>
 
       <div class="input-group half-width">
-        <label>Date of Birth</label>
+        <label>Date of Birth<span class="required">*</span></label>
         <input type="date" [max]="today" formControlName="dateOfBirth" />
         <span class="required-message" *ngIf="submitted && employeeForm.get('dateOfBirth').invalid">
           <ng-container *ngIf="employeeForm.get('dateOfBirth').hasError('required')">Date of Birth is
@@ -67,7 +67,7 @@
     <!-- Row 3 -->
     <div class="row">
       <div class="input-group half-width">
-        <label>First Name</label>
+        <label>First Name<span class="required">*</span></label>
         <input type="text" placeholder="Ex. James" formControlName="firstName" />
         <span class="required-message" *ngIf="submitted && employeeForm.get('firstName').invalid">
           <ng-container *ngIf="employeeForm.get('firstName').hasError('required')">First Name is required</ng-container>
@@ -77,7 +77,7 @@
       </div>
 
       <div class="input-group half-width">
-        <label>Last Name</label>
+        <label>Last Name<span class="required">*</span></label>
         <input type="text" placeholder="Ex. Smith" formControlName="lastName" />
         <span class="required-message" *ngIf="submitted && employeeForm.get('lastName').invalid">
           <ng-container *ngIf="employeeForm.get('lastName').hasError('required')">Last Name is required</ng-container>
@@ -90,7 +90,7 @@
     <!-- Row 4 -->
     <div class="row">
       <div class="input-group half-width">
-        <label>NIC</label>
+        <label>NIC<span class="required">*</span></label>
         <input type="text" maxlength="12" placeholder="Ex. 991234567V" formControlName="nic" />
         <span class="required-message" *ngIf="submitted && employeeForm.get('nic').invalid">
           <ng-container *ngIf="employeeForm.get('nic').hasError('required')">NIC is required</ng-container>
@@ -99,7 +99,7 @@
       </div>
 
       <div class="input-group half-width">
-        <label>Phone Number</label>
+        <label>Phone Number<span class="required">*</span></label>
         <input type="text" maxlength="10" placeholder="Ex. 0771234567" formControlName="phoneNumber" />
         <span class="required-message" *ngIf="submitted && employeeForm.get('phoneNumber').invalid">
           <ng-container *ngIf="employeeForm.get('phoneNumber').hasError('required')">Phone Number is
@@ -113,7 +113,7 @@
     <!-- Row 5 -->
     <div class="row">
       <div class="input-group half-width">
-        <label>Email</label>
+        <label>Email<span class="required">*</span></label>
         <input type="email" placeholder="Ex. abc@example.com" formControlName="email" />
         <span class="required-message" *ngIf="submitted && employeeForm.get('email').invalid">
           <ng-container *ngIf="employeeForm.get('email').hasError('required')">Email is required</ng-container>
@@ -122,7 +122,7 @@
       </div>
 
       <div class="input-group half-width">
-        <label>Emergency Contact</label>
+        <label>Emergency Contact<span class="required">*</span></label>
         <input type="text" maxlength="10" placeholder="Ex. 0711234567" formControlName="emergencyContactNumber" />
         <span class="required-message" *ngIf="submitted && employeeForm.get('emergencyContactNumber').invalid">
           <ng-container *ngIf="employeeForm.get('emergencyContactNumber').hasError('required')">Emergency contact is
@@ -136,7 +136,7 @@
     <!-- Row 6 -->
     <div class="row">
       <div class="input-group half-width">
-        <label>Gender</label>
+        <label>Gender<span class="required">*</span></label>
         <div class="radio-group">
           <label><input type="radio" value="Male" formControlName="gender" /> Male</label>
           <label><input type="radio" value="Female" formControlName="gender" /> Female</label>
@@ -147,7 +147,7 @@
       </div>
 
       <div class="input-group half-width">
-        <label>Address</label>
+        <label>Address<span class="required">*</span></label>
         <textarea placeholder="Ex. 123, Main Street, Colombo" formControlName="address"></textarea>
         <span class="required-message" *ngIf="submitted && employeeForm.get('address').invalid">
           Address is required
