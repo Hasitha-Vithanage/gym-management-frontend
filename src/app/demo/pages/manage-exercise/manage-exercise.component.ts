@@ -1,9 +1,16 @@
-import { ChangeDetectionStrategy, Component, OnInit, ViewChild, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  ViewChild,
+  inject
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { EmpolyeeServiceService } from 'src/app/services/employee-service/empolyee-service.service';
+import { AddExerciseService } from 'src/app/services/add-exercise/add-exercise.service';
 import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { AddExerciseComponent } from './add-exercise/add-exercise.component';
@@ -16,6 +23,7 @@ import { AddExerciseComponent } from './add-exercise/add-exercise.component';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ManageExerciseComponent implements OnInit {
+
   displayedColumns: string[] = [
     'exerciseName',
     'muscleGroup',
@@ -26,33 +34,29 @@ export class ManageExerciseComponent implements OnInit {
     'actions'
   ];
 
-  registerButtonLabel: string = 'Register';
-  mode: string = 'add';
-  selectedData: any;
-  isDisabled: boolean = false;
-  submitted: boolean = false;
-  noData: boolean = false;
+  dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
+
+  @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   readonly dialog: MatDialog = inject(MatDialog);
 
-  dataSource: MatTableDataSource<any>;
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-  }
-
   constructor(
-    private employeeService: EmpolyeeServiceService,
+    private exerciseService: AddExerciseService,
     private messageService: MessageServiceService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
     this.populateData();
   }
 
-  applyFilter(event: Event) {
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
+  applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
 
@@ -61,41 +65,34 @@ export class ManageExerciseComponent implements OnInit {
     }
   }
 
+  public populateData(): void {
+    this.exerciseService.getAllExercises().subscribe({
+      next: (dataList: any[]) => {
+        const activeExercises = dataList.filter((e) => !e.isDeleted);
+        this.dataSource = new MatTableDataSource(activeExercises);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+        this.cdr.markForCheck();
+      },
+      error: (error) => {
+        this.messageService.showError(error.message ?? error);
+      }
+    });
+  }
+
   openExerciseDialog(): void {
     const dialogRef = this.dialog.open(AddExerciseComponent, {
       autoFocus: false
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.populateData();
       if (result?.action === 'add') {
-        this.dataSource.data = [result.data, ...this.dataSource.data];
-        this.populateData();
+        this.dataSource = new MatTableDataSource([result.data, ...this.dataSource.data]);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+        this.cdr.markForCheck();
       }
     });
-  }
-
-  public populateData(): void {
-    try {
-      this.employeeService.getData().subscribe({
-        next: (dataList: any[]) => {
-          if (dataList.length <= 0) {
-            return;
-          }
-
-          const activeEmployees = dataList.filter((emp) => !emp.isDeleted);
-          this.dataSource = new MatTableDataSource(activeEmployees);
-
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
-        },
-        error: (error) => {
-          this.messageService.showError(error);
-        }
-      });
-    } catch (error) {
-      this.messageService.showError(error);
-    }
   }
 
   editData(data: any): void {
@@ -109,8 +106,13 @@ export class ManageExerciseComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result?.action === 'edit') {
-        const newData = this.dataSource.data.filter((item) => item.id !== result.data.id);
-        this.dataSource.data = [result.data, ...newData];
+        const updatedData = this.dataSource.data.map((item) =>
+          item.id === result.data.id ? result.data : item
+        );
+        this.dataSource = new MatTableDataSource(updatedData);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+        this.cdr.markForCheck();
       }
     });
   }
@@ -119,24 +121,23 @@ export class ManageExerciseComponent implements OnInit {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '350px',
       data: {
-        message: `Are you sure you want to delete ${data.firstName} ${data.lastName}?`
+        message: `Are you sure you want to delete "${data.exerciseName}"?`
       }
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        const id = data.id;
-        this.employeeService.deleteData(id).subscribe({
+    dialogRef.afterClosed().subscribe((confirmed) => {
+      if (confirmed) {
+        this.exerciseService.deleteExercise(data.id).subscribe({
           next: () => {
-            const index = this.dataSource.data.findIndex((item) => item.id === id);
-            if (index !== -1) {
-              this.dataSource.data.splice(index, 1);
-            }
-            this.dataSource = new MatTableDataSource(this.dataSource.data);
-            this.messageService.showSuccess('Record deleted successfully!');
+            const updatedData = this.dataSource.data.filter((item) => item.id !== data.id);
+            this.dataSource = new MatTableDataSource(updatedData);
+            this.dataSource.paginator = this.paginator;
+            this.dataSource.sort = this.sort;
+            this.messageService.showSuccess('Exercise deleted successfully!');
+            this.cdr.markForCheck();
           },
           error: (error) => {
-            this.messageService.showError(error);
+            this.messageService.showError(error.message ?? error);
           }
         });
       }
