@@ -56,6 +56,7 @@ export class WorkoutPlanGeneratorComponent {
       recommendedSessions: '3–4 sessions/week, 30–45 min each'
     }
   ];
+  
   output = '';
   private buffer = '';
   htmlOutput!: SafeHtml;

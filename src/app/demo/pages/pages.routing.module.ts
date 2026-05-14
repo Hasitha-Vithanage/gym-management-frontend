@@ -41,6 +41,7 @@ import { ForYourApprovalComponent } from './for-your-approval/for-your-approval.
 import { GoalBasedCalorieTargetComponent } from './goal-based-calorie-target/goal-based-calorie-target.component';
 import { WorkoutPlanGeneratorComponent } from './workout-plan-generator/workout-plan-generator.component';
 import { ManageExerciseComponent } from './manage-exercise/manage-exercise.component';
+import { WorkoutTemplateComponent } from './manage-exercise/workout-template/workout-template.component';
 
 export const PagesRoutes: Routes = [
   {
@@ -78,6 +79,10 @@ export const PagesRoutes: Routes = [
   {
     path: 'manage-exercise',
     component: ManageExerciseComponent
+  },
+  {
+    path: 'workout-templates',
+    component: WorkoutTemplateComponent
   },
   {
     path: 'suppliers',

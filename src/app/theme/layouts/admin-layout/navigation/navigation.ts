@@ -218,6 +218,16 @@ export const NavigationItems: NavigationItem[] = [
         breadcrumbs: false
       },
       {
+        id: 'workoutTemplateDet',
+        title: 'Workout Templates',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/pages/workout-templates',
+        icon: '../../../../assets/images/icon/template-light.png',
+        auth: [authenticationEnum.Workout_Templates],
+        breadcrumbs: false
+      },
+      {
         id: 'workoutDet',
         title: 'Workout Plan Requests',
         type: 'item',

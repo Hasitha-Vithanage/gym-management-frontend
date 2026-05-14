@@ -67,6 +67,8 @@ import { GoalBasedCalorieTargetComponent } from './goal-based-calorie-target/goa
 import { WorkoutPlanGeneratorComponent } from './workout-plan-generator/workout-plan-generator.component';
 import { ManageExerciseComponent } from './manage-exercise/manage-exercise.component';
 import { AddExerciseComponent } from './manage-exercise/add-exercise/add-exercise.component';
+import { WorkoutTemplateComponent } from './manage-exercise/workout-template/workout-template.component';
+import { AddWorkoutTemplateComponent } from './manage-exercise/workout-template/add-workout-template/add-workout-template.component';
 // icons
 
 export const MY_DATE_FORMATS = {
@@ -142,7 +144,9 @@ export const MY_DATE_FORMATS = {
     GoalBasedCalorieTargetComponent,
     WorkoutPlanGeneratorComponent,
     ManageExerciseComponent,
-    AddExerciseComponent
+    AddExerciseComponent,
+    WorkoutTemplateComponent,
+    AddWorkoutTemplateComponent
   ],
   imports: [
     CommonModule,

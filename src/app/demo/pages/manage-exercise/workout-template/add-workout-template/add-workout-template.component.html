@@ -1,0 +1,180 @@
+<div class="form-container">
+
+  <!-- Header -->
+  <div class="form-header">
+    <h2>Add Workout Template</h2>
+    <button class="close-btn" (click)="closeDialog()">✕</button>
+  </div>
+
+    <form [formGroup]="templateForm" (ngSubmit)="onSubmit()" class="form-body">
+
+        <!-- 🔹 BASIC INFO -->
+        <h3 class="section-title">Basic Info</h3>
+        <hr class="divider"/>
+
+        <div class="grid">
+        <div class="field full">
+            <label>Template Name<span class="required">*</span></label>
+            <input type="text" placeholder="Enter template name" formControlName="templateName" />
+        </div>
+
+        <div class="field full">
+            <label>Description</label>
+            <textarea placeholder="Enter template description" formControlName="description"></textarea>
+        </div>
+        </div>
+
+        <hr>
+
+        <!-- 🔹 CLASSIFICATION -->
+        <h3 class="section-title">Classification</h3>
+        <hr class="divider"/>
+
+        <div class="grid">
+        <div class="field">
+            <label>Goal<span class="required">*</span></label>
+            <select formControlName="goal">
+            <option value="">Select</option>
+            <option>Fat Loss</option>
+            <option>Muscle Gain</option>
+            <option>Strength</option>
+            <option>Endurance</option>
+            </select>
+        </div>
+
+        <div class="field">
+            <label>Difficulty<span class="required">*</span></label>
+            <select formControlName="difficultyLevel">
+            <option value="">Select</option>
+            <option>Beginner</option>
+            <option>Intermediate</option>
+            <option>Advanced</option>
+            </select>
+        </div>
+
+        <div class="field">
+            <label>Intensity<span class="required">*</span></label>
+            <select formControlName="intensityLevel">
+            <option value="">Select</option>
+            <option>Low</option>
+            <option>Medium</option>
+            <option>High</option>
+            </select>
+        </div>
+
+        <div class="field">
+            <label>Location<span class="required">*</span></label>
+            <select formControlName="location">
+            <option value="">Select</option>
+            <option>Home</option>
+            <option>Gym</option>
+            </select>
+        </div>
+        </div>
+
+        <hr>
+
+        <!-- 🔹 DIFFICULTY & SETUP -->
+        <h3 class="section-title">Difficulty & Setup</h3>
+        <hr class="divider"/>
+
+        <div class="grid">
+        <div class="field">
+            <label>Duration (minutes)<span class="required">*</span></label>
+            <input type="number" placeholder="e.g. 45" formControlName="durationMinutes" min="15" max="180" />
+        </div>
+
+        <div class="field">
+            <label>Days Per Week<span class="required">*</span></label>
+            <input type="number" placeholder="e.g. 3" formControlName="daysPerWeek" min="1" max="7" />
+        </div>
+
+        <div class="field">
+            <label>Program Length (weeks)</label>
+            <input type="number" placeholder="e.g. 8" formControlName="programLengthWeeks" min="1" max="52" />
+        </div>
+
+        <div class="field">
+            <label>Status<span class="required">*</span></label>
+            <select formControlName="status">
+            <option value="">Select</option>
+            <option>Draft</option>
+            <option>Active</option>
+            <option>Inactive</option>
+            </select>
+        </div>
+        </div>
+
+        <hr>
+
+        <!-- 🔹 EQUIPMENT -->
+        <h3 class="section-title">Equipment Required</h3>
+        <hr class="divider"/>
+
+        <div class="grid">
+        <div class="field full">
+            <label>Equipment<span class="required">*</span></label>
+            <div class="checkbox-group">
+            <label class="checkbox-item">
+                <input type="checkbox" value="Bodyweight" [checked]="templateForm.get('equipmentRequired')?.value?.includes('Bodyweight')" (change)="onEquipmentChange($event)" /> Bodyweight
+            </label>
+            <label class="checkbox-item">
+                <input type="checkbox" value="Dumbbell" [checked]="templateForm.get('equipmentRequired')?.value?.includes('Bodyweight')" (change)="onEquipmentChange($event)" /> Dumbbell
+            </label>
+            <label class="checkbox-item">
+                <input type="checkbox" value="Barbell" [checked]="templateForm.get('equipmentRequired')?.value?.includes('Bodyweight')" (change)="onEquipmentChange($event)" /> Barbell
+            </label>
+            <label class="checkbox-item">
+                <input type="checkbox" value="Machine" [checked]="templateForm.get('equipmentRequired')?.value?.includes('Bodyweight')" (change)="onEquipmentChange($event)" /> Machine
+            </label>
+            <label class="checkbox-item">
+                <input type="checkbox" value="Resistance Band" [checked]="templateForm.get('equipmentRequired')?.value?.includes('Bodyweight')" (change)="onEquipmentChange($event)" /> Resistance Band
+            </label>
+            </div>
+        </div>
+        </div>
+
+        <hr>
+
+        <!-- 🔹 TARGETING -->
+        <h3 class="section-title">Targeting</h3>
+        <hr class="divider"/>
+
+        <div class="grid">
+        <div class="field">
+            <label>Suitable For<span class="required">*</span></label>
+            <select formControlName="suitableFor">
+            <option value="">Select</option>
+            <option>All</option>
+            <option>Male</option>
+            <option>Female</option>
+            </select>
+        </div>
+
+        <div class="field">
+            <label>Recommended BMI Category</label>
+            <div class="checkbox-group">
+            <label class="checkbox-item">
+                <input type="checkbox" value="Underweight" [checked]="templateForm.get('equipmentRequired')?.value?.includes('Bodyweight')" (change)="onBMIChange($event)" /> Underweight
+            </label>
+            <label class="checkbox-item">
+                <input type="checkbox" value="Normal" [checked]="templateForm.get('equipmentRequired')?.value?.includes('Bodyweight')" (change)="onBMIChange($event)" /> Normal
+            </label>
+            <label class="checkbox-item">
+                <input type="checkbox" value="Overweight" [checked]="templateForm.get('equipmentRequired')?.value?.includes('Bodyweight')" (change)="onBMIChange($event)" /> Overweight
+            </label>
+            <label class="checkbox-item">
+                <input type="checkbox" value="Obese" [checked]="templateForm.get('equipmentRequired')?.value?.includes('Bodyweight')" (change)="onBMIChange($event)" /> Obese
+            </label>
+            </div>
+        </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="action-buttons">
+        <button type="submit" class="register-button field">Save</button>
+        <button type="button" class="reset-button field" (click)="resetData()">Reset</button>
+        </div>
+
+    </form>
+</div>
