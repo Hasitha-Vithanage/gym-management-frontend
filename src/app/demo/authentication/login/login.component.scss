@@ -1,42 +1,23 @@
-// .auth-main {
-//   min-height: 100vh;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   background: #f5f6fa;
-//   padding: 20px;
-//   font-family: 'Inter', sans-serif;
-// }
-
-// .auth-main {
-//   min-height: 100vh;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-
-//   background: url("../../../../assets/images/landing-page/home-2.png") center center/cover no-repeat;
-//   position: relative;
-//   padding: 20px;
-//   font-family: 'Inter', sans-serif;
-// }
-
-// .auth-main::before {
-//   content: "";
-//   position: absolute;
-//   inset: 0;
-//   backdrop-filter: blur(6px) brightness(0.85);
-//   background: rgba(0, 0, 0, 0.25); /* subtle overlay */
-// }
-
 .auth-main {
   min-height: 100vh;
   display: flex;
-  background: #f5f6fa;
+  background: #171C2A; // Primary Dark Background
+  font-family: 'Inter', sans-serif;
 }
 
 .auth-left {
   flex: 1;
-  background: url("../../../../assets/images/landing-page/login-11.jpg") center center/cover no-repeat;
+  background: url("../../../../assets/images/landing-page/login-11.jpg")
+    center center/cover no-repeat;
+  position: relative;
+}
+
+.auth-left::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(23, 28, 42, 0.25); // lighter overlay
+  backdrop-filter: blur(2px);
 }
 
 .auth-right {
@@ -45,108 +26,172 @@
   align-items: center;
   justify-content: center;
   padding: 40px;
+  background: #171C2A;
 }
-
 
 .auth-wrapper.v3 {
   width: 100%;
   max-width: 420px;
   position: relative;
-  z-index: 2; /* ensures content stays above background overlay */
-}
-
-
-.auth-wrapper.v3 {
-  width: 100%;
-  max-width: 420px;
+  z-index: 2;
 }
 
 .auth-form {
   width: 100%;
 }
 
+/* Card */
 .card {
   border: none;
-  border-radius: 18px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-  background: #ffffff;
+  border-radius: 20px;
+  background: #1E2433; // Sidebar / Card Dark
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
 }
 
 .card-body {
-  padding: 40px 35px !important;
+  padding: 42px 36px !important;
 }
 
+/* Heading */
 h3 {
   font-weight: 700;
-  color: #222;
+  color: #F5F7FA; // Primary Text White
+  letter-spacing: 0.3px;
 }
 
+/* Labels */
 .form-label {
   font-weight: 500;
-  color: #444;
+  color: #9CA3AF; // Secondary Gray Text
   margin-bottom: 6px;
 }
 
+/* Inputs */
 .form-control {
-  height: 48px;
-  border-radius: 10px;
-  border: 1px solid #dcdcdc;
+  height: 50px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   padding-left: 14px;
-  transition: all 0.2s ease;
-  background: #fafafa;
+  transition: all 0.25s ease;
+  background: #171C2A;
+  color: #F5F7FA;
+}
+
+.form-control::placeholder {
+  color: #6B7280;
 }
 
 .form-control:focus {
-  border-color: #5a5a5a;
-  background: #fff;
-  box-shadow: 0 0 0 3px rgba(90, 90, 90, 0.15);
+  border-color: #FF6B00; // Primary Orange Accent
+  background: #171C2A;
+  color: #F5F7FA;
+  box-shadow: 0 0 0 4px rgba(255, 107, 0, 0.18);
 }
 
+/* Buttons */
 .btn-primary {
-  height: 48px;
-  border-radius: 10px;
-  background: #222 !important;      /* Modern gym vibe — dark, clean */
+  height: 50px;
+  border-radius: 12px;
+  background: #FF6B00 !important;
   border: none;
   font-size: 16px;
   font-weight: 600;
-  transition: all 0.2s ease;
+  color: #fff;
+  transition: all 0.25s ease;
 }
 
 .btn-primary:hover {
-  background: #000 !important;
+  background: #FF8A3D !important; // Soft Orange Hover
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  box-shadow: 0 6px 18px rgba(255, 107, 0, 0.35);
 }
 
+/* Error Messages */
 .text-danger {
   font-size: 13px;
   margin-top: 4px;
+  color: #FF8A3D !important;
+}
+
+/* Success Text */
+.text-success {
+  color: #22C55E !important; // Success Green
+}
+
+/* Links */
+a {
+  color: #3B82F6; // Accent Blue
+  text-decoration: none;
+  transition: 0.2s ease;
+}
+
+a:hover {
+  color: #FF8A3D;
 }
 
 /* Footer */
 .auth-footer {
-  padding-top: 10px;
-  color: #888;
+  padding-top: 14px;
+  color: #9CA3AF;
   font-size: 14px;
-  border-top: 1px solid #e9e9e9;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .footer-link a {
-  color: #555;
-  text-decoration: none;
-  transition: 0.2s;
+  color: #D8A7B1; // Soft Pink Accent
 }
 
 .footer-link a:hover {
-  color: #000;
+  color: #FF8A3D;
 }
 
-/* Logo animation (small subtle effect) */
+/* Logo Animation */
 .card-body img {
   animation: fadeIn 0.8s ease;
 }
 
+/* Smooth Card Animation */
+.card {
+  animation: cardFloat 0.7s ease;
+}
+
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-8px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cardFloat {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .auth-left {
+    display: none;
+  }
+
+  .auth-right {
+    flex: 1 1 100%;
+    padding: 24px;
+  }
+
+  .card-body {
+    padding: 32px 24px !important;
+  }
 }

@@ -1,20 +1,14 @@
-// angular import
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-// project import
 import tableData from 'src/fake-data/default-data.json';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { MonthlyBarChartComponent } from './monthly-bar-chart/monthly-bar-chart.component';
 import { IncomeOverviewChartComponent } from './income-overview-chart/income-overview-chart.component';
 import { AnalyticsChartComponent } from './analytics-chart/analytics-chart.component';
 import { SalesReportChartComponent } from './sales-report-chart/sales-report-chart.component';
-
-// icons
 import { IconService } from '@ant-design/icons-angular';
 import { FallOutline, GiftOutline, MessageOutline, RiseOutline, SettingOutline } from '@ant-design/icons-angular/icons';
 import { DashboardService } from 'src/app/services/dashboard/dashboard.service';
-import { error } from 'console';
 import { forkJoin } from 'rxjs';
 import { NewSupplementServiceService } from 'src/app/services/new-supplement/new-supplement-service.service';
 import { MatTableDataSource } from '@angular/material/table';

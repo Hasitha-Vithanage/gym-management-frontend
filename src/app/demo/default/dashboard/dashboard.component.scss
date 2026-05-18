@@ -1,157 +1,449 @@
+@import 'src/scss/settings/colors';
+
+// HOST
 :host {
   display: block;
-  background: #f4f4f7;
-  padding: 20px;
   min-height: 100vh;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  padding: 24px 28px;
+  font-family: $ff-font;
+  background: $ff-bg-base;
+  color: $ff-text-primary;
 }
 
-/* Title */
+
+// PAGE TITLE
 .form-title {
   font-size: 22px;
-  font-weight: 600;
-  margin-bottom: 16px;
-  color: #333;
-}
-
-/* === DASHBOARD CARDS === */
-.dashboard-card {
-  padding: 18px;
-  background: #ffffff;
-  border-radius: 14px;
-  border: 1px solid #e6e6e6;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-  transition: 0.25s ease;
-}
-
-.dashboard-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.10);
-}
-
-.dashboard-card h6 {
-  font-size: 14px;
-  font-weight: 500;
-  color: #666;
-}
-
-.dashboard-card h4 {
-  font-size: 28px;
   font-weight: 700;
-  color: #222;
+  margin-bottom: 24px;
+  color: $ff-text-primary;
+  letter-spacing: 0.2px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  img {
+    width: 26px;
+    height: 26px;
+    opacity: 0.9;
+  }
 }
 
 
-/* === QUICK ACTIONS === */
-.quick-actions {
-  border-radius: 10px;
-  height: 80%;
-  border: 1px solid #e6e6e6;
+// APP-CARD DEEP OVERRIDES
+::ng-deep app-card {
+  .card {
+    background: $ff-bg-surface !important;
+    border: 1px solid $ff-border-default !important;
+    border-radius: $ff-radius-md !important;
+    box-shadow: $ff-shadow-card !important;
+    overflow: hidden;
+    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+
+    &:hover {
+      transform: translateY(-3px);
+      border-color: $ff-border-accent !important;
+      box-shadow: $ff-shadow-hover !important;
+    }
+  }
+
+  .card-body {
+    background: $ff-bg-surface !important;
+    color: $ff-text-primary !important;
+    padding: 22px 20px !important;
+
+    h1, h2, h3, h4, h5, h6, p, span, a, div {
+      color: $ff-text-primary !important;
+    }
+
+    h6 {
+      color: $ff-text-secondary !important;
+    }
+
+    .text-muted {
+      color: $ff-text-secondary !important;
+    }
+  }
 }
 
-.quick-actions h5 {
-  font-weight: 600;
-  text-align: center;
-}
 
-.quick-actions .qa-grid button {
-  flex: 1 1 auto;
-  padding: 6px 10px;
-  font-size: 13px;
-  border-radius: 8px;
-  transition: all 0.2s ease;
-}
-
-.quick-actions .qa-grid button:hover {
-  background: #222;
-  color: #fff;
-  border-color: #222;
-}
-
-
-/* === TABLE CARDS === */
-.tbl-card {
-  padding: 0;
-  border-radius: 14px;
-  border: 1px solid #e6e6e6;
-  background: #fff;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+// STAT CARDS (top row)
+.dashboard-card {
+  position: relative;
   overflow: hidden;
+
+  // left accent bar
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, $ff-accent-primary, $ff-accent-hover);
+    border-radius: 20px 0 0 20px;
+    z-index: 1;
+  }
+
+  // subtle corner glow
+  &::after {
+    content: "";
+    position: absolute;
+    top: -30px; right: -30px;
+    width: 100px; height: 100px;
+    background: radial-gradient(circle, rgba(255,107,0,0.08), transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
 }
 
-.tbl-card thead th {
-  background: #f8f8f8;
-  font-weight: 600;
-  color: #555;
-  padding: 12px 14px;
+// Deep override specifically for dashboard-card content
+::ng-deep .dashboard-card {
+  h6, .f-w-400 {
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.5px !important;
+    text-transform: uppercase !important;
+    color: $ff-text-secondary !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    margin-bottom: 10px !important;
+
+    img {
+      width: 18px !important;
+      height: 18px !important;
+      opacity: 0.8 !important;
+      margin-left: 0 !important;
+    }
+  }
+
+  h4 {
+    font-size: 36px !important;
+    font-weight: 800 !important;
+    color: $ff-text-primary !important;
+    margin: 0 !important;
+    line-height: 1 !important;
+    letter-spacing: -0.5px !important;
+  }
+
+  .badge {
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    padding: 4px 8px !important;
+    border-radius: 8px !important;
+    background: $ff-accent-soft !important;
+    border-color: $ff-border-accent !important;
+    color: $ff-accent-primary !important;
+    margin-left: 10px !important;
+    vertical-align: middle !important;
+  }
 }
 
-.tbl-card tbody td {
-  padding: 14px;
-  font-size: 14px;
-  color: #333;
+
+// QUICK ACTIONS PANEL
+.quick-actions {
+  height: 100%;
+  padding: 20px 22px;
+  border-radius: $ff-radius-md;
+  background: $ff-bg-surface !important;
+  border: 1px solid $ff-border-default;
+  box-shadow: $ff-shadow-card;
+
+  h5 {
+    color: $ff-text-primary !important;
+    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 16px;
+  }
+
+  .qa-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+
+    button {
+      flex: 1 1 auto;
+      padding: 10px 18px;
+      border-radius: $ff-radius-sm;
+      border: 1px solid $ff-border-default;
+      background: $ff-bg-elevated !important;
+      color: $ff-text-primary !important;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.2px;
+      transition: background 0.2s, border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+      white-space: nowrap;
+
+      &:hover {
+        background: $ff-accent-primary !important;
+        border-color: $ff-accent-primary !important;
+        color: #fff !important;
+        transform: translateY(-2px);
+        box-shadow: $ff-shadow-orange;
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
+    }
+  }
 }
 
-.tbl-card tbody tr:hover {
-  background: #fafafa;
+.btn-outline-dark {
+  background: $ff-bg-elevated !important;
+  border: 1px solid $ff-border-default !important;
+  color: $ff-text-primary !important;
+
+  &:hover {
+    background: $ff-accent-primary !important;
+    border-color: $ff-accent-primary !important;
+    color: #fff !important;
+  }
 }
 
 
-/* === MENU SECTION === */
+// SECTION HEADINGS
+h5 {
+  color: $ff-text-primary !important;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.15px;
+}
+
+
+// TABLE CARDS
+.tbl-card {
+  border-radius: $ff-radius-md !important;
+  border: 1px solid $ff-border-default !important;
+  background: $ff-bg-surface !important;
+  box-shadow: $ff-shadow-card;
+  overflow: hidden;
+  transition: border-color 0.2s ease;
+
+  &:hover {
+    border-color: $ff-border-accent !important;
+  }
+}
+
+.table {
+  margin-bottom: 0 !important;
+  color: $ff-text-primary !important;
+
+  thead {
+    background: $ff-bg-elevated !important;
+
+    th {
+      color: $ff-text-secondary !important;
+      font-weight: 600;
+      font-size: 11px;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+      padding: 14px 16px;
+      border-bottom: 1px solid $ff-border-default !important;
+      white-space: nowrap;
+      background: $ff-bg-elevated !important;
+    }
+  }
+
+  tbody {
+    tr {
+      background: $ff-bg-surface !important;
+      transition: background 0.18s ease;
+
+      &:hover {
+        background: $ff-bg-hover !important;
+      }
+
+      &:last-child td {
+        border-bottom: none !important;
+      }
+    }
+
+    td {
+      padding: 13px 16px;
+      color: $ff-text-secondary !important;
+      border-bottom: 1px solid $ff-border-default !important;
+      font-size: 13.5px;
+      background: transparent !important;
+
+      a {
+        color: $ff-text-primary !important;
+        text-decoration: none;
+        font-weight: 500;
+
+        &:hover {
+          color: $ff-accent-hover !important;
+        }
+      }
+    }
+  }
+}
+
+
+// EXPIRING SOON - expiry date colours
+.expiry-urgent { color: $ff-danger !important;  font-weight: 700; }
+.expiry-soon   { color: $ff-warning !important; font-weight: 600; }
+.expiry-ok     { color: $ff-success !important; }
+
+// Membership plan badges
+.plan-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+
+  &.gold     { background: rgba(245,158,11,0.15);  color: $ff-gold     !important; border: 1px solid rgba(245,158,11,0.3); }
+  &.silver   { background: rgba(148,163,184,0.12); color: $ff-silver   !important; border: 1px solid rgba(148,163,184,0.25); }
+  &.platinum { background: rgba(167,139,250,0.12); color: $ff-platinum !important; border: 1px solid rgba(167,139,250,0.25); }
+  &.basic    { background: rgba(59,130,246,0.12);  color: $ff-info     !important; border: 1px solid rgba(59,130,246,0.25); }
+}
+
+
+// UPCOMING CLASSES - LIST GROUP
+.list-group-item {
+  background: $ff-bg-surface !important;
+  color: $ff-text-primary !important;
+  border-color: $ff-border-default !important;
+  padding: 16px 20px;
+  transition: background 0.18s ease;
+
+  &:hover {
+    background: $ff-bg-hover !important;
+  }
+
+  strong {
+    color: $ff-text-primary !important;
+    font-size: 14px;
+  }
+
+  // class time
+  .d-flex > span {
+    color: $ff-accent-primary !important;
+    font-weight: 700;
+    font-size: 13px;
+  }
+
+  p {
+    color: $ff-text-secondary !important;
+    font-size: 12.5px;
+    margin-top: 3px;
+  }
+}
+
+
+// MENU SECTION (nav cards)
 .menu-section {
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 30px 20px;
-  border: 1px solid #e5e5e5;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  margin-top: 28px;
+  background: $ff-bg-surface;
+  border-radius: $ff-radius-lg;
+  padding: 28px 22px;
+  border: 1px solid $ff-border-default;
+  box-shadow: $ff-shadow-card;
 }
 
 .cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 22px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 18px;
 }
 
 .menu-card {
-  padding: 20px;
-  background: #fff;
-  border-radius: 16px;
-  border: 1px solid #eaeaea;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  transition: .25s ease;
+  position: relative;
+  overflow: hidden;
+  padding: 22px;
+  border-radius: $ff-radius-md;
   cursor: pointer;
+  background: $ff-bg-elevated;
+  border: 1px solid $ff-border-default;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, $ff-accent-soft, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+
+  &:hover {
+    transform: translateY(-5px);
+    border-color: $ff-border-accent;
+    box-shadow: $ff-shadow-hover;
+
+    &::before { opacity: 1; }
+    .card-arrow { opacity: 1; transform: translateX(5px); }
+  }
+
+  .card-icon {
+    font-size: 32px;
+    margin-bottom: 12px;
+  }
+
+  .card-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: $ff-text-primary !important;
+    margin-bottom: 8px;
+  }
+
+  .card-description {
+    font-size: 13px;
+    color: $ff-text-secondary !important;
+    line-height: 1.55;
+    margin-bottom: 12px;
+  }
+
+  .card-arrow {
+    font-size: 18px;
+    font-weight: 700;
+    color: $ff-accent-hover;
+    opacity: 0;
+    transition: opacity 0.22s ease, transform 0.22s ease;
+  }
 }
 
-.menu-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+
+// UTILITY / STATUS COLOURS
+.text-success { color: $ff-success !important; }
+.text-primary { color: $ff-info    !important; }
+.text-warning { color: $ff-warning !important; }
+.text-danger  { color: $ff-danger  !important; }
+.text-accent  { color: $ff-accent-primary !important; }
+.text-muted   { color: $ff-text-secondary !important; }
+
+
+// SCROLLBAR
+::-webkit-scrollbar       { width: 7px; }
+::-webkit-scrollbar-track { background: $ff-bg-base; }
+::-webkit-scrollbar-thumb {
+  background: $ff-accent-primary;
+  border-radius: 20px;
+  &:hover { background: $ff-accent-hover; }
 }
 
-.card-icon {
-  font-size: 32px;
-  margin-bottom: 10px;
+
+// RESPONSIVE
+@media (max-width: 1200px) {
+  .cards-grid { grid-template-columns: repeat(3, 1fr); }
 }
 
-.card-title {
-  font-size: 18px;
-  font-weight: 600;
-  margin: 0;
+@media (max-width: 992px) {
+  .cards-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
-.card-description {
-  font-size: 14px;
-  color: #666;
-  margin-bottom: 10px;
-}
+@media (max-width: 768px) {
+  :host { padding: 14px 12px; }
 
-.card-arrow {
-  font-size: 18px;
-  opacity: 0;
-  transition: 0.2s ease;
-  font-weight: 700;
-}
+  ::ng-deep .dashboard-card h4 { font-size: 28px !important; }
 
-.menu-card:hover .card-arrow {
-  opacity: 1;
-  transform: translateX(5px);
+  .cards-grid { grid-template-columns: 1fr; }
+
+  .menu-section { padding: 18px 14px; }
+
+  .quick-actions .qa-grid { flex-direction: column; }
 }
