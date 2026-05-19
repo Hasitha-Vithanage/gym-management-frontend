@@ -1,5 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { environment } from 'src/app/environments/environment';
 import { HttpService } from '../http.service';
 
@@ -7,71 +8,37 @@ import { HttpService } from '../http.service';
   providedIn: 'root'
 })
 export class DashboardService {
+  private readonly BASE = environment.baseUrl;
 
-  constructor(private http: HttpClient, private httpService: HttpService) { }
+  constructor(
+    private readonly http: HttpClient,
+    private readonly httpService: HttpService
+  ) {}
 
-    totalEmployeeCount() {
-      // creating requesting URL
-        const requestUrl = environment.baseUrl + '/employee-count'; // http://localhost:8080/employee
-    
-        let headers = {};
-    
-        if (this.httpService.getAuthToken() !== null) {
-          headers = {
-            Authorization: 'Bearer ' + this.httpService.getAuthToken()
-          };
-        }
-    
-        // sending GET request to the server
-        return this.http.get(requestUrl, { headers: headers });
+  totalEmployeeCount(): Observable<number> {
+    return this.get<number>('/employee-count');
   }
 
-  totalMemberCount() {
-      // creating requesting URL
-        const requestUrl = environment.baseUrl + '/member-count'; // http://localhost:8080/employee
-    
-        let headers = {};
-    
-        if (this.httpService.getAuthToken() !== null) {
-          headers = {
-            Authorization: 'Bearer ' + this.httpService.getAuthToken()
-          };
-        }
-    
-        // sending GET request to the server
-        return this.http.get(requestUrl, { headers: headers });
+  totalMemberCount(): Observable<number> {
+    return this.get<number>('/member-count');
   }
 
-  totalSupplierCount() {
-      // creating requesting URL
-        const requestUrl = environment.baseUrl + '/supplier-count'; // http://localhost:8080/employee
-    
-        let headers = {};
-    
-        if (this.httpService.getAuthToken() !== null) {
-          headers = {
-            Authorization: 'Bearer ' + this.httpService.getAuthToken()
-          };
-        }
-    
-        // sending GET request to the server
-        return this.http.get(requestUrl, { headers: headers });
+  totalSupplierCount(): Observable<number> {
+    return this.get<number>('/supplier-count');
   }
 
-  newMembersInThisMonth() {
-      // creating requesting URL
-        const requestUrl = environment.baseUrl + '/new-members'; // http://localhost:8080/employee
-    
-        let headers = {};
-    
-        if (this.httpService.getAuthToken() !== null) {
-          headers = {
-            Authorization: 'Bearer ' + this.httpService.getAuthToken()
-          };
-        }
-    
-        // sending GET request to the server
-        return this.http.get(requestUrl, { headers: headers });
+  newMembersInThisMonth(): Observable<number> {
+    return this.get<number>('/new-members');
   }
 
+  // ── Private Helpers ──────────────────────────────────────────────────────
+
+  private get<T>(endpoint: string): Observable<T> {
+    return this.http.get<T>(`${this.BASE}${endpoint}`, { headers: this.authHeaders() });
+  }
+
+  private authHeaders(): HttpHeaders {
+    const token = this.httpService.getAuthToken();
+    return token ? new HttpHeaders({ Authorization: `Bearer ${token}` }) : new HttpHeaders();
+  }
 }

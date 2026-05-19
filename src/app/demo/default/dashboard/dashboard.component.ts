@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import tableData from 'src/fake-data/default-data.json';
+import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { forkJoin, takeUntil } from 'rxjs';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { MonthlyBarChartComponent } from './monthly-bar-chart/monthly-bar-chart.component';
 import { IncomeOverviewChartComponent } from './income-overview-chart/income-overview-chart.component';
@@ -9,10 +11,8 @@ import { SalesReportChartComponent } from './sales-report-chart/sales-report-cha
 import { IconService } from '@ant-design/icons-angular';
 import { FallOutline, GiftOutline, MessageOutline, RiseOutline, SettingOutline } from '@ant-design/icons-angular/icons';
 import { DashboardService } from 'src/app/services/dashboard/dashboard.service';
-import { forkJoin } from 'rxjs';
 import { NewSupplementServiceService } from 'src/app/services/new-supplement/new-supplement-service.service';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
 
 interface MenuItem {
   title: string;
@@ -20,6 +20,52 @@ interface MenuItem {
   icon: string;
   route: string;
 }
+
+interface AnalyticCard {
+  title: string;
+  countKey: keyof DashboardCounts;
+  background: string;
+  border: string;
+  icon: 'rise' | 'fall';
+  percentage: string;
+  color: string;
+  trend: string;
+}
+
+interface DashboardCounts {
+  employeeCount: number | null;
+  memberCount: number | null;
+  supplierCount: number | null;
+  newMembersInThisMonth: number | null;
+}
+
+interface Transaction {
+  background: string;
+  icon: string;
+  title: string;
+  time: string;
+  amount: string;
+  percentage: string;
+}
+
+interface SupplementProduct {
+  productName: string;
+  brand: string;
+  category: string;
+  unit: string;
+  quantityPerUnit: number;
+  quantityInStock: number;
+  retailPrice: number;
+}
+
+const ROUTES = {
+  ADD_CLASS: '/pages/add-class',
+  MONTHLY_ATTENDANCE: '/pages/reports/monthly-attendance',
+  MONTHLY_SALES: '/pages/reports/monthly-sales',
+  EMPLOYEE: '/pages/employee',
+  MEMBER: '/pages/member',
+  ASSIGN_TRAINER: '/pages/assign-trainer'
+} as const;
 
 @Component({
   selector: 'app-default',
@@ -34,143 +80,113 @@ interface MenuItem {
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DefaultComponent implements OnInit {
-  menuItems: MenuItem[] = [
+export class DefaultComponent implements OnInit, OnDestroy {
+
+  counts: DashboardCounts = {
+    employeeCount: null,
+    memberCount: null,
+    supplierCount: null,
+    newMembersInThisMonth: null
+  };
+
+  isLoadingCounts = false;
+  isLoadingSupplements = false;
+  hasCountsError = false;
+
+  supplementsDataSource = new MatTableDataSource<SupplementProduct>();
+
+  readonly displayedColumns: string[] = [
+    'productName',
+    'brand',
+    'category',
+    'quantityPerUnit',
+    'quantityInStock',
+    'retailPrice'
+  ];
+
+    readonly menuItems: MenuItem[] = [
     {
       title: 'Schedule a Class',
       description: 'Schedule a class with full details',
-      icon: '🏛️',
-      route: '/pages/add-class'
+      icon: '../../../../assets/images/icon/schedule-class-icon.png',
+      route: ROUTES.ADD_CLASS
     },
     {
       title: 'Check Monthly Attendance',
       description: 'Monthly attendance of employees and members',
-      icon: '🙌',
-      route: '/pages/reports/monthly-attendance'
+      icon: '../../../../assets/images/icon/monthly-attendance-report-icon.png',
+      route: ROUTES.MONTHLY_ATTENDANCE
     },
     {
       title: 'Monthly Sales',
-      description: 'Check no of sales and Income monthly',
-      icon: '💲💸',
-      route: '/pages/reports/monthly-sales'
+      description: 'Check no of sales and income monthly',
+      icon: '../../../../assets/images/icon/sales-report-icon.png',
+      route: ROUTES.MONTHLY_SALES
     },
     {
       title: 'Employee Register',
-      description: 'Register the Employee to the System',
-      icon: '🤠',
-      route: '/pages/employee'
+      description: 'Register the employee to the system',
+      icon: '../../../../assets/images/icon/employee-light-icon.png',
+      route: ROUTES.EMPLOYEE
     },
     {
       title: 'Member Register',
-      description: 'Register Member to the System',
-      icon: '⛹️',
-      route: '/pages/member'
+      description: 'Register member to the system',
+      icon: '../../../../assets/images/icon/member-light-icon.png',
+      route: ROUTES.MEMBER
     },
     {
       title: 'Assign Trainer',
       description: 'Assign a trainer to a member',
-      icon: '💪🦵',
-      route: '/pages/assign-trainer'
+      icon: '../../../../assets/images/icon/assign-trainer-icon.png',
+      route: ROUTES.ASSIGN_TRAINER
     }
   ];
 
-  employeeCount;
-  supplierCount;
-  memberCount;
-  newMembersInThisMonth;
-
-  dataSource = new MatTableDataSource<any>();
-
-  displayedColumns: string[] = ['productName', 'brand', 'category', 'quantityPerUnit', 'quantityInStock', 'retailPrice'];
-
-  // constructor
-  constructor(
-    private iconService: IconService,
-    private dashboardService: DashboardService,
-    private newSupplementService: NewSupplementServiceService,
-    private router: Router
-  ) {
-    this.iconService.addIcon(...[RiseOutline, FallOutline, SettingOutline, GiftOutline, MessageOutline]);
-  }
-  ngOnInit(): void {
-    this.populateDate();
-  }
-
-  populateDate() {
-    forkJoin({
-      employees: this.dashboardService.totalEmployeeCount(),
-      members: this.dashboardService.totalMemberCount(),
-      suppliers: this.dashboardService.totalSupplierCount(),
-      newMembersInThisMonth: this.dashboardService.newMembersInThisMonth()
-    }).subscribe({
-      next: (results) => {
-        this.employeeCount = results.employees;
-        this.memberCount = results.members;
-        this.supplierCount = results.suppliers;
-        this.newMembersInThisMonth = results.newMembersInThisMonth;
-
-        console.log('Employee Count:', this.employeeCount);
-        console.log('Member Count:', this.memberCount);
-        console.log('Supplier Count:', this.supplierCount);
-      },
-      error: (error) => {
-        console.log('Error loading dashboard data:', error);
-      }
-    });
-
-    this.newSupplementService.getData().subscribe({
-      next: (response: any) => {
-        this.dataSource = new MatTableDataSource(response);
-      }
-    });
-  }
-
-  recentOrder = tableData;
-
-  AnalyticEcommerce = [
+  readonly analyticCards: AnalyticCard[] = [
     {
       title: 'Total Employees',
-      amount: '4,42,236',
-      background: 'bg-light-primary ',
+      countKey: 'employeeCount',
+      background: 'bg-light-primary',
       border: 'border-primary',
       icon: 'rise',
       percentage: '59.3%',
       color: 'text-primary',
-      number: '35,000'
+      trend: '35,000'
     },
     {
       title: 'Total Members',
-      amount: '78,250',
-      background: 'bg-light-primary ',
+      countKey: 'memberCount',
+      background: 'bg-light-primary',
       border: 'border-primary',
       icon: 'rise',
       percentage: '70.5%',
       color: 'text-primary',
-      number: '8,900'
+      trend: '8,900'
     },
     {
-      title: 'Total Order',
-      amount: '18,800',
-      background: 'bg-light-warning ',
+      title: 'New Members This Month',
+      countKey: 'newMembersInThisMonth',
+      background: 'bg-light-warning',
+      border: 'border-warning',
+      icon: 'rise',
+      percentage: '12.0%',
+      color: 'text-warning',
+      trend: '+new'
+    },
+    {
+      title: 'Total Suppliers',
+      countKey: 'supplierCount',
+      background: 'bg-light-warning',
       border: 'border-warning',
       icon: 'fall',
       percentage: '27.4%',
       color: 'text-warning',
-      number: '1,943'
-    },
-    {
-      title: 'Total Sales',
-      amount: '$35,078',
-      background: 'bg-light-warning ',
-      border: 'border-warning',
-      icon: 'fall',
-      percentage: '27.4%',
-      color: 'text-warning',
-      number: '$20,395'
+      trend: '1,943'
     }
   ];
 
-  transaction = [
+    readonly transactions: Transaction[] = [
     {
       background: 'text-success bg-light-success',
       icon: 'gift',
@@ -197,7 +213,78 @@ export class DefaultComponent implements OnInit {
     }
   ];
 
-  navigateToSection(route: string) {
+  private readonly destroy$ = new Subject<void>();
+
+
+  // constructor
+  constructor(
+    private readonly iconService: IconService,
+    private readonly dashboardService: DashboardService,
+    private readonly supplementService: NewSupplementServiceService,
+    private readonly router: Router
+  ) {
+    this.iconService.addIcon(
+      RiseOutline,
+      FallOutline,
+      SettingOutline,
+      GiftOutline,
+      MessageOutline
+    );
+  }
+
+  ngOnInit(): void {
+    this.loadDashboardData();
+    this.loadSupplements();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  private loadDashboardData(): void {
+    this.isLoadingCounts = true;
+    this.hasCountsError = false;
+ 
+    forkJoin({
+      employeeCount: this.dashboardService.totalEmployeeCount(),
+      memberCount: this.dashboardService.totalMemberCount(),
+      supplierCount: this.dashboardService.totalSupplierCount(),
+      newMembersInThisMonth: this.dashboardService.newMembersInThisMonth()
+    })
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (results) => {
+          this.counts = results;
+          this.isLoadingCounts = false;
+        },
+        error: (err) => {
+          console.error('[Dashboard] Failed to load counts:', err);
+          this.hasCountsError = true;
+          this.isLoadingCounts = false;
+        }
+      });
+  }
+
+  private loadSupplements(): void {
+    this.isLoadingSupplements = true;
+ 
+    this.supplementService
+      .getData()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (products: SupplementProduct[]) => {
+          this.supplementsDataSource.data = products;
+          this.isLoadingSupplements = false;
+        },
+        error: (err) => {
+          console.error('[Dashboard] Failed to load supplements:', err);
+          this.isLoadingSupplements = false;
+        }
+      });
+  }
+
+  navigateTo(route: string): void {
     this.router.navigate([route]);
   }
 }

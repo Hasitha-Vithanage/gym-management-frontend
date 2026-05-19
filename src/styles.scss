@@ -46,3 +46,15 @@ File: style.css
   font-weight: 600;
   margin-left: 2px;
 }
+
+.pc-head-link,
+.pc-head-link:hover,
+.pc-head-link:focus,
+.pc-head-link:active,
+.pc-head-link:visited {
+  background: transparent !important;
+  color: $ff-text-secondary !important;
+  text-decoration: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}

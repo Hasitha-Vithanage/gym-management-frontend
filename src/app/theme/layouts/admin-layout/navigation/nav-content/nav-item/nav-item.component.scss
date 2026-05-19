@@ -1,0 +1,61 @@
+@import 'src/scss/settings/colors';
+
+:host {
+  display: block;
+}
+
+li.nav-item {
+  list-style: none;
+  margin: 2px 0px 2px 25px;
+
+  a {
+    display: flex;
+    align-items: center;
+    padding: 5px 14px 5px 10px;
+    border-radius: $ff-radius-sm;
+    color: $ff-text-secondary;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: $ff-bg-elevated;
+      color: $ff-text-primary;
+      border-color: $ff-border-default;
+    }
+
+    .coded-mtext {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+
+      img {
+        width: 15px;
+        height: 15px;
+        opacity: 0.65;
+        flex-shrink: 0;
+        transition: opacity 0.2s ease;
+      }
+    }
+
+    .coded-micon {
+      display: none;
+    }
+  }
+
+  // Active state
+  &.active > a {
+    background: $ff-accent-soft;
+    color: $ff-accent-primary;
+    border-color: $ff-border-accent;
+    font-weight: 700;
+
+    .coded-mtext img {
+      opacity: 1;
+      filter: brightness(1.3) sepia(1) saturate(5) hue-rotate(355deg);
+    }
+  }
+}

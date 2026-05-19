@@ -1,8 +1,8 @@
-// Angular import
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { animate, style, transition, trigger, state } from '@angular/animations';
 
-// project import
 import { NavigationItem } from '../../navigation';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { NavCollapseComponent } from '../nav-collapse/nav-collapse.component';
@@ -12,38 +12,37 @@ import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-nav-group',
-  imports: [CommonModule, SharedModule, NavCollapseComponent, NavItemComponent],
+  imports: [CommonModule, SharedModule, RouterModule, NavCollapseComponent, NavItemComponent],
   templateUrl: './nav-group.component.html',
-  styleUrls: ['./nav-group.component.scss']
+  styleUrls: ['./nav-group.component.scss'],
+  animations: [
+    trigger('expandCollapse', [
+      state('collapsed', style({ height: '0px', opacity: 0, overflow: 'hidden' })),
+      state('expanded',  style({ height: '*',  opacity: 1, overflow: 'hidden' })),
+      transition('collapsed => expanded', animate('260ms cubic-bezier(0.4, 0, 0.2, 1)')),
+      transition('expanded => collapsed', animate('220ms cubic-bezier(0.4, 0, 0.6, 1)')),
+    ])
+  ]
 })
 export class NavGroupComponent implements OnInit, OnDestroy {
-  // public props
-
-  // All Version in Group Name
   @Input() item!: NavigationItem;
   @Input() isFirst: boolean = false;
   isExpanded: boolean = false;
   private stateSubscription: Subscription | null = null;
 
-  // Constructor
   constructor(
     private location: Location,
     private navigationStateService: NavigationStateService
-  ) { }
+  ) {}
 
-  // Life cycle events
   ngOnInit() {
-    // Subscribe to navigation state changes
     this.stateSubscription = this.navigationStateService.expandedGroupId$.subscribe((expandedId) => {
       this.isExpanded = expandedId === this.item.id;
     });
 
-    // at reload time active and trigger link
     let current_url = this.location.path();
-    // eslint-disable-next-line
     // @ts-ignore
     if (this.location['_baseHref']) {
-      // eslint-disable-next-line
       // @ts-ignore
       current_url = this.location['_baseHref'] + this.location.path();
     }
@@ -64,7 +63,6 @@ export class NavGroupComponent implements OnInit, OnDestroy {
         pre_parent.classList.add('coded-trigger');
         pre_parent.classList.add('active');
       }
-
       if (last_parent?.classList.contains('coded-hasmenu')) {
         last_parent.classList.add('coded-trigger');
         if (pre_parent?.classList.contains('coded-hasmenu')) {
@@ -76,14 +74,12 @@ export class NavGroupComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    // Unsubscribe to prevent memory leaks
     if (this.stateSubscription) {
       this.stateSubscription.unsubscribe();
     }
   }
 
   toggleGroup() {
-    // If this group is already expanded, collapse it; otherwise, expand it
     const newGroupId = this.isExpanded ? null : this.item.id;
     this.navigationStateService.setExpandedGroup(newGroupId);
   }

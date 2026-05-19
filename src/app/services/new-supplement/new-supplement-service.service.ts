@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { HttpService } from '../http.service';
 import { environment } from 'src/app/environments/environment';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -54,7 +55,7 @@ export class NewSupplementServiceService {
 
 
   // Data retrieving backend call
-  getData() {
+  getData(): Observable<any> {
     const requestUrl = environment.baseUrl + '/supplement';
 
     let headers = {};

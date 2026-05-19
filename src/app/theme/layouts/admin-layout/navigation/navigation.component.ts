@@ -33,7 +33,7 @@ export class NavigationComponent {
     }
   }
 
-  goToLadPage() {
-    this.router.navigate(['/land']);
-  }
+  // goToLadPage() {
+  //   this.router.navigate(['/land']);
+  // }
 }

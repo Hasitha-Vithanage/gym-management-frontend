@@ -1,20 +1,17 @@
-<li class="nav-item coded-menu-caption" style="color: #fff;">
-  <label (click)="toggleGroup()" class="menu-label">
-    
-    <span class="menu-title"><img src={{item.icon}} style="margin-right: 5px; width:16px; height:16px;">{{ item.title }}</span>
-    <!-- <span class="menu-arrow">{{ isExpanded ? '▼' : '▶' }}</span> -->
-    <img class="menu-arrow" src="../../../../assets/images/icon/{{isExpanded ? 'collapse-light.png' : 'expand-light.png'}}">
+<li class="nav-item coded-menu-caption">
+  <label (click)="toggleGroup()" class="menu-label" [class.is-expanded]="isExpanded">
+    <span class="menu-title">
+      <img [src]="item.icon" style="margin-right: 5px; width:16px; height:16px;">
+      {{ item.title }}
+    </span>
+    <img 
+      class="menu-arrow" 
+      [class.rotated]="isExpanded"
+      src="../../../../assets/images/icon/expand-light.png">
   </label>
 </li>
 
-<!-- @for (item of item.children; track item) {
-  @if (item.type === 'collapse' && item.isVisible) {
-    <app-nav-collapse [item]="item"></app-nav-collapse>
-  } @else if (item.type === 'item') {
-    <app-nav-item [item]="item"></app-nav-item>
-  }
-} -->
-@if (isExpanded) {
+<div [@expandCollapse]="isExpanded ? 'expanded' : 'collapsed'" class="nav-group-children">
   @for (item of item.children; track item) {
     @if (item.type === 'collapse' && item.isVisible) {
       <app-nav-collapse [item]="item"></app-nav-collapse>
@@ -22,4 +19,4 @@
       <app-nav-item [item]="item"></app-nav-item>
     }
   }
-}
+</div>

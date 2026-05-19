@@ -1,11 +1,74 @@
+@import 'src/scss/settings/colors';
+
+:host {
+  display: block;
+}
+
+// :host:first-of-type {
+//   .nav-item.coded-menu-caption {
+//     margin-top: 0px;
+//   }
+// }
+
+.nav-item.coded-menu-caption {
+  list-style: none;
+  padding: 0;
+}
+
 .menu-label {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  // padding: 0px 1px 0 0;
   cursor: pointer;
+  border-radius: $ff-radius-sm;
+  border: 1px solid transparent;
+  background: transparent;
+  transition: background 0.2s ease, border-color 0.2s ease;
+  user-select: none;
+
+  &:hover {
+    .menu-title {
+      color: $ff-text-primary;
+    }
+  }
+}
+
+.menu-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: $ff-text-secondary;
+  transition: color 0.2s ease;
+
+  img {
+    width: 15px;
+    height: 15px;
+    opacity: 0.7;
+    flex-shrink: 0;
+    transition: opacity 0.2s ease;
+  }
 }
 
 .menu-arrow {
-  font-size: 14px;
+  width: 14px;
+  height: 14px;
+  opacity: 0.4;
+  flex-shrink: 0;
+  transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &.rotated {
+    transform: rotate(180deg);
+    opacity: 0.6;
+  }
+}
+
+.nav-group-children {
+  overflow: hidden;
+  padding-left: 12px;
 }

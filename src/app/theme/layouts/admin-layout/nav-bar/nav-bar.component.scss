@@ -1,0 +1,19 @@
+@import 'src/scss/settings/colors';
+
+:host {
+  display: block;
+}
+
+.pc-header {
+  background: $ff-bg-surface;
+  border-bottom: 1px solid $ff-border-default;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+
+  .header-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    height: 60px;
+  }
+}

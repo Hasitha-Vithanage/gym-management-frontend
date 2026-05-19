@@ -1,0 +1,42 @@
+@import 'src/scss/settings/colors';
+
+:host {
+  display: block;
+  background-color: $ff-bg-surface;
+}
+
+nav {
+  height: 100vh;
+  background: $ff-bg-surface;
+  border-right: 1px solid $ff-border-default;
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.4);
+}
+
+.navbar-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.m-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  height: 60px;
+  // border-bottom: 1px solid $ff-border-default;
+  background: $ff-bg-surface;
+  flex-shrink: 0;
+
+  .b-brand {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    pointer-events: none;
+
+    .logo {
+    cursor: default;
+    transition: none;
+    }
+  }
+}
