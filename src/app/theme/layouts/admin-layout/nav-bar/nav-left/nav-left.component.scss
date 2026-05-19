@@ -24,7 +24,7 @@
   outline: none !important;
   cursor: pointer;
   text-decoration: none !important;
-  transition: none !important;  // remove all transitions too
+  transition: none !important;
 
   &:hover,
   &:focus,
@@ -48,15 +48,14 @@
   }
 }
 
-// Force override Bootstrap's global a:hover on this component
 ::ng-deep .pc-sidebar-collapse,
 ::ng-deep .pc-sidebar-popup {
-  // a:hover,
-  // a:focus,
-  // a:active {
-  //   background: $ff-bg-hover !important;
-  //   color: $ff-text-primary !important;
-  // }
+  a:hover,
+  a:focus,
+  a:active {
+    background: $ff-bg-hover !important;
+    color: $ff-text-primary !important;
+  }
 }
 
 // Search dropdown

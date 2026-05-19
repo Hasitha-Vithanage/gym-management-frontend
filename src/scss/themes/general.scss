@@ -2,6 +2,8 @@
     2. Custom css start
 ==========================  **/
 
+@import 'src/scss/settings/colors';
+
 * {
   &:focus {
     outline: none;
@@ -9,12 +11,14 @@
 }
 
 .accordion {
-  --#{$prefix}accordion-color: #{$body-color};
+  --#{$prefix}accordion-color: #{$ff-text-primary};
 }
 
 a {
-  color: $black;
+  color: $ff-text-secondary;  // was $black
+
   &:hover {
+    color: $ff-accent-primary;
     outline: none;
     text-decoration: none;
   }
@@ -26,6 +30,7 @@ a {
 
 p {
   font-size: 14px;
+  color: $ff-text-secondary;
 }
 
 h6,
@@ -40,12 +45,13 @@ h2,
 .h2,
 h1,
 .h1 {
-  color: var(--pc-heading-color);
+  color: $ff-text-primary;  // was var(--pc-heading-color)
 }
 
 b,
 strong {
   font-weight: 600;
+  color: $ff-text-primary;
 }
 
 .breadcrumb-default-icon {
@@ -80,7 +86,7 @@ strong {
 }
 
 .material-icons-two-tone {
-  background-color: $body-color;
+  background-color: $ff-text-primary;  // was $body-color
   -webkit-text-fill-color: transparent;
   vertical-align: text-bottom;
   -webkit-background-clip: text;
@@ -104,19 +110,10 @@ strong {
   }
 }
 
-/* ========================================================
- ===============     document      ======================
- ========================================================
-
- Grid examples
-*/
-
 // modal box select
 .ng-dropdown-panel.ng-select-bottom {
   z-index: 1099;
 }
-
-/* ================================    Blockquote Start  ===================== */
 
 @media (min-width: 1600px) {
   .container {
@@ -134,14 +131,14 @@ strong {
 
 .blockquote {
   padding: 0.5rem 1rem;
+  border-left: 3px solid $ff-accent-primary;
+  color: $ff-text-secondary;
 }
-
-/* ================================    Blockquote End  ===================== */
 
 .color-card {
   .card-body {
     margin: var(--bs-card-spacer-y) var(--bs-card-spacer-x);
-    background: rgba(107, 117, 125, 0.08);
+    background: $ff-bg-elevated;
     border-radius: $border-radius;
   }
 }
@@ -173,6 +170,7 @@ strong {
       &:first-child {
         margin-top: 0;
       }
+
       &:last-child {
         margin-bottom: 0;
       }
@@ -180,40 +178,80 @@ strong {
   }
 }
 
+// Pagination
 .pagination {
   .page-item {
     .page-link {
       border-radius: 0;
-    }
-    &:first-child {
-      .page-link {
-        border-radius: var(--bs-pagination-border-radius) 0 0 var(--bs-pagination-border-radius);
+      background: $ff-bg-elevated;
+      border-color: $ff-border-default;
+      color: $ff-text-secondary;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background: $ff-bg-hover;
+        border-color: $ff-border-default;
+        color: $ff-text-primary;
       }
     }
-    &:last-child {
-      .page-link {
-        border-radius: 0 var(--bs-pagination-border-radius) var(--bs-pagination-border-radius) 0;
-      }
+
+    &:first-child .page-link {
+      border-radius: var(--bs-pagination-border-radius) 0 0 var(--bs-pagination-border-radius);
+    }
+
+    &:last-child .page-link {
+      border-radius: 0 var(--bs-pagination-border-radius) var(--bs-pagination-border-radius) 0;
+    }
+
+    &.active .page-link {
+      background: $ff-accent-primary;
+      border-color: $ff-accent-primary;
+      color: #fff;
+    }
+
+    &.disabled .page-link {
+      background: $ff-bg-elevated;
+      border-color: $ff-border-default;
+      color: $ff-text-dim;
+      cursor: not-allowed;
     }
   }
 }
 
+// Form search
 .form-search {
   position: relative;
+
   i {
     position: absolute;
     top: 12px;
     left: 15px;
     font-size: 20px;
+    color: $ff-text-dim;
   }
+
   .form-control {
     padding-left: 50px;
+    background: $ff-bg-input;
+    border-color: $ff-border-default;
+    color: $ff-text-primary;
+
+    &::placeholder {
+      color: $ff-text-dim;
+    }
+
+    &:focus {
+      background: $ff-bg-input;
+      border-color: $ff-border-accent;
+      box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.08);
+      color: $ff-text-primary;
+    }
   }
 
   &.product-search {
     i {
       font-size: 13px;
-      color: rgba(0, 0, 0, 0.54);
+      color: $ff-text-dim;
       top: 12px;
     }
 
@@ -223,11 +261,68 @@ strong {
   }
 }
 
-// offcanvas page css
+// Offcanvas
 .customer-body {
   height: calc(100% - 60px);
 }
+
 .offcanvas-top,
 .offcanvas-bottom {
   min-height: 240px;
+  background: $ff-bg-surface;
+  color: $ff-text-primary;
+  border-color: $ff-border-default;
+}
+
+// Offcanvas global
+.offcanvas {
+  background: $ff-bg-surface !important;
+  color: $ff-text-primary !important;
+  border-color: $ff-border-default !important;
+
+  .offcanvas-header {
+    border-bottom: 1px solid $ff-border-default;
+
+    .offcanvas-title {
+      color: $ff-text-primary;
+    }
+
+    .btn-close {
+      filter: invert(1) opacity(0.6);
+    }
+  }
+
+  .offcanvas-body {
+    color: $ff-text-secondary;
+  }
+}
+
+// Modal
+.modal-content {
+  background: $ff-bg-surface !important;
+  border-color: $ff-border-default !important;
+  color: $ff-text-primary !important;
+}
+
+.modal-header {
+  background: $ff-bg-elevated !important;
+  border-bottom-color: $ff-border-default !important;
+  color: $ff-text-primary !important;
+
+  .btn-close {
+    filter: invert(1) opacity(0.6);
+  }
+}
+
+.modal-footer {
+  background: $ff-bg-elevated !important;
+  border-top-color: $ff-border-default !important;
+}
+
+// Alerts
+.alert {
+  border-radius: $ff-radius-sm;
+  border: 1px solid $ff-border-default;
+  background: $ff-bg-elevated;
+  color: $ff-text-primary;
 }

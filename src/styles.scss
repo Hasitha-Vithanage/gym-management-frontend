@@ -41,8 +41,217 @@ File: style.css
 
 @import 'scss/themes/preset-style.scss';
 
+// ── DARK THEME GLOBAL OVERRIDE ──────────────────────────────
+// Must come AFTER all imports to win specificity over theme files
+
+html,
+body {
+  background-color: #0F1117 !important;
+  color: #F0F2F8 !important;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+app-root {
+  display: block;
+  background: #0F1117;
+  min-height: 100vh;
+}
+
+// Kill any white backgrounds set by the Phoenixcoded theme
+.pc-sidebar,
+.pc-header,
+.pc-container,
+.pc-content,
+.coded-content,
+.pc-wrapper,
+.navbar-wrapper,
+.navbar-content {
+  background-color: #0F1117 !important;
+}
+
+// Cards
+.card {
+  background: #181C27 !important;
+  border-color: rgba(255, 255, 255, 0.06) !important;
+  color: #F0F2F8 !important;
+}
+
+.card-body,
+.card-header,
+.card-footer {
+  background: #181C27 !important;
+  color: #F0F2F8 !important;
+  border-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+// Tables
+.table {
+  color: #F0F2F8 !important;
+
+  > :not(caption) > * > * {
+    background-color: transparent !important;
+    color: #F0F2F8 !important;
+    border-color: rgba(255, 255, 255, 0.06) !important;
+  }
+}
+
+// Forms
+.form-control,
+.form-select {
+  background-color: #1A1E2E !important;
+  border-color: rgba(255, 255, 255, 0.06) !important;
+  color: #F0F2F8 !important;
+
+  &:focus {
+    background-color: #1A1E2E !important;
+    border-color: rgba(255, 107, 0, 0.28) !important;
+    box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.08) !important;
+    color: #F0F2F8 !important;
+  }
+
+  &::placeholder {
+    color: #5D6478 !important;
+  }
+}
+
+// Dropdowns
+.dropdown-menu {
+  background: #181C27 !important;
+  border-color: rgba(255, 255, 255, 0.06) !important;
+
+  .dropdown-item {
+    color: #9BA3B8 !important;
+
+    &:hover,
+    &:focus {
+      background: #252B3B !important;
+      color: #F0F2F8 !important;
+    }
+  }
+
+  .dropdown-divider {
+    border-color: rgba(255, 255, 255, 0.06) !important;
+  }
+}
+
+// Material select dropdown panel (CDK overlay — outside component scope)
+.mat-mdc-select-panel {
+  background: #181C27 !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.55) !important;
+
+  .mat-mdc-option {
+    background: #181C27 !important;
+    color: #9BA3B8 !important;
+    font-size: 13px !important;
+
+    &:hover,
+    &.mat-mdc-option-active {
+      background: #252B3B !important;
+      color: #F0F2F8 !important;
+    }
+
+    &.mdc-list-item--selected {
+      background: rgba(255, 107, 0, 0.12) !important;
+      color: #FF6B00 !important;
+
+      .mdc-list-item__primary-text {
+        color: #FF6B00 !important;
+      }
+    }
+  }
+}
+
+// Material primary selected option color fix
+.mat-primary .mat-mdc-option.mdc-list-item--selected:not(.mdc-list-item--disabled) {
+  color: #FF6B00 !important;
+
+  .mdc-list-item__primary-text {
+    color: #FF6B00 !important;
+  }
+}
+
+// Scrollbar
+::-webkit-scrollbar       { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #0F1117; }
+::-webkit-scrollbar-thumb {
+  background: #FF6B00;
+  border-radius: 4px;
+
+  &:hover { background: #FF8C36; }
+}
+
+// ── KILL TABLE WHITE FLASH ──────────────────────────────────
+.mat-mdc-table,
+.mat-table,
+table,
+thead,
+tbody,
+tr,
+th,
+td {
+  background-color: transparent !important;
+  color: #F0F2F8 !important;
+}
+
+.mat-mdc-header-row,
+.mat-mdc-row,
+.mdc-data-table__row,
+.mdc-data-table__header-row {
+  background-color: #1F2435 !important;
+}
+
+.mat-mdc-row,
+.mdc-data-table__row {
+  background-color: #181C27 !important;
+
+  &:hover {
+    background-color: #252B3B !important;
+  }
+}
+
+// Kill Bootstrap table stripes/hover white
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+  background-color: #1F2435 !important;
+  color: #F0F2F8 !important;
+}
+
+.table-hover > tbody > tr:hover > * {
+  background-color: #252B3B !important;
+  color: #F0F2F8 !important;
+}
+
+.table > :not(caption) > * > * {
+  background-color: transparent !important;
+  border-bottom-color: rgba(255, 255, 255, 0.06) !important;
+  color: #F0F2F8 !important;
+}
+
+// Angular Material paginator
+.mat-mdc-paginator {
+  background-color: #1F2435 !important;
+  color: #9BA3B8 !important;
+}
+
+// Any remaining white surfaces
+.mat-mdc-card,
+.mdc-card {
+  background-color: #181C27 !important;
+  color: #F0F2F8 !important;
+}
+
+// Misc
 .required {
-  color: #ef4444; /* nice red */
+  color: #EF4444;
   font-weight: 600;
   margin-left: 2px;
 }
@@ -53,7 +262,7 @@ File: style.css
 .pc-head-link:active,
 .pc-head-link:visited {
   background: transparent !important;
-  color: $ff-text-secondary !important;
+  color: #9BA3B8 !important;
   text-decoration: none !important;
   box-shadow: none !important;
   outline: none !important;

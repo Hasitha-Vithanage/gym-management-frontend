@@ -4,12 +4,6 @@
   display: block;
 }
 
-// :host:first-of-type {
-//   .nav-item.coded-menu-caption {
-//     margin-top: 0px;
-//   }
-// }
-
 .nav-item.coded-menu-caption {
   list-style: none;
   padding: 0;
@@ -20,12 +14,13 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  // padding: 0px 1px 0 0;
   cursor: pointer;
   border-radius: $ff-radius-sm;
   border: 1px solid transparent;
   background: transparent;
-  transition: background 0.2s ease, border-color 0.2s ease;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
   user-select: none;
 
   &:hover {
@@ -60,7 +55,9 @@
   height: 14px;
   opacity: 0.4;
   flex-shrink: 0;
-  transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 
   &.rotated {
     transform: rotate(180deg);

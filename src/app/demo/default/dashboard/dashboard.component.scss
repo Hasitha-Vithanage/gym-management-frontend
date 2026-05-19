@@ -404,6 +404,7 @@ h5 {
     color: $ff-text-secondary !important;
     line-height: 1.55;
     margin-bottom: 12px;
+    text-align: center;
   }
 
   .card-arrow {
@@ -411,6 +412,7 @@ h5 {
     font-weight: 700;
     color: $ff-accent-hover;
     opacity: 0;
+    text-align: center;
     transition: opacity 0.22s ease, transform 0.22s ease;
   }
 }
