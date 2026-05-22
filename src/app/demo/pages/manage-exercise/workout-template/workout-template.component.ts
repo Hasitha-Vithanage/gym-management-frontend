@@ -14,6 +14,7 @@ import { MessageServiceService } from 'src/app/services/message-service/message-
 import { AddWorkoutTemplateComponent } from './add-workout-template/add-workout-template.component';
 import { ConfirmDialogComponent } from '../../confirm-dialog/confirm-dialog.component';
 import { WorkoutTemplatesService } from 'src/app/services/workout-templates/workout-templates.service';
+import { ExerciseToTemplateComponent } from './exercise-to-template/exercise-to-template.component';
 
 @Component({
   selector: 'app-workout-template',
@@ -82,19 +83,36 @@ export class WorkoutTemplateComponent implements OnInit {
       });
     }
 
-    assignExercises(template: any): void {
-      const dialogRef = this.dialog.open(AddWorkoutTemplateComponent, {
-        disableClose: true,
-        data: { template }
-      });
+assignExercises(template: any): void {
 
-      dialogRef.afterClosed().subscribe((result) => {
-        if (result?.action === 'assigned') {
-          this.messageService.showSuccess('Exercises assigned successfully!');
-          this.refreshData();
-        }
-      });
+  const dialogRef = this.dialog.open(
+    ExerciseToTemplateComponent,
+    {
+      width: '95vw',
+      maxWidth: '1400px',
+      height: '90vh',
+      panelClass: 'exercise-template-dialog',
+      disableClose: true,
+      autoFocus: false,
+
+      data: {
+        template: template
+      }
     }
+  );
+
+  dialogRef.afterClosed().subscribe((result) => {
+
+    if (result?.action === 'assigned') {
+
+      this.messageService.showSuccess(
+        'Exercises assigned successfully!'
+      );
+
+      this.refreshData();
+    }
+  });
+}
   
     openWorkoutTemplateDialog(): void {
       const dialogRef = this.dialog.open(AddWorkoutTemplateComponent, {
@@ -135,7 +153,6 @@ export class WorkoutTemplateComponent implements OnInit {
   
     public deleteData(data: any): void {
       const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-        width: '350px',
         data: {
           message: `Are you sure you want to delete "${data.exerciseName}"?`
         }

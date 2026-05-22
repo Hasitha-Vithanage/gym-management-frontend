@@ -1,66 +1,78 @@
-<div class="form-section">
-  <!-- title of the form-->
-  <div class="title">
-    <h2 class="form-title">Employee Login</h2>
-    <button mat-icon-button class="close-icon" style="padding: 0px" (click)="closeDialog()">
-      <mat-icon fontIcon="close"></mat-icon>
-    </button>
+<div class="dialog-container">
+
+  <!-- Header -->
+  <div class="dialog-header">
+    <h3>Employee Login</h3>
+    <button type="button" class="close-btn" (click)="closeDialog()">✕</button>
   </div>
 
-  <!--- form -->
-    <form [formGroup]="trainerLoginForm" (ngSubmit)="onSubmit()">
-      <!-- Trainer Select -->
-      <!-- <mat-form-field appearance="outline" class="input-full">
-        <mat-select formControlName="trainerId" placeholder="Select Employee">
-          <mat-option *ngFor="let trainer of trainerList" [value]="trainer.id">
-            {{ trainer.firstName }} {{ trainer.jobTitle }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field> -->
+  <!-- Form -->
+  <form [formGroup]="trainerLoginForm" (ngSubmit)="onSubmit()" class="dialog-body">
 
-      <mat-form-field appearance="outline" class="input-full">
-        <mat-select formControlName="trainerId" placeholder="Select Trainer">
-          <!-- This shows only the name after selection -->
-          <mat-select-trigger>
-            {{ getTrainerName(trainerLoginForm.get('trainerId')?.value) }}
-          </mat-select-trigger>
+    <!-- Trainer Select -->
+    <div class="row">
+      <div class="field">
+        <label>Select Trainer *</label>
+        <select formControlName="trainerId" class="select-input">
+          <option [ngValue]="null" disabled>Select Trainer</option>
+          <option *ngFor="let trainer of trainerList" [ngValue]="trainer.id">
+            {{ trainer.firstName }} {{ trainer.lastName }} — {{ trainer.jobTitle }}
+          </option>
+        </select>
+      </div>
+    </div>
 
-          <!-- This shows name + job title in dropdown -->
-          <mat-option *ngFor="let trainer of trainerList" [value]="trainer.id">
-            <div class="option-content">
-              <span class="name">{{ trainer.firstName }} {{ trainer.lastName }}</span>
-              <span class="job-title">{{ trainer.jobTitle }}</span>
-            </div>
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+    <!-- First Name + Last Name -->
+    <div class="row">
+      <div class="field">
+        <label>First Name</label>
+        <input type="text" placeholder="Enter First Name" formControlName="firstName" />
+      </div>
+      <div class="field">
+        <label>Last Name</label>
+        <input type="text" placeholder="Enter Last Name" formControlName="lastName" />
+      </div>
+    </div>
 
-      <mat-form-field appearance="outline" class="input-full names">
-        <mat-label>First Name</mat-label>
-        <input matInput type="text" formControlName="firstName" placeholder="Enter First Name" />
-      </mat-form-field>
+    <!-- Username -->
+    <div class="row">
+      <div class="field">
+        <label>Username *</label>
+        <input type="text" placeholder="Enter Username" formControlName="userName" />
+      </div>
+    </div>
 
-      <mat-form-field appearance="outline" class="input-full names" style="margin-left: 15px;">
-        <mat-label>Last Name</mat-label>
-        <input matInput type="text" formControlName="lastName" placeholder="Enter Last Name" />
-      </mat-form-field>
+    <!-- Password -->
+    <div class="row">
+      <div class="field">
+        <label>Password *</label>
+        <div class="input-wrapper">
+          <input [type]="showPassword ? 'text' : 'password'" placeholder="Enter Password" formControlName="password" />
+          <button type="button" class="eye-btn" (click)="togglePassword()">
+            <svg *ngIf="!showPassword" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
+            <svg *ngIf="showPassword" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94" />
+              <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" />
+              <line x1="1" y1="1" x2="23" y2="23" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
 
-      <!-- Password Input -->
-      <mat-form-field appearance="outline" class="input-full">
-        <mat-label>Username</mat-label>
-        <input matInput type="text" formControlName="userName" placeholder="Enter UserName" required />
-      </mat-form-field>
+    <!-- Actions -->
+    <div class="action">
+      <button type="button" class="btn secondary" (click)="closeDialog()">Cancel</button>
+      <button type="submit" class="btn primary" [disabled]="trainerLoginForm.invalid">
+        {{ mode === 'edit' ? 'Update' : 'Save' }}
+      </button>
+    </div>
 
-      <!-- Password Input -->
-      <mat-form-field appearance="outline" class="input-full">
-        <mat-label>Password</mat-label>
-        <input matInput type="password" formControlName="password" placeholder="Enter Password" />
-      </mat-form-field>
+  </form>
 
-      <!-- Keep me signed in + Forgot -->
-
-
-      <!-- Login Button -->
-      <button mat-flat-button class="login-btn" [disabled]="trainerLoginForm.invalid">Login</button>
-    </form>
 </div>

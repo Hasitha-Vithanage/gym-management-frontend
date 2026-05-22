@@ -1,6 +1,7 @@
-<div class="row p-1">
+<div class="add-remove-dialog">
+  <div class="row p-1">
   <div class="col-md-5 h-100">
-    <mat-toolbar style="border: 1px solid blue" color="primary">
+    <mat-toolbar>
       <span>Available Data</span>
       <span class="example-spacer"></span>
     </mat-toolbar>
@@ -50,7 +51,7 @@
     </div>
   </div>
   <div class="col-md-6 h-100">
-    <mat-toolbar style="border: 1px solid blue" color="primary">
+    <mat-toolbar>
       <span>Assigned Data</span>
       <span class="example-spacer"></span>
     </mat-toolbar>
@@ -95,8 +96,10 @@
 
 <div class="row p-1">
   <div class="btn-group" role="group">
-    <button type="button" class="btn btn-success m-1" (click)="saveData()" [disabled]="isDisableButton">Save</button>
-    <button type="button" class="btn btn-danger m-1" (click)="resetData()" [disabled]="isDisableButton">Reset</button>
-    <button type="button" class="btn btn-secondary m-1" mat-dialog-close (click)="closeDialog()" [disabled]="isDisableButton">Close</button>
+    <button type="button" class="btn primary m-1" (click)="saveData()" [disabled]="isDisableButton">Save</button>
+    <button type="button" class="btn danger m-1" (click)="resetData()" [disabled]="isDisableButton">Reset</button>
+    <button type="button" class="btn secondary m-1" mat-dialog-close (click)="closeDialog()" [disabled]="isDisableButton">Close</button>
   </div>
 </div>
+</div>
+

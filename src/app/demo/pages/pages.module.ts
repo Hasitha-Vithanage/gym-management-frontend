@@ -69,6 +69,7 @@ import { ManageExerciseComponent } from './manage-exercise/manage-exercise.compo
 import { AddExerciseComponent } from './manage-exercise/add-exercise/add-exercise.component';
 import { WorkoutTemplateComponent } from './manage-exercise/workout-template/workout-template.component';
 import { AddWorkoutTemplateComponent } from './manage-exercise/workout-template/add-workout-template/add-workout-template.component';
+import { ExerciseToTemplateComponent } from './manage-exercise/workout-template/exercise-to-template/exercise-to-template.component';
 // icons
 
 export const MY_DATE_FORMATS = {
@@ -146,7 +147,8 @@ export const MY_DATE_FORMATS = {
     ManageExerciseComponent,
     AddExerciseComponent,
     WorkoutTemplateComponent,
-    AddWorkoutTemplateComponent
+    AddWorkoutTemplateComponent,
+    ExerciseToTemplateComponent
   ],
   imports: [
     CommonModule,

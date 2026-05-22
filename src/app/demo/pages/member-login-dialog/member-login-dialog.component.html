@@ -1,56 +1,82 @@
-<div class="form-section">
-  <!-- title of the form-->
-  <div class="title">
-    <h2 class="form-title">Member Login</h2>
-    <button mat-icon-button class="close-icon" style="padding: 0px" (click)="closeDialog()">
-      <mat-icon fontIcon="close"></mat-icon>
-    </button>
+<div class="dialog-container">
+
+  <!-- Header -->
+  <div class="dialog-header">
+    <h3>Member Login</h3>
+    <button type="button" class="close-btn" (click)="closeDialog()">✕</button>
   </div>
 
-  <!--- form -->
-    <form [formGroup]="memberLoginForm" (ngSubmit)="onSubmit()">
+  <!-- Form -->
+  <form [formGroup]="memberLoginForm" (ngSubmit)="onSubmit()" class="dialog-body">
 
-      <!-- Member Select -->
-      <mat-form-field appearance="outline" class="input-full">
-                <mat-label>Member Name</mat-label>
-        <mat-select formControlName="memberId" placeholder="Select Member" placeholder="Select Member">
-          <mat-option *ngFor="let member of memberList" [value]="member.id">
-            <span>{{ member.firstName }} {{ member.lastName }}</span>
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+    <!-- Member Select -->
+    <div class="row">
+      <div class="field">
+        <label>Select Member *</label>
+        <select formControlName="memberId" class="select-input">
+          <option [ngValue]="null" disabled>Select Member</option>
+          <option *ngFor="let member of memberList" [ngValue]="member.id">
+            {{ member.firstName }} {{ member.lastName }}
+          </option>
+        </select>
+      </div>
+    </div>
 
-      <!-- firstName Input -->
-      <mat-form-field appearance="outline" class="input-full names">
-        <mat-label>First Name</mat-label>
-        <input matInput type="text" formControlName="firstName" placeholder="Enter First Name"/>
-      </mat-form-field>
+    <!-- First Name + Last Name -->
+    <div class="row">
+      <div class="field">
+        <label>First Name</label>
+        <input type="text" placeholder="Enter First Name" formControlName="firstName" />
+      </div>
+      <div class="field">
+        <label>Last Name</label>
+        <input type="text" placeholder="Enter Last Name" formControlName="lastName" />
+      </div>
+    </div>
 
-      <!-- Password Input -->
-      <mat-form-field appearance="outline" class="input-full names" style="margin-left: 15px;">
-        <mat-label>Last Name</mat-label>
-        <input matInput type="text" formControlName="lastName" placeholder="Enter Last Name"/>
-      </mat-form-field>
+    <!-- Username -->
+    <div class="row">
+      <div class="field">
+        <label>Username *</label>
+        <input type="text" placeholder="Enter Username" formControlName="userName" />
+      </div>
+    </div>
 
-      <!-- Password Input -->
-      <mat-form-field appearance="outline" class="input-full">
-        <mat-label>Username</mat-label>
-        <input matInput type="text" formControlName="userName" placeholder="Enter Username"/>
-      </mat-form-field>
+    <!-- Password -->
+    <div class="row">
+      <div class="field">
+        <label>Password *</label>
+        <div class="input-wrapper">
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            placeholder="Enter Password"
+            formControlName="password"
+          />
+          <button type="button" class="eye-btn" (click)="togglePassword()">
+            <svg *ngIf="!showPassword" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
+            <svg *ngIf="showPassword" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94" />
+              <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" />
+              <line x1="1" y1="1" x2="23" y2="23" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
 
-      <!-- Password Input -->
-      <mat-form-field appearance="outline" class="input-full">
-        <mat-label>Password</mat-label>
-        <input matInput type="password" formControlName="password" placeholder="Enter Password" />
-      </mat-form-field>
+    <!-- Actions -->
+    <div class="action">
+      <button type="button" class="btn secondary" (click)="closeDialog()">Cancel</button>
+      <button type="submit" class="btn primary" [disabled]="memberLoginForm.invalid">
+        {{ mode === 'edit' ? 'Update' : 'Save' }}
+      </button>
+    </div>
 
-      <!-- Keep me signed in + Forgot -->
-      <!-- <div class="login-options">
-        <mat-checkbox>Keep me sign in</mat-checkbox>
-        <a class="forgot-link" href="#">Forgot Password?</a>
-      </div> -->
+  </form>
 
-      <!-- Login Button -->
-      <button mat-flat-button class="login-btn" [disabled]="memberLoginForm.invalid">Login</button>
-    </form>
 </div>

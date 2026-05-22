@@ -1,145 +1,242 @@
-/* ===== Form Container ===== */
-.form-section {
-  width: 700px;
+@import 'src/scss/settings/colors';
+
+/* Dialog Container */
+.dialog-container {
+  width: 500px;
   max-width: 100%;
-  box-sizing: border-box;
-  background: white;
-  padding: 24px;
-  border-radius: 12px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
-  overflow-x: hidden;
-  font-family: 'Roboto', sans-serif;
-}
-
-/* ===== Title and Close Button ===== */
-.title {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-}
-
-.form-title {
-  font-size: 24px;
-  font-weight: 600;
-  color: #1976d2;
-  margin: 0;
-}
-
-.close-icon {
-  color: #1976d2;
-  font-size: 24px;
-  cursor: pointer;
-  transition: color 0.2s;
-}
-
-.close-icon:hover {
-  color: #0d47a1;
-}
-
-/* ===== Form Fields ===== */
-mat-form-field.input-full {
-  width: 100%;
-  margin-bottom: 20px;
-}
-
-mat-form-field.names {
-  width: 48%;
-  margin-bottom: 20px;
-}
-
-mat-form-field.names:first-child {
-  margin-right: 4%;
-}
-
-/* ===== Custom Select Dropdown ===== */
-.option-content {
+  background: $ff-bg-surface;
+  border-radius: $ff-radius-md;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  padding: 4px 0;
+  font-family: $ff-font;
+  box-shadow: $ff-shadow-card;
 }
 
-.option-content .name {
-  font-weight: 500;
-  font-size: 15px;
-  color: #333;
-}
-
-.option-content .job-title {
-  font-size: 13px;
-  color: #777;
-}
-
-/* ===== Login Options ===== */
-.login-options {
+/* Header */
+.dialog-header {
+  padding: 16px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 14px;
-  margin-top: -8px;
-  margin-bottom: 16px;
+  border-bottom: 1px solid $ff-border-default;
+
+  h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: $ff-text-primary;
+    letter-spacing: 0.2px;
+  }
 }
 
-.forgot-link {
-  color: #1976d2;
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.2s ease;
+/* Close Button */
+.close-btn {
+  background: transparent;
+  border: none;
+  color: $ff-text-secondary;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: $ff-radius-sm;
+  transition: all 0.2s ease;
+  line-height: 1;
+
+  &:hover {
+    background: $ff-bg-hover;
+    color: $ff-text-primary;
+  }
 }
 
-.forgot-link:hover {
-  text-decoration: underline;
-  color: #0d47a1;
+/* Body */
+.dialog-body {
+  padding: 16px 20px 20px;
 }
 
-/* ===== Login Button ===== */
-.login-btn {
-  width: 100%;
-  padding: 12px;
-  font-size: 16px;
-  font-weight: 600;
-  background-color: #1976d2 !important;
-  color: #fff;
-  border-radius: 8px;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+/* Row */
+.row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 14px;
 }
 
-.login-btn:hover:not([disabled]) {
-  background-color: #1565c0 !important;
-  transform: translateY(-1px);
-}
+/* Field */
+.field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 
-.login-btn:disabled {
-  background-color: #9e9e9e !important;
-  color: #e0e0e0 !important;
-  cursor: not-allowed;
-  opacity: 0.9;
-}
-
-/* ===== Material Icon Styling ===== */
-mat-icon[matPrefix] {
-  color: #5e5959;
-  margin-right: 8px;
-  font-size: 20px;
-  vertical-align: middle;
-  transition: color 0.3s ease;
-  user-select: none;
-}
-
-mat-form-field.mat-focused mat-icon[matPrefix],
-mat-form-field:hover mat-icon[matPrefix] {
-  color: #1976d2;
-}
-
-/* ===== Responsive (Mobile) ===== */
-@media (max-width: 600px) {
-  mat-form-field.names {
-    width: 100%;
-    margin-right: 0;
+  label {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: $ff-text-secondary;
   }
 
-  .form-section {
+  input,
+  .select-input {
+    height: 38px;
+    padding: 0 10px;
+    border-radius: $ff-radius-sm;
+    border: 1px solid $ff-border-default;
+    background: $ff-bg-input;
+    font-size: 14px;
+    color: $ff-text-primary;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: $ff-font;
+    transition: border-color 0.2s ease, background 0.2s ease;
+
+    &::placeholder {
+      color: $ff-text-dim;
+    }
+
+    &:focus {
+      border-color: $ff-border-accent;
+      background: $ff-bg-elevated;
+      outline: none;
+    }
+
+    &:disabled {
+      background: $ff-bg-elevated;
+      color: $ff-text-dim;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+  }
+
+  /* Select specific */
+  .select-input {
+    appearance: none;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%239BA3B8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-color: $ff-bg-input;
+    padding-right: 32px;
+
+    &:focus {
+      border-color: $ff-border-accent;
+      background-color: $ff-bg-elevated;
+      outline: none;
+    }
+
+    option {
+      background: $ff-bg-surface;
+      color: $ff-text-primary;
+    }
+  }
+}
+
+/* Actions */
+.action {
+  margin-top: 20px;
+  display: flex;
+  gap: 12px;
+}
+
+/* Buttons */
+.btn {
+  flex: 1;
+  height: 38px;
+  border-radius: $ff-radius-sm;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+  font-family: $ff-font;
+  letter-spacing: 0.3px;
+
+  &.primary {
+    background: $ff-accent-primary;
+    color: #fff;
+
+    &:hover:not(:disabled) {
+      background: $ff-accent-hover;
+      box-shadow: $ff-shadow-orange;
+      transform: translateY(-1px);
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    &:disabled {
+      background: $ff-bg-elevated;
+      color: $ff-text-dim;
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
+    }
+  }
+
+  &.secondary {
+    background: $ff-bg-elevated;
+    border: 1px solid $ff-border-default;
+    color: $ff-text-secondary;
+
+    &:hover {
+      background: $ff-bg-hover;
+      border-color: $ff-border-accent;
+      color: $ff-text-primary;
+    }
+  }
+}
+
+/* Dialog container fix */
+::ng-deep .mat-mdc-dialog-container {
+  --mdc-dialog-container-color: #{$ff-bg-surface};
+  border-radius: $ff-radius-md !important;
+
+  .mdc-dialog__surface {
+    background: $ff-bg-surface !important;
+    border-radius: $ff-radius-md !important;
+    overflow: hidden;
+  }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .dialog-container {
+    width: 100%;
+  }
+
+  .row {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .dialog-body {
     padding: 16px;
+  }
+}
+
+/* Input with icon wrapper */
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  input {
+    width: 100%;
+    padding-right: 40px !important;
+  }
+
+  .eye-btn {
+    position: absolute;
+    right: 10px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: $ff-text-dim;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: $ff-text-primary;
+    }
   }
 }

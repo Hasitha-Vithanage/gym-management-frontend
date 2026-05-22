@@ -122,6 +122,7 @@ export class PrivilegeGroupsComponent implements OnInit, AfterViewInit {
   public onDeletePrivilageGroupClick(id: number, data: any): void {
     const dialogRef = this._dialog.open(ConfirmDialogComponent, {
       width: '350px',
+      panelClass: 'ff-dialog',
       data: {
         title: 'Delete Privilege Group',
         message: `Are you sure you want to delete "${data.groupName}"?`

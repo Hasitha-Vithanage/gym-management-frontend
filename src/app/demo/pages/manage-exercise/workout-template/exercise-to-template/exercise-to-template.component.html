@@ -1,0 +1,210 @@
+<div class="assign-container">
+
+  <!-- ===== HEADER ===== -->
+  <div class="assign-header">
+    <div class="header-content">
+      <h2>Assign Exercises</h2>
+      <p>{{ templateData?.templateName }}</p>
+    </div>
+    <button class="close-btn" (click)="closeDialog()">✕</button>
+  </div>
+
+  <!-- ===== BODY ===== -->
+  <div class="assign-body">
+    <div class="top-section">
+
+      <!-- ── LEFT: Browse & Search ── -->
+      <div class="search-panel">
+
+        <div class="panel-header">
+          <h3>Browse Exercises</h3>
+          <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input
+              type="text"
+              [(ngModel)]="searchQuery"
+              placeholder="Search exercises..."
+            />
+          </div>
+        </div>
+
+        <div class="exercise-list">
+
+          <ng-container *ngIf="filteredExercises().length > 0; else noExercises">
+            <div
+              class="exercise-card"
+              *ngFor="let exercise of filteredExercises()"
+              [class.selected]="selectedExercise?.id === exercise.id"
+              (click)="selectExercise(exercise)"
+            >
+              <div class="exercise-top">
+                <span class="exercise-name">{{ exercise.exerciseName }}</span>
+                <span
+                  class="difficulty-badge"
+                  [ngClass]="exercise.difficulty?.toLowerCase() || 'beginner'"
+                  *ngIf="exercise.difficulty"
+                >
+                  {{ exercise.difficulty }}
+                </span>
+              </div>
+
+              <div class="exercise-meta" *ngIf="exercise.muscleGroup || exercise.category">
+                <span class="meta-chip" *ngIf="exercise.muscleGroup">{{ exercise.muscleGroup }}</span>
+                <span class="meta-chip" *ngIf="exercise.category">{{ exercise.category }}</span>
+              </div>
+
+              <div class="exercise-action">
+                <button (click)="quickAdd(exercise); $event.stopPropagation()">
+                  + Add to Template
+                </button>
+              </div>
+            </div>
+          </ng-container>
+
+          <ng-template #noExercises>
+            <div class="empty-state">
+              <div class="empty-icon">🏋️</div>
+              <h4>No exercises found</h4>
+              <p>Try adjusting your search query.</p>
+            </div>
+          </ng-template>
+
+        </div>
+      </div>
+
+      <!-- ── RIGHT: Config Form + Assigned Table ── -->
+      <div class="assigned-panel">
+
+        <!-- Config form header -->
+        <div class="panel-header">
+          <h3>Exercise Configuration</h3>
+        </div>
+
+        <!-- Config form body -->
+        <form [formGroup]="assignmentForm" class="config-form">
+
+          <div class="form-grid">
+
+            <div class="form-field">
+              <label>Workout Day <span class="required">*</span></label>
+              <select formControlName="workoutDay">
+                <option value="">Select Day</option>
+                <option *ngFor="let day of workoutDays" [value]="day">Day {{ day }}</option>
+              </select>
+            </div>
+
+            <div class="form-field">
+              <label>Exercise <span class="required">*</span></label>
+              <select formControlName="exerciseId">
+                <option value="">Select Exercise</option>
+                <option *ngFor="let ex of exerciseList" [value]="ex.id">{{ ex.exerciseName }}</option>
+              </select>
+            </div>
+
+            <div class="form-field">
+              <label>Sets <span class="required">*</span></label>
+              <input type="number" formControlName="sets" placeholder="e.g. 4" min="1" />
+            </div>
+
+            <div class="form-field">
+              <label>Reps <span class="required">*</span></label>
+              <input type="number" formControlName="reps" placeholder="e.g. 12" min="1" />
+            </div>
+
+            <div class="form-field">
+              <label>Rest (Seconds)</label>
+              <input type="number" formControlName="restSeconds" placeholder="e.g. 60" min="0" />
+            </div>
+
+            <div class="form-field">
+              <label>Exercise Order</label>
+              <input type="number" formControlName="exerciseOrder" placeholder="e.g. 1" min="1" />
+            </div>
+
+          </div>
+
+          <div class="form-field" style="margin-bottom: 16px;">
+            <label>Notes</label>
+            <textarea rows="2" formControlName="notes" placeholder="Optional notes..."></textarea>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn-add" (click)="addExerciseToTemplate()">
+              + Add Exercise
+            </button>
+            <button type="button" class="btn-reset" (click)="resetForm()">
+              Reset
+            </button>
+          </div>
+
+        </form>
+
+        <!-- Assigned table header -->
+        <div class="panel-header">
+          <h3>Assigned Exercises</h3>
+          <span class="exercise-count">
+            {{ assignedExercises.length }} exercise{{ assignedExercises.length !== 1 ? 's' : '' }}
+          </span>
+        </div>
+
+        <!-- Scrollable table zone -->
+        <div class="assigned-table-wrapper">
+
+          <ng-container *ngIf="assignedExercises.length > 0; else emptyAssigned">
+            <table class="assigned-table">
+              <thead>
+                <tr>
+                  <th>Day</th>
+                  <th>Exercise</th>
+                  <th>Sets</th>
+                  <th>Reps</th>
+                  <th>Rest</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let e of assignedExercises">
+                  <td>Day {{ e.workoutDay }}</td>
+                  <td>{{ e.exerciseName }}</td>
+                  <td>
+                    <input type="number" class="table-input" [(ngModel)]="e.sets" min="1" />
+                  </td>
+                  <td>
+                    <input type="number" class="table-input" [(ngModel)]="e.reps" min="1" />
+                  </td>
+                  <td>{{ e.restSeconds }}s</td>
+                  <td>
+                    <button class="remove-btn" (click)="removeExercise(e)">✕</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </ng-container>
+
+          <ng-template #emptyAssigned>
+            <div class="empty-state">
+              <div class="empty-icon">📋</div>
+              <h4>No exercises assigned yet</h4>
+              <p>Browse exercises on the left and click "Add to Template" to get started.</p>
+            </div>
+          </ng-template>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <div class="assign-footer">
+    <button class="cancel-btn" (click)="closeDialog()">Cancel</button>
+    <button
+      class="save-btn"
+      (click)="closeDialog()"
+      [disabled]="assignedExercises.length === 0"
+    >
+      Save Assignments
+    </button>
+  </div>
+
+</div>

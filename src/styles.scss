@@ -267,3 +267,52 @@ td {
   box-shadow: none !important;
   outline: none !important;
 }
+
+/* ================================================
+   EXERCISE ASSIGN DIALOG  — add to style.scss
+   Fixes: dialog height clipping + overlay bleed
+================================================ */
+
+.exercise-template-dialog {
+
+  /* Make the CDK overlay panel fill the viewport height correctly */
+  .mat-mdc-dialog-container {
+    padding: 0 !important;
+    overflow: hidden !important;
+    border-radius: 22px !important;
+    background: #181C27 !important;
+
+    /* KEY: let the inner .assign-container drive the height */
+    max-height: 90vh !important;
+    height: 90vh !important;
+  }
+
+  .mdc-dialog__surface {
+    background: #181C27 !important;
+    border-radius: 22px !important;
+
+    /* KEY: must be hidden so the flex layout clips correctly */
+    overflow: hidden !important;
+
+    max-height: 90vh !important;
+    height: 90vh !important;
+
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.55) !important;
+  }
+}
+
+/* Darken the backdrop so page content doesn't bleed through */
+.cdk-overlay-backdrop.cdk-overlay-dark-backdrop {
+  background: rgba(0, 0, 0, 0.72) !important;
+}
+
+.ff-dialog .mat-mdc-dialog-container {
+  --mdc-dialog-container-color: #181C27;
+
+  .mdc-dialog__surface {
+    background: #181C27 !important;
+    border-radius: 16px !important;
+    overflow: hidden;
+  }
+}
+

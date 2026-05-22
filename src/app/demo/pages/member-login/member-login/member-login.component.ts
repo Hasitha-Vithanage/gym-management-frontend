@@ -57,28 +57,22 @@ displayedColumns: string[] = [
  
    // implementation of populateData function
    public populateData(): void {
-     try {
-       this.memberLoginService.getData().subscribe({
-         next: (dataList: any[]) => {
-           if (dataList.length <= 0) {
-             return;
-           }
- 
-           this.dataSource = new MatTableDataSource(dataList);
- 
-           // sorting and pagination
-           this.dataSource.paginator = this.paginator;
-           this.dataSource.sort = this.sort;
-         },
-         // displaying error message
-         error: (error) => {
-           this.messageService.showError(error);
-         }
-       });
-     } catch (error) {
-       this.messageService.showError(error);
-     }
-   }
+  try {
+    this.memberLoginService.getData().subscribe({
+      next: (dataList: any[]) => {
+        this.dataSource = new MatTableDataSource(dataList || []);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      },
+      error: (error) => {
+        this.messageService.showError(error);
+        this.dataSource = new MatTableDataSource([]);
+      }
+    });
+  } catch (error) {
+    this.messageService.showError(error);
+  }
+}
  
    // table filter function
    applyFilter(event: Event) {
