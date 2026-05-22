@@ -288,6 +288,9 @@ textarea {
 
 .register-button {
   height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: $ff-radius-sm;
   font-size: 14px;
   font-weight: 600;
@@ -313,6 +316,9 @@ textarea {
 
 .reset-button {
   height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: $ff-radius-sm;
   font-size: 14px;
   font-weight: 600;

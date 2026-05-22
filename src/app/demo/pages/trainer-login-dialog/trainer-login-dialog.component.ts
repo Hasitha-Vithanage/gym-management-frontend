@@ -31,10 +31,10 @@ export class TrainerLoginDialogComponent implements OnInit {
   isDisabled = false;
 
   constructor(
-    private fb: FormBuilder,
-    private trainerLoginService: TrainerLoginServiceService,
+    private readonly fb: FormBuilder,
+    private readonly trainerLoginService: TrainerLoginServiceService,
     public dialogRef: MatDialogRef<TrainerLoginDialogComponent>,
-    private messageService: MessageServiceService
+    private readonly messageService: MessageServiceService
   ) {}
 
   ngOnInit(): void {
@@ -59,10 +59,11 @@ export class TrainerLoginDialogComponent implements OnInit {
         this.trainerLoginForm.patchValue({
           firstName: selectedTrainer.firstName || '',
           lastName:  selectedTrainer.lastName  || '',
+          userName: selectedTrainer.firstName || '',
           employee:  selectedId
         });
       } else {
-        this.trainerLoginForm.patchValue({ firstName: '', lastName: '' });
+        this.trainerLoginForm.patchValue({ firstName: '', lastName: '', userName: '' });
       }
     });
   }
@@ -167,8 +168,4 @@ export class TrainerLoginDialogComponent implements OnInit {
   closeDialog(): void {
     this.dialogRef.close();
   }
-
-  togglePassword(): void {
-  this.showPassword = !this.showPassword;
-}
 }

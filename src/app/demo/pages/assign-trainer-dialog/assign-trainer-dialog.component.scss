@@ -120,6 +120,9 @@ select {
   height: 38px;
   border-radius: $ff-radius-sm;
   font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-weight: 600;
   border: none;
   cursor: pointer;
@@ -145,6 +148,9 @@ select {
   height: 38px;
   border-radius: $ff-radius-sm;
   font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-weight: 600;
   border: 1px solid $ff-border-default;
   cursor: pointer;

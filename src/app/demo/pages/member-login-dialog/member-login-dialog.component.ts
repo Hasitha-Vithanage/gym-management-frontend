@@ -58,7 +58,7 @@ export class MemberLoginDialogComponent implements OnInit {
       if (selectedId) {
         this.getMemberById(selectedId);
       } else {
-        this.memberLoginForm.patchValue({ firstName: '', lastName: '' });
+        this.memberLoginForm.patchValue({ firstName: '', lastName: '', userName: '' });
       }
     });
   }
@@ -85,6 +85,7 @@ export class MemberLoginDialogComponent implements OnInit {
         this.memberLoginForm.patchValue({
           firstName: response.firstName,
           lastName: response.lastName,
+          userName: response.firstName,
           member: memberId
         });
       },
