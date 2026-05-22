@@ -1,4 +1,4 @@
-<div class="form-section">
+﻿<div class="form-section">
   <div class="title">
     <h2 class="form-title">Add New Member</h2>
     <button class="close-light" (click)="closeDialog()"><img src="../../../../assets/images/icon/close-light.png" style="margin-right: 5px;"></button>
@@ -7,13 +7,8 @@
   <form [formGroup]="memberForm" (ngSubmit)="onSubmit()">
     <div class="row">
       <div class="half-width">
-        <label for="memberNo">Member No <span class="required">*</span></label>
-        <input id="memberNo" type="text" maxlength="4" placeholder="Ex. M001" formControlName="memberNo" />
-        <span class="required-message" *ngIf="submitted && memberForm.get('memberNo').invalid">
-          <ng-container *ngIf="memberForm.get('memberNo').hasError('required')">Member No is required</ng-container>
-          <ng-container *ngIf="memberForm.get('memberNo').hasError('minlength')">Minimum 4 characters required</ng-container>
-          <ng-container *ngIf="memberForm.get('memberNo').hasError('maxlength')">Maximum 4 characters allowed</ng-container>
-        </span>
+        <label>Member ID <span class="auto-label">(Auto-generated)</span></label>
+        <input type="text" formControlName="memberNo" class="auto-id-input" />
       </div>
 
       <div class="half-width">
@@ -52,7 +47,7 @@
     <div class="row">
       <div class="half-width">
         <label for="dateOfBirth">Date of Birth <span class="required">*</span></label>
-        <input id="dateOfBirth" type="date" formControlName="dateOfBirth" />
+        <input id="dateOfBirth" type="date" [max]="today" formControlName="dateOfBirth" />
         <span class="required-message" *ngIf="submitted && memberForm.get('dateOfBirth').invalid">
           <ng-container *ngIf="memberForm.get('dateOfBirth').hasError('required')">Date of Birth is required</ng-container>
           <ng-container *ngIf="memberForm.get('dateOfBirth').hasError('futureDate')">Future dates not allowed</ng-container>
@@ -111,16 +106,21 @@
           <option value="O+">O+</option>
           <option value="O-">O-</option>
         </select>
+        <span class="required-message" *ngIf="submitted && memberForm.get('bloodType').hasError('required')">
+          Blood Type is required
+        </span>
       </div>
     </div>
 
     <div class="row">
       <div class="half-width">
         <label for="joinedDate">Joined Date <span class="required">*</span></label>
-        <input id="joinedDate" type="date" formControlName="joinedDate" />
+        <input type="date" id="joinedDate" [min]="minDoj" [max]="maxDoj" formControlName="joinedDate" />
+
         <span class="required-message" *ngIf="submitted && memberForm.get('joinedDate').invalid">
-          <ng-container *ngIf="memberForm.get('joinedDate').hasError('required')">Joined Date is required</ng-container>
-          <ng-container *ngIf="memberForm.get('joinedDate').hasError('futureDate')">Future dates not allowed</ng-container>
+          <ng-container *ngIf="memberForm.get('joinedDate').hasError('required')">Date of Joining is required</ng-container>
+          <ng-container *ngIf="memberForm.get('joinedDate').hasError('tooOld')">Date cannot be more than 5 years in the past</ng-container>
+          <ng-container *ngIf="memberForm.get('joinedDate').hasError('tooFuture')">Date cannot be more than 1 year in the future</ng-container>
         </span>
       </div>
 
@@ -145,7 +145,7 @@
         <label for="injuries">Injuries</label>
         <textarea id="injuries" maxlength="300" placeholder="Optional" formControlName="injuries"></textarea>
         <span class="required-message" *ngIf="submitted && memberForm.get('injuries').invalid">
-          <ng-container *ngIf="memberForm.get('injuries').hasError('maxLength')">Maximum 300 characters allowed</ng-container>
+          <ng-container *ngIf="memberForm.get('injuries').hasError('maxlength')">Maximum 300 characters allowed</ng-container>
         </span>
       </div>
 
@@ -162,7 +162,7 @@
     </div>
 
     <div class="row upload-section">
-      <button type="button" class="choose-file-btn" (click)="fileInput.click()" [disabled]="submitted">
+      <button type="button" class="choose-file-btn" (click)="fileInput.click()">
         Choose Photo
       </button>
       <img class="image-preview" [src]="selectedImageUrl ? selectedImageUrl : 'assets/images/authentication/google.svg'" alt="Preview" />

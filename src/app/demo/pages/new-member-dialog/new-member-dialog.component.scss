@@ -110,6 +110,23 @@ input[type="date"] {
     background: $ff-bg-elevated;
     outline: none;
   }
+
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus,
+  &:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px $ff-bg-input inset !important;
+    -webkit-text-fill-color: $ff-text-primary !important;
+    caret-color: $ff-text-primary;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+}
+
+.auto-label {
+  font-size: 11px;
+  color: $ff-text-secondary;
+  font-weight: 400;
+  margin-left: 4px;
 }
 
 input[type="date"] {
@@ -145,6 +162,30 @@ select {
   option {
     background: $ff-bg-surface;
     color: $ff-text-primary;
+  }
+
+  // Prevent browser autofill from flashing white background
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus,
+  &:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px $ff-bg-input inset !important;
+    -webkit-text-fill-color: $ff-text-primary !important;
+    caret-color: $ff-text-primary;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+}
+
+// Disabled/read-only auto-generated ID field
+.auto-id-input {
+  background: $ff-bg-elevated !important;
+  color: $ff-text-secondary !important;
+  cursor: not-allowed !important;
+  border-color: $ff-border-default !important;
+
+  &:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px $ff-bg-elevated inset !important;
+    -webkit-text-fill-color: $ff-text-secondary !important;
   }
 }
 

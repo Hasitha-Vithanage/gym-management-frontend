@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, OnInit, signal, ViewChild, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, signal, ViewChild, inject } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, MinLengthValidator, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -79,6 +79,7 @@ export class EmployeeRegistrationComponent implements OnInit {
     private messageService: MessageServiceService,
     private http: HttpService,
     private notificationService: NotificationService,
+    private cdr: ChangeDetectorRef,
     // private dialog: MatDialog
   ) {
   }
@@ -111,10 +112,12 @@ export class EmployeeRegistrationComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.populateData();
-      if (result?.action === 'add') {
-        this.dataSource.data = [result.data, ...this.dataSource.data];
-        this.populateData();
+      if (result?.action === 'add' && result.data) {
+        const current = this.dataSource?.data || [];
+        this.dataSource = new MatTableDataSource([result.data, ...current]);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+        this.cdr.markForCheck();
       }
     });
   }
@@ -157,10 +160,12 @@ export class EmployeeRegistrationComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result?.action === 'edit') {
-        const newData = this.dataSource.data.filter(item => item.id !== result.data.id);
-        // Add the updated item to the top
-        this.dataSource.data = [result.data, ...newData];
+      if (result?.action === 'edit' && result.data) {
+        const updated = this.dataSource.data.map(item => item.id === result.data.id ? result.data : item);
+        this.dataSource = new MatTableDataSource(updated);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+        this.cdr.markForCheck();
       }
     });
   }

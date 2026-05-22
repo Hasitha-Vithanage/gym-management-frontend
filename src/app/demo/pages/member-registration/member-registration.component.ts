@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -50,6 +50,7 @@ export class MemberRegistrationComponent {
     private memberService: MemberServiceService,
     private sanitizer: DomSanitizer,
     private messageService: MessageServiceService,
+    private cdr: ChangeDetectorRef,
   ) {
     this.memberForm = this.fb.group({
       memberNo: new FormControl(""),
@@ -111,8 +112,12 @@ export class MemberRegistrationComponent {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result?.action === 'add') {
-        this.dataSource.data = [result.data, ...this.dataSource.data];
+      if (result?.action === 'add' && result.data) {
+        const current = this.dataSource?.data || [];
+        this.dataSource = new MatTableDataSource([result.data, ...current]);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+        this.cdr.markForCheck();
       }
     });
   }
@@ -129,10 +134,12 @@ export class MemberRegistrationComponent {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result?.action === 'edit') {
-        const newData = this.dataSource.data.filter(item => item.id !== result.data.id);
-        // Add the updated item to the top
-        this.dataSource.data = [result.data, ...newData];
+      if (result?.action === 'edit' && result.data) {
+        const updated = this.dataSource.data.map(item => item.id === result.data.id ? result.data : item);
+        this.dataSource = new MatTableDataSource(updated);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+        this.cdr.markForCheck();
       }
     });
   }

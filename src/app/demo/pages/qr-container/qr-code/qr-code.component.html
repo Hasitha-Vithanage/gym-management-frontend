@@ -1,6 +1,9 @@
 <div class="container">
   <div class="card-section" [ngStyle]="{ display: isCardGenerated ? 'block' : 'none' }">
-    <button id="btn" (click)="downloadId()">Download</button>
+    <button id="btn" (click)="downloadId()">
+      Download ID Card
+    </button>
+
     <div #pdfContent class="id-card">
       <div class="card-header">
         <div class="company-logo">
@@ -8,7 +11,7 @@
             <img src="assets/images/dashboard-logo-white.png" alt="Company Logo" />
           </div>
         </div>
-        <div class="card-title">{{ userData.jobTitle || "Member"}} ID Card</div>
+        <div class="card-title">{{ userData.jobTitle || "Member" }} ID Card</div>
       </div>
 
       <div class="card-body">
@@ -26,19 +29,19 @@
           </div>
 
           <div class="info-details">
-            <h2>{{ this.userData.firstName }} {{ this.userData.lastName }}</h2>
+            <h2>{{ userData.firstName }} {{ userData.lastName }}</h2>
             <div class="details-grid">
               <div class="detail-item">
                 <span class="label">ID:</span>
-                <span class="value">{{ this.userData.employeeId || this.userData.memberNo }}</span>
+                <span class="value">{{ userData.employeeId || userData.memberNo }}</span>
               </div>
               <div class="detail-item">
                 <span class="label">Email:</span>
-                <span class="value">{{ this.userData.email }}</span>
+                <span class="value">{{ userData.email }}</span>
               </div>
               <div class="detail-item">
                 <span class="label">Phone:</span>
-                <span class="value">{{ this.userData.phoneNumber }}</span>
+                <span class="value">{{ userData.phoneNumber }}</span>
               </div>
             </div>
           </div>
@@ -50,7 +53,7 @@
           </div>
           <p class="qr-label">Scan for attendance</p>
           <div class="qr-instructions">
-            <p>📱 Scan this QR code to mark attendance</p>
+            <p>Scan this QR code to mark attendance</p>
           </div>
         </div>
       </div>

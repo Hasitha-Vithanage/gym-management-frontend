@@ -24,8 +24,10 @@ export class NewMemberDialogComponent implements OnInit {
   selectedImageUrl;
   isFileSelected = false;
   submitDisabled;
-  membershipCategoryList: any[] = [];  // List of suppliers
-  today = new Date();
+  membershipCategoryList: any[] = []; // List of suppliers
+  today: string = new Date().toISOString().split('T')[0];
+  minDoj: string;
+  maxDoj: string;
 
   dataSource: MatTableDataSource<any>;
 
@@ -38,13 +40,22 @@ export class NewMemberDialogComponent implements OnInit {
     private messageService: MessageServiceService
   ) {
     this.memberForm = this.fb.group({
-      memberNo: new FormControl('', [
+      memberNo: new FormControl({ value: '', disabled: true }, [
         Validators.required,
-        Validators.maxLength(5),
-        Validators.pattern(/^M\d{3}$/) // e.g., M001
+        Validators.pattern(/^M\d{3}$/)
       ]),
-      firstName: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(15), Validators.pattern(/^[A-Za-z]+$/)]),
-      lastName: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(15), Validators.pattern(/^[A-Za-z]+$/)]),
+      firstName: new FormControl('', [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(15),
+        Validators.pattern(/^[A-Za-z]+$/)
+      ]),
+      lastName: new FormControl('', [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(15),
+        Validators.pattern(/^[A-Za-z]+$/)
+      ]),
       nic: new FormControl('', [
         Validators.required,
         Validators.minLength(10),
@@ -57,7 +68,7 @@ export class NewMemberDialogComponent implements OnInit {
       email: new FormControl('', [Validators.required, Validators.email, Validators.maxLength(50)]),
       emergencyContactNumber: new FormControl('', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]),
       bloodType: new FormControl('', Validators.required),
-      joinedDate: new FormControl('', [Validators.required, this.futureDateValidator]),
+      joinedDate: new FormControl('', [Validators.required, this.joiningDateValidator]),
       gender: new FormControl('', Validators.required),
       injuries: new FormControl('', Validators.maxLength(300)),
       membershipCategory: new FormControl('', Validators.required),
@@ -67,7 +78,36 @@ export class NewMemberDialogComponent implements OnInit {
     });
   }
   ngOnInit(): void {
+    const minDojDate = new Date();
+    minDojDate.setFullYear(minDojDate.getFullYear() - 5);
+    this.minDoj = minDojDate.toISOString().split('T')[0];
+
+    const maxDojDate = new Date();
+    maxDojDate.setFullYear(maxDojDate.getFullYear() + 1);
+    this.maxDoj = maxDojDate.toISOString().split('T')[0];
+
     this.getMembershipCategory();
+    this.generateEmployeeId();
+  }
+
+  private generateEmployeeId(): void {
+    this.memberService.getData().subscribe({
+      next: (members: any) => {
+        const maxNum = (members || []).reduce((max: number, member: any) => {
+          const match = member.memberNo?.match(/^M(\d{3})$/);
+          if (match) {
+            const num = parseInt(match[1], 10);
+            return num > max ? num : max;
+          }
+          return max;
+        }, 0);
+        const nextId = `M${String(maxNum + 1).padStart(3, '0')}`;
+        this.memberForm.get('memberNo').setValue(nextId);
+      },
+      error: () => {
+        this.memberForm.get('memberNo').setValue('M001');
+      }
+    });
   }
 
   futureDateValidator(control: AbstractControl) {
@@ -78,13 +118,26 @@ export class NewMemberDialogComponent implements OnInit {
     return inputDate > today ? { futureDate: true } : null;
   }
 
+  joiningDateValidator(control: AbstractControl) {
+    if (!control.value) return null;
+    const inputDate = new Date(control.value);
+    const minDate = new Date();
+    minDate.setFullYear(minDate.getFullYear() - 5);
+    minDate.setHours(0, 0, 0, 0);
+    const maxDate = new Date();
+    maxDate.setFullYear(maxDate.getFullYear() + 1);
+    maxDate.setHours(23, 59, 59, 999);
+    if (inputDate < minDate) return { tooOld: true };
+    if (inputDate > maxDate) return { tooFuture: true };
+    return null;
+  }
 
   // getMembershipCategory function
   public getMembershipCategory(): void {
     //Call Service to get suppliers
     this.membershipCategoryService.getData().subscribe({
       next: (response: any[]) => {
-        console.log("Membership Category: ", response);
+        console.log('Membership Category: ', response);
         this.membershipCategoryList = response;
       },
       error: (error) => {
@@ -93,12 +146,12 @@ export class NewMemberDialogComponent implements OnInit {
     });
   }
 
-
   /* OnSubmit function */
   onSubmit() {
     this.submitted = true;
     // check if form is valid
     if (this.memberForm.invalid) {
+      this.messageService.showError('Please correct the errors in the form before submitting.');
       return;
     }
 
@@ -116,13 +169,13 @@ export class NewMemberDialogComponent implements OnInit {
 
             // success message
             this.messageService.showSuccess('Member added successfully!');
+            this.dialogRef.close({ action: 'add', data: response });
           },
           error: (error) => {
-            const errorMessage =
-              error?.error?.message || error?.error || 'Something went wrong.';
+            const errorMessage = error?.error?.message || error?.error || 'Something went wrong.';
             this.messageService.showError(errorMessage);
           }
-          });
+        });
       } catch (error) {
         this.messageService.showError(error);
       }
@@ -130,15 +183,13 @@ export class NewMemberDialogComponent implements OnInit {
       try {
         this.memberService.editData(this.selectedData?.id, this.prepareFormData()).subscribe({
           next: (response) => {
-
             // success message
             this.messageService.showSuccess('Member edited successfully!');
+            this.dialogRef.close({ action: 'edit', data: response });
 
             const index = this.dataSource.data.findIndex((element) => element.id === this.selectedData?.id);
             this.dataSource.data[index] = response;
             this.dataSource = new MatTableDataSource(this.dataSource.data);
-
-
           },
           error: (error) => {
             this.messageService.showError('Action failed with error: ' + error);
@@ -148,8 +199,6 @@ export class NewMemberDialogComponent implements OnInit {
         this.messageService.showError(error);
       }
     }
-
-    this.closeDialog();
   }
 
   onEdit(data: any): void {
@@ -179,8 +228,8 @@ export class NewMemberDialogComponent implements OnInit {
     this.submitDisabled = true;
     // patching date values after formatting
     this.memberForm.patchValue({
-      joinedDate: moment(data.joinedDate).format('YYYY-MM-DD'),
-      dateOfBirth: moment(data.dateOfBirth).format('YYYY-MM-DD'),
+      joinedDate: new Date(data.joinedDate).toISOString().split('T')[0],
+      dateOfBirth: new Date(data.dateOfBirth).toISOString().split('T')[0],
     });
 
     this.memberForm.valueChanges.subscribe(() => {
@@ -193,14 +242,16 @@ export class NewMemberDialogComponent implements OnInit {
     this.memberForm.reset();
     this.memberForm.enable();
     this.registerButtonLabel = 'Register';
+    this.memberForm.get('memberNo')?.disable();
     this.mode = 'add';
     this.isButtonDisabled = false;
+    this.generateEmployeeId();
   }
 
   public prepareFormData(): FormData {
     const memberFormData = new FormData();
     // demoFormData.append('demoForm', this.demoForm.value);
-    memberFormData.append('memberForm', new Blob([JSON.stringify(this.memberForm.value)], { type: 'application/json' }));
+    memberFormData.append('memberForm', new Blob([JSON.stringify(this.memberForm.getRawValue())], { type: 'application/json' }));
 
     if (this.isFileSelected) {
       memberFormData.append('image', this.memberForm.get('image').value, this.memberForm.get('image').value.name);

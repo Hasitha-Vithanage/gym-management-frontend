@@ -1,8 +1,7 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { HttpService } from 'src/app/services/http.service';
-import { NewEquipmentDialogComponent } from '../new-equipment-dialog/new-equipment-dialog.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { EmpolyeeServiceService } from 'src/app/services/employee-service/empolyee-service.service';
 import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
@@ -15,7 +14,7 @@ import { DomSanitizer } from '@angular/platform-browser';
   templateUrl: './new-employee-dialog.component.html',
   styleUrl: './new-employee-dialog.component.scss'
 })
-export class NewEmployeeDialogComponent {
+export class NewEmployeeDialogComponent implements OnInit {
 
   employeeForm: FormGroup;
   registerButtonLabel = 'Register';
@@ -25,7 +24,9 @@ export class NewEmployeeDialogComponent {
   submitted = false;
   userName;
   dataSource: MatTableDataSource<any>;
-  today: Date = new Date();
+  today: string = new Date().toISOString().split('T')[0];
+  minDoj: string;
+  maxDoj: string;
   submitDisabled: boolean;
   selectedImageUrl;
   isFileSelected = false;
@@ -40,20 +41,21 @@ export class NewEmployeeDialogComponent {
     private sanitizer: DomSanitizer,
     private notificationService: NotificationService,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) {
-
-  }
+  ) {}
 
   ngOnInit() {
+    const minDojDate = new Date();
+    minDojDate.setFullYear(minDojDate.getFullYear() - 5);
+    this.minDoj = minDojDate.toISOString().split('T')[0];
 
-    // Get today's date
-    const today = new Date().toISOString().split('T')[0]; // Format as YYYY-MM-DD
-    const userName = this.http.getLoginNameFromCache();
+    const maxDojDate = new Date();
+    maxDojDate.setFullYear(maxDojDate.getFullYear() + 1);
+    this.maxDoj = maxDojDate.toISOString().split('T')[0];
 
     this.employeeForm = this.fb.group({
-      employeeId: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(4), Validators.pattern(/^E\d{3}$/)]],
+      employeeId: [{ value: '', disabled: true }, [Validators.required, Validators.pattern(/^E\d{3}$/)]],
       jobTitle: ['', Validators.required],
-      dateOfJoining: ['', [Validators.required, this.futureDateValidator]],
+      dateOfJoining: ['', [Validators.required, this.joiningDateValidator.bind(this)]],
       firstName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(15), Validators.pattern(/^[A-Za-z]+$/)]],
       lastName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(15), Validators.pattern(/^[A-Za-z]+$/)]],
       nic: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(12), Validators.pattern(/^[0-9]{9}[vVxX]$|^[1-2][0-9]{11}$/)]],
@@ -67,8 +69,29 @@ export class NewEmployeeDialogComponent {
       imageName: new FormControl(''),
       imageType: new FormControl('')
     });
+
+    this.generateEmployeeId();
   }
 
+  private generateEmployeeId(): void {
+    this.employeeService.getData().subscribe({
+      next: (employees: any[]) => {
+        const maxNum = (employees || []).reduce((max, emp) => {
+          const match = emp.employeeId?.match(/^E(\d{3})$/);
+          if (match) {
+            const num = parseInt(match[1], 10);
+            return num > max ? num : max;
+          }
+          return max;
+        }, 0);
+        const nextId = `E${String(maxNum + 1).padStart(3, '0')}`;
+        this.employeeForm.get('employeeId').setValue(nextId);
+      },
+      error: () => {
+        this.employeeForm.get('employeeId').setValue('E001');
+      }
+    });
+  }
 
   futureDateValidator(control: AbstractControl) {
     if (!control.value) return null;
@@ -78,11 +101,24 @@ export class NewEmployeeDialogComponent {
     return inputDate > today ? { futureDate: true } : null;
   }
 
+  joiningDateValidator(control: AbstractControl) {
+    if (!control.value) return null;
+    const inputDate = new Date(control.value);
+    const minDate = new Date();
+    minDate.setFullYear(minDate.getFullYear() - 5);
+    minDate.setHours(0, 0, 0, 0);
+    const maxDate = new Date();
+    maxDate.setFullYear(maxDate.getFullYear() + 1);
+    maxDate.setHours(23, 59, 59, 999);
+    if (inputDate < minDate) return { tooOld: true };
+    if (inputDate > maxDate) return { tooFuture: true };
+    return null;
+  }
+
 
   /* onsubmit function */
   onSubmit() {
     this.submitted = true;
-    // check if form is valid
     if (this.employeeForm.invalid) {
       this.messageService.showError('Please correct the errors in the form before submitting.');
       return;
@@ -91,62 +127,36 @@ export class NewEmployeeDialogComponent {
     if (this.mode === 'add') {
       this.employeeForm.patchValue({ status: 'Active' });
 
-      try {
-        this.employeeService.serviceCall(this.prepareFormData()).subscribe({
-          next: (response) => {
-            if (this.dataSource && this.dataSource.data && this.dataSource.data.length > 0) {
-              this.dataSource = new MatTableDataSource([response, ...this.dataSource.data]);
-            } else {
-              this.dataSource = new MatTableDataSource([response]);
-            }
-
-            // success message
-            this.messageService.showSuccess('Employee added successfully!');
-          },
-          error: (error) => {
-            const errorMessage =
-              error?.error?.message || error?.error || 'Something went wrong.';
-            this.messageService.showError(errorMessage);
-          }
-        });
-      } catch (error) {
-        this.messageService.showError(error);
-      }
+      this.employeeService.serviceCall(this.prepareFormData()).subscribe({
+        next: (response) => {
+          this.messageService.showSuccess('Employee added successfully!');
+          this.dialogRef.close({ action: 'add', data: response });
+        },
+        error: (error) => {
+          const errorMessage = error?.error?.message || error?.error || 'Something went wrong.';
+          this.messageService.showError(errorMessage);
+        }
+      });
     } else if (this.mode === 'edit') {
-      try {
-        this.employeeService.editData(this.selectedData?.id, this.prepareFormData()).subscribe({
-          next: (response) => {
-
-            // success message
-            this.messageService.showSuccess('Employee edited successfully!');
-
-            const index = this.dataSource.data.findIndex((element) => element.id === this.selectedData?.id);
-            this.dataSource.data[index] = response;
-            this.dataSource = new MatTableDataSource(this.dataSource.data);
-
-
-          },
-          error: (error) => {
-            this.messageService.showError('Action failed with error: ' + error);
-          }
-        });
-      } catch (error) {
-        this.messageService.showError(error);
-      }
+      this.employeeService.editData(this.selectedData?.id, this.prepareFormData()).subscribe({
+        next: (response) => {
+          this.messageService.showSuccess('Employee edited successfully!');
+          this.dialogRef.close({ action: 'edit', data: response });
+        },
+        error: (error) => {
+          this.messageService.showError('Action failed with error: ' + error);
+        }
+      });
     }
-
-    this.closeDialog();
   }
 
   onEdit(data: any): void {
     this.employeeForm.patchValue({
       employeeId: data.employeeId,
       jobTitle: data.jobTitle,
-      dateOfJoining: data.dateOfJoining,
       firstName: data.firstName,
       lastName: data.lastName,
       nic: data.nic,
-      dateOfBirth: data.dateOfBirth,
       gender: data.gender,
       address: data.address,
       email: data.email,
@@ -156,20 +166,18 @@ export class NewEmployeeDialogComponent {
       imageName: data.imageName,
       imageType: data.imageType
     });
-    this.registerButtonLabel = "Update";
-    this.mode = "edit";
+    this.registerButtonLabel = 'Update';
+    this.mode = 'edit';
     this.selectedData = data;
-
     this.submitDisabled = true;
 
-    // patching date values after formatting
     this.employeeForm.patchValue({
-      dateOfJoining: new Date(data.dateOfJoining),
-      dateOfBirth: new Date(data.dateOfBirth),
+      dateOfJoining: new Date(data.dateOfJoining).toISOString().split('T')[0],
+      dateOfBirth: new Date(data.dateOfBirth).toISOString().split('T')[0],
     });
 
     this.employeeForm.valueChanges.subscribe(() => {
-      this.submitDisabled = /* !this.employeeForm.valid || */ this.employeeForm.pristine;
+      this.submitDisabled = this.employeeForm.pristine;
     });
   }
 
@@ -179,9 +187,11 @@ export class NewEmployeeDialogComponent {
     this.employeeForm.setErrors = null;
     this.employeeForm.updateValueAndValidity();
     this.employeeForm.enable();
+    this.employeeForm.get('employeeId').disable();
     this.isDisabled = false;
     this.submitted = false;
     this.registerButtonLabel = 'Register';
+    this.generateEmployeeId();
   }
 
   // Dialog close function
@@ -195,8 +205,7 @@ export class NewEmployeeDialogComponent {
 
   public prepareFormData(): FormData {
     const employeeFormData = new FormData();
-    // demoFormData.append('demoForm', this.demoForm.value);
-    employeeFormData.append('employeeForm', new Blob([JSON.stringify(this.employeeForm.value)], { type: 'application/json' }));
+    employeeFormData.append('employeeForm', new Blob([JSON.stringify(this.employeeForm.getRawValue())], { type: 'application/json' }));
 
     if (this.isFileSelected) {
       employeeFormData.append('image', this.employeeForm.get('image').value, this.employeeForm.get('image').value.name);
