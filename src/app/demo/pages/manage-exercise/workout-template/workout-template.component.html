@@ -2,7 +2,7 @@
   <div class="table-section">
     <!-- Title -->
     <h2 class="form-title">
-      <img src="../../../../assets/images/icon/exercise-dark.png"
+      <img src="../../../../assets/images/icon/template-light.png"
         style="margin-right: 5px; height: 18px; width: 18px" />
       Workout Templates
     </h2>
@@ -20,12 +20,12 @@
       <!-- Filter -->
       <div class="table-filter">
         <div class="search-bar">
-          <img src="../../../../assets/images/icon/search-icon.png"
+          <img src="../../../../assets/images/icon/search.png"
             style="margin-right: 5px; height: 18px; width: 18px" />
           <input type="text" placeholder="Search..." (keyup)="applyFilter($event)" />
         </div>
         <button mat-icon-button class="refresh-button" (click)="refreshData()">
-          <img src="../../../../assets/images/icon/refresh-icon.png"
+          <img src="../../../../assets/images/icon/refresh.png"
             style="margin-right: 5px; height: 18px; width: 18px" />
         </button>
       </div>
@@ -96,15 +96,15 @@
           <td style="display: flex; justify-content: center;" mat-cell *matCellDef="let t">
             <div class="action-column">
               <button mat-icon-button class="" matTooltip="Assign Exercises" (click)="assignExercises(t)">
-                <img src="../../../../assets/images/icon/assign-dark.png"
+                <img src="../../../../assets/images/icon/assign-light.png"
                   style="margin-right: 5px; height: 18px; width: 18px">
               </button>
               <button mat-icon-button class="gray-icon-btn" matTooltip="Edit" (click)="editData(t)">
-                <img src="../../../../assets/images/icon/edit-icon.png"
+                <img src="../../../../assets/images/icon/edit-light.png"
                   style="margin-right: 5px; height: 18px; width: 18px">
               </button>
               <button mat-icon-button class="gray-icon-btn" matTooltip="Delete" (click)="deleteData(t)">
-                <img src="../../../../assets/images/icon/delete-icon.png"
+                <img src="../../../../assets/images/icon/delete-light.png"
                   style="margin-right: 5px; height: 18px; width: 18px">
               </button>
             </div>

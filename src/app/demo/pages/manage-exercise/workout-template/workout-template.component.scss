@@ -142,43 +142,18 @@ table {
 
 /* No Data */
 .no-data {
-  text-align: center;
-  padding: 16px;
+  text-align: left;
+  padding: 16px !important;
   font-style: italic;
-  color: $ff-text-dim;
-}
-
-/* Status Badges */
-.badge-active {
-  background-color: rgba(34, 197, 94, 0.12);
-  color: $ff-success;
-  padding: 3px 10px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: 500;
-}
-
-.badge-inactive {
-  background-color: rgba(239, 68, 68, 0.12);
-  color: $ff-danger;
-  padding: 3px 10px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: 500;
-}
-
-.badge-draft {
-  background-color: rgba(251, 191, 36, 0.12);
-  color: $ff-warning;
-  padding: 3px 10px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: 500;
+  color: $ff-text-dim !important;
+  background: $ff-bg-surface !important;
+  font-size: 13.5px !important;
 }
 
 /* Angular Material Overrides */
 ::ng-deep {
 
+  // Table
   .mat-mdc-table {
     background: $ff-bg-surface !important;
     width: 100%;
@@ -189,7 +164,7 @@ table {
 
     th.mat-mdc-header-cell {
       background: $ff-bg-elevated !important;
-      color: $ff-text-secondary !important;
+      color: $ff-text-primary !important;
       font-size: 11px !important;
       font-weight: 700 !important;
       letter-spacing: 0.6px !important;
@@ -205,6 +180,14 @@ table {
 
       &:hover {
         background: $ff-bg-hover !important;
+      }
+
+      &.highlight {
+        background: $ff-accent-soft !important;
+
+        td.mat-mdc-cell {
+          color: $ff-text-primary !important;
+        }
       }
 
       &:last-child td {
@@ -224,6 +207,7 @@ table {
       background: transparent !important;
     }
 
+    // No data row
     .mat-mdc-no-data-row {
       background: $ff-bg-surface !important;
 
@@ -238,6 +222,7 @@ table {
     }
   }
 
+  // Paginator
   .mat-mdc-paginator {
     background: $ff-bg-elevated !important;
     color: $ff-text-secondary !important;
@@ -304,6 +289,42 @@ table {
       box-shadow: none !important;
       background: transparent !important;
       padding: 5px 10px 5px 5px !important;
+    }
+  }
+
+  // Dropdown panel
+  .mat-mdc-select-panel {
+    background: $ff-bg-surface !important;
+    border: 1px solid $ff-border-default !important;
+    border-radius: $ff-radius-sm !important;
+    box-shadow: $ff-shadow-hover !important;
+
+    .mat-mdc-option {
+      color: $ff-text-secondary !important;
+      font-size: 13px !important;
+
+      &:hover,
+      &.mat-mdc-option-active {
+        background: $ff-bg-hover !important;
+        color: $ff-text-primary !important;
+      }
+
+      &.mdc-list-item--selected {
+        background: $ff-accent-soft !important;
+        color: $ff-accent-primary !important;
+
+        .mdc-list-item__primary-text {
+          color: $ff-accent-primary !important;
+        }
+
+        .mat-mdc-option-pseudo-checkbox {
+          color: $ff-accent-primary !important;
+        }
+
+        &:hover {
+          background: rgba(255, 107, 0, 0.18) !important;
+        }
+      }
     }
   }
 }

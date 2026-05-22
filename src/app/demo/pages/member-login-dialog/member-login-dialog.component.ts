@@ -98,6 +98,7 @@ export class MemberLoginDialogComponent implements OnInit {
     this.submitted = true;
 
     if (this.memberLoginForm.invalid) {
+      this.messageService.showError('Please fill in all required fields.');
       return;
     }
 

@@ -103,6 +103,7 @@ export class TrainerLoginDialogComponent implements OnInit {
     this.submitted = true;
 
     if (this.trainerLoginForm.invalid) {
+      this.messageService.showError('Please fill in all required fields.');
       return;
     }
 

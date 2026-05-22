@@ -3,7 +3,9 @@
   <!-- Header -->
   <div class="form-header">
     <h2>Add Workout Template</h2>
-    <button class="close-btn" (click)="closeDialog()">✕</button>
+    <button class="close-btn" (click)="closeDialog()">
+        <img src="../../../../assets/images/icon/close-light.png" style="margin-right: 5px;">
+    </button>
   </div>
 
     <form [formGroup]="templateForm" (ngSubmit)="onSubmit()" class="form-body">

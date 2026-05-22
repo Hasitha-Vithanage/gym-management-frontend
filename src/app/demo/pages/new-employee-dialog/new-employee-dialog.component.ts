@@ -84,6 +84,7 @@ export class NewEmployeeDialogComponent {
     this.submitted = true;
     // check if form is valid
     if (this.employeeForm.invalid) {
+      this.messageService.showError('Please correct the errors in the form before submitting.');
       return;
     }
 
