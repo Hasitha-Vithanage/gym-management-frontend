@@ -191,24 +191,22 @@ export class AssignTrainerDialogComponent {
     });
   }
 
-  public onMemberSelect(data: any): void {
-    const memberName = data?.value;
+  public onMemberSelect(event: any): void {
+    const memberName = (event?.target as HTMLSelectElement)?.value ?? event?.value;
 
-    if (memberName && memberName != null && memberName != undefined && memberName != '') {
+    if (memberName) {
       const member = this.memberList.find((item: any) => item.firstName == memberName);
-
       if (member) {
         this.selectedMember = member.id;
       }
     }
   }
 
-  public onTrainerSelect(data: any): void {
-    const trainerName = data?.value;
+  public onTrainerSelect(event: any): void {
+    const trainerName = (event?.target as HTMLSelectElement)?.value ?? event?.value;
 
-    if (trainerName && trainerName != null && trainerName != undefined && trainerName != '') {
+    if (trainerName) {
       const trainer = this.trainerList.find((item: any) => item.firstName == trainerName);
-
       if (trainer) {
         this.selectedTrainer = trainer.id;
       }

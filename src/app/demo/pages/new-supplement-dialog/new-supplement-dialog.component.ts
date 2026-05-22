@@ -25,6 +25,7 @@ export class NewSupplementDialogComponent {
   supplierList: any[] = []; // List of suppliers
   selectedFileName: string;
   today = new Date();
+  todayStr = new Date().toISOString().split('T')[0];
 
   supplementCategories: string[] = [
     'Protein',
@@ -133,9 +134,7 @@ export class NewSupplementDialogComponent {
   }
 
   selectedCategory: string = '';
-  // Function to handle category change
-  onCategoryChange(event: any): void {
-    this.selectedCategory = event.value;
+  onCategoryChange(): void {
     this.supplementForm.get('unit').enable();
   }
 

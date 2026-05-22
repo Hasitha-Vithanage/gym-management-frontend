@@ -208,7 +208,7 @@ export class AddClassDialogComponent {
     this.classForm.patchValue({
       classTitle: data.classTitle,
       description: data.description,
-      date: new Date(data.date),
+      date: moment(data.date).format('YYYY-MM-DD'),
       startTime: startTimeString,
       endTime: endTimeString,
       conductorName: data.conductorName,
@@ -241,18 +241,8 @@ export class AddClassDialogComponent {
     this.dialogRef.close();
   }
 
-  onDateChange(event: any) {
-    const selectedDate = this.classForm.get('date').value;
-    if (selectedDate) {
-      // Convert to UTC and set time to midnight
-      const normalizedDate = moment(selectedDate).startOf('day').toDate();
-      console.log(normalizedDate);
-      this.classForm.get('date').setValue(normalizedDate);
-
-      const date = this.classForm.get('date').value;
-      const formattedDate = moment(date).format('YYYY-MM-DD');
-      this.classForm.patchValue({ date: formattedDate });
-    }
+  onDateChange(_event: any) {
+    // Native date input already provides YYYY-MM-DD — no conversion needed
   }
 
   formatTimeArray(arr: number[]): string {

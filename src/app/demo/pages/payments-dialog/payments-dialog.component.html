@@ -1,88 +1,74 @@
 <div class="form-section">
-  <!-- title of the form-->
   <div class="title">
     <h2 class="form-title">Add Payment</h2>
-    <button mat-icon-button class="close-icon" style="padding: 0px" (click)="closeDialog()">
-      <mat-icon fontIcon="close"></mat-icon>
-    </button>
+    <button class="close-icon" (click)="closeDialog()">&#x2715;</button>
   </div>
 
-  <!--- form -->
-  <form [formGroup]="paymentForm" class="example-form" (ngSubmit)="onSubmit()">
+  <form [formGroup]="paymentForm" (ngSubmit)="onSubmit()">
     <div class="row">
-      <mat-form-field appearance="outline" class="half-width">
-        <mat-label>Select Member</mat-label>
-        <mat-icon matPrefix>person</mat-icon>
-        <mat-select formControlName="member" (selectionChange)="onMemberSelected($event.value)">
-          <mat-option *ngFor="let member of memberList" [value]="member.firstName">{{ member.firstName }} {{ member.lastName }}</mat-option>
-        </mat-select>
+      <div class="half-width">
+        <label for="member">Select Member <span class="required">*</span></label>
+        <select id="member" formControlName="member" (change)="onMemberSelected($any($event.target).value)">
+          <option value="" disabled>-- Select Member --</option>
+          <option *ngFor="let member of memberList" [value]="member.firstName">{{ member.firstName }} {{ member.lastName }}</option>
+        </select>
         <span class="required-message" *ngIf="submitted && paymentForm.get('member').invalid">
           <ng-container *ngIf="paymentForm.get('member').hasError('required')">Member is required</ng-container>
         </span>
-      </mat-form-field>
+      </div>
 
-      <mat-form-field appearance="outline" class="half-width">
-        <mat-label>Membership Category</mat-label>
-        <mat-icon matPrefix>card_membership</mat-icon>
-        <input matInput placeholder="Membership Category" formControlName="membershipCategory" readonly />
+      <div class="half-width">
+        <label for="membershipCategory">Membership Category <span class="required">*</span></label>
+        <input id="membershipCategory" type="text" placeholder="Membership Category" formControlName="membershipCategory" readonly />
         <span class="required-message" *ngIf="submitted && paymentForm.get('membershipCategory').invalid">
           <ng-container *ngIf="paymentForm.get('membershipCategory').hasError('required')">Membership Category is required</ng-container>
         </span>
-      </mat-form-field>
+      </div>
     </div>
 
     <div class="row">
-      <mat-form-field appearance="outline" class="half-width">
-        <mat-label>Amount</mat-label>
-        <mat-icon matPrefix>payments</mat-icon>
-        <input matInput placeholder="Payment amount" formControlName="amount" readonly />
+      <div class="half-width">
+        <label for="amount">Amount <span class="required">*</span></label>
+        <input id="amount" type="text" placeholder="Payment amount" formControlName="amount" readonly />
         <span class="required-message" *ngIf="submitted && paymentForm.get('amount').invalid">
-          <ng-container *ngIf="paymentForm.get('amount').hasError('required')">Membership Category is required</ng-container>
+          <ng-container *ngIf="paymentForm.get('amount').hasError('required')">Amount is required</ng-container>
         </span>
-      </mat-form-field>
+      </div>
 
-      <mat-form-field appearance="outline" class="half-width">
-        <mat-label>Status</mat-label>
-        <mat-icon matPrefix>fact_check</mat-icon>
-        <mat-select formControlName="status">
-          <mat-option [value]="'Paid'">Paid</mat-option>
-          <mat-option [value]="'Unpaid'">Unpaid</mat-option>
-        </mat-select>
-                <span class="required-message" *ngIf="submitted && paymentForm.get('status').invalid">
+      <div class="half-width">
+        <label for="status">Status <span class="required">*</span></label>
+        <select id="status" formControlName="status">
+          <option value="" disabled>-- Select Status --</option>
+          <option value="Paid">Paid</option>
+          <option value="Unpaid">Unpaid</option>
+        </select>
+        <span class="required-message" *ngIf="submitted && paymentForm.get('status').invalid">
           <ng-container *ngIf="paymentForm.get('status').hasError('required')">Status is required</ng-container>
         </span>
-      </mat-form-field>
+      </div>
     </div>
 
     <div class="row">
-            <mat-form-field appearance="outline" class="half-width">
-        <mat-label>Paid Date</mat-label>
-        <mat-icon matPrefix>event_available</mat-icon>
-        <input matInput [matDatepicker]="pd" formControlName="paymentDate" placeholder="MM/DD/YYYY" />
-        <mat-datepicker-toggle matSuffix [for]="pd"></mat-datepicker-toggle>
-        <mat-datepicker #pd></mat-datepicker>
+      <div class="half-width">
+        <label for="paymentDate">Paid Date <span class="required">*</span></label>
+        <input id="paymentDate" type="date" formControlName="paymentDate" />
         <span class="required-message" *ngIf="submitted && paymentForm.get('paymentDate').invalid">
-          <ng-container *ngIf="paymentForm.get('paymentDate').hasError('required')">Date of Joining is required</ng-container>
+          <ng-container *ngIf="paymentForm.get('paymentDate').hasError('required')">Payment date is required</ng-container>
         </span>
-      </mat-form-field>
+      </div>
 
-      <mat-form-field appearance="outline" class="half-width">
-        <mat-label>Next Payment Date</mat-label>
-        <mat-icon matPrefix>event_available</mat-icon>
-        <input matInput [matDatepicker]="npd" formControlName="nextPaymentDate" placeholder="MM/DD/YYYY" />
-        <mat-datepicker-toggle matSuffix [for]="npd"></mat-datepicker-toggle>
-        <mat-datepicker #npd></mat-datepicker>
+      <div class="half-width">
+        <label for="nextPaymentDate">Next Payment Date <span class="required">*</span></label>
+        <input id="nextPaymentDate" type="date" formControlName="nextPaymentDate" />
         <span class="required-message" *ngIf="submitted && paymentForm.get('nextPaymentDate').invalid">
-          <ng-container *ngIf="paymentForm.get('nextPaymentDate').hasError('required')">Date of Joining is required</ng-container>
+          <ng-container *ngIf="paymentForm.get('nextPaymentDate').hasError('required')">Next payment date is required</ng-container>
         </span>
-      </mat-form-field>
+      </div>
     </div>
 
     <div class="row">
-      <button type="submit" mat-raised-button class="register-button half-width" [disabled]="submitDisabled">
-        {{ registerButtonLabel }}
-      </button>
-      <button type="reset" mat-raised-button class="reset-button half-width" (click)="resetData()">Reset</button>
+      <button type="submit" class="register-button half-width" [disabled]="submitDisabled">{{ registerButtonLabel }}</button>
+      <button type="button" class="reset-button half-width" (click)="resetData()">Reset</button>
     </div>
   </form>
 </div>

@@ -1,88 +1,88 @@
 <div class="form-section">
-  <!-- title of the form-->
-    <div class="title">
-        <h2 class="form-title">Add New Supplier</h2>
-        <button mat-icon-button class="close-icon" style="padding: 0px;" (click)="closeDialog()">
-            <mat-icon fontIcon="close"></mat-icon>
-        </button>
-    </div>
+  <div class="title">
+    <h2 class="form-title">Add New Supplier</h2>
+    <button class="close-icon" (click)="closeDialog()">&#x2715;</button>
+  </div>
 
-  <!--- form -->
-  <form class="example-form" [formGroup]="supplierForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="supplierForm" (ngSubmit)="onSubmit()">
     <div class="row">
-      <mat-form-field appearance="outline" class="half-width">
-        <mat-label>Supplier Name</mat-label>
-        <mat-icon matPrefix>storefront</mat-icon>
-        <input matInput maxlength="20" placeholder="Enter Supplier Name" type="text" formControlName="supplierName"/>
-      </mat-form-field>
+      <div class="half-width">
+        <label for="supplierName">Supplier Name</label>
+        <input id="supplierName" type="text" maxlength="20" placeholder="Enter Supplier Name" formControlName="supplierName" />
+      </div>
 
-      <mat-form-field appearance="outline" class="half-width">
-        <mat-label>Contact Person</mat-label>
-        <mat-icon matPrefix>person</mat-icon>
-        <input matInput matInput maxlength="20" placeholder="Enter Contact person" type="text" formControlName="contactPerson"/>
-      </mat-form-field>
+      <div class="half-width">
+        <label for="contactPerson">Contact Person</label>
+        <input id="contactPerson" type="text" maxlength="20" placeholder="Enter Contact Person" formControlName="contactPerson" />
+      </div>
     </div>
 
     <div class="row">
-      <mat-form-field appearance="outline" class="half-width">
-        <mat-label>Contact No</mat-label>
-        <mat-icon matPrefix>phone</mat-icon>
-        <input matInput matInput maxlength="10" placeholder="Enter Contact No" type="text" formControlName="contactNo"/>
-      </mat-form-field>
+      <div class="half-width">
+        <label for="contactNo">Contact No</label>
+        <input id="contactNo" type="text" maxlength="10" placeholder="Enter Contact No" formControlName="contactNo" />
+      </div>
 
-      <mat-form-field appearance="outline" class="half-width">
-        <mat-label>Email Address</mat-label>
-        <mat-icon matPrefix>email</mat-icon>
-        <input matInput matInput maxlength="50" placeholder="Enter Email Address" type="text" formControlName="emailAddress"/>
-      </mat-form-field>
+      <div class="half-width">
+        <label for="emailAddress">Email Address</label>
+        <input id="emailAddress" type="text" maxlength="50" placeholder="Enter Email Address" formControlName="emailAddress" />
+      </div>
     </div>
 
     <div class="row">
-      <mat-form-field appearance="outline" class="half-width">
-        <mat-label>Office Address</mat-label>
-        <mat-icon matPrefix>location_city</mat-icon>
-        <input matInput matInput maxlength="100" placeholder="Enter Office Address" type="text" formControlName="officeAddress"/>
-      </mat-form-field>
+      <div class="half-width">
+        <label for="officeAddress">Office Address</label>
+        <input id="officeAddress" type="text" maxlength="100" placeholder="Enter Office Address" formControlName="officeAddress" />
+      </div>
 
-      <mat-form-field appearance="outline" class="half-width">
-        <mat-label>Postal Address</mat-label>
-        <mat-icon matPrefix>markunread_mailbox</mat-icon>
-        <input matInput matInput maxlength="100" placeholder="Enter Postal Address" type="text" formControlName="postalAddress"/>
-      </mat-form-field>
+      <div class="half-width">
+        <label for="postalAddress">Postal Address</label>
+        <input id="postalAddress" type="text" maxlength="100" placeholder="Enter Postal Address" formControlName="postalAddress" />
+      </div>
     </div>
 
     <div class="row">
-      <!-- Type as Checkboxes -->
-      <div class="half-width" appearance="outline" formGroupName="equipmentType">
-        <mat-label>Supply Type</mat-label>
-        <div class="checkbox-options">
-          <mat-checkbox formControlName="machines">Machines</mat-checkbox>
-          <mat-checkbox formControlName="freeweights">Freeweights & Bars</mat-checkbox>
-          <mat-checkbox formControlName="other">Other</mat-checkbox>
-          <mat-checkbox formControlName="supplements">Supplements</mat-checkbox>
+      <div class="half-width">
+        <p class="field-label">Supply Type</p>
+        <div formGroupName="equipmentType" class="checkbox-group">
+          <label class="checkbox-item">
+            <input type="checkbox" formControlName="machines" /> Machines
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" formControlName="freeweights" /> Freeweights &amp; Bars
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" formControlName="other" /> Other
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" formControlName="supplements" /> Supplements
+          </label>
         </div>
       </div>
 
-      <div class="width">
-        <mat-label>Status</mat-label>
-        <mat-button-toggle-group class="status-toggle" color="primary" name="status" appearance="legacy" formControlName="status">
-          <mat-button-toggle [value]="true">Active</mat-button-toggle>
-          <mat-button-toggle [value]="false">Inactive</mat-button-toggle>
-        </mat-button-toggle-group>
+      <div class="half-width">
+        <p class="field-label">Status</p>
+        <div class="status-toggle-group">
+          <label class="toggle-option" [class.active]="supplierForm.get('status').value === true">
+            <input type="radio" formControlName="status" [value]="true" /> Active
+          </label>
+          <label class="toggle-option" [class.active]="supplierForm.get('status').value === false">
+            <input type="radio" formControlName="status" [value]="false" /> Inactive
+          </label>
+        </div>
       </div>
     </div>
 
     <div class="row">
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Remarks</mat-label>
-        <mat-icon matPrefix>notes</mat-icon>
-        <textarea matInput rows="4" maxlength="1000" formControlName="remarks" placeholder="Enter Remarks"></textarea>
-      </mat-form-field>
+      <div class="full-width">
+        <label for="remarks">Remarks</label>
+        <textarea id="remarks" maxlength="1000" placeholder="Enter Remarks" formControlName="remarks"></textarea>
+      </div>
     </div>
 
     <div class="row">
-      <button type="reset" mat-raised-button class="close-button half-width" (click)="closeDialog()"><mat-icon>close</mat-icon>Close</button>
-      <button type="submit" mat-raised-button color="primary" class="submit-button half-width"><mat-icon>check</mat-icon>{{saveButtonLabel}}</button>
+      <button type="button" class="close-button half-width" (click)="closeDialog()">Close</button>
+      <button type="submit" class="submit-button half-width">{{ saveButtonLabel }}</button>
     </div>
   </form>
 </div>

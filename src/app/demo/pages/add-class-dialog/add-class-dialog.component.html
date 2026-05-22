@@ -1,157 +1,107 @@
-<div class="form-section">
-  <!-- title of the form-->
-  <div class="title">
-    <h2 class="form-title">Schedule New Class</h2>
-    <button mat-icon-button class="close-icon" style="padding: 0px" (click)="closeDialog()">
-      <img src="../../../../assets/images/icon/close-icon.png">
-    </button>
+<div class="dialog-container">
+
+  <!-- Header -->
+  <div class="dialog-header">
+    <h3>{{ mode === 'edit' ? 'Edit Class' : 'Schedule New Class' }}</h3>
+    <button type="button" class="close-btn" (click)="closeDialog()">✕</button>
   </div>
 
-  <!--- form -->
-  <form [formGroup]="classForm" class="example-form" (ngSubmit)="onSubmit()">
-    <div class="row">
-      <mat-form-field appearance="outline" class="half-width">
-        <input matInput placeholder="Ex: Cardio" formControlName="classTitle" />
-        <span class="required-message" *ngIf="submitted && classForm.get('classTitle').invalid">
-          <ng-container *ngIf="classForm.get('classTitle').hasError('required')">Class Title is required</ng-container>
-          <ng-container *ngIf="classForm.get('classTitle').hasError('maxlength')">Maximum 50 characters
-            allowed</ng-container>
-        </span>
-      </mat-form-field>
+  <!-- Form -->
+  <form [formGroup]="classForm" (ngSubmit)="onSubmit()" class="dialog-body">
 
-      <mat-form-field appearance="outline" class="half-width">
-        <mat-label>Description</mat-label>
-        <input matInput placeholder="Ex: 2 hour cardio session" formControlName="description" />
-        <span class="required-message" *ngIf="submitted && classForm.get('description').invalid">
-          <ng-container *ngIf="classForm.get('description').hasError('required')">Class Title is required</ng-container>
-          <ng-container *ngIf="classForm.get('description').hasError('maxlength')">Maximum 200 characters
-            allowed</ng-container>
-        </span>
-      </mat-form-field>
+    <!-- Row 1: Class Title + Description -->
+    <div class="row">
+      <div class="field">
+        <label for="classTitle">Class Title <span class="required">*</span></label>
+        <input id="classTitle" type="text" placeholder="Ex: Cardio" formControlName="classTitle" />
+        <span class="error-msg" *ngIf="submitted && classForm.get('classTitle').hasError('required')">Class Title is required</span>
+        <span class="error-msg" *ngIf="submitted && classForm.get('classTitle').hasError('maxlength')">Maximum 50 characters allowed</span>
+      </div>
+      <div class="field">
+        <label for="description">Description <span class="required">*</span></label>
+        <input id="description" type="text" placeholder="Ex: 2 hour cardio session" formControlName="description" />
+        <span class="error-msg" *ngIf="submitted && classForm.get('description').hasError('required')">Description is required</span>
+        <span class="error-msg" *ngIf="submitted && classForm.get('description').hasError('maxlength')">Maximum 200 characters allowed</span>
+      </div>
     </div>
 
-    <!-- Row 2 -->
+    <!-- Row 2: Date + Start Time -->
     <div class="row">
-      <mat-form-field appearance="outline" class="half-width">
-        <mat-label>Date</mat-label>
-        <input matInput [matDatepicker]="date" formControlName="date" placeholder="MM/DD/YYYY"
-          (dateChange)="onDateChange($event)" />
-        <span class="required-message" *ngIf="submitted && classForm.get('date').invalid">
-          <ng-container *ngIf="classForm.get('date').hasError('required')">Date is required</ng-container>
-          <ng-container *ngIf="classForm.get('date').errors?.['invalidDate']">Invalid date format</ng-container>
-          <ng-container *ngIf="classForm.get('date').errors?.['futureDateValidator']">
-            Class date must be today or a future date
-          </ng-container>
-        </span>
-        <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
-        <mat-datepicker #date></mat-datepicker>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="half-width">
-        <mat-label>Start Time</mat-label>
-        <input matInput placeholder="" formControlName="startTime" type="time" />
-        <span class="required-message" *ngIf="submitted && classForm.get('startTime').invalid">
-          <ng-container *ngIf="classForm.get('startTime').hasError('required')">Start Time is required</ng-container>
-          <ng-container *ngIf="classForm.errors?.['startTimeBeforeEndTimeValidator']">Start Time is
-            required</ng-container>
-        </span>
-        <span class="required-message" *ngIf="submitted && classForm.errors">
-          <ng-container *ngIf="classForm.errors?.['startTimeBeforeEndTimeValidator']">Start time must be before end
-            time</ng-container>
-        </span>
-      </mat-form-field>
+      <div class="field">
+        <label for="date">Date <span class="required">*</span></label>
+        <input id="date" type="date" formControlName="date" (change)="onDateChange($event)" />
+        <span class="error-msg" *ngIf="submitted && classForm.get('date').hasError('required')">Date is required</span>
+        <span class="error-msg" *ngIf="submitted && classForm.get('date').errors?.['futureDateValidator']">Class date must be today or a future date</span>
+      </div>
+      <div class="field">
+        <label for="startTime">Start Time <span class="required">*</span></label>
+        <input id="startTime" type="time" formControlName="startTime" />
+        <span class="error-msg" *ngIf="submitted && classForm.get('startTime').hasError('required')">Start Time is required</span>
+        <span class="error-msg" *ngIf="submitted && classForm.errors?.['startTimeBeforeEndTimeValidator']">Start time must be before end time</span>
+      </div>
     </div>
 
-    <!-- Row 3 -->
+    <!-- Row 3: End Time + Conductor Name -->
     <div class="row">
-      <mat-form-field appearance="outline" class="half-width">
-        <mat-label>End Time</mat-label>
-        <input matInput placeholder="" formControlName="endTime" type="time" />
-        <span class="required-message" *ngIf="submitted && classForm.get('endTime').invalid">
-          <ng-container *ngIf="classForm.get('endTime').hasError('required')">End Time is required</ng-container>
-        </span>
-        <span class="required-message" *ngIf="submitted && classForm.errors">
-          <ng-container *ngIf="classForm.errors?.['startTimeBeforeEndTimeValidator']">End time must be after start
-            time</ng-container>
-        </span>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="half-width">
-        <mat-label>Conductor Name</mat-label>
-        <input matInput formControlName="conductorName" placeholder="Ex. Smith" />
-        <span class="required-message" *ngIf="submitted && classForm.get('conductorName').invalid">
-          <ng-container *ngIf="classForm.get('conductorName').hasError('required')">Conductor Name is
-            required</ng-container>
-          <ng-container *ngIf="classForm.get('conductorName').hasError('maxlength')">Maximum 50 characters
-            allowed</ng-container>
-          <ng-container *ngIf="classForm.get('conductorName').hasError('pattern')">
-            Numbers and special characters are not allowed
-          </ng-container>
-        </span>
-      </mat-form-field>
+      <div class="field">
+        <label for="endTime">End Time <span class="required">*</span></label>
+        <input id="endTime" type="time" formControlName="endTime" />
+        <span class="error-msg" *ngIf="submitted && classForm.get('endTime').hasError('required')">End Time is required</span>
+        <span class="error-msg" *ngIf="submitted && classForm.errors?.['startTimeBeforeEndTimeValidator']">End time must be after start time</span>
+      </div>
+      <div class="field">
+        <label for="conductorName">Conductor Name <span class="required">*</span></label>
+        <input id="conductorName" type="text" placeholder="Ex. Smith" formControlName="conductorName" />
+        <span class="error-msg" *ngIf="submitted && classForm.get('conductorName').hasError('required')">Conductor Name is required</span>
+        <span class="error-msg" *ngIf="submitted && classForm.get('conductorName').hasError('maxlength')">Maximum 50 characters allowed</span>
+        <span class="error-msg" *ngIf="submitted && classForm.get('conductorName').hasError('pattern')">Numbers and special characters are not allowed</span>
+      </div>
     </div>
 
-    <!-- Row 4 -->
+    <!-- Row 4: Profession + Number of Slots -->
     <div class="row">
-      <mat-form-field appearance="outline" class="half-width">
-        <mat-label>Profession</mat-label>
-        <input matInput formControlName="profession" placeholder="" />
-        <span class="required-message" *ngIf="submitted && classForm.get('profession').invalid">
-          <ng-container *ngIf="classForm.get('profession').hasError('required')">Profession is required</ng-container>
-          <ng-container *ngIf="classForm.get('profession').hasError('maxlength')">Maximum 50 characters
-            allowed</ng-container>
-          <ng-container *ngIf="classForm.get('profession').hasError('pattern')">
-            Numbers and special characters are not allowed
-          </ng-container>
-        </span>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="half-width">
-        <mat-label>Number of Slots</mat-label>
-        <input matInput formControlName="totalSlots" placeholder="" type="number" />
-        <span class="required-message" *ngIf="submitted && classForm.get('totalSlots').invalid">
-          <ng-container *ngIf="classForm.get('totalSlots').hasError('required')">Number of Slots is
-            required</ng-container>
-          <ng-container *ngIf="classForm.get('totalSlots').hasError('min')">Minimum 1 slot is required</ng-container>
-          <ng-container *ngIf="classForm.get('totalSlots').hasError('max')">Maximum allowed slots is 25</ng-container>
-          <ng-container *ngIf="classForm.get('totalSlots').hasError('pattern')">Only numeric values are
-            allowed.</ng-container>
-        </span>
-      </mat-form-field>
+      <div class="field">
+        <label for="profession">Profession <span class="required">*</span></label>
+        <input id="profession" type="text" placeholder="Ex: Personal Trainer" formControlName="profession" />
+        <span class="error-msg" *ngIf="submitted && classForm.get('profession').hasError('required')">Profession is required</span>
+        <span class="error-msg" *ngIf="submitted && classForm.get('profession').hasError('maxlength')">Maximum 50 characters allowed</span>
+        <span class="error-msg" *ngIf="submitted && classForm.get('profession').hasError('pattern')">Numbers and special characters are not allowed</span>
+      </div>
+      <div class="field">
+        <label for="totalSlots">Number of Slots <span class="required">*</span></label>
+        <input id="totalSlots" type="number" placeholder="e.g. 15" formControlName="totalSlots" />
+        <span class="error-msg" *ngIf="submitted && classForm.get('totalSlots').hasError('required')">Number of Slots is required</span>
+        <span class="error-msg" *ngIf="submitted && classForm.get('totalSlots').hasError('min')">Minimum 1 slot is required</span>
+        <span class="error-msg" *ngIf="submitted && classForm.get('totalSlots').hasError('max')">Maximum allowed slots is 25</span>
+        <span class="error-msg" *ngIf="submitted && classForm.get('totalSlots').hasError('pattern')">Only numeric values are allowed</span>
+      </div>
     </div>
 
-    <!-- Row 5 -->
+    <!-- Row 5: Class Fee + Status -->
     <div class="row">
-      <mat-form-field appearance="outline" class="half-width">
-        <mat-label>Class fee (LKR)</mat-label>
-        <input matInput formControlName="fee" placeholder="" />
-        <span class="required-message" *ngIf="submitted && classForm.get('fee').invalid">
-          <ng-container *ngIf="classForm.get('fee').hasError('required')">Class fee is required</ng-container>
-          <ng-container *ngIf="classForm.get('fee').hasError('min')">Fee cannot be negative</ng-container>
-          <ng-container *ngIf="classForm.get('fee').hasError('pattern')">
-            Enter a valid amount (up to 2 decimal places, e.g., 1500 or 1500.50)
-          </ng-container>
-        </span>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="half-width">
-        <mat-label>Status</mat-label>
-        <mat-select formControlName="status">
-          <mat-option value="Scheduled">Scheduled</mat-option>
-          <mat-option value="Cancelled">Cancelled</mat-option>
-          <mat-option value="Completed">Completed</mat-option>
-        </mat-select>
-        <span class="required-message" *ngIf="submitted && classForm.get('status').invalid">
-          <ng-container *ngIf="classForm.get('status').hasError('required')">Status is required</ng-container>
-        </span>
-      </mat-form-field>
+      <div class="field">
+        <label for="fee">Class Fee (LKR) <span class="required">*</span></label>
+        <input id="fee" type="text" placeholder="e.g. 1500" formControlName="fee" />
+        <span class="error-msg" *ngIf="submitted && classForm.get('fee').hasError('required')">Class fee is required</span>
+        <span class="error-msg" *ngIf="submitted && classForm.get('fee').hasError('pattern')">Enter a valid amount (up to 2 decimal places)</span>
+      </div>
+      <div class="field">
+        <label for="status">Status <span class="required">*</span></label>
+        <select id="status" formControlName="status" class="select-input">
+          <option value="" disabled>Select Status</option>
+          <option value="Scheduled">Scheduled</option>
+          <option value="Cancelled">Cancelled</option>
+          <option value="Completed">Completed</option>
+        </select>
+        <span class="error-msg" *ngIf="submitted && classForm.get('status').hasError('required')">Status is required</span>
+      </div>
     </div>
 
-    <div class="row">
-      <button type="submit" mat-raised-button class="register-button half-width" [disabled]="submitDisabled">
-        {{ saveButtonLabel }}
-      </button>
-      <button type="reset" mat-raised-button class="reset-button half-width" (click)="resetData()">Reset</button>
+    <!-- Actions -->
+    <div class="action">
+      <button type="button" class="btn secondary" (click)="resetData()">Reset</button>
+      <button type="submit" class="btn primary" [disabled]="submitDisabled">{{ saveButtonLabel }}</button>
     </div>
+
   </form>
 </div>

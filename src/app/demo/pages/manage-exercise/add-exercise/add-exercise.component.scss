@@ -1,27 +1,51 @@
+@import 'src/scss/settings/colors';
+
+/* Form Container */
 .form-container {
   width: 750px;
   max-height: 80vh;
-  background: #fff;
-  border-radius: 12px;
+  background: $ff-bg-surface;
+  border-radius: $ff-radius-md;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  font-family: 'Satoshi', sans-serif;
+  font-family: $ff-font;
+  box-shadow: $ff-shadow-card;
 }
 
 /* Header */
 .form-header {
   display: flex;
   justify-content: space-between;
-  padding: 20px;
-  border-bottom: 1px solid #eee;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid $ff-border-default;
+  flex-shrink: 0;
+
+  h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: $ff-text-primary;
+    letter-spacing: 0.2px;
+  }
 }
 
+/* Close Button */
 .close-btn {
-  background: none;
+  background: transparent;
   border: none;
+  color: $ff-text-secondary;
   font-size: 18px;
   cursor: pointer;
+  padding: 4px 8px;
+  border-radius: $ff-radius-sm;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: $ff-bg-hover;
+    color: $ff-text-primary;
+  }
 }
 
 /* Body */
@@ -30,29 +54,50 @@
   overflow-y: auto;
 }
 
-/* Section */
+/* Section Title */
 .section-title {
-  font-size: 15px;
-  font-weight: 600;
-  margin-top: 0px;
+  font-size: 13px;
+  font-weight: 700;
+  color: $ff-text-secondary;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin: 0 0 8px;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid $ff-border-default;
+  margin: 12px 0;
 }
 
 .divider {
-  border: none;
-  border-top: 1px solid #eee;
-  margin: 5px 0 5px;
+  display: none;
 }
 
-/* Grid */
+/* Grid Layout */
 .grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
+  margin-bottom: 4px;
 }
 
+/* Field */
 .field {
   display: flex;
   flex-direction: column;
+
+  label {
+    font-size: 13px;
+    font-weight: 600;
+    color: $ff-text-secondary;
+    margin-bottom: 6px;
+  }
+
+  .required {
+    color: $ff-danger;
+    margin-left: 2px;
+  }
 }
 
 .field.full {
@@ -60,20 +105,58 @@
 }
 
 /* Inputs */
-input, select, textarea {
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-  background: #fafafa;
+input,
+select,
+textarea {
+  padding: 0 10px;
+  border-radius: $ff-radius-sm;
+  border: 1px solid $ff-border-default;
+  background: $ff-bg-input;
+  font-size: 14px;
+  color: $ff-text-primary;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: $ff-font;
+  transition: border-color 0.2s ease, background 0.2s ease;
+
+  &::placeholder {
+    color: $ff-text-dim;
+  }
+
+  &:focus {
+    border-color: $ff-border-accent;
+    background: $ff-bg-elevated;
+    outline: none;
+  }
 }
 
-input:focus, select:focus, textarea:focus {
-  border-color: #222;
-  background: #fff;
-  outline: none;
+input {
+  height: 38px;
 }
 
-/* Buttons */
+textarea {
+  height: 72px;
+  padding: 8px 10px;
+  resize: vertical;
+}
+
+select {
+  height: 38px;
+  appearance: none;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%239BA3B8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-color: $ff-bg-input;
+  padding-right: 32px;
+
+  option {
+    background: $ff-bg-surface;
+    color: $ff-text-primary;
+  }
+}
+
+/* Action Buttons */
 .action-buttons {
   margin-top: 20px;
   display: grid;
@@ -81,35 +164,46 @@ input:focus, select:focus, textarea:focus {
   gap: 16px;
 }
 
-button {
-  padding: 10px 16px;
+.register-button {
+  height: 38px;
+  border-radius: $ff-radius-sm;
   font-size: 14px;
   font-weight: 600;
-  border-radius: 8px;
   border: none;
   cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.register-button {
-  background-color: #222;
+  transition: all 0.2s ease;
+  background: $ff-accent-primary;
   color: #fff;
-}
+  font-family: $ff-font;
 
-.register-button:hover {
-  background-color: #444;
-}
+  &:hover:not(:disabled) {
+    background: $ff-accent-hover;
+    box-shadow: $ff-shadow-orange;
+    transform: translateY(-1px);
+  }
 
-.register-button:disabled {
-  background-color: #a1a1aa;
-  cursor: not-allowed;
+  &:disabled {
+    background: $ff-bg-elevated;
+    color: $ff-text-dim;
+    cursor: not-allowed;
+  }
 }
 
 .reset-button {
-  background-color: #f3f4f6;
-  color: #222;
-}
+  height: 38px;
+  border-radius: $ff-radius-sm;
+  font-size: 14px;
+  font-weight: 600;
+  border: 1px solid $ff-border-default;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: $ff-bg-elevated;
+  color: $ff-text-secondary;
+  font-family: $ff-font;
 
-.reset-button:hover {
-  background-color: #e5e7eb;
+  &:hover {
+    background: $ff-bg-hover;
+    border-color: $ff-border-accent;
+    color: $ff-text-primary;
+  }
 }

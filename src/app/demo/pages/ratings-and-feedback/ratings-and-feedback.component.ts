@@ -1,5 +1,6 @@
 import { Component, inject, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import moment from 'moment';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -256,7 +257,7 @@ export class RatingsAndFeedbackComponent {
 
     // patching date values after formatting
     this.feedbackForm.patchValue({
-      date: new Date(data.date)
+      date: moment(data.date).format('YYYY-MM-DD')
     });
 
      this.rating = data.rating;

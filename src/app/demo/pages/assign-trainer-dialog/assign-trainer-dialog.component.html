@@ -1,45 +1,37 @@
 <div class="form-section">
-  <!-- title of the form-->
   <div class="title">
     <h2 class="form-title">Assign Trainer</h2>
-    <button mat-icon-button class="close-icon" style="padding: 0px" (click)="closeDialog()">
-<img src="../../../../assets/images/icon/close-icon.png">
-    </button>
+    <button class="close-icon" (click)="closeDialog()">&#x2715;</button>
   </div>
 
-  <!--- form -->
-  <form [formGroup]="assignTrainerForm" class="example-form" (ngSubmit)="onSubmit()">
+  <form [formGroup]="assignTrainerForm" (ngSubmit)="onSubmit()">
     <div class="row">
-      <mat-form-field appearance="outline" class="half-width">
-        <mat-label>Select Member</mat-label>
-        <mat-select formControlName="member" (selectionChange)="onMemberSelect($event)">
-          <mat-option *ngFor="let member of memberList" [value]="member.firstName">
-            {{ member.firstName }}
-          </mat-option>
-        </mat-select>
+      <div class="half-width">
+        <label for="member">Select Member <span class="required">*</span></label>
+        <select id="member" formControlName="member" (change)="onMemberSelect($event)">
+          <option value="" disabled>-- Select Member --</option>
+          <option *ngFor="let member of memberList" [value]="member.firstName">{{ member.firstName }}</option>
+        </select>
         <span class="required-message" *ngIf="submitted && assignTrainerForm.get('member').invalid">
           <ng-container *ngIf="assignTrainerForm.get('member').hasError('required')">Member is required</ng-container>
         </span>
-      </mat-form-field>
+      </div>
 
-      <mat-form-field appearance="outline" class="half-width">
-        <mat-label>Select Trainer</mat-label>
-        <mat-select formControlName="trainer" (selectionChange)="onTrainerSelect($event)">
-          <mat-option *ngFor="let trainer of trainerList" [value]="trainer.firstName">
-            {{ trainer.firstName }}
-          </mat-option>
-        </mat-select>
+      <div class="half-width">
+        <label for="trainer">Select Trainer <span class="required">*</span></label>
+        <select id="trainer" formControlName="trainer" (change)="onTrainerSelect($event)">
+          <option value="" disabled>-- Select Trainer --</option>
+          <option *ngFor="let trainer of trainerList" [value]="trainer.firstName">{{ trainer.firstName }}</option>
+        </select>
         <span class="required-message" *ngIf="submitted && assignTrainerForm.get('trainer').invalid">
           <ng-container *ngIf="assignTrainerForm.get('trainer').hasError('required')">Trainer is required</ng-container>
         </span>
-      </mat-form-field>
+      </div>
     </div>
 
     <div class="row">
-      <button type="submit" mat-raised-button class="register-button half-width" [disabled]="submitDisabled">
-        {{ registerButtonLabel }}
-      </button>
-      <button type="reset" mat-raised-button class="reset-button half-width" (click)="resetData()">Reset</button>
+      <button type="submit" class="register-button half-width" [disabled]="submitDisabled">{{ registerButtonLabel }}</button>
+      <button type="button" class="reset-button half-width" (click)="resetData()">Reset</button>
     </div>
   </form>
 </div>

@@ -1,132 +1,110 @@
 <div class="form-section">
-  <!-- title of the form-->
   <div class="title">
     <h2 class="form-title">Add New Progress</h2>
-    <button mat-icon-button class="close-icon" style="padding: 0px" (click)="closeDialog()">
-      <img src="../../../../assets/images/icon/close-icon.png">
-    </button>
+    <button class="close-icon" (click)="closeDialog()">&#x2715;</button>
   </div>
 
-  <!--- form -->
-  <form class="example-form" [formGroup]="progressForm" (ngSubmit)="onSubmit()">
-    <div class="row"> 
-      <mat-form-field appearance="outline" class="half-width">
-        <mat-label>Date</mat-label>
-        <input matInput [matDatepicker]="join" placeholder="MM/DD/YYYY" formControlName="date" />
-        <mat-datepicker-toggle matSuffix [for]="join"></mat-datepicker-toggle>
-        <mat-datepicker #join></mat-datepicker>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="half-width">
-        <mat-label>Weight (Kg)</mat-label>
-        <input matInput maxlength="20" placeholder="Enter Weight" type="number" formControlName="weight" />
-      </mat-form-field>
-    </div>
-
+  <form [formGroup]="progressForm" (ngSubmit)="onSubmit()">
     <div class="row">
-      <mat-form-field appearance="outline" class="half-width">
-        <mat-label>Height (cm)</mat-label>
-        <input matInput maxlength="20" placeholder="Enter Height" type="number" formControlName="height" />
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="half-width">
-        <mat-label>Waist Circumference (cm)</mat-label>
-        <input matInput maxlength="50" placeholder="Enter Waist Circumference (cm)" type="number"
-          formControlName="waist" />
-      </mat-form-field>
-    </div>
-
-    <div class="row">
-      <mat-form-field appearance="outline" class="half-width">
-        <mat-label>Hip Circumference (cm)</mat-label>
-        <input matInput maxlength="50" placeholder="Enter Hip Circumference (cm)" type="number" formControlName="hip" />
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="half-width">
-        <mat-label>Neck Circumference (cm)</mat-label>
-        <input matInput maxlength="50" placeholder="Enter Neck Circumference (cm)" type="number"
-          formControlName="neck" />
-      </mat-form-field>
-    </div>
-
-    <div class="row">
-      <mat-form-field appearance="outline" class="half-width">
-        <mat-label>BMI</mat-label>
-        <input matInput maxlength="20" placeholder="Auto-calculated" [readonly]="true" type="number"
-          formControlName="bmi" />
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="half-width">
-        <mat-label>Body Fat %</mat-label>
-        <input matInput maxlength="20" placeholder="Auto-calculated" [readonly]="true" type="number"
-          formControlName="bodyFat" />
-      </mat-form-field>
-    </div>
-
-    <div class="row">
-      <mat-form-field appearance="outline" class="half-width">
-        <mat-label>Gender</mat-label>
-        <mat-select formControlName="gender">
-          <mat-option value="Male">Male</mat-option>
-          <mat-option value="Female">Female</mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field appearance="outline" class="half-width">
-        <mat-label>Remarks</mat-label>
-        <textarea matInput maxlength="1000" placeholder="Enter Remarks" formControlName="remarks"></textarea>
-      </mat-form-field>
-    </div>
-
-    <div class="row">
-      <mat-label>Upload Photos</mat-label>
-      <br />
-      <br />
-
-      <!-- Front View -->
       <div class="half-width">
-        <mat-label>Front View</mat-label>
-        <br />
-        <button [disabled]="submitted" type="button" mat-raised-button (click)="frontFileInput.click()"
-          class="mb-2">Choose File</button>
-        <div>
-          <img [src]="frontImageUrl || 'assets/images/authentication/google.svg'" width="50px" height="50px" />
+        <label for="date">Date <span class="required">*</span></label>
+        <input id="date" type="date" formControlName="date" />
+      </div>
+
+      <div class="half-width">
+        <label for="weight">Weight (Kg) <span class="required">*</span></label>
+        <input id="weight" type="number" maxlength="20" placeholder="Enter Weight" formControlName="weight" />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="half-width">
+        <label for="height">Height (cm) <span class="required">*</span></label>
+        <input id="height" type="number" maxlength="20" placeholder="Enter Height" formControlName="height" />
+      </div>
+
+      <div class="half-width">
+        <label for="waist">Waist Circumference (cm) <span class="required">*</span></label>
+        <input id="waist" type="number" placeholder="Enter Waist Circumference (cm)" formControlName="waist" />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="half-width">
+        <label for="hip">Hip Circumference (cm) <span class="required">*</span></label>
+        <input id="hip" type="number" placeholder="Enter Hip Circumference (cm)" formControlName="hip" />
+      </div>
+
+      <div class="half-width">
+        <label for="neck">Neck Circumference (cm) <span class="required">*</span></label>
+        <input id="neck" type="number" placeholder="Enter Neck Circumference (cm)" formControlName="neck" />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="half-width">
+        <label for="bmi">BMI</label>
+        <input id="bmi" type="number" placeholder="Auto-calculated" formControlName="bmi" readonly />
+      </div>
+
+      <div class="half-width">
+        <label for="bodyFat">Body Fat %</label>
+        <input id="bodyFat" type="number" placeholder="Auto-calculated" formControlName="bodyFat" readonly />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="half-width">
+        <label for="gender">Gender <span class="required">*</span></label>
+        <select id="gender" formControlName="gender">
+          <option value="" disabled>-- Select Gender --</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+        </select>
+      </div>
+
+      <div class="half-width">
+        <label for="remarks">Remarks</label>
+        <textarea id="remarks" maxlength="1000" placeholder="Enter Remarks" formControlName="remarks"></textarea>
+      </div>
+    </div>
+
+    <div class="row photo-upload-row">
+      <p class="field-label">Upload Photos</p>
+    </div>
+
+    <div class="row">
+      <div class="half-width photo-upload">
+        <p class="field-label">Front View</p>
+        <button type="button" class="choose-file-btn" (click)="frontFileInput.click()" [disabled]="submitted">Choose File</button>
+        <div class="preview-box">
+          <img [src]="frontImageUrl || 'assets/images/authentication/google.svg'" width="50" height="50" alt="Front view preview" />
         </div>
         <input hidden (change)="onFileSelected($event, 'front')" #frontFileInput type="file" />
       </div>
 
-      <!-- Side View -->
-      <div class="half-width">
-        <mat-label>Side View</mat-label>
-        <br />
-        <button [disabled]="submitted" type="button" mat-raised-button (click)="sideFileInput.click()"
-          class="mb-2">Choose File</button>
-        <div>
-          <img [src]="sideImageUrl || 'assets/images/authentication/google.svg'" width="50px" height="50px" />
+      <div class="half-width photo-upload">
+        <p class="field-label">Side View</p>
+        <button type="button" class="choose-file-btn" (click)="sideFileInput.click()" [disabled]="submitted">Choose File</button>
+        <div class="preview-box">
+          <img [src]="sideImageUrl || 'assets/images/authentication/google.svg'" width="50" height="50" alt="Side view preview" />
         </div>
         <input hidden (change)="onFileSelected($event, 'side')" #sideFileInput type="file" />
       </div>
 
-      <!-- Back View -->
-      <div class="half-width">
-        <mat-label>Back View</mat-label>
-        <br />
-        <button [disabled]="submitted" type="button" mat-raised-button (click)="backFileInput.click()"
-          class="mb-2">Choose File</button>
-        <div>
-          <img [src]="backImageUrl || 'assets/images/authentication/google.svg'" width="50px" height="50px" />
+      <div class="half-width photo-upload">
+        <p class="field-label">Back View</p>
+        <button type="button" class="choose-file-btn" (click)="backFileInput.click()" [disabled]="submitted">Choose File</button>
+        <div class="preview-box">
+          <img [src]="backImageUrl || 'assets/images/authentication/google.svg'" width="50" height="50" alt="Back view preview" />
         </div>
         <input hidden (change)="onFileSelected($event, 'back')" #backFileInput type="file" />
       </div>
     </div>
 
     <div class="row">
-      <button type="reset" mat-raised-button class="close-button half-width" (click)="closeDialog()">
-        Close
-      </button>
-      <button type="submit" mat-raised-button color="primary" class="submit-button half-width" style="color: white;"
-        [disabled]="!progressForm.valid">
-        {{ saveButtonLabel }}
-      </button>
+      <button type="button" class="close-button half-width" (click)="closeDialog()">Close</button>
+      <button type="submit" class="submit-button half-width" [disabled]="!progressForm.valid">{{ saveButtonLabel }}</button>
     </div>
   </form>
 </div>

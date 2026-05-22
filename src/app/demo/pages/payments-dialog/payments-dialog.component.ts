@@ -1,5 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators, AbstractControl } from '@angular/forms';
+import moment from 'moment';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { AssignTrainerServiceService } from 'src/app/services/assign-trainer/assign-trainer-service.service';
@@ -220,9 +221,10 @@ export class PaymentsDialogComponent {
       nextPaymentDate: data.nextPaymentDate
     });
 
+    // patching dates for native date inputs (requires YYYY-MM-DD string)
     this.paymentForm.patchValue({
-      paymentDate: new Date(data.paymentDate),
-      nextPaymentDate: new Date(data.nextPaymentDate),
+      paymentDate: moment(data.paymentDate).format('YYYY-MM-DD'),
+      nextPaymentDate: moment(data.nextPaymentDate).format('YYYY-MM-DD'),
     });
 
     this.registerButtonLabel = "Update";

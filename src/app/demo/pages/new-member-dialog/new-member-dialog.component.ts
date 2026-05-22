@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators, AbstractControl } from '@angular/forms';
+import moment from 'moment';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -178,8 +179,8 @@ export class NewMemberDialogComponent implements OnInit {
     this.submitDisabled = true;
     // patching date values after formatting
     this.memberForm.patchValue({
-      joinedDate: new Date(data.joinedDate),
-      dateOfBirth: new Date(data.dateOfBirth),
+      joinedDate: moment(data.joinedDate).format('YYYY-MM-DD'),
+      dateOfBirth: moment(data.dateOfBirth).format('YYYY-MM-DD'),
     });
 
     this.memberForm.valueChanges.subscribe(() => {

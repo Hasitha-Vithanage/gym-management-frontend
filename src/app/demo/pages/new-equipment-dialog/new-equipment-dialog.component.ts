@@ -4,6 +4,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { HttpService } from 'src/app/services/http.service';
 import { NewEquipmentServiceService } from 'src/app/services/new-equipment/new-equipment-service.service';
+import moment from 'moment';
 
 @Component({
   selector: 'app-new-equipment-dialog',
@@ -155,9 +156,9 @@ export class NewEquipmentDialogComponent {
     });
 
 
-    // patching date values after formatting
+    // patching date for native date input (requires YYYY-MM-DD string)
     this.equipmentForm.patchValue({
-      purchaseDate: new Date(data.purchaseDate),
+      purchaseDate: moment(data.purchaseDate).format('YYYY-MM-DD'),
     });
   }
 }
