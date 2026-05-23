@@ -51,8 +51,8 @@ export class WorkoutManagementService {
     return this.http.post(requestUrl, requestPayload, { headers: headers });
   }
 
-  getTrainerDetails(trainerName: any) {
-    const requestUrl = environment.baseUrl + '/get-trainers-details/' + trainerName;
+  getTrainerDetails(trainerId: number) {
+    const requestUrl = environment.baseUrl + '/trainer/' + trainerId;
 
     let headers = {};
     if (this.httpService.getAuthToken() !== null) {

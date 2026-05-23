@@ -66,7 +66,8 @@ export class AssignTrainerDialogComponent {
     try {
       // check mode (add or edit)
       if (this.mode === 'add') {
-        this.assignTrainerService.serviceCall(this.assignTrainerForm.value).subscribe({
+        const addPayload = { memberId: this.selectedMember, trainerId: this.selectedTrainer };
+        this.assignTrainerService.serviceCall(addPayload).subscribe({
           next: (response: any) => {
             if (this.dataSource && this.dataSource.data && this.dataSource.data.length > 0) {
               this.dataSource = new MatTableDataSource([response, ...this.dataSource.data]);
@@ -84,8 +85,8 @@ export class AssignTrainerDialogComponent {
           }
         });
       } else if (this.mode === 'edit') {
-        // Calling editData function to send the request to the backend
-        this.assignTrainerService.editData(this.selectedData?.id, this.assignTrainerForm.value).subscribe({
+        const editPayload = { memberId: this.selectedMember, trainerId: this.selectedTrainer };
+        this.assignTrainerService.editData(this.selectedData?.id, editPayload).subscribe({
           next: (response: any) => {
             let elementIndex = this.dataSource.data.findIndex((element) => element.id === this.selectedData?.id);
             this.dataSource.data[elementIndex] = response;
@@ -152,6 +153,8 @@ export class AssignTrainerDialogComponent {
       member: data.member,
       trainer: data.trainer
     });
+    this.selectedMember = data.memberId;
+    this.selectedTrainer = data.trainerId;
     this.registerButtonLabel = 'Update';
     this.mode = 'edit';
     this.selectedData = data;

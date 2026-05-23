@@ -63,7 +63,7 @@ export class WorkoutManagementComponent implements OnInit {
     this.workoutService.getTrainerById(this.memberName).subscribe({
       next: (response) => {
         this.trainerDetails = response;
-        this.workoutService.getTrainerDetails(response.trainer).subscribe({
+        this.workoutService.getTrainerDetails(response.trainerId).subscribe({
           next: (trainerData) => {
             this.trainer = trainerData;
             this.isLoading = false;
