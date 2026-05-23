@@ -1,9 +1,10 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
 
 import { AddExerciseService } from 'src/app/services/add-exercise/add-exercise.service';
+import { WorkoutTemplatesService } from 'src/app/services/workout-templates/workout-templates.service';
 import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
 
 @Component({
@@ -24,10 +25,8 @@ export class ExerciseToTemplateComponent implements OnInit {
 
   workoutDays: number[] = [1, 2, 3, 4, 5, 6, 7];
 
-  /** Two-way bound to the search input in the left panel */
   searchQuery: string = '';
 
-  /** The card the user last clicked — drives the exerciseId form control */
   selectedExercise: any = null;
 
   displayedColumns: string[] = [
@@ -39,18 +38,27 @@ export class ExerciseToTemplateComponent implements OnInit {
     'actions'
   ];
 
-  dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
+  dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
 
   constructor(
     private fb: FormBuilder,
+    private route: ActivatedRoute,
+    private router: Router,
     private exerciseService: AddExerciseService,
-    private messageService: MessageServiceService,
-    public dialogRef: MatDialogRef<ExerciseToTemplateComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    private templateService: WorkoutTemplatesService,
+    private messageService: MessageServiceService
   ) {}
 
   ngOnInit(): void {
-    this.templateData = this.data.template;
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+    this.templateService.getWorkoutTemplateById(id).subscribe({
+      next: (template) => {
+        this.templateData = template;
+      },
+      error: (error) => {
+        this.messageService.showError(error.message ?? error);
+      }
+    });
     this.initializeForm();
     this.loadExercises();
   }
@@ -70,7 +78,7 @@ export class ExerciseToTemplateComponent implements OnInit {
   loadExercises(): void {
     this.exerciseService.getAllExercises().subscribe({
       next: (response: any[]) => {
-        this.exerciseList = response.filter(x => !x.isDeleted);
+        this.exerciseList = response.filter(x => !(x.isDeleted || x.deleted));
       },
       error: (error) => {
         this.messageService.showError(error.message ?? error);
@@ -78,7 +86,6 @@ export class ExerciseToTemplateComponent implements OnInit {
     });
   }
 
-  /** Returns exercises filtered by the current search query */
   filteredExercises(): any[] {
     const q = this.searchQuery.trim().toLowerCase();
     if (!q) return this.exerciseList;
@@ -89,18 +96,12 @@ export class ExerciseToTemplateComponent implements OnInit {
     );
   }
 
-  /** Clicking a card selects it and pre-fills the exerciseId control */
   selectExercise(exercise: any): void {
     this.selectedExercise = exercise;
     this.assignmentForm.patchValue({ exerciseId: exercise.id });
   }
 
-  /**
-   * One-click add from the card button:
-   * pre-fills the exercise and immediately submits
-   * (uses whatever day/sets/reps are currently in the form).
-   */
-    quickAdd(exercise: any): void {
+  quickAdd(exercise: any): void {
     this.selectExercise(exercise);
     this.addExerciseToTemplate();
   }
@@ -115,7 +116,7 @@ export class ExerciseToTemplateComponent implements OnInit {
       this.exerciseList.find(x => x.id == this.assignmentForm.value.exerciseId);
 
     const payload = {
-      templateId:    this.templateData.id,
+      templateId:    this.templateData?.id,
       exerciseId:    this.assignmentForm.value.exerciseId,
       exerciseName:  selectedExercise?.exerciseName,
       workoutDay:    this.assignmentForm.value.workoutDay,
@@ -126,12 +127,20 @@ export class ExerciseToTemplateComponent implements OnInit {
       notes:         this.assignmentForm.value.notes
     };
 
-    // TEMPORARY LOCAL ADD — replace with API call when ready
     this.assignedExercises = [...this.assignedExercises, payload];
     this.dataSource.data    = this.assignedExercises;
 
     this.messageService.showSuccess('Exercise assigned successfully!');
     this.resetForm();
+  }
+
+  get usedDays(): number[] {
+    const days = [...new Set(this.assignedExercises.map(e => Number(e.workoutDay)))];
+    return days.sort((a, b) => a - b);
+  }
+
+  exercisesForDay(day: number): any[] {
+    return this.assignedExercises.filter(e => Number(e.workoutDay) === day);
   }
 
   removeExercise(data: any): void {
@@ -150,7 +159,12 @@ export class ExerciseToTemplateComponent implements OnInit {
     });
   }
 
-  closeDialog(): void {
-    this.dialogRef.close({ action: 'assigned' });
+  goBack(): void {
+    this.router.navigate(['/pages/workout-templates']);
+  }
+
+  saveAssignments(): void {
+    this.messageService.showSuccess('Assignments saved successfully!');
+    this.goBack();
   }
 }

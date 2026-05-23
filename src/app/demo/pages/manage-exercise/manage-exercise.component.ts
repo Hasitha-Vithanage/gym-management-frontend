@@ -34,7 +34,7 @@ export class ManageExerciseComponent implements OnInit {
     'actions'
   ];
 
-  dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
+  dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -68,7 +68,7 @@ export class ManageExerciseComponent implements OnInit {
   public populateData(): void {
     this.exerciseService.getAllExercises().subscribe({
       next: (dataList: any[]) => {
-        const activeExercises = dataList.filter((e) => !e.isDeleted);
+        const activeExercises = dataList.filter((e) => !(e.isDeleted || e.deleted));
         this.dataSource = new MatTableDataSource(activeExercises);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;

@@ -6,7 +6,6 @@ import { MemberRegistrationComponent } from './member-registration/member-regist
 import { WorkoutManagementComponent } from './workout-management/workout-management.component';
 import { SupplierRegistrationComponent } from './supplier-registration/supplier-registration.component';
 import { EquipmentRegistrationComponent } from './equipment-registration/equipment-registration.component';
-import { BeginnerWorkoutPlanComponent } from './beginner-workout-plan/beginner-workout-plan.component';
 import { ProgressTrackingComponent } from './progress-tracking/progress-tracking.component';
 import { RatingsAndFeedbackComponent } from './ratings-and-feedback/ratings-and-feedback.component';
 import { NutritionAndMealPlanComponent } from './nutrition-and-meal-plan/nutrition-and-meal-plan.component';
@@ -21,7 +20,6 @@ import { AssignTrainerComponent } from './assign-trainer/assign-trainer.componen
 import { MemberListComponent } from './reports/static-reports/components/member-list/member-list.component';
 import { TrainerLoginComponent } from './trainer-login/trainer-login/trainer-login.component';
 import { MemberLoginComponent } from './member-login/member-login/member-login.component';
-import { IntermediateWorkoutPlanComponent } from './intermediate-workout-plan/intermediate-workout-plan.component';
 import { GymChartsComponent } from './gym-charts/gym-charts.component';
 import { WorkoutPlanUploadComponent } from './workout-plan-upload/workout-plan-upload.component';
 import { MyWorkoutPlanComponent } from './my-workout-plan/my-workout-plan.component';
@@ -42,6 +40,7 @@ import { GoalBasedCalorieTargetComponent } from './goal-based-calorie-target/goa
 import { WorkoutPlanGeneratorComponent } from './workout-plan-generator/workout-plan-generator.component';
 import { ManageExerciseComponent } from './manage-exercise/manage-exercise.component';
 import { WorkoutTemplateComponent } from './manage-exercise/workout-template/workout-template.component';
+import { ExerciseToTemplateComponent } from './manage-exercise/workout-template/exercise-to-template/exercise-to-template.component';
 
 export const PagesRoutes: Routes = [
   {
@@ -85,16 +84,16 @@ export const PagesRoutes: Routes = [
     component: WorkoutTemplateComponent
   },
   {
+    path: 'exercise-to-template/:id',
+    component: ExerciseToTemplateComponent
+  },
+  {
     path: 'suppliers',
     component: SupplierRegistrationComponent
   },
   {
     path: 'equipments',
     component: EquipmentRegistrationComponent
-  },
-  {
-    path: 'beginner-workout-plan',
-    component: BeginnerWorkoutPlanComponent
   },
   {
     path: 'progress-tracking',
@@ -159,10 +158,6 @@ export const PagesRoutes: Routes = [
   {
     path: 'charts',
     component: GymChartsComponent
-  },
-  {
-    path: 'intermediate-workout-plan',
-    component: IntermediateWorkoutPlanComponent
   },
   {
     path: 'workout-plan-upload',

@@ -34,7 +34,7 @@ export class AddExerciseService {
   /** GET all (filters soft-deleted locally as fallback) */
   getAllExercises(): Observable<Exercise[]> {
     return this.http.get<Exercise[]>(this.baseUrl).pipe(
-      map((data) => data.filter((e) => !e.isDeleted)),
+      map((data) => data.filter((e) => !(e.isDeleted || (e as any).deleted))),
       catchError(this.handleError)
     );
   }

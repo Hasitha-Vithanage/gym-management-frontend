@@ -1,8 +1,7 @@
-import { Component } from '@angular/core';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { HttpService } from 'src/app/services/http.service';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { WorkoutTemplatesService, WorkoutTemplate } from 'src/app/services/workout-templates/workout-templates.service';
 import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
-import { WorkoutPlanUploadService } from 'src/app/services/workout-plan-upload/workout-plan-upload.service';
 
 @Component({
   selector: 'app-my-workout-plan',
@@ -10,127 +9,56 @@ import { WorkoutPlanUploadService } from 'src/app/services/workout-plan-upload/w
   templateUrl: './my-workout-plan.component.html',
   styleUrl: './my-workout-plan.component.scss'
 })
-export class MyWorkoutPlanComponent {
-  pdfUrl: SafeResourceUrl | null = null;
+export class MyWorkoutPlanComponent implements OnInit {
+
+  templates: WorkoutTemplate[] = [];
   isLoading = true;
-  hasPdf = false;
-
-  userProfile: {
-    photoUrl: string;
-    name: string;
-    lastWorkoutDate: Date;
-  } | null = null;
-
-  userStats: {
-    completedWorkouts: number;
-    currentGoal: string;
-    nextWorkoutDate: Date;
-  } | null = null;
-
-  workoutPlanLastUpdated: Date | null = null;
-
-  private rawPdfBlob: Blob | null = null; // store raw blob for download
+  level: string | null = null;
+  goal: string | null = null;
 
   constructor(
-    private uploadWorkoutService: WorkoutPlanUploadService,
-    private messageService: MessageServiceService,
-    private httpService: HttpService,
-    private sanitizer: DomSanitizer
+    private route: ActivatedRoute,
+    private router: Router,
+    private workoutTemplatesService: WorkoutTemplatesService,
+    private messageService: MessageServiceService
   ) {}
 
   ngOnInit(): void {
-    // this.loadUserProfile();
-    this.populateData();
-  }
+    this.level = this.route.snapshot.queryParamMap.get('level');
+    this.goal  = this.route.snapshot.queryParamMap.get('goal');
 
-  // private loadUserProfile(): void {
-  //   // Replace this with actual service call or logic to fetch user profile data
-  //   const cachedName = this.httpService.getLoginNameFromCache();
-  //   this.userProfile = {
-  //     photoUrl: 'assets/default-user.png', // fallback or from real user data
-  //     name: cachedName || 'User',
-  //     lastWorkoutDate: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000) // 5 days ago example
-  //   };
-  // }
+    if (!this.level || !this.goal) {
+      this.isLoading = false;
+      return;
+    }
 
-  // populateData(): void {
-  //   const userId = this.httpService.getLoginNameFromCache();
-
-  //   this.uploadWorkoutService.getPdf(userId).subscribe({
-  //     next: (data: Blob) => {
-  //       const blob = new Blob([data], { type: 'application/pdf' });
-  //       const url = URL.createObjectURL(blob);
-  //       this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
-  //       this.rawPdfBlob = blob;
-
-  //       console.log("response Data: ", data);
-
-  //     },
-  //     error: (err) => {
-  //       this.messageService.showError('Workout plan not available for this user.');
-  //       this.isLoading = false;
-  //       this.hasPdf = false;
-  //       this.rawPdfBlob = null;
-  //       this.pdfUrl = null;
-  //     }
-  //   });
-  // }
-
-  populateData(): void {
-    const userId = this.httpService.getLoginNameFromCache();
-
-    this.uploadWorkoutService.getPdf(userId).subscribe({
-      next: (data: Blob) => {
-        this.rawPdfBlob = data;
-        this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(data));
-        this.hasPdf = true;
+    this.workoutTemplatesService.getTemplatesByFilter(this.level, this.goal).subscribe({
+      next: (data) => {
+        this.templates = data;
         this.isLoading = false;
-        this.workoutPlanLastUpdated = new Date(); // Set to now or get real timestamp if available
-
-        console.log('response Data: ', data);
       },
-      error: (err) => {
-        this.messageService.showInfo('Workout plan not available for this user.');
+      error: () => {
+        this.messageService.showError('Could not load workout plans.');
         this.isLoading = false;
-        this.hasPdf = false;
-        this.rawPdfBlob = null;
-        this.pdfUrl = null;
       }
     });
   }
 
-  downloadPdf(): void {
-    if (!this.rawPdfBlob) return;
-
-    const url = URL.createObjectURL(this.rawPdfBlob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'WorkoutPlan.pdf';
-    link.click();
-
-    URL.revokeObjectURL(url);
+  get isBeginner(): boolean {
+    return this.level?.toLowerCase() === 'beginner';
   }
 
-  printPdf(): void {
-    if (!this.pdfUrl) return;
-
-    const iframe = document.createElement('iframe');
-    iframe.style.position = 'fixed';
-    iframe.style.right = '0';
-    iframe.style.bottom = '0';
-    iframe.style.width = '0';
-    iframe.style.height = '0';
-    iframe.style.border = 'none';
-    iframe.src = this.pdfUrl as string;
-
-    document.body.appendChild(iframe);
-
-    iframe.onload = () => {
-      iframe.contentWindow?.focus();
-      iframe.contentWindow?.print();
-      setTimeout(() => {
-        document.body.removeChild(iframe);
-      }, 1000);
+  formatGoal(goal: string): string {
+    const map: Record<string, string> = {
+      muscle_gain: 'Muscle Gain',
+      fat_loss: 'Fat Loss',
+      general_fitness: 'General Fitness',
+      endurance: 'Endurance'
     };
+    return map[goal?.toLowerCase()] || goal;
+  }
+
+  goToWorkoutForm(): void {
+    this.router.navigate(['/pages/workout']);
   }
 }

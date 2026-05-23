@@ -1,44 +1,98 @@
-<div class="container">
-<div class="pdf-wrapper" *ngIf="!isLoading; else loadingTemplate">
-  <!-- Title -->
-  <h2 class="page-title">My Workout Plan</h2>
+<div class="plan-page">
 
-  <!-- PDF Viewer with Action Buttons -->
-  <div *ngIf="hasPdf; else noPdfTemplate" class="pdf-frame-container">
+  <!-- Loading -->
+  <ng-container *ngIf="isLoading">
+    <div class="state-container">
+      <mat-spinner diameter="40"></mat-spinner>
+      <p class="state-text">Loading your workout plans...</p>
+    </div>
+  </ng-container>
 
-    <iframe [src]="pdfUrl" class="pdf-frame" frameborder="0" aria-label="Workout Plan PDF"></iframe>
+  <!-- No query params — user hasn't submitted a profile yet -->
+  <ng-container *ngIf="!isLoading && (!level || !goal)">
+    <div class="state-container">
+      <mat-icon class="state-icon">fitness_center</mat-icon>
+      <h3 class="state-title">No Plan Selected</h3>
+      <p class="state-text">Fill out your fitness profile to get your workout plan.</p>
+      <button class="primary-btn" (click)="goToWorkoutForm()">Go to Workout Form</button>
+    </div>
+  </ng-container>
 
-    <div class="action-buttons">
-      <button mat-raised-button color="primary" (click)="downloadPdf()">
-        <mat-icon>download</mat-icon> Download Plan
-      </button>
+  <!-- Results -->
+  <ng-container *ngIf="!isLoading && level && goal">
+
+    <div class="plan-header">
+      <div class="plan-header-info">
+        <h2 class="plan-title">My Workout Plan</h2>
+        <p class="plan-subtitle">
+          Showing <strong>{{ level }}</strong> plans for
+          <strong>{{ formatGoal(goal) }}</strong>
+        </p>
+      </div>
     </div>
 
-    <p class="last-updated" *ngIf="workoutPlanLastUpdated">
-      Last updated: {{ workoutPlanLastUpdated | date:'medium' }}
-    </p>
-  </div>
-
-  <!-- No PDF Template -->
-  <ng-template #noPdfTemplate>
-    <div class="no-pdf-container">
-      <mat-icon class="no-pdf-icon">insert_drive_file</mat-icon>
-      <p class="no-pdf-text">No workout plan has been uploaded yet.</p>
+    <!-- Intermediate pending notice -->
+    <div class="pending-notice" *ngIf="!isBeginner && templates.length === 0 && !isLoading">
+      <mat-icon>schedule</mat-icon>
+      <div>
+        <strong>Request Pending</strong>
+        <p>Your trainer will review your request and assign a personalised plan shortly.</p>
+      </div>
     </div>
-  </ng-template>
 
-  <!-- Support / Help -->
-  <p class="help-text">
-    Having trouble? <a href="/support" target="_blank" rel="noopener">Contact Support</a>
-  </p>
+    <!-- Beginner no-template notice -->
+    <div class="pending-notice beginner" *ngIf="isBeginner && templates.length === 0 && !isLoading">
+      <mat-icon>info_outline</mat-icon>
+      <div>
+        <strong>Plan Being Prepared</strong>
+        <p>Your starter programme will be available here once the admin has set it up.</p>
+      </div>
+    </div>
 
-</div>
+    <!-- Template Cards -->
+    <div class="template-grid" *ngIf="templates.length > 0">
+      <div class="template-card" *ngFor="let t of templates">
 
-<!-- Loading Template -->
-<ng-template #loadingTemplate>
-  <div class="loading-container">
-    <mat-spinner></mat-spinner>
-    <p class="loading-text">Loading your workout plan...</p>
-  </div>
-</ng-template>
+        <div class="template-card-header">
+          <h3 class="template-name">{{ t.templateName }}</h3>
+          <span class="difficulty-badge {{ t.difficultyLevel | lowercase }}">
+            {{ t.difficultyLevel }}
+          </span>
+        </div>
+
+        <p class="template-desc" *ngIf="t.description">{{ t.description }}</p>
+
+        <div class="template-stats">
+          <div class="stat">
+            <mat-icon>flag</mat-icon>
+            <span>{{ formatGoal(t.goal) }}</span>
+          </div>
+          <div class="stat">
+            <mat-icon>schedule</mat-icon>
+            <span>{{ t.durationMinutes }} min</span>
+          </div>
+          <div class="stat">
+            <mat-icon>event_repeat</mat-icon>
+            <span>{{ t.daysPerWeek }} days/wk</span>
+          </div>
+          <div class="stat" *ngIf="t.programLengthWeeks">
+            <mat-icon>date_range</mat-icon>
+            <span>{{ t.programLengthWeeks }} weeks</span>
+          </div>
+          <div class="stat">
+            <mat-icon>location_on</mat-icon>
+            <span>{{ t.location }}</span>
+          </div>
+        </div>
+
+        <div class="equipment-row" *ngIf="t.equipmentRequired?.length">
+          <span class="equipment-label">Equipment:</span>
+          <span class="equipment-chip" *ngFor="let eq of t.equipmentRequired">{{ eq }}</span>
+        </div>
+
+      </div>
+    </div>
+
+  </ng-container>
+
 </div>

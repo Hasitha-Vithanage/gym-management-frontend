@@ -70,6 +70,19 @@ export class WorkoutTemplatesService {
       );
     }
   
+    /** GET filtered by difficulty level and goal */
+    getTemplatesByFilter(level: string, goal: string): Observable<WorkoutTemplate[]> {
+      return this.getAllWorkoutTemplates().pipe(
+        map((templates) =>
+          templates.filter(
+            (t) =>
+              t.difficultyLevel?.toLowerCase() === level?.toLowerCase() &&
+              t.goal?.toLowerCase() === goal?.toLowerCase()
+          )
+        )
+      );
+    }
+
     /** DELETE — hard delete by ID */
     deleteWorkoutTemplate(id: number): Observable<void> {
       return this.http.put<void>(`${this.baseUrl}/delete/${id}`, {}).pipe(

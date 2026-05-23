@@ -10,11 +10,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
 import { AddWorkoutTemplateComponent } from './add-workout-template/add-workout-template.component';
 import { ConfirmDialogComponent } from '../../confirm-dialog/confirm-dialog.component';
 import { WorkoutTemplatesService } from 'src/app/services/workout-templates/workout-templates.service';
-import { ExerciseToTemplateComponent } from './exercise-to-template/exercise-to-template.component';
 
 @Component({
   selector: 'app-workout-template',
@@ -47,7 +47,8 @@ export class WorkoutTemplateComponent implements OnInit {
     constructor(
       private workoutService: WorkoutTemplatesService,
       private messageService: MessageServiceService,
-      private cdr: ChangeDetectorRef
+      private cdr: ChangeDetectorRef,
+      private router: Router
     ) {}
   
     ngOnInit(): void {
@@ -84,34 +85,7 @@ export class WorkoutTemplateComponent implements OnInit {
     }
 
 assignExercises(template: any): void {
-
-  const dialogRef = this.dialog.open(
-    ExerciseToTemplateComponent,
-    {
-      width: '95vw',
-      maxWidth: '1400px',
-      height: '90vh',
-      panelClass: 'exercise-template-dialog',
-      disableClose: true,
-      autoFocus: false,
-
-      data: {
-        template: template
-      }
-    }
-  );
-
-  dialogRef.afterClosed().subscribe((result) => {
-
-    if (result?.action === 'assigned') {
-
-      this.messageService.showSuccess(
-        'Exercises assigned successfully!'
-      );
-
-      this.refreshData();
-    }
-  });
+  this.router.navigate(['/pages/exercise-to-template', template.id]);
 }
   
     openWorkoutTemplateDialog(): void {

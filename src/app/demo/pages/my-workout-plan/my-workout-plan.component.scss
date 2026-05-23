@@ -1,146 +1,226 @@
 @import 'src/scss/settings/colors';
 
-.container {
-  padding: 32px 24px;
-  display: flex;
-  justify-content: center;
-  background-color: transparent;
-  min-height: 100vh;
+.plan-page {
+  padding: 24px;
+  font-family: $ff-font;
 }
 
-.pdf-wrapper {
-  background-color: $ff-bg-surface;
-  border-radius: $ff-radius-md;
-  box-shadow: $ff-shadow-card;
-  padding: 32px;
-  max-width: 960px;
-  width: 100%;
+/* ── Page Header ─────────────────────────────────────────── */
+.plan-header {
   display: flex;
-  flex-direction: column;
   align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
 }
 
-.page-title {
-  font-size: 24px;
+.plan-title {
+  font-size: 22px;
   font-weight: 700;
   color: $ff-text-primary;
-  margin-bottom: 24px;
-  text-align: center;
-  position: relative;
+  margin: 0 0 4px;
 }
 
-.page-title::after {
-  content: '';
-  display: block;
-  width: 60px;
-  height: 4px;
-  background-color: $ff-accent-primary;
-  margin: 8px auto 0;
-  border-radius: 2px;
-}
-
-.pdf-frame-container {
-  width: 100%;
-  margin-bottom: 24px;
-  position: relative;
-}
-
-.pdf-frame {
-  width: 100%;
-  height: 600px;
-  border: 1px solid $ff-border-default;
-  border-radius: $ff-radius-sm;
-}
-
-.action-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 16px;
-  margin-top: 16px;
-
-  button {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-weight: 600;
-    height: 38px;
-    padding: 0 20px;
-    border-radius: $ff-radius-sm;
-    border: none;
-    cursor: pointer;
-    background: $ff-accent-primary;
-    color: #fff;
-    font-family: $ff-font;
-    font-size: 14px;
-    transition: all 0.2s ease;
-
-    &:hover {
-      background: $ff-accent-hover;
-      box-shadow: $ff-shadow-orange;
-    }
-  }
-}
-
-.last-updated {
-  margin-top: 12px;
-  font-size: 13px;
-  color: $ff-text-dim;
-  text-align: center;
-}
-
-.no-pdf-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 40px 20px;
-  text-align: center;
-  border: 1px dashed $ff-border-default;
-  border-radius: $ff-radius-sm;
-  width: 100%;
-}
-
-.no-pdf-icon {
-  font-size: 48px;
-  color: $ff-text-dim;
-  margin-bottom: 16px;
-}
-
-.no-pdf-text {
-  font-size: 16px;
-  color: $ff-text-secondary;
-}
-
-.help-text {
-  margin-top: 24px;
+.plan-subtitle {
   font-size: 14px;
-  text-align: center;
   color: $ff-text-secondary;
-
-  a {
-    color: $ff-accent-primary;
-    text-decoration: none;
-    font-weight: 500;
-
-    &:hover {
-      color: $ff-accent-hover;
-      text-decoration: underline;
-    }
-  }
+  margin: 0;
 }
 
-.loading-container {
+/* ── State Container (loading / empty) ───────────────────── */
+.state-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 400px;
   gap: 16px;
-  color: $ff-text-secondary;
+  padding: 80px 24px;
+  text-align: center;
 }
 
-.loading-text {
-  font-size: 16px;
-  font-weight: 500;
+.state-icon {
+  font-size: 56px;
+  width: 56px;
+  height: 56px;
+  color: $ff-text-dim;
+}
+
+.state-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: $ff-text-primary;
+  margin: 0;
+}
+
+.state-text {
+  font-size: 14px;
   color: $ff-text-secondary;
+  margin: 0;
+}
+
+/* ── Pending Notice ──────────────────────────────────────── */
+.pending-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px 20px;
+  background: rgba($ff-warning, 0.08);
+  border-left: 3px solid $ff-warning;
+  border-radius: $ff-radius-sm;
+  margin-bottom: 24px;
+
+  &.beginner {
+    background: rgba($ff-info, 0.08);
+    border-left-color: $ff-info;
+
+    mat-icon { color: $ff-info; }
+  }
+
+  mat-icon {
+    color: $ff-warning;
+    font-size: 22px;
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  strong {
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+    color: $ff-text-primary;
+    margin-bottom: 4px;
+  }
+
+  p {
+    margin: 0;
+    font-size: 13px;
+    color: $ff-text-secondary;
+    line-height: 1.5;
+  }
+}
+
+/* ── Template Grid ───────────────────────────────────────── */
+.template-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+/* ── Template Card ───────────────────────────────────────── */
+.template-card {
+  background: $ff-bg-surface;
+  border: 1px solid $ff-border-default;
+  border-radius: $ff-radius-md;
+  box-shadow: $ff-shadow-card;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: box-shadow 0.2s ease;
+
+  &:hover {
+    box-shadow: $ff-shadow-orange;
+  }
+}
+
+.template-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.template-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: $ff-text-primary;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.difficulty-badge {
+  flex-shrink: 0;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+
+  &.beginner     { background: rgba($ff-success, 0.12); color: $ff-success; }
+  &.intermediate { background: rgba($ff-warning, 0.12); color: $ff-warning; }
+  &.advanced     { background: rgba($ff-danger,  0.12); color: $ff-danger;  }
+}
+
+.template-desc {
+  font-size: 13px;
+  color: $ff-text-secondary;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ── Stats Row ───────────────────────────────────────────── */
+.template-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.stat {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+  color: $ff-text-secondary;
+
+  mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    color: $ff-accent-primary;
+  }
+}
+
+/* ── Equipment Row ───────────────────────────────────────── */
+.equipment-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.equipment-label {
+  font-size: 12px;
+  color: $ff-text-secondary;
+  font-weight: 600;
+}
+
+.equipment-chip {
+  font-size: 12px;
+  padding: 2px 10px;
+  border-radius: 20px;
+  background: $ff-bg-elevated;
+  color: $ff-text-secondary;
+  border: 1px solid $ff-border-default;
+}
+
+/* ── Primary Button ──────────────────────────────────────── */
+.primary-btn {
+  height: 38px;
+  padding: 0 24px;
+  border-radius: $ff-radius-sm;
+  border: none;
+  background: $ff-accent-primary;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: $ff-font;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: $ff-accent-hover;
+    box-shadow: $ff-shadow-orange;
+  }
 }

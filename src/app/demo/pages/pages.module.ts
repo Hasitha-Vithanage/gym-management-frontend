@@ -14,7 +14,6 @@ import { SupplierRegistrationComponent } from './supplier-registration/supplier-
 import { NewSupplierDialogComponent } from './new-supplier-dialog/new-supplier-dialog.component';
 import { EquipmentRegistrationComponent } from './equipment-registration/equipment-registration.component';
 import { NewEquipmentDialogComponent } from './new-equipment-dialog/new-equipment-dialog.component';
-import { BeginnerWorkoutPlanComponent } from './beginner-workout-plan/beginner-workout-plan.component';
 import { ProgressTrackingComponent } from './progress-tracking/progress-tracking.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { AddNewProgressDialogComponent } from './add-new-progress-dialog/add-new-progress-dialog.component';
@@ -37,7 +36,6 @@ import { MemberListComponent } from './reports/static-reports/components/member-
 import { TrainerLoginComponent } from './trainer-login/trainer-login/trainer-login.component';
 import { MemberLoginComponent } from './member-login/member-login/member-login.component';
 import { GymChartsComponent } from './gym-charts/gym-charts.component';
-import { IntermediateWorkoutPlanComponent } from './intermediate-workout-plan/intermediate-workout-plan.component';
 import { WorkoutPlanUploadComponent } from './workout-plan-upload/workout-plan-upload.component';
 import { UploadWorkoutPlanDialogComponent } from './upload-workout-plan-dialog/upload-workout-plan-dialog.component';
 import { MyWorkoutPlanComponent } from './my-workout-plan/my-workout-plan.component';
@@ -97,8 +95,6 @@ export const MY_DATE_FORMATS = {
     NewSupplierDialogComponent,
     EquipmentRegistrationComponent,
     NewEquipmentDialogComponent,
-    WorkoutManagementComponent,
-    BeginnerWorkoutPlanComponent,
     ProgressTrackingComponent,
     AddNewProgressDialogComponent,
     RatingsAndFeedbackComponent,
@@ -117,7 +113,6 @@ export const MY_DATE_FORMATS = {
     MemberListComponent,
     TrainerLoginComponent,
     MemberLoginComponent,
-    IntermediateWorkoutPlanComponent,
     GymChartsComponent,
     WorkoutPlanUploadComponent,
     UploadWorkoutPlanDialogComponent,
