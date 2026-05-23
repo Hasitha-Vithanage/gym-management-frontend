@@ -9,7 +9,17 @@
     background: $ff-bg-surface !important;
     border-radius: $ff-radius-md !important;
     overflow: hidden;
+    display: flex !important;
+    flex-direction: column !important;
   }
+}
+
+/* Dialog wrapper fills the dialog and stacks tables + buttons */
+.add-remove-dialog {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
 }
 
 /* Layout */
@@ -20,16 +30,29 @@
   padding: 12px;
 }
 
+/* Tables row takes all available space and scrolls internally */
+.row.tables-row {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Buttons row always visible at the bottom */
+.row.actions-row {
+  flex-shrink: 0;
+}
+
 /* Table Card Panels */
 .col-md-5,
 .col-md-6 {
   display: flex;
   flex-direction: column;
   flex: 1;
+  min-height: 0;
   background: $ff-bg-surface;
   border: 1px solid $ff-border-default;
   border-radius: $ff-radius-md;
-  overflow: hidden;
+  overflow-y: auto;
   box-shadow: $ff-shadow-card;
 }
 

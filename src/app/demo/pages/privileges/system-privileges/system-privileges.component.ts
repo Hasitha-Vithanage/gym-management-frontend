@@ -145,20 +145,19 @@ export class SystemPrivilegesComponent implements OnInit {
   }
 
   saveData() {
-    try {
-      this.httpService
-        .saveSystemPrivileges({
-          sourcePrivileges: this.sourceTableData.data,
-          targetPrivileges: this.targetTableData.data,
-        })
-        .then((response) => {
-          this._messageService.showSuccess(
-            'System Privilege Changes Successfull!'
-          );
-        });
-    } catch (error) {
-      this._messageService.showError('Action Failed!');
-    }
+    this.httpService
+      .saveSystemPrivileges({
+        sourcePrivileges: this.sourceTableData.data,
+        targetPrivileges: this.targetTableData.data,
+      })
+      .then((response) => {
+        this._messageService.showSuccess(
+          'System Privilege Changes Successfull!'
+        );
+      })
+      .catch((error) => {
+        this._messageService.showError('Action Failed!');
+      });
   }
 
   resetData() {
