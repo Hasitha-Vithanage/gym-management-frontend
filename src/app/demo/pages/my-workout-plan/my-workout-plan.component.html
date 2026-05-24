@@ -4,12 +4,12 @@
   <ng-container *ngIf="isLoading">
     <div class="state-container">
       <mat-spinner diameter="40"></mat-spinner>
-      <p class="state-text">Loading your workout plans...</p>
+      <p class="state-text">Finding your best workout plan...</p>
     </div>
   </ng-container>
 
-  <!-- No query params — user hasn't submitted a profile yet -->
-  <ng-container *ngIf="!isLoading && (!level || !goal)">
+  <!-- No query params -->
+  <ng-container *ngIf="!isLoading && !hasParams">
     <div class="state-container">
       <mat-icon class="state-icon">fitness_center</mat-icon>
       <h3 class="state-title">No Plan Selected</h3>
@@ -19,79 +19,159 @@
   </ng-container>
 
   <!-- Results -->
-  <ng-container *ngIf="!isLoading && level && goal">
+  <ng-container *ngIf="!isLoading && hasParams">
 
     <div class="plan-header">
       <div class="plan-header-info">
         <h2 class="plan-title">My Workout Plan</h2>
         <p class="plan-subtitle">
-          Showing <strong>{{ level }}</strong> plans for
-          <strong>{{ formatGoal(goal) }}</strong>
+          Best match for <strong>{{ level }}</strong> · <strong>{{ formatGoal(goal!) }}</strong>
         </p>
       </div>
     </div>
 
-    <!-- Intermediate pending notice -->
-    <div class="pending-notice" *ngIf="!isBeginner && templates.length === 0 && !isLoading">
-      <mat-icon>schedule</mat-icon>
-      <div>
-        <strong>Request Pending</strong>
-        <p>Your trainer will review your request and assign a personalised plan shortly.</p>
+    <!-- No match state -->
+    <ng-container *ngIf="noMatch">
+      <div class="no-match-container">
+        <div class="no-match-icon-wrap">
+          <mat-icon>schedule</mat-icon>
+        </div>
+        <h3 class="no-match-title">Your Plan Is Being Prepared</h3>
+        <p class="no-match-text">
+          We couldn't find a ready-made template that perfectly fits your profile right now.
+          Your trainer has been notified and will set up a personalised plan based on your
+          goals, fitness level, and body profile. Check back soon!
+        </p>
+        <div class="no-match-tags">
+          <span class="tag">{{ level }}</span>
+          <span class="tag">{{ formatGoal(goal!) }}</span>
+          <span class="tag">BMI: {{ bmiCategory }}</span>
+        </div>
       </div>
-    </div>
+    </ng-container>
 
-    <!-- Beginner no-template notice -->
-    <div class="pending-notice beginner" *ngIf="isBeginner && templates.length === 0 && !isLoading">
-      <mat-icon>info_outline</mat-icon>
-      <div>
-        <strong>Plan Being Prepared</strong>
-        <p>Your starter programme will be available here once the admin has set it up.</p>
+    <!-- Matched template -->
+    <ng-container *ngIf="matchedTemplate">
+
+      <div class="match-badge">
+        <mat-icon>verified</mat-icon>
+        Best match for your profile
       </div>
-    </div>
 
-    <!-- Template Cards -->
-    <div class="template-grid" *ngIf="templates.length > 0">
-      <div class="template-card" *ngFor="let t of templates">
-
+      <!-- Template summary card -->
+      <div class="template-card">
         <div class="template-card-header">
-          <h3 class="template-name">{{ t.templateName }}</h3>
-          <span class="difficulty-badge {{ t.difficultyLevel | lowercase }}">
-            {{ t.difficultyLevel }}
+          <h3 class="template-name">{{ matchedTemplate.templateName }}</h3>
+          <span class="difficulty-badge {{ matchedTemplate.difficultyLevel | lowercase }}">
+            {{ matchedTemplate.difficultyLevel }}
           </span>
         </div>
 
-        <p class="template-desc" *ngIf="t.description">{{ t.description }}</p>
+        <p class="template-desc" *ngIf="matchedTemplate.description">{{ matchedTemplate.description }}</p>
 
         <div class="template-stats">
           <div class="stat">
             <mat-icon>flag</mat-icon>
-            <span>{{ formatGoal(t.goal) }}</span>
+            <span>{{ formatGoal(matchedTemplate.goal) }}</span>
           </div>
           <div class="stat">
             <mat-icon>schedule</mat-icon>
-            <span>{{ t.durationMinutes }} min</span>
+            <span>{{ matchedTemplate.durationMinutes }} min/session</span>
           </div>
           <div class="stat">
             <mat-icon>event_repeat</mat-icon>
-            <span>{{ t.daysPerWeek }} days/wk</span>
+            <span>{{ matchedTemplate.daysPerWeek }} days/week</span>
           </div>
-          <div class="stat" *ngIf="t.programLengthWeeks">
+          <div class="stat" *ngIf="matchedTemplate.programLengthWeeks">
             <mat-icon>date_range</mat-icon>
-            <span>{{ t.programLengthWeeks }} weeks</span>
+            <span>{{ matchedTemplate.programLengthWeeks }} weeks</span>
           </div>
           <div class="stat">
             <mat-icon>location_on</mat-icon>
-            <span>{{ t.location }}</span>
+            <span>{{ matchedTemplate.location }}</span>
+          </div>
+          <div class="stat">
+            <mat-icon>bolt</mat-icon>
+            <span>{{ matchedTemplate.intensityLevel }} intensity</span>
           </div>
         </div>
 
-        <div class="equipment-row" *ngIf="t.equipmentRequired?.length">
+        <div class="equipment-row" *ngIf="matchedTemplate.equipmentRequired?.length">
           <span class="equipment-label">Equipment:</span>
-          <span class="equipment-chip" *ngFor="let eq of t.equipmentRequired">{{ eq }}</span>
+          <span class="equipment-chip" *ngFor="let eq of matchedTemplate.equipmentRequired">{{ eq }}</span>
+        </div>
+      </div>
+
+      <!-- Exercises Section -->
+      <div class="exercises-section">
+
+        <div class="exercises-section-title">
+          <mat-icon>fitness_center</mat-icon>
+          <span>Weekly Schedule</span>
         </div>
 
+        <!-- Loading exercises -->
+        <div class="exercises-loading" *ngIf="exercisesLoading">
+          <mat-spinner diameter="28"></mat-spinner>
+          <span>Loading exercises...</span>
+        </div>
+
+        <!-- Empty state -->
+        <p class="exercises-placeholder" *ngIf="!exercisesLoading && templateExercises.length === 0">
+          Exercise details are being added by your trainer. Check back soon!
+        </p>
+
+        <!-- Day nav + exercise cards -->
+        <ng-container *ngIf="!exercisesLoading && templateExercises.length > 0">
+
+          <!-- Day navigation pills -->
+          <div class="day-nav">
+            <button
+              class="day-pill"
+              *ngFor="let day of usedDays"
+              [class.active]="selectedDay === day"
+              (click)="selectDay(day)">
+              <span class="day-pill-label">Day</span>
+              <span class="day-pill-num">{{ day }}</span>
+              <span class="day-pill-count">{{ exercisesForDay(day).length }} ex</span>
+            </button>
+          </div>
+
+          <!-- Exercise cards for selected day -->
+          <div class="exercise-grid" *ngIf="selectedDay !== null">
+            <div class="exercise-card" *ngFor="let ex of exercisesForDay(selectedDay); let i = index">
+
+              <div class="exercise-card-top">
+                <div class="exercise-index">{{ i + 1 }}</div>
+                <div class="exercise-info">
+                  <div class="exercise-name">{{ ex.exerciseName }}</div>
+                  <div class="exercise-chips">
+                    <span class="chip chip-sets">
+                      <mat-icon>repeat</mat-icon>{{ ex.sets }} sets
+                    </span>
+                    <span class="chip chip-reps">
+                      <mat-icon>fitness_center</mat-icon>{{ ex.reps }} reps
+                    </span>
+                    <span class="chip chip-rest" *ngIf="ex.restSeconds">
+                      <mat-icon>timer</mat-icon>{{ ex.restSeconds }}s rest
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="exercise-note" *ngIf="ex.notes">
+                <mat-icon>info_outline</mat-icon>
+                <span>{{ ex.notes }}</span>
+              </div>
+
+            </div>
+          </div>
+
+        </ng-container>
+
       </div>
-    </div>
+
+    </ng-container>
 
   </ng-container>
 

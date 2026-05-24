@@ -6,6 +6,7 @@ import { HttpService } from 'src/app/services/http.service';
 import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
 import { NotificationService } from 'src/app/services/notification-service/notification.service';
 import { AssignTrainerServiceService } from 'src/app/services/assign-trainer/assign-trainer-service.service';
+import { UserWorkoutAssignmentService, UserWorkoutAssignment } from 'src/app/services/user-workout-assignment/user-workout-assignment.service';
 
 @Component({
   selector: 'app-workout-management',
@@ -27,6 +28,7 @@ export class WorkoutManagementComponent implements OnInit {
   isLoading = false;
 
   memberName!: string;
+  activeAssignment: UserWorkoutAssignment | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -35,17 +37,27 @@ export class WorkoutManagementComponent implements OnInit {
     private httpService: HttpService,
     private messageService: MessageServiceService,
     private notificationService: NotificationService,
-    private assignTrainerService: AssignTrainerServiceService
+    private assignTrainerService: AssignTrainerServiceService,
+    private assignmentService: UserWorkoutAssignmentService
   ) {}
 
   ngOnInit(): void {
     this.memberName = this.httpService.getLoginNameFromCache() ?? '';
+
+    const userId = Number(this.httpService.getUserId());
+    if (userId) {
+      this.assignmentService.getActiveAssignment(userId).subscribe({
+        next: (assignment) => { this.activeAssignment = assignment; },
+        error: () => {}
+      });
+    }
     this.formGroup = this.fb.group({
       age: ['', [Validators.required, Validators.min(10), Validators.max(100)]],
       weight: ['', [Validators.required, Validators.min(20), Validators.max(300)]],
       height: ['', [Validators.required, Validators.min(100), Validators.max(250)]],
       fitnessGoal: ['', Validators.required],
-      experienceLevel: ['', Validators.required]
+      experienceLevel: ['', Validators.required],
+      gender: ['', Validators.required]
     });
 
     this.formGroup.valueChanges.subscribe(() => {
@@ -82,33 +94,27 @@ export class WorkoutManagementComponent implements OnInit {
     });
   }
 
-  get isBeginner(): boolean {
-    return this.formGroup.get('experienceLevel')?.value === 'Beginner';
-  }
-
   backToForm(): void {
     this.step = 'form';
   }
 
   goToMyPlan(): void {
     this.submitWorkoutRequest(() => {
-      this.router.navigate(['/pages/my-workout-plan'], {
-        queryParams: {
-          level: this.formGroup.value.experienceLevel,
-          goal: this.formGroup.value.fitnessGoal
-        }
-      });
-    });
-  }
-
-  sendRequest(): void {
-    this.submitWorkoutRequest(() => {
       if (this.trainer) this.notifyTrainer();
-      this.messageService.showSuccess('Request sent successfully!');
+      this.workoutService.setWorkoutData({
+        ...this.formGroup.value,
+        bmi: this.bmi,
+        bmiCategory: this.bmiCategory,
+        memberName: this.memberName,
+        trainerId: this.trainer?.id ?? null
+      });
       this.router.navigate(['/pages/my-workout-plan'], {
         queryParams: {
           level: this.formGroup.value.experienceLevel,
-          goal: this.formGroup.value.fitnessGoal
+          goal: this.formGroup.value.fitnessGoal,
+          gender: this.formGroup.value.gender,
+          bmiCategory: this.bmiCategory,
+          age: this.formGroup.value.age
         }
       });
     });
@@ -132,16 +138,32 @@ export class WorkoutManagementComponent implements OnInit {
   }
 
   private notifyTrainer(): void {
+    const memberProfile = {
+      name: this.memberName,
+      age: this.formGroup.value.age,
+      weight: this.formGroup.value.weight,
+      height: this.formGroup.value.height,
+      gender: this.formGroup.value.gender,
+      goal: this.formatGoal(this.formGroup.value.fitnessGoal),
+      level: this.formGroup.value.experienceLevel,
+      bmi: this.bmi,
+      bmiCategory: this.bmiCategory
+    };
+    const message = `Workout plan request from ${this.memberName} — ${memberProfile.goal}, ${memberProfile.level}, BMI: ${memberProfile.bmiCategory} (${this.bmi})`;
+
     this.assignTrainerService.getTrainerUserId(this.trainer.id).subscribe({
       next: (response: any) => {
-        this.notificationService.addNotification(
-          'New workout plan request received',
-          'info',
-          response.userId
-        );
+        this.notificationService.addNotification(message, 'info', response.userId, memberProfile);
       },
       error: () => {}
     });
+  }
+
+  get activePlanEndLabel(): string {
+    if (!this.activeAssignment) return '';
+    if (!this.activeAssignment.endDate) return 'ongoing (no fixed end date)';
+    const d = new Date(this.activeAssignment.endDate);
+    return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
   }
 
   calculateBMI(): void {

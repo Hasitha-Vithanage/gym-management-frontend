@@ -5,12 +5,12 @@
   font-family: $ff-font;
 }
 
-/* ── Page Header ─────────────────────────────────────────── */
+/* Page Header */
 .plan-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
 .plan-title {
@@ -26,7 +26,7 @@
   margin: 0;
 }
 
-/* ── State Container (loading / empty) ───────────────────── */
+/* State Container */
 .state-container {
   display: flex;
   flex-direction: column;
@@ -57,57 +57,91 @@
   margin: 0;
 }
 
-/* ── Pending Notice ──────────────────────────────────────── */
-.pending-notice {
+/* No Match */
+.no-match-container {
   display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 16px 20px;
-  background: rgba($ff-warning, 0.08);
-  border-left: 3px solid $ff-warning;
-  border-radius: $ff-radius-sm;
-  margin-bottom: 24px;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 56px 24px;
+  max-width: 560px;
+  margin: 0 auto;
+  gap: 16px;
+}
 
-  &.beginner {
-    background: rgba($ff-info, 0.08);
-    border-left-color: $ff-info;
-
-    mat-icon { color: $ff-info; }
-  }
+.no-match-icon-wrap {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba($ff-warning, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   mat-icon {
+    font-size: 32px;
+    width: 32px;
+    height: 32px;
     color: $ff-warning;
-    font-size: 22px;
-    width: 22px;
-    height: 22px;
-    flex-shrink: 0;
-    margin-top: 2px;
-  }
-
-  strong {
-    display: block;
-    font-size: 14px;
-    font-weight: 700;
-    color: $ff-text-primary;
-    margin-bottom: 4px;
-  }
-
-  p {
-    margin: 0;
-    font-size: 13px;
-    color: $ff-text-secondary;
-    line-height: 1.5;
   }
 }
 
-/* ── Template Grid ───────────────────────────────────────── */
-.template-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 20px;
+.no-match-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: $ff-text-primary;
+  margin: 0;
 }
 
-/* ── Template Card ───────────────────────────────────────── */
+.no-match-text {
+  font-size: 14px;
+  color: $ff-text-secondary;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.no-match-tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.tag {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 14px;
+  border-radius: 20px;
+  background: $ff-bg-elevated;
+  border: 1px solid $ff-border-default;
+  color: $ff-text-secondary;
+}
+
+/* Match Badge */
+.match-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: $ff-success;
+  background: rgba($ff-success, 0.1);
+  border: 1px solid rgba($ff-success, 0.25);
+  border-radius: 20px;
+  padding: 4px 14px;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+
+  mat-icon {
+    font-size: 15px;
+    width: 15px;
+    height: 15px;
+  }
+}
+
+/* Template Card */
 .template-card {
   background: $ff-bg-surface;
   border: 1px solid $ff-border-default;
@@ -117,11 +151,7 @@
   display: flex;
   flex-direction: column;
   gap: 14px;
-  transition: box-shadow 0.2s ease;
-
-  &:hover {
-    box-shadow: $ff-shadow-orange;
-  }
+  margin-bottom: 28px;
 }
 
 .template-card-header {
@@ -132,7 +162,7 @@
 }
 
 .template-name {
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 700;
   color: $ff-text-primary;
   margin: 0;
@@ -160,7 +190,6 @@
   line-height: 1.5;
 }
 
-/* ── Stats Row ───────────────────────────────────────────── */
 .template-stats {
   display: flex;
   flex-wrap: wrap;
@@ -182,7 +211,6 @@
   }
 }
 
-/* ── Equipment Row ───────────────────────────────────────── */
 .equipment-row {
   display: flex;
   flex-wrap: wrap;
@@ -205,7 +233,240 @@
   border: 1px solid $ff-border-default;
 }
 
-/* ── Primary Button ──────────────────────────────────────── */
+/* Exercises Section */
+.exercises-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.exercises-section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 700;
+  color: $ff-text-primary;
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    color: $ff-accent-primary;
+  }
+}
+
+.exercises-loading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: $ff-text-secondary;
+}
+
+.exercises-placeholder {
+  font-size: 13px;
+  color: $ff-text-dim;
+  font-style: italic;
+  margin: 0;
+}
+
+/* Day Nav Pills */
+.day-nav {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar { display: none; }
+}
+
+.day-pill {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 10px 20px;
+  border-radius: $ff-radius-sm;
+  border: 1px solid $ff-border-default;
+  background: $ff-bg-surface;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  font-family: $ff-font;
+
+  &:hover:not(.active) {
+    border-color: $ff-border-accent;
+    background: $ff-bg-hover;
+  }
+
+  &.active {
+    border-color: $ff-accent-primary;
+    background: $ff-accent-soft;
+    box-shadow: $ff-shadow-orange;
+
+    .day-pill-label,
+    .day-pill-num { color: $ff-accent-primary; }
+    .day-pill-count { color: rgba($ff-accent-primary, 0.7); }
+  }
+}
+
+.day-pill-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: $ff-text-dim;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  line-height: 1;
+}
+
+.day-pill-num {
+  font-size: 20px;
+  font-weight: 800;
+  color: $ff-text-primary;
+  line-height: 1;
+}
+
+.day-pill-count {
+  font-size: 10px;
+  color: $ff-text-dim;
+  line-height: 1;
+}
+
+/* Exercise Grid */
+.exercise-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+}
+
+/* Exercise Card */
+.exercise-card {
+  background: $ff-bg-surface;
+  border: 1px solid $ff-border-default;
+  border-radius: $ff-radius-sm;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+
+  &:hover {
+    border-color: $ff-border-accent;
+    box-shadow: $ff-shadow-orange;
+  }
+}
+
+.exercise-card-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.exercise-index {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: $ff-accent-soft;
+  border: 1px solid $ff-border-accent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 800;
+  color: $ff-accent-primary;
+  line-height: 1;
+}
+
+.exercise-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.exercise-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: $ff-text-primary;
+  line-height: 1.3;
+}
+
+.exercise-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-family: $ff-font;
+
+  mat-icon {
+    font-size: 12px;
+    width: 12px;
+    height: 12px;
+  }
+
+  &.chip-sets {
+    background: rgba($ff-info, 0.1);
+    color: $ff-info;
+    border: 1px solid rgba($ff-info, 0.2);
+    mat-icon { color: $ff-info; }
+  }
+
+  &.chip-reps {
+    background: rgba($ff-accent-primary, 0.1);
+    color: $ff-accent-primary;
+    border: 1px solid rgba($ff-accent-primary, 0.2);
+    mat-icon { color: $ff-accent-primary; }
+  }
+
+  &.chip-rest {
+    background: rgba($ff-success, 0.1);
+    color: $ff-success;
+    border: 1px solid rgba($ff-success, 0.2);
+    mat-icon { color: $ff-success; }
+  }
+}
+
+/* Exercise Note */
+.exercise-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 8px 10px;
+  background: $ff-bg-elevated;
+  border-radius: 8px;
+  border-left: 2px solid $ff-border-accent;
+
+  mat-icon {
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+    color: $ff-accent-primary;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  span {
+    font-size: 12px;
+    color: $ff-text-secondary;
+    line-height: 1.5;
+    font-style: italic;
+  }
+}
+
+/* Primary Button */
 .primary-btn {
   height: 38px;
   padding: 0 24px;

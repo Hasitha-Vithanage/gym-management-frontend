@@ -54,6 +54,7 @@ export class ExerciseToTemplateComponent implements OnInit {
     this.templateService.getWorkoutTemplateById(id).subscribe({
       next: (template) => {
         this.templateData = template;
+        this.loadAssignedExercises(id);
       },
       error: (error) => {
         this.messageService.showError(error.message ?? error);
@@ -61,6 +62,18 @@ export class ExerciseToTemplateComponent implements OnInit {
     });
     this.initializeForm();
     this.loadExercises();
+  }
+
+  loadAssignedExercises(templateId: number): void {
+    this.templateService.getTemplateExercises(templateId).subscribe({
+      next: (exercises) => {
+        this.assignedExercises = exercises;
+        this.dataSource.data = exercises;
+      },
+      error: (error) => {
+        this.messageService.showError(error.message ?? error);
+      }
+    });
   }
 
   initializeForm(): void {
@@ -164,7 +177,16 @@ export class ExerciseToTemplateComponent implements OnInit {
   }
 
   saveAssignments(): void {
-    this.messageService.showSuccess('Assignments saved successfully!');
-    this.goBack();
+    if (this.assignedExercises.length === 0) return;
+
+    this.templateService.saveTemplateExercises(this.templateData.id, this.assignedExercises).subscribe({
+      next: () => {
+        this.messageService.showSuccess('Assignments saved successfully!');
+        this.goBack();
+      },
+      error: (error) => {
+        this.messageService.showError(error.message ?? error);
+      }
+    });
   }
 }

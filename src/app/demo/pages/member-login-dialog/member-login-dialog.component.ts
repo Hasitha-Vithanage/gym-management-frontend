@@ -107,12 +107,8 @@ export class MemberLoginDialogComponent implements OnInit {
       if (this.mode === 'add') {
         this.memberLoginService.serviceCall(this.memberLoginForm.getRawValue()).subscribe({
           next: (response: any) => {
-            this.dataSource = new MatTableDataSource(
-              this.dataSource?.data?.length
-                ? [response, ...this.dataSource.data]
-                : [response]
-            );
             this.messageService.showSuccess('Member registered successfully!');
+            this.dialogRef.close({ action: 'add', data: response });
           },
           error: (error) => {
             this.messageService.showError(error);
@@ -123,27 +119,17 @@ export class MemberLoginDialogComponent implements OnInit {
           .editData(this.selectedData?.id, this.memberLoginForm.getRawValue())
           .subscribe({
             next: (response: any) => {
-              const index = this.dataSource.data.findIndex(
-                (el) => el.id === this.selectedData?.id
-              );
-              this.dataSource.data[index] = response;
-              this.dataSource = new MatTableDataSource(this.dataSource.data);
               this.messageService.showSuccess('Record updated successfully!');
+              this.dialogRef.close({ action: 'edit', data: response });
             },
             error: (error) => {
               this.messageService.showError(error);
             }
           });
       }
-
-      this.isDisabled = true;
-      this.mode = 'add';
-      this.populateData();
     } catch (error) {
       this.messageService.showError(error);
     }
-
-    this.closeDialog();
   }
 
   onEdit(data: any): void {

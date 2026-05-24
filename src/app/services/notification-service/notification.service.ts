@@ -50,14 +50,15 @@ export class NotificationService {
     private http: HttpClient
   ) {}
 
-  addNotification(message: string, type: 'success' | 'info' | 'warning' | 'error' = 'info', targetUser?: number) {
+  addNotification(message: string, type: 'success' | 'info' | 'warning' | 'error' = 'info', targetUser?: number, details?: any) {
     const notification: Notification = {
       id: this.generateId(),
       message,
       type,
       timestamp: new Date(),
       readStatus: false,
-      targetUser: targetUser
+      targetUser: targetUser,
+      other: details ?? null
     };
 
     // save to db

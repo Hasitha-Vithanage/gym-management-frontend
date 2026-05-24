@@ -1,7 +1,18 @@
 <div class="page-container">
 
-  <!-- ── STEP 1: FORM ──────────────────────────────────────── -->
+  <!-- STEP 1: FORM -->
   <ng-container *ngIf="step === 'form'">
+
+    <!-- Active-plan notice -->
+    <div class="active-plan-notice" *ngIf="activeAssignment">
+      <mat-icon class="notice-icon">event_available</mat-icon>
+      <div class="notice-body">
+        <strong>You have an active workout plan</strong>
+        <span>{{ activeAssignment.template?.templateName }} &mdash; active until {{ activePlanEndLabel }}.</span>
+        <a class="notice-link" routerLink="/pages/my-workout-plan">View my plan</a>
+      </div>
+      <span class="notice-replace">Submitting below will replace it.</span>
+    </div>
 
     <!-- Left: Form Card -->
     <div class="card form-card">
@@ -57,6 +68,18 @@
             </span>
           </div>
 
+          <div class="field">
+            <label for="gender">Gender <span class="required">*</span></label>
+            <select id="gender" formControlName="gender">
+              <option value="">Select gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+            <span class="error-msg" *ngIf="submitted && formGroup.get('gender').invalid">
+              Gender is required
+            </span>
+          </div>
+
           <fieldset class="field full radio-fieldset">
             <legend class="field-label">Fitness Experience Level <span class="required">*</span></legend>
             <div class="radio-group">
@@ -104,6 +127,10 @@
           <span class="summary-value">{{ formatGoal(formGroup.value.fitnessGoal) }}</span>
         </div>
         <div class="summary-item">
+          <span class="summary-label">Gender</span>
+          <span class="summary-value">{{ formGroup.value.gender }}</span>
+        </div>
+        <div class="summary-item">
           <span class="summary-label">Experience</span>
           <span class="summary-value">{{ formGroup.value.experienceLevel }}</span>
         </div>
@@ -139,7 +166,7 @@
 
   </ng-container>
 
-  <!-- ── STEP 2: CONFIRM ───────────────────────────────────── -->
+  <!-- STEP 2: CONFIRM -->
   <ng-container *ngIf="step === 'confirm'">
 
     <div class="confirm-container">
@@ -149,9 +176,7 @@
           <mat-icon>arrow_back</mat-icon>
           Back
         </button>
-        <h2 class="confirm-title">
-          {{ isBeginner ? 'Your Workout Plan' : 'Request Workout Plan' }}
-        </h2>
+        <h2 class="confirm-title">Confirm Your Profile</h2>
       </div>
 
       <div class="info-grid">
@@ -180,6 +205,10 @@
               <span class="info-value">{{ formatGoal(formGroup.value.fitnessGoal) }}</span>
             </div>
             <div class="info-row">
+              <span class="info-label">Gender</span>
+              <span class="info-value">{{ formGroup.value.gender }}</span>
+            </div>
+            <div class="info-row">
               <span class="info-label">Experience Level</span>
               <span class="info-value">{{ formGroup.value.experienceLevel }}</span>
             </div>
@@ -202,7 +231,7 @@
             <ng-container *ngIf="trainer; else noTrainer">
               <div class="info-row">
                 <span class="info-label">Name</span>
-                <span class="info-value">{{ trainerDetails?.trainer }} {{ trainer?.lastName }}</span>
+                <span class="info-value">{{ trainerDetails?.trainer }}</span>
               </div>
               <div class="info-row">
                 <span class="info-label">Email</span>
@@ -211,10 +240,6 @@
               <div class="info-row">
                 <span class="info-label">Contact</span>
                 <span class="info-value">{{ trainer?.phoneNumber }}</span>
-              </div>
-              <div class="info-row" *ngIf="isBeginner">
-                <span class="info-label">Role</span>
-                <span class="info-value">Technique Support</span>
               </div>
             </ng-container>
             <ng-template #noTrainer>
@@ -229,24 +254,17 @@
       </div>
 
       <!-- Contextual note -->
-      <div class="plan-note" [class.intermediate]="!isBeginner">
+      <div class="plan-note">
         <mat-icon>info_outline</mat-icon>
-        <p *ngIf="isBeginner">
-          As a beginner, you will be enrolled in our standard starter programme.
-          Your trainer is available to support your technique.
-        </p>
-        <p *ngIf="!isBeginner">
-          Your request will be reviewed by your trainer, who will create a
-          personalised plan based on your profile.
+        <p>
+          We will match you with the best available workout template based on your profile.
+          Your trainer will also be notified and can set up a personalised plan if needed.
         </p>
       </div>
 
       <div class="confirm-action-row">
-        <button class="primary-btn" *ngIf="isBeginner" (click)="goToMyPlan()">
+        <button class="primary-btn" (click)="goToMyPlan()">
           Go to My Workout Plan
-        </button>
-        <button class="primary-btn" *ngIf="!isBeginner" (click)="sendRequest()">
-          Send Request
         </button>
       </div>
 

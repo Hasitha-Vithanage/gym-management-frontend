@@ -112,12 +112,8 @@ export class TrainerLoginDialogComponent implements OnInit {
       if (this.mode === 'add') {
         this.trainerLoginService.serviceCall(this.trainerLoginForm.getRawValue()).subscribe({
           next: (response: any) => {
-            this.dataSource = new MatTableDataSource(
-              this.dataSource?.data?.length
-                ? [response, ...this.dataSource.data]
-                : [response]
-            );
             this.messageService.showSuccess('Trainer registered successfully!');
+            this.dialogRef.close({ action: 'add', data: response });
           },
           error: (error) => {
             this.messageService.showError(error);
@@ -127,23 +123,18 @@ export class TrainerLoginDialogComponent implements OnInit {
         this.trainerLoginService
           .editData(this.selectedData?.id, this.trainerLoginForm.getRawValue())
           .subscribe({
-            next: () => {
+            next: (response: any) => {
               this.messageService.showSuccess('Record updated successfully!');
+              this.dialogRef.close({ action: 'edit', data: response });
             },
             error: (error) => {
               this.messageService.showError(error);
             }
           });
       }
-
-      this.isDisabled = true;
-      this.mode = 'add';
-      this.populateData();
     } catch (error) {
       this.messageService.showError(error);
     }
-
-    this.closeDialog();
   }
 
   onEdit(data: any): void {

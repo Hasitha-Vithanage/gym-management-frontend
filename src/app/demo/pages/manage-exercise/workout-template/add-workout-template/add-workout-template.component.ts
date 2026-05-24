@@ -58,6 +58,8 @@ export class AddWorkoutTemplateComponent implements OnInit, OnDestroy {
       // Targeting
       suitableFor: ['', Validators.required],
       recommendedBMI: [[]], // optional multi-select
+      minAge: ['', [Validators.min(10), Validators.max(100)]],
+      maxAge: ['', [Validators.min(10), Validators.max(100)]],
 
       // Meta
       status: ['Draft', Validators.required], // default to Draft
@@ -151,6 +153,8 @@ export class AddWorkoutTemplateComponent implements OnInit, OnDestroy {
     // Targeting
     suitableFor: data.suitableFor,
     recommendedBMI: data.recommendedBMI ?? [],
+    minAge: data.ageRange?.min ?? '',
+    maxAge: data.ageRange?.max ?? '',
 
     // Meta
     status: data.status
@@ -187,7 +191,11 @@ export class AddWorkoutTemplateComponent implements OnInit, OnDestroy {
   public prepareFormData(): FormData {
     const templateFormData = new FormData();
 
-    const { image, imageName, imageType, ...formValues } = this.templateForm.value;
+    const { image, imageName, imageType, minAge, maxAge, ...rest } = this.templateForm.value;
+    const formValues = {
+      ...rest,
+      ageRange: (minAge || maxAge) ? { min: minAge || null, max: maxAge || null } : null
+    };
     templateFormData.append('templateForm', new Blob([JSON.stringify(formValues)], { type: 'application/json' }));
 
     const imageValue = this.templateForm.get('image')?.value;

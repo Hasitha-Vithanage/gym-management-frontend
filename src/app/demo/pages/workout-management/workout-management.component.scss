@@ -1,6 +1,6 @@
 @import 'src/scss/settings/colors';
 
-/* ── Page Layout ─────────────────────────────────────────── */
+/* Page Layout */
 .page-container {
   display: flex;
   flex-wrap: wrap;
@@ -9,7 +9,65 @@
   align-items: flex-start;
 }
 
-/* ── Cards ───────────────────────────────────────────────── */
+/* Active Plan Notice */
+.active-plan-notice {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 20px;
+  background: rgba($ff-accent-primary, 0.07);
+  border: 1px solid rgba($ff-accent-primary, 0.25);
+  border-left: 4px solid $ff-accent-primary;
+  border-radius: $ff-radius-sm;
+  flex-wrap: wrap;
+
+  .notice-icon {
+    font-size: 22px;
+    width: 22px;
+    height: 22px;
+    color: $ff-accent-primary;
+    flex-shrink: 0;
+  }
+
+  .notice-body {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+
+    strong {
+      font-size: 13px;
+      font-weight: 700;
+      color: $ff-text-primary;
+    }
+
+    span {
+      font-size: 12px;
+      color: $ff-text-secondary;
+    }
+
+    .notice-link {
+      font-size: 12px;
+      font-weight: 600;
+      color: $ff-accent-primary;
+      text-decoration: none;
+      width: fit-content;
+
+      &:hover { text-decoration: underline; }
+    }
+  }
+
+  .notice-replace {
+    font-size: 11px;
+    font-weight: 600;
+    color: $ff-text-dim;
+    flex-shrink: 0;
+    font-style: italic;
+  }
+}
+
+/* Cards */
 .card {
   background: $ff-bg-surface;
   border-radius: $ff-radius-md;
@@ -29,7 +87,7 @@
   animation: fadeIn 0.4s ease;
 }
 
-/* ── Card Header ─────────────────────────────────────────── */
+/* Card Header */
 .card-header {
   padding: 20px 24px 16px;
   text-align: center;
@@ -51,12 +109,12 @@
   font-family: $ff-font;
 }
 
-/* ── Form Body ───────────────────────────────────────────── */
+/* Form Body */
 .form-body {
   padding: 24px;
 }
 
-/* ── Grid ────────────────────────────────────────────────── */
+/* Grid */
 .grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -64,7 +122,7 @@
   margin-bottom: 4px;
 }
 
-/* ── Fields ──────────────────────────────────────────────── */
+/* Fields */
 .field {
   display: flex;
   flex-direction: column;
@@ -88,7 +146,7 @@
   grid-column: span 2;
 }
 
-/* ── Fieldset reset (radio group) ────────────────────────── */
+/* Fieldset reset (radio group) */
 .radio-fieldset {
   border: none;
   margin: 0;
@@ -106,7 +164,7 @@
   }
 }
 
-/* ── Inputs ──────────────────────────────────────────────── */
+/* Inputs */
 input[type='number'],
 input[type='text'],
 select {
@@ -218,7 +276,7 @@ select {
   }
 }
 
-/* ── Error message ───────────────────────────────────────── */
+/* Error message */
 .error-msg {
   font-size: 12px;
   color: $ff-danger;
@@ -226,7 +284,7 @@ select {
   font-family: $ff-font;
 }
 
-/* ── Radio Group ─────────────────────────────────────────── */
+/* Radio Group */
 .radio-group {
   display: flex;
   gap: 16px;
@@ -252,7 +310,7 @@ select {
   }
 }
 
-/* ── Action Row ──────────────────────────────────────────── */
+/* Action Row */
 .action-row {
   margin-top: 20px;
   display: flex;
@@ -279,7 +337,7 @@ select {
   }
 }
 
-/* ── Summary Card ────────────────────────────────────────── */
+/*─ Summary Card */
 .summary-title {
   font-size: 16px;
   font-weight: 700;
@@ -319,7 +377,7 @@ select {
   font-family: $ff-font;
 }
 
-/* ── Goal Tip ────────────────────────────────────────────── */
+/* Goal Tip */
 .goal-tip {
   padding: 14px;
   background: rgba($ff-info, 0.08);
@@ -344,7 +402,7 @@ select {
   }
 }
 
-/* ── BMI Card ────────────────────────────────────────────── */
+/* BMI Card */
 .bmi-card {
   padding: 16px;
   background: $ff-bg-elevated;
@@ -400,7 +458,7 @@ select {
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ── Confirm Step ─────────────────────────────────────────── */
+/* Confirm Step */
 .confirm-container {
   width: 100%;
   max-width: 900px;
@@ -447,7 +505,7 @@ select {
   }
 }
 
-/* ── Info Grid ────────────────────────────────────────────── */
+/* Info Grid */
 .info-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -525,7 +583,7 @@ select {
   }
 }
 
-/* ── No Trainer ───────────────────────────────────────────── */
+/* No Trainer */
 .no-trainer-msg {
   display: flex;
   flex-direction: column;
@@ -543,7 +601,7 @@ select {
   }
 }
 
-/* ── Plan Note ────────────────────────────────────────────── */
+/* Plan Note */
 .plan-note {
   display: flex;
   align-items: flex-start;
@@ -579,7 +637,7 @@ select {
   }
 }
 
-/* ── Confirm Action Row ───────────────────────────────────── */
+/* Confirm Action Row */
 .confirm-action-row {
   display: flex;
   justify-content: flex-end;

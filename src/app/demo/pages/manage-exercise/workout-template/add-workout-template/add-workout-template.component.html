@@ -10,7 +10,7 @@
 
     <form [formGroup]="templateForm" (ngSubmit)="onSubmit()" class="form-body">
 
-        <!-- 🔹 BASIC INFO -->
+        <!-- BASIC INFO -->
         <h3 class="section-title">Basic Info</h3>
         <hr class="divider"/>
 
@@ -28,7 +28,7 @@
 
         <hr>
 
-        <!-- 🔹 CLASSIFICATION -->
+        <!-- CLASSIFICATION -->
         <h3 class="section-title">Classification</h3>
         <hr class="divider"/>
 
@@ -76,7 +76,7 @@
 
         <hr>
 
-        <!-- 🔹 DIFFICULTY & SETUP -->
+        <!-- DIFFICULTY & SETUP -->
         <h3 class="section-title">Difficulty & Setup</h3>
         <hr class="divider"/>
 
@@ -109,7 +109,7 @@
 
         <hr>
 
-        <!-- 🔹 EQUIPMENT -->
+        <!-- EQUIPMENT -->
         <h3 class="section-title">Equipment Required</h3>
         <hr class="divider"/>
 
@@ -121,16 +121,16 @@
                 <input type="checkbox" value="Bodyweight" [checked]="templateForm.get('equipmentRequired')?.value?.includes('Bodyweight')" (change)="onEquipmentChange($event)" /> Bodyweight
             </label>
             <label class="checkbox-item">
-                <input type="checkbox" value="Dumbbell" [checked]="templateForm.get('equipmentRequired')?.value?.includes('Bodyweight')" (change)="onEquipmentChange($event)" /> Dumbbell
+                <input type="checkbox" value="Dumbbell" [checked]="templateForm.get('equipmentRequired')?.value?.includes('Dumbbell')" (change)="onEquipmentChange($event)" /> Dumbbell
             </label>
             <label class="checkbox-item">
-                <input type="checkbox" value="Barbell" [checked]="templateForm.get('equipmentRequired')?.value?.includes('Bodyweight')" (change)="onEquipmentChange($event)" /> Barbell
+                <input type="checkbox" value="Barbell" [checked]="templateForm.get('equipmentRequired')?.value?.includes('Barbell')" (change)="onEquipmentChange($event)" /> Barbell
             </label>
             <label class="checkbox-item">
-                <input type="checkbox" value="Machine" [checked]="templateForm.get('equipmentRequired')?.value?.includes('Bodyweight')" (change)="onEquipmentChange($event)" /> Machine
+                <input type="checkbox" value="Machine" [checked]="templateForm.get('equipmentRequired')?.value?.includes('Machine')" (change)="onEquipmentChange($event)" /> Machine
             </label>
             <label class="checkbox-item">
-                <input type="checkbox" value="Resistance Band" [checked]="templateForm.get('equipmentRequired')?.value?.includes('Bodyweight')" (change)="onEquipmentChange($event)" /> Resistance Band
+                <input type="checkbox" value="Resistance Band" [checked]="templateForm.get('equipmentRequired')?.value?.includes('Resistance Band')" (change)="onEquipmentChange($event)" /> Resistance Band
             </label>
             </div>
         </div>
@@ -154,19 +154,29 @@
         </div>
 
         <div class="field">
+            <label>Min Age</label>
+            <input type="number" placeholder="e.g. 18" formControlName="minAge" min="10" max="100" />
+        </div>
+
+        <div class="field">
+            <label>Max Age</label>
+            <input type="number" placeholder="e.g. 55" formControlName="maxAge" min="10" max="100" />
+        </div>
+
+        <div class="field full">
             <label>Recommended BMI Category</label>
             <div class="checkbox-group">
             <label class="checkbox-item">
-                <input type="checkbox" value="Underweight" [checked]="templateForm.get('equipmentRequired')?.value?.includes('Bodyweight')" (change)="onBMIChange($event)" /> Underweight
+                <input type="checkbox" value="Underweight" [checked]="templateForm.get('recommendedBMI')?.value?.includes('Underweight')" (change)="onBMIChange($event)" /> Underweight
             </label>
             <label class="checkbox-item">
-                <input type="checkbox" value="Normal" [checked]="templateForm.get('equipmentRequired')?.value?.includes('Bodyweight')" (change)="onBMIChange($event)" /> Normal
+                <input type="checkbox" value="Normal" [checked]="templateForm.get('recommendedBMI')?.value?.includes('Normal')" (change)="onBMIChange($event)" /> Normal
             </label>
             <label class="checkbox-item">
-                <input type="checkbox" value="Overweight" [checked]="templateForm.get('equipmentRequired')?.value?.includes('Bodyweight')" (change)="onBMIChange($event)" /> Overweight
+                <input type="checkbox" value="Overweight" [checked]="templateForm.get('recommendedBMI')?.value?.includes('Overweight')" (change)="onBMIChange($event)" /> Overweight
             </label>
             <label class="checkbox-item">
-                <input type="checkbox" value="Obese" [checked]="templateForm.get('equipmentRequired')?.value?.includes('Bodyweight')" (change)="onBMIChange($event)" /> Obese
+                <input type="checkbox" value="Obese" [checked]="templateForm.get('recommendedBMI')?.value?.includes('Obese')" (change)="onBMIChange($event)" /> Obese
             </label>
             </div>
         </div>
