@@ -41,6 +41,7 @@ import { WorkoutPlanGeneratorComponent } from './workout-plan-generator/workout-
 import { ManageExerciseComponent } from './manage-exercise/manage-exercise.component';
 import { WorkoutTemplateComponent } from './manage-exercise/workout-template/workout-template.component';
 import { ExerciseToTemplateComponent } from './manage-exercise/workout-template/exercise-to-template/exercise-to-template.component';
+import { TrainerMemberProgressComponent } from './trainer-member-progress/trainer-member-progress.component';
 
 export const PagesRoutes: Routes = [
   {
@@ -98,6 +99,10 @@ export const PagesRoutes: Routes = [
   {
     path: 'progress-tracking',
     component: ProgressTrackingComponent
+  },
+  {
+    path: 'trainer-member-progress',
+    component: TrainerMemberProgressComponent
   },
   {
     path: 'ratings&feedback',

@@ -28,6 +28,60 @@
           Best match for <strong>{{ level }}</strong> · <strong>{{ formatGoal(goal!) }}</strong>
         </p>
       </div>
+      <button class="outline-btn" (click)="goToProgress()">
+        <mat-icon>bar_chart</mat-icon>
+        My Progress
+      </button>
+    </div>
+
+    <!-- ── Progress Summary Bar ──────────────────────────────────────────── -->
+    <div class="progress-summary-bar" *ngIf="summary && !summaryLoading">
+
+      <div class="summary-stat">
+        <span class="summary-label">Program</span>
+        <span class="summary-value">
+          Week {{ summary.currentProgramWeek }}
+          <span class="summary-dim" *ngIf="summary.totalProgramWeeks">of {{ summary.totalProgramWeeks }}</span>
+        </span>
+        <div class="summary-track" *ngIf="summary.totalProgramWeeks">
+          <div class="summary-track-fill" [style.width.%]="programProgressPercent"></div>
+        </div>
+      </div>
+
+      <div class="summary-divider"></div>
+
+      <div class="summary-stat">
+        <span class="summary-label">This Week</span>
+        <span class="summary-value">
+          {{ summary.sessionsThisWeek }}
+          <span class="summary-dim" *ngIf="summary.targetSessionsPerWeek">/ {{ summary.targetSessionsPerWeek }} sessions</span>
+        </span>
+        <div class="summary-track" *ngIf="summary.targetSessionsPerWeek">
+          <div class="summary-track-fill accent" [style.width.%]="weekProgressPercent"></div>
+        </div>
+      </div>
+
+      <div class="summary-divider"></div>
+
+      <div class="summary-stat">
+        <span class="summary-label">Last Session</span>
+        <span class="summary-value" *ngIf="summary.lastSessionDate; else noSession">
+          <span *ngIf="summary.daysSinceLastSession === 0">Today</span>
+          <span *ngIf="summary.daysSinceLastSession === 1">Yesterday</span>
+          <span *ngIf="(summary.daysSinceLastSession ?? 0) > 1">{{ summary.daysSinceLastSession }} days ago</span>
+        </span>
+        <ng-template #noSession>
+          <span class="summary-value summary-dim">No sessions yet</span>
+        </ng-template>
+      </div>
+
+      <div class="summary-divider"></div>
+
+      <div class="summary-stat">
+        <span class="summary-label">Total Sessions</span>
+        <span class="summary-value accent-text">{{ summary.totalSessionsCompleted }}</span>
+      </div>
+
     </div>
 
     <!-- No match state -->
@@ -108,6 +162,10 @@
         <div class="exercises-section-title">
           <mat-icon>fitness_center</mat-icon>
           <span>Weekly Schedule</span>
+          <span class="session-mode-badge" *ngIf="sessionActive">
+            <mat-icon>radio_button_checked</mat-icon>
+            Session Active — Day {{ activeSessionDay }}
+          </span>
         </div>
 
         <!-- Loading exercises -->
@@ -124,47 +182,136 @@
         <!-- Day nav + exercise cards -->
         <ng-container *ngIf="!exercisesLoading && templateExercises.length > 0">
 
+          <!-- Next workout prompt -->
+          <div class="next-workout-banner" *ngIf="!sessionActive && activeAssignment && nextWorkoutDay !== null">
+            <div class="next-workout-info">
+              <mat-icon>play_circle</mat-icon>
+              <span>Next up: <strong>Day {{ nextWorkoutDay }}</strong>
+                <span *ngIf="summary?.lastWorkoutDay"> · Last session was Day {{ summary?.lastWorkoutDay }}</span>
+              </span>
+            </div>
+            <button class="start-next-btn" (click)="startNextWorkout()">
+              Start Today's Workout
+            </button>
+          </div>
+
           <!-- Day navigation pills -->
           <div class="day-nav">
             <button
               class="day-pill"
               *ngFor="let day of usedDays"
               [class.active]="selectedDay === day"
+              [class.done]="isDayCompleted(day) && day !== nextWorkoutDay"
+              [class.next]="day === nextWorkoutDay && !sessionActive"
+              [class.locked]="sessionActive && day !== activeSessionDay"
               (click)="selectDay(day)">
               <span class="day-pill-label">Day</span>
               <span class="day-pill-num">{{ day }}</span>
-              <span class="day-pill-count">{{ exercisesForDay(day).length }} ex</span>
+              <span class="day-pill-next" *ngIf="day === nextWorkoutDay && !sessionActive">Next</span>
+              <span class="day-pill-count" *ngIf="day !== nextWorkoutDay && !isDayCompleted(day)">{{ exercisesForDay(day).length }} ex</span>
+              <span class="day-pill-done" *ngIf="isDayCompleted(day) && day !== nextWorkoutDay">
+                <mat-icon>check_circle</mat-icon>
+              </span>
             </button>
           </div>
 
           <!-- Exercise cards for selected day -->
-          <div class="exercise-grid" *ngIf="selectedDay !== null">
-            <div class="exercise-card" *ngFor="let ex of exercisesForDay(selectedDay); let i = index">
+          <div *ngIf="selectedDay !== null">
 
-              <div class="exercise-card-top">
-                <div class="exercise-index">{{ i + 1 }}</div>
-                <div class="exercise-info">
-                  <div class="exercise-name">{{ ex.exerciseName }}</div>
-                  <div class="exercise-chips">
-                    <span class="chip chip-sets">
-                      <mat-icon>repeat</mat-icon>{{ ex.sets }} sets
-                    </span>
-                    <span class="chip chip-reps">
-                      <mat-icon>fitness_center</mat-icon>{{ ex.reps }} reps
-                    </span>
-                    <span class="chip chip-rest" *ngIf="ex.restSeconds">
-                      <mat-icon>timer</mat-icon>{{ ex.restSeconds }}s rest
-                    </span>
+            <!-- VIEW MODE: exercise list -->
+            <ng-container *ngIf="!sessionActive || activeSessionDay !== selectedDay">
+              <div class="exercise-grid">
+                <div class="exercise-card" *ngFor="let ex of exercisesForDay(selectedDay); let i = index">
+                  <div class="exercise-card-top">
+                    <div class="exercise-index">{{ i + 1 }}</div>
+                    <div class="exercise-info">
+                      <div class="exercise-name">{{ ex.exerciseName }}</div>
+                      <div class="exercise-chips">
+                        <span class="chip chip-sets">
+                          <mat-icon>repeat</mat-icon>{{ ex.sets }} sets
+                        </span>
+                        <span class="chip chip-reps">
+                          <mat-icon>fitness_center</mat-icon>{{ ex.reps }} reps
+                        </span>
+                        <span class="chip chip-rest" *ngIf="ex.restSeconds">
+                          <mat-icon>timer</mat-icon>{{ ex.restSeconds }}s rest
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="exercise-note" *ngIf="ex.notes">
+                    <mat-icon>info_outline</mat-icon>
+                    <span>{{ ex.notes }}</span>
                   </div>
                 </div>
               </div>
 
-              <div class="exercise-note" *ngIf="ex.notes">
-                <mat-icon>info_outline</mat-icon>
-                <span>{{ ex.notes }}</span>
+            </ng-container>
+
+            <!-- SESSION MODE: logging UI -->
+            <ng-container *ngIf="sessionActive && activeSessionDay === selectedDay">
+              <div class="session-exercises">
+
+                <div class="session-exercise-card"
+                     *ngFor="let ex of exercisesForDay(selectedDay); let i = index">
+
+                  <div class="session-ex-header">
+                    <div class="exercise-index">{{ i + 1 }}</div>
+                    <div class="exercise-info">
+                      <div class="exercise-name">{{ ex.exerciseName }}</div>
+                      <div class="session-ex-target">
+                        Target: {{ ex.sets }} sets × {{ ex.reps }} reps
+                        <span *ngIf="ex.restSeconds"> · {{ ex.restSeconds }}s rest</span>
+                      </div>
+                    </div>
+                    <div class="session-ex-count">
+                      <span class="count-done">{{ getSetsCompleted(ex.id) }}</span>
+                      <span class="count-sep">/</span>
+                      <span class="count-total">{{ ex.sets }}</span>
+                    </div>
+                  </div>
+
+                  <!-- Set buttons -->
+                  <div class="set-buttons-row">
+                    <button
+                      class="set-btn"
+                      *ngFor="let s of setArray(ex.sets); let si = index"
+                      [class.done]="isSetDone(ex.id, si)"
+                      (click)="toggleSet(ex.id, si)">
+                      <mat-icon *ngIf="isSetDone(ex.id, si)">check</mat-icon>
+                      <span *ngIf="!isSetDone(ex.id, si)">{{ si + 1 }}</span>
+                    </button>
+                  </div>
+
+                  <!-- Optional weight input -->
+                  <div class="weight-input-row">
+                    <mat-icon>monitor_weight</mat-icon>
+                    <input
+                      type="number"
+                      class="weight-input"
+                      placeholder="Weight (kg) — optional"
+                      min="0"
+                      step="0.5"
+                      [(ngModel)]="weightTrack[ex.id]" />
+                  </div>
+
+                </div>
+
               </div>
 
-            </div>
+              <!-- Session action buttons -->
+              <div class="session-footer">
+                <button class="cancel-session-btn" (click)="cancelSession()" [disabled]="savingSession">
+                  Cancel
+                </button>
+                <button class="complete-session-btn" (click)="completeSession()" [disabled]="savingSession">
+                  <mat-spinner *ngIf="savingSession" diameter="18"></mat-spinner>
+                  <mat-icon *ngIf="!savingSession">check_circle</mat-icon>
+                  {{ savingSession ? 'Saving...' : 'Complete Session' }}
+                </button>
+              </div>
+            </ng-container>
+
           </div>
 
         </ng-container>

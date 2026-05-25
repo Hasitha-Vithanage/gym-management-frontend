@@ -1,0 +1,147 @@
+<div class="trainer-progress-page">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div>
+      <h2 class="page-title">Member Progress</h2>
+      <p class="page-subtitle">Monitor training consistency across all active members</p>
+    </div>
+    <button class="outline-btn" (click)="loadMembersProgress()">
+      <mat-icon>refresh</mat-icon>
+      Refresh
+    </button>
+  </div>
+
+  <!-- Loading -->
+  <ng-container *ngIf="isLoading">
+    <div class="state-container">
+      <mat-spinner diameter="36"></mat-spinner>
+      <p class="state-text">Loading member progress...</p>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="!isLoading">
+
+    <!-- Summary cards -->
+    <div class="summary-cards">
+      <div class="summary-card active">
+        <mat-icon>check_circle</mat-icon>
+        <div class="summary-card-info">
+          <span class="summary-card-value">{{ activeCount }}</span>
+          <span class="summary-card-label">Active</span>
+        </div>
+      </div>
+      <div class="summary-card inactive">
+        <mat-icon>warning</mat-icon>
+        <div class="summary-card-info">
+          <span class="summary-card-value">{{ inactiveCount }}</span>
+          <span class="summary-card-label">Inactive</span>
+        </div>
+      </div>
+      <div class="summary-card dropped">
+        <mat-icon>cancel</mat-icon>
+        <div class="summary-card-info">
+          <span class="summary-card-value">{{ droppedCount }}</span>
+          <span class="summary-card-label">Dropped Off</span>
+        </div>
+      </div>
+      <div class="summary-card total">
+        <mat-icon>group</mat-icon>
+        <div class="summary-card-info">
+          <span class="summary-card-value">{{ members.length }}</span>
+          <span class="summary-card-label">Total</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters-row">
+      <div class="search-box">
+        <mat-icon>search</mat-icon>
+        <input
+          type="text"
+          placeholder="Search by member or program..."
+          (input)="onSearch($any($event.target).value)" />
+      </div>
+      <div class="status-filters">
+        <button
+          class="filter-btn"
+          *ngFor="let opt of statusOptions"
+          [class.active]="filterStatus === opt.value"
+          (click)="onStatusFilter(opt.value)">
+          {{ opt.label }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Empty state -->
+    <div class="empty-state" *ngIf="filteredMembers.length === 0">
+      <mat-icon>people_outline</mat-icon>
+      <p>No members match the current filter.</p>
+    </div>
+
+    <!-- Members Table -->
+    <div class="table-card" *ngIf="filteredMembers.length > 0">
+      <table class="progress-table">
+        <thead>
+          <tr>
+            <th>Member</th>
+            <th>Program</th>
+            <th>Program Week</th>
+            <th>This Week</th>
+            <th>Last Session</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let m of filteredMembers">
+
+            <td class="member-cell">
+              <div class="member-avatar">{{ (m.memberName ?? 'M')[0].toUpperCase() }}</div>
+              <div class="member-info">
+                <span class="member-name">{{ m.memberName ?? 'Member #' + m.userId }}</span>
+                <span class="member-id">ID: {{ m.userId }}</span>
+              </div>
+            </td>
+
+            <td class="program-cell">
+              <span class="program-name">{{ m.programName ?? '—' }}</span>
+              <span class="program-meta" *ngIf="m.daysPerWeek">{{ m.daysPerWeek }} days/week</span>
+            </td>
+
+            <td class="week-cell">
+              <span class="week-value">{{ m.currentProgramWeek ?? '—' }}</span>
+              <span class="week-total" *ngIf="m.totalProgramWeeks"> / {{ m.totalProgramWeeks }}</span>
+              <div class="week-bar" *ngIf="m.totalProgramWeeks">
+                <div class="week-bar-fill"
+                     [style.width.%]="((m.currentProgramWeek - 1) / m.totalProgramWeeks) * 100 | number:'1.0-0'">
+                </div>
+              </div>
+            </td>
+
+            <td class="sessions-cell">
+              <span class="sessions-done"
+                    [class.on-target]="m.sessionsThisWeek >= (m.daysPerWeek ?? 0)">
+                {{ m.sessionsThisWeek }}
+              </span>
+              <span class="sessions-target" *ngIf="m.daysPerWeek"> / {{ m.daysPerWeek }}</span>
+            </td>
+
+            <td class="last-session-cell">
+              {{ getDaysSinceLabel(m.daysSinceLastSession) }}
+            </td>
+
+            <td>
+              <span class="status-badge {{ m.activityStatus?.toLowerCase().replace('_', '-') }}">
+                {{ getStatusLabel(m.activityStatus) }}
+              </span>
+            </td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </ng-container>
+
+</div>

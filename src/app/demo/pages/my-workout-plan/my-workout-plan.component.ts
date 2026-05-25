@@ -6,7 +6,8 @@ import { NotificationService } from 'src/app/services/notification-service/notif
 import { AssignTrainerServiceService } from 'src/app/services/assign-trainer/assign-trainer-service.service';
 import { HttpService } from 'src/app/services/http.service';
 import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
-import { UserWorkoutAssignmentService } from 'src/app/services/user-workout-assignment/user-workout-assignment.service';
+import { UserWorkoutAssignmentService, UserWorkoutAssignment } from 'src/app/services/user-workout-assignment/user-workout-assignment.service';
+import { WorkoutSessionService, WorkoutSessionSummary, WorkoutSessionExercise } from 'src/app/services/workout-session/workout-session.service';
 
 @Component({
   selector: 'app-my-workout-plan',
@@ -31,16 +32,32 @@ export class MyWorkoutPlanComponent implements OnInit {
   private gender: string | null = null;
   private age: number | null = null;
 
+  // Assignment & progress tracking
+  activeAssignment: UserWorkoutAssignment | null = null;
+  summary: WorkoutSessionSummary | null = null;
+  summaryLoading = false;
+
+  // Session logging state
+  sessionActive = false;
+  activeSessionDay: number | null = null;
+  currentSessionId: number | null = null;
+  savingSession = false;
+
+  // Set & weight tracking — keyed by templateExerciseId
+  setTrack: { [exerciseId: number]: boolean[] } = {};
+  weightTrack: { [exerciseId: number]: number | null } = {};
+
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private workoutTemplatesService: WorkoutTemplatesService,
-    private workoutService: WorkoutManagementService,
-    private notificationService: NotificationService,
-    private assignTrainerService: AssignTrainerServiceService,
-    private httpService: HttpService,
-    private messageService: MessageServiceService,
-    private assignmentService: UserWorkoutAssignmentService
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
+    private readonly workoutTemplatesService: WorkoutTemplatesService,
+    private readonly workoutService: WorkoutManagementService,
+    private readonly notificationService: NotificationService,
+    private readonly assignTrainerService: AssignTrainerServiceService,
+    private readonly httpService: HttpService,
+    private readonly messageService: MessageServiceService,
+    private readonly assignmentService: UserWorkoutAssignmentService,
+    private readonly sessionService: WorkoutSessionService
   ) {}
 
   ngOnInit(): void {
@@ -51,16 +68,14 @@ export class MyWorkoutPlanComponent implements OnInit {
     this.age         = Number(this.route.snapshot.queryParamMap.get('age')) || null;
 
     if (this.level && this.goal) {
-      // User just came from the workout form — run matching
       this.hasParams = true;
       this.runMatching();
     } else {
-      // No params — try to load an existing saved assignment
       this.loadFromSavedAssignment();
     }
   }
 
-  // Matching flow (user just submitted the form)
+  // ── Matching flow ────────────────────────────────────────────────────────────
 
   private runMatching(): void {
     const criteria: TemplateMatchCriteria = {
@@ -76,12 +91,12 @@ export class MyWorkoutPlanComponent implements OnInit {
         this.matchedTemplate = template;
         this.isLoading = false;
 
-        if (!template) {
-          this.noMatch = true;
-          this.notifyTrainerNoMatch();
-        } else {
+        if (template) {
           this.saveAssignment(template);
           this.loadExercises(template.id!);
+        } else {
+          this.noMatch = true;
+          this.notifyTrainerNoMatch();
         }
       },
       error: () => {
@@ -99,10 +114,16 @@ export class MyWorkoutPlanComponent implements OnInit {
       userId,
       template.id!,
       template.programLengthWeeks ?? null
-    ).subscribe({ error: () => {} }); // silent — UI already showing the plan
+    ).subscribe({
+      next: (assignment) => {
+        this.activeAssignment = assignment;
+        this.loadSummary(userId, assignment.id);
+      },
+      error: () => {}
+    });
   }
 
-  // Saved-assignment flow (user navigates directly to the page)
+  // ── Saved-assignment flow ────────────────────────────────────────────────────
 
   private loadFromSavedAssignment(): void {
     const userId = Number(this.httpService.getUserId());
@@ -113,21 +134,21 @@ export class MyWorkoutPlanComponent implements OnInit {
 
     this.assignmentService.getActiveAssignment(userId).subscribe({
       next: (assignment) => {
-        if (!assignment || !assignment.template) {
+        if (!assignment?.template) {
           this.isLoading = false;
           return;
         }
 
-        this.matchedTemplate = assignment.template;
-        this.hasParams = true; // re-use the "has result" flag to show the results block
-
-        // Reconstruct display labels from the template
-        this.level       = assignment.template.difficultyLevel;
-        this.goal        = assignment.template.goal;
-        this.bmiCategory = null;
-        this.isLoading   = false;
+        this.activeAssignment  = assignment;
+        this.matchedTemplate   = assignment.template;
+        this.hasParams         = true;
+        this.level             = assignment.template.difficultyLevel;
+        this.goal              = assignment.template.goal;
+        this.bmiCategory       = null;
+        this.isLoading         = false;
 
         this.loadExercises(assignment.template.id!);
+        this.loadSummary(userId, assignment.id);
       },
       error: () => {
         this.isLoading = false;
@@ -135,7 +156,59 @@ export class MyWorkoutPlanComponent implements OnInit {
     });
   }
 
-  // Shared helpers
+  // ── Progress summary ─────────────────────────────────────────────────────────
+
+  private loadSummary(memberId: number, assignmentId: number): void {
+    this.summaryLoading = true;
+    this.sessionService.getMemberSummary(memberId, assignmentId).subscribe({
+      next: (s) => {
+        this.summary = s;
+        this.summaryLoading = false;
+      },
+      error: () => { this.summaryLoading = false; }
+    });
+  }
+
+  /**
+   * Calculates the next workout day by cycling through the split in order.
+   * Example: 3-day split [1,2,3] — last logged Day 2 → next is Day 3.
+   * If no sessions yet, returns the first day.
+   */
+  get nextWorkoutDay(): number | null {
+    if (this.usedDays.length === 0) return null;
+    if (!this.summary?.lastWorkoutDay) return this.usedDays[0];
+
+    const lastIndex = this.usedDays.indexOf(this.summary.lastWorkoutDay);
+    if (lastIndex === -1) return this.usedDays[0];
+
+    const nextIndex = (lastIndex + 1) % this.usedDays.length;
+    return this.usedDays[nextIndex];
+  }
+
+  startNextWorkout(): void {
+    const next = this.nextWorkoutDay;
+    if (next === null) return;
+    this.selectedDay = next;
+    this.startSession(next);
+  }
+
+  get weekProgressPercent(): number {
+    if (!this.summary?.targetSessionsPerWeek) return 0;
+    return Math.min(
+      Math.round((this.summary.sessionsThisWeek / this.summary.targetSessionsPerWeek) * 100),
+      100
+    );
+  }
+
+  get programProgressPercent(): number {
+    if (!this.summary?.totalProgramWeeks) return 0;
+    return Math.min(
+      Math.round(((this.summary.currentProgramWeek - 1) / this.summary.totalProgramWeeks) * 100),
+      100
+    );
+  }
+
+  // ── Exercises ────────────────────────────────────────────────────────────────
 
   private loadExercises(templateId: number): void {
     this.exercisesLoading = true;
@@ -149,9 +222,7 @@ export class MyWorkoutPlanComponent implements OnInit {
           this.selectedDay = Number(this.templateExercises[0].workoutDay);
         }
       },
-      error: () => {
-        this.exercisesLoading = false;
-      }
+      error: () => { this.exercisesLoading = false; }
     });
   }
 
@@ -164,6 +235,120 @@ export class MyWorkoutPlanComponent implements OnInit {
       .filter(e => Number(e.workoutDay) === day)
       .sort((a, b) => (a.exerciseOrder ?? 0) - (b.exerciseOrder ?? 0));
   }
+
+  selectDay(day: number): void {
+    if (this.sessionActive && day !== this.activeSessionDay) return;
+    this.selectedDay = day;
+  }
+
+  /**
+   * True when this day has been done in the current rotation cycle.
+   * A day is "done this cycle" if its position in usedDays is ≤ the position
+   * of lastWorkoutDay. This naturally resets when the cycle wraps: after the
+   * last day is logged, the next cycle starts and only days before the new
+   * lastWorkoutDay (i.e. none yet) are considered done.
+   */
+  isDayCompleted(day: number): boolean {
+    if (!this.summary?.lastWorkoutDay) return false;
+    const lastIndex = this.usedDays.indexOf(this.summary.lastWorkoutDay);
+    const dayIndex  = this.usedDays.indexOf(day);
+    if (lastIndex === -1 || dayIndex === -1) return false;
+    return dayIndex <= lastIndex;
+  }
+
+  // ── Session logging ──────────────────────────────────────────────────────────
+
+  startSession(day: number): void {
+    const memberId = Number(this.httpService.getUserId());
+    if (!memberId || !this.activeAssignment) return;
+
+    const exercises = this.exercisesForDay(day);
+
+    this.setTrack = {};
+    this.weightTrack = {};
+    exercises.forEach(ex => {
+      this.setTrack[ex.id] = new Array(ex.sets).fill(false);
+      this.weightTrack[ex.id] = null;
+    });
+
+    this.sessionService.createSession({
+      assignmentId: this.activeAssignment.id,
+      memberId,
+      workoutDay: day
+    }).subscribe({
+      next: (session) => {
+        this.currentSessionId = session.id!;
+        this.sessionActive    = true;
+        this.activeSessionDay = day;
+      },
+      error: () => {
+        this.messageService.showError('Could not start session. Please try again.');
+      }
+    });
+  }
+
+  toggleSet(exerciseId: number, setIndex: number): void {
+    if (!this.sessionActive) return;
+    this.setTrack[exerciseId][setIndex] = !this.setTrack[exerciseId][setIndex];
+  }
+
+  isSetDone(exerciseId: number, setIndex: number): boolean {
+    return this.setTrack[exerciseId]?.[setIndex] ?? false;
+  }
+
+  getSetsCompleted(exerciseId: number): number {
+    return (this.setTrack[exerciseId] ?? []).filter(Boolean).length;
+  }
+
+  setArray(count: number): number[] {
+    return Array.from({ length: count }, (_, i) => i);
+  }
+
+  completeSession(): void {
+    if (!this.currentSessionId || this.savingSession) return;
+
+    const exercises = this.exercisesForDay(this.activeSessionDay!);
+    const payload: WorkoutSessionExercise[] = exercises.map(ex => ({
+      templateExerciseId: ex.id,
+      exerciseId: ex.exerciseId ?? 0,
+      exerciseName: ex.exerciseName,
+      setsCompleted: this.getSetsCompleted(ex.id),
+      weightKg: this.weightTrack[ex.id] ?? null,
+      repsLogged: null,
+      completed: this.getSetsCompleted(ex.id) === ex.sets
+    }));
+
+    this.savingSession = true;
+    this.sessionService.completeSession(this.currentSessionId, payload).subscribe({
+      next: () => {
+        this.savingSession = false;
+        this.activeSessionDay  = null;
+        this.currentSessionId  = null;
+        this.sessionActive     = false;
+
+        const memberId = Number(this.httpService.getUserId());
+        if (memberId && this.activeAssignment) {
+          this.loadSummary(memberId, this.activeAssignment.id);
+        }
+
+        this.messageService.showSuccess('Session completed!');
+      },
+      error: () => {
+        this.savingSession = false;
+        this.messageService.showError('Could not save session. Please try again.');
+      }
+    });
+  }
+
+  cancelSession(): void {
+    this.sessionActive    = false;
+    this.activeSessionDay = null;
+    this.currentSessionId = null;
+    this.setTrack         = {};
+    this.weightTrack      = {};
+  }
+
+  // ── Helpers ──────────────────────────────────────────────────────────────────
 
   private notifyTrainerNoMatch(): void {
     const workoutData = this.workoutService.getWorkoutData();
@@ -190,11 +375,11 @@ export class MyWorkoutPlanComponent implements OnInit {
     return map[goal?.toLowerCase()] || goal;
   }
 
-  selectDay(day: number): void {
-    this.selectedDay = day;
-  }
-
   goToWorkoutForm(): void {
     this.router.navigate(['/pages/workout']);
+  }
+
+  goToProgress(): void {
+    this.router.navigate(['/pages/progress-tracking']);
   }
 }

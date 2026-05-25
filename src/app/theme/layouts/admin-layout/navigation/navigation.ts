@@ -204,7 +204,8 @@ export const NavigationItems: NavigationItem[] = [
       authenticationEnum.Workout_Plan,
       authenticationEnum.Workout_Plan_Upload,
       authenticationEnum.Workout_Plan_Diet,
-      authenticationEnum.Progress_Tracking
+      authenticationEnum.Progress_Tracking,
+      authenticationEnum.Manage_Exercises
     ],
     children: [
       {
@@ -275,6 +276,16 @@ export const NavigationItems: NavigationItem[] = [
         url: '/pages/progress-tracking',
         icon: '../../../../assets/images/icon/progress-tracking-icon.png',
         auth: [authenticationEnum.Progress_Tracking],
+        breadcrumbs: false
+      },
+      {
+        id: 'trainerMemberProgressDet',
+        title: 'Member Progress',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/pages/trainer-member-progress',
+        icon: '../../../../assets/images/icon/progress-tracking-icon.png',
+        auth: [authenticationEnum.Manage_Exercises],
         breadcrumbs: false
       }
     ]

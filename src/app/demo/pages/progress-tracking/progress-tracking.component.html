@@ -1,29 +1,30 @@
-<div class="progress-charts">
-  <!-- <h2 class="form-title">Progress Tracking</h2> -->
+<div class="progress-page">
 
-  <div class="header">
-    <h2>Progress Tracking</h2>
-    <p>Visual insights into your fitness journey</p>
-    <div class="add-new">
-      <button type="reset" mat-raised-button class="new-button half-width" (click)="openDialog()">
-        <mat-icon>add</mat-icon>
-        Add Progress
-      </button>
+  <!-- Header -->
+  <div class="page-header">
+    <div class="page-header-info">
+      <h2 class="page-title">Progress Tracking</h2>
+      <p class="page-subtitle">Visual insights into your fitness journey</p>
     </div>
+    <button class="primary-btn" (click)="openDialog()">
+      <mat-icon>add</mat-icon>
+      Add Measurement
+    </button>
   </div>
 
-  <!-- <div class="toolbar">
-    <div class="add-new">
-      <button type="reset" mat-raised-button class="new-button half-width" (click)="openDialog()">
-        <mat-icon>add</mat-icon>
-        Add Progress
-      </button>
-    </div>
-  </div> -->
+  <!-- ── Section: Body Measurements ─────────────────────────────────────────── -->
+  <div class="section-label">
+    <mat-icon>monitor_weight</mat-icon>
+    Body Measurements
+  </div>
 
   <div class="charts-grid">
+
     <div class="chart-card">
-      <h3>Body Weight Trends</h3>
+      <div class="chart-card-header">
+        <span class="chart-card-title">Body Weight</span>
+        <span class="chart-card-unit">kg</span>
+      </div>
       <apx-chart
         [series]="weightChartOptions?.series"
         [chart]="weightChartOptions?.chart"
@@ -33,11 +34,15 @@
         [stroke]="weightChartOptions?.stroke"
         [markers]="weightChartOptions?.markers"
         [grid]="weightChartOptions?.grid"
+        [tooltip]="weightChartOptions?.tooltip"
       ></apx-chart>
     </div>
 
     <div class="chart-card">
-      <h3>BMI Over Time</h3>
+      <div class="chart-card-header">
+        <span class="chart-card-title">BMI Over Time</span>
+        <span class="chart-card-unit">index</span>
+      </div>
       <apx-chart
         [series]="bmiChartOptions?.series"
         [chart]="bmiChartOptions?.chart"
@@ -47,11 +52,15 @@
         [stroke]="bmiChartOptions?.stroke"
         [markers]="bmiChartOptions?.markers"
         [grid]="bmiChartOptions?.grid"
+        [tooltip]="bmiChartOptions?.tooltip"
       ></apx-chart>
     </div>
 
     <div class="chart-card">
-      <h3>Body Fat Percentage Over Time</h3>
+      <div class="chart-card-header">
+        <span class="chart-card-title">Body Fat %</span>
+        <span class="chart-card-unit">%</span>
+      </div>
       <apx-chart
         [series]="bodyFatChartOptions?.series"
         [chart]="bodyFatChartOptions?.chart"
@@ -61,29 +70,82 @@
         [stroke]="bodyFatChartOptions?.stroke"
         [markers]="bodyFatChartOptions?.markers"
         [grid]="bodyFatChartOptions?.grid"
+        [tooltip]="bodyFatChartOptions?.tooltip"
       ></apx-chart>
     </div>
+
   </div>
-<!-- 
-  <div class="photo-comparison-section">
-  <h3>Progress Photo Comparison</h3>
-  <div class="comparison-grid" *ngIf="latestImage && previousImage; else noImage">
-    <div class="comparison-card">
-      <h4>{{ previousImage.date | date: 'mediumDate' }}</h4>
-      <img *ngIf="previousImage.frontImage" [src]="previousImage.frontImage" alt="Front Before" />
-      <img *ngIf="previousImage.sideImage" [src]="previousImage.sideImage" alt="Side Before" />
-      <img *ngIf="previousImage.backImage" [src]="previousImage.backImage" alt="Back Before" />
-    </div>
-    <div class="comparison-card">
-      <h4>{{ latestImage.date | date: 'mediumDate' }}</h4>
-      <img *ngIf="latestImage.frontImage" [src]="latestImage.frontImage" alt="Front After" />
-      <img *ngIf="latestImage.sideImage" [src]="latestImage.sideImage" alt="Side After" />
-      <img *ngIf="latestImage.backImage" [src]="latestImage.backImage" alt="Back After" />
-    </div>
+
+  <!-- ── Section: Workout Performance ───────────────────────────────────────── -->
+  <div class="section-label" style="margin-top: 36px;">
+    <mat-icon>fitness_center</mat-icon>
+    Workout Performance
   </div>
-  <ng-template #noImage>
-    <p class="no-image-msg">Not enough image data to compare.</p>
-  </ng-template>
-</div> -->
+
+  <!-- No workout plan state -->
+  <div class="no-data-card" *ngIf="noWorkoutData && !workoutDataLoading">
+    <mat-icon>event_busy</mat-icon>
+    <p>No active workout plan found. Complete the workout form to get started.</p>
+  </div>
+
+  <!-- Loading -->
+  <div class="charts-loading" *ngIf="workoutDataLoading">
+    <mat-spinner diameter="28"></mat-spinner>
+    <span>Loading workout data...</span>
+  </div>
+
+  <div class="charts-grid" *ngIf="!noWorkoutData && !workoutDataLoading">
+
+    <!-- Weekly Frequency Chart -->
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <span class="chart-card-title">Weekly Session Frequency</span>
+        <span class="chart-card-unit">sessions/week</span>
+      </div>
+      <apx-chart
+        [series]="frequencyChartOptions?.series"
+        [chart]="frequencyChartOptions?.chart"
+        [plotOptions]="frequencyChartOptions?.plotOptions"
+        [dataLabels]="frequencyChartOptions?.dataLabels"
+        [xaxis]="frequencyChartOptions?.xaxis"
+        [yaxis]="frequencyChartOptions?.yaxis"
+        [colors]="frequencyChartOptions?.colors"
+        [grid]="frequencyChartOptions?.grid"
+        [tooltip]="frequencyChartOptions?.tooltip"
+      ></apx-chart>
+    </div>
+
+    <!-- Exercise Performance Chart -->
+    <div class="chart-card chart-card-wide">
+      <div class="chart-card-header">
+        <span class="chart-card-title">Exercise Performance</span>
+        <span class="chart-card-unit">weight over time</span>
+      </div>
+
+      <!-- Exercise selector -->
+      <div class="exercise-selector" *ngIf="templateExercises.length > 0">
+        <mat-icon>search</mat-icon>
+        <select class="exercise-select" (change)="onExerciseSelect(+$any($event.target).value)">
+          <option *ngFor="let ex of templateExercises" [value]="ex.exerciseId">
+            {{ ex.exerciseName }}
+          </option>
+        </select>
+      </div>
+
+      <apx-chart
+        [series]="exerciseChartOptions?.series"
+        [chart]="exerciseChartOptions?.chart"
+        [xaxis]="exerciseChartOptions?.xaxis"
+        [yaxis]="exerciseChartOptions?.yaxis"
+        [colors]="exerciseChartOptions?.colors"
+        [stroke]="exerciseChartOptions?.stroke"
+        [markers]="exerciseChartOptions?.markers"
+        [grid]="exerciseChartOptions?.grid"
+        [tooltip]="exerciseChartOptions?.tooltip"
+        [noData]="exerciseChartOptions?.noData"
+      ></apx-chart>
+    </div>
+
+  </div>
 
 </div>

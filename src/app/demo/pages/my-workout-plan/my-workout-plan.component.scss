@@ -5,7 +5,7 @@
   font-family: $ff-font;
 }
 
-/* Page Header */
+/* ── Page Header ──────────────────────────────────────────────────────────── */
 .plan-header {
   display: flex;
   align-items: center;
@@ -26,7 +26,115 @@
   margin: 0;
 }
 
-/* State Container */
+/* ── Buttons ──────────────────────────────────────────────────────────────── */
+.primary-btn {
+  height: 38px;
+  padding: 0 24px;
+  border-radius: $ff-radius-sm;
+  border: none;
+  background: $ff-accent-primary;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: $ff-font;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover { background: $ff-accent-hover; box-shadow: $ff-shadow-orange; }
+}
+
+.outline-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 16px;
+  border-radius: $ff-radius-sm;
+  border: 1px solid $ff-border-default;
+  background: transparent;
+  color: $ff-text-secondary;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: $ff-font;
+  cursor: pointer;
+  transition: all 0.18s ease;
+
+  mat-icon { font-size: 16px; width: 16px; height: 16px; }
+  &:hover { border-color: $ff-border-accent; color: $ff-accent-primary; }
+}
+
+/* ── Progress Summary Bar ─────────────────────────────────────────────────── */
+.progress-summary-bar {
+  display: flex;
+  align-items: stretch;
+  flex-wrap: wrap;
+  gap: 0;
+  background: $ff-bg-surface;
+  border: 1px solid $ff-border-default;
+  border-radius: $ff-radius-md;
+  padding: 16px 24px;
+  margin-bottom: 24px;
+  box-shadow: $ff-shadow-card;
+}
+
+.summary-divider {
+  width: 1px;
+  background: $ff-border-default;
+  margin: 0 24px;
+  flex-shrink: 0;
+
+  @media (max-width: 600px) { display: none; }
+}
+
+.summary-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 120px;
+}
+
+.summary-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: $ff-text-dim;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.summary-value {
+  font-size: 15px;
+  font-weight: 700;
+  color: $ff-text-primary;
+  line-height: 1.2;
+}
+
+.summary-dim {
+  font-weight: 400;
+  color: $ff-text-secondary;
+  font-size: 13px;
+}
+
+.accent-text { color: $ff-accent-primary; }
+
+.summary-track {
+  height: 4px;
+  background: $ff-bg-elevated;
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 4px;
+}
+
+.summary-track-fill {
+  height: 100%;
+  background: $ff-success;
+  border-radius: 2px;
+  transition: width 0.4s ease;
+
+  &.accent { background: $ff-accent-primary; }
+}
+
+/* ── State containers ─────────────────────────────────────────────────────── */
 .state-container {
   display: flex;
   flex-direction: column;
@@ -57,7 +165,7 @@
   margin: 0;
 }
 
-/* No Match */
+/* ── No Match ─────────────────────────────────────────────────────────────── */
 .no-match-container {
   display: flex;
   flex-direction: column;
@@ -78,12 +186,7 @@
   align-items: center;
   justify-content: center;
 
-  mat-icon {
-    font-size: 32px;
-    width: 32px;
-    height: 32px;
-    color: $ff-warning;
-  }
+  mat-icon { font-size: 32px; width: 32px; height: 32px; color: $ff-warning; }
 }
 
 .no-match-title {
@@ -118,7 +221,7 @@
   color: $ff-text-secondary;
 }
 
-/* Match Badge */
+/* ── Match Badge ──────────────────────────────────────────────────────────── */
 .match-badge {
   display: inline-flex;
   align-items: center;
@@ -134,14 +237,10 @@
   text-transform: uppercase;
   letter-spacing: 0.4px;
 
-  mat-icon {
-    font-size: 15px;
-    width: 15px;
-    height: 15px;
-  }
+  mat-icon { font-size: 15px; width: 15px; height: 15px; }
 }
 
-/* Template Card */
+/* ── Template Card ────────────────────────────────────────────────────────── */
 .template-card {
   background: $ff-bg-surface;
   border: 1px solid $ff-border-default;
@@ -203,12 +302,7 @@
   font-size: 13px;
   color: $ff-text-secondary;
 
-  mat-icon {
-    font-size: 16px;
-    width: 16px;
-    height: 16px;
-    color: $ff-accent-primary;
-  }
+  mat-icon { font-size: 16px; width: 16px; height: 16px; color: $ff-accent-primary; }
 }
 
 .equipment-row {
@@ -218,11 +312,7 @@
   gap: 6px;
 }
 
-.equipment-label {
-  font-size: 12px;
-  color: $ff-text-secondary;
-  font-weight: 600;
-}
+.equipment-label { font-size: 12px; color: $ff-text-secondary; font-weight: 600; }
 
 .equipment-chip {
   font-size: 12px;
@@ -233,12 +323,8 @@
   border: 1px solid $ff-border-default;
 }
 
-/* Exercises Section */
-.exercises-section {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
+/* ── Exercises Section ────────────────────────────────────────────────────── */
+.exercises-section { display: flex; flex-direction: column; gap: 20px; }
 
 .exercises-section-title {
   display: flex;
@@ -248,12 +334,23 @@
   font-weight: 700;
   color: $ff-text-primary;
 
-  mat-icon {
-    font-size: 18px;
-    width: 18px;
-    height: 18px;
-    color: $ff-accent-primary;
-  }
+  mat-icon { font-size: 18px; width: 18px; height: 18px; color: $ff-accent-primary; }
+}
+
+.session-mode-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  color: $ff-danger;
+  background: rgba($ff-danger, 0.1);
+  border: 1px solid rgba($ff-danger, 0.25);
+  border-radius: 20px;
+  padding: 3px 10px;
+  margin-left: 4px;
+
+  mat-icon { font-size: 12px; width: 12px; height: 12px; }
 }
 
 .exercises-loading {
@@ -271,7 +368,7 @@
   margin: 0;
 }
 
-/* Day Nav Pills */
+/* ── Day Nav Pills ────────────────────────────────────────────────────────── */
 .day-nav {
   display: flex;
   gap: 10px;
@@ -295,8 +392,9 @@
   cursor: pointer;
   transition: all 0.18s ease;
   font-family: $ff-font;
+  position: relative;
 
-  &:hover:not(.active) {
+  &:hover:not(.active):not(.locked) {
     border-color: $ff-border-accent;
     background: $ff-bg-hover;
   }
@@ -306,9 +404,27 @@
     background: $ff-accent-soft;
     box-shadow: $ff-shadow-orange;
 
-    .day-pill-label,
-    .day-pill-num { color: $ff-accent-primary; }
+    .day-pill-label, .day-pill-num { color: $ff-accent-primary; }
     .day-pill-count { color: rgba($ff-accent-primary, 0.7); }
+  }
+
+  &.done {
+    border-color: rgba($ff-success, 0.4);
+    background: rgba($ff-success, 0.06);
+
+    .day-pill-label, .day-pill-num { color: $ff-success; }
+  }
+
+  &.next:not(.active):not(.done) {
+    border-color: $ff-border-accent;
+    background: $ff-accent-soft;
+
+    .day-pill-label, .day-pill-num { color: $ff-accent-primary; }
+  }
+
+  &.locked {
+    opacity: 0.4;
+    cursor: not-allowed;
   }
 }
 
@@ -334,14 +450,31 @@
   line-height: 1;
 }
 
-/* Exercise Grid */
+.day-pill-next {
+  font-size: 9px;
+  font-weight: 700;
+  color: $ff-accent-primary;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  line-height: 1;
+}
+
+.day-pill-done {
+  mat-icon {
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+    color: $ff-success;
+  }
+}
+
+/* ── Exercise Grid (view mode) ────────────────────────────────────────────── */
 .exercise-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 14px;
 }
 
-/* Exercise Card */
 .exercise-card {
   background: $ff-bg-surface;
   border: 1px solid $ff-border-default;
@@ -352,10 +485,7 @@
   gap: 12px;
   transition: border-color 0.18s ease, box-shadow 0.18s ease;
 
-  &:hover {
-    border-color: $ff-border-accent;
-    box-shadow: $ff-shadow-orange;
-  }
+  &:hover { border-color: $ff-border-accent; box-shadow: $ff-shadow-orange; }
 }
 
 .exercise-card-top {
@@ -395,11 +525,7 @@
   line-height: 1.3;
 }
 
-.exercise-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
+.exercise-chips { display: flex; flex-wrap: wrap; gap: 6px; }
 
 .chip {
   display: inline-flex;
@@ -411,11 +537,7 @@
   border-radius: 20px;
   font-family: $ff-font;
 
-  mat-icon {
-    font-size: 12px;
-    width: 12px;
-    height: 12px;
-  }
+  mat-icon { font-size: 12px; width: 12px; height: 12px; }
 
   &.chip-sets {
     background: rgba($ff-info, 0.1);
@@ -423,14 +545,12 @@
     border: 1px solid rgba($ff-info, 0.2);
     mat-icon { color: $ff-info; }
   }
-
   &.chip-reps {
     background: rgba($ff-accent-primary, 0.1);
     color: $ff-accent-primary;
     border: 1px solid rgba($ff-accent-primary, 0.2);
     mat-icon { color: $ff-accent-primary; }
   }
-
   &.chip-rest {
     background: rgba($ff-success, 0.1);
     color: $ff-success;
@@ -439,7 +559,6 @@
   }
 }
 
-/* Exercise Note */
 .exercise-note {
   display: flex;
   align-items: flex-start;
@@ -458,30 +577,234 @@
     margin-top: 1px;
   }
 
-  span {
-    font-size: 12px;
-    color: $ff-text-secondary;
-    line-height: 1.5;
-    font-style: italic;
-  }
+  span { font-size: 12px; color: $ff-text-secondary; line-height: 1.5; font-style: italic; }
 }
 
-/* Primary Button */
-.primary-btn {
-  height: 38px;
-  padding: 0 24px;
+/* ── Next Workout Banner ──────────────────────────────────────────────────── */
+.next-workout-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 18px;
+  background: $ff-accent-soft;
+  border: 1px solid $ff-border-accent;
+  border-radius: $ff-radius-sm;
+  flex-wrap: wrap;
+}
+
+.next-workout-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: $ff-text-secondary;
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    color: $ff-accent-primary;
+  }
+
+  strong { color: $ff-accent-primary; }
+}
+
+.start-next-btn {
+  flex-shrink: 0;
+  height: 36px;
+  padding: 0 20px;
+  border-radius: $ff-radius-sm;
+  border: none;
+  background: $ff-accent-primary;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: $ff-font;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover { background: $ff-accent-hover; box-shadow: $ff-shadow-orange; }
+}
+
+/* ── Start Session Button ─────────────────────────────────────────────────── */
+.session-action-row {
+  display: flex;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.start-session-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 28px;
   border-radius: $ff-radius-sm;
   border: none;
   background: $ff-accent-primary;
   color: #fff;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   font-family: $ff-font;
   cursor: pointer;
   transition: all 0.2s ease;
 
-  &:hover {
-    background: $ff-accent-hover;
-    box-shadow: $ff-shadow-orange;
+  mat-icon { font-size: 20px; width: 20px; height: 20px; }
+  &:hover { background: $ff-accent-hover; box-shadow: $ff-shadow-orange; transform: translateY(-1px); }
+}
+
+/* ── Session Mode — Exercise Cards ───────────────────────────────────────── */
+.session-exercises { display: flex; flex-direction: column; gap: 16px; }
+
+.session-exercise-card {
+  background: $ff-bg-surface;
+  border: 1px solid $ff-border-default;
+  border-radius: $ff-radius-sm;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: border-color 0.18s ease;
+
+  &:hover { border-color: $ff-border-accent; }
+}
+
+.session-ex-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.session-ex-target {
+  font-size: 12px;
+  color: $ff-text-secondary;
+  margin-top: 4px;
+}
+
+.session-ex-count {
+  flex-shrink: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+  margin-left: auto;
+}
+
+.count-done { font-size: 22px; font-weight: 800; color: $ff-accent-primary; }
+.count-sep  { font-size: 14px; color: $ff-text-dim; }
+.count-total { font-size: 14px; font-weight: 600; color: $ff-text-secondary; }
+
+/* ── Set Buttons ──────────────────────────────────────────────────────────── */
+.set-buttons-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.set-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: $ff-radius-sm;
+  border: 2px solid $ff-border-default;
+  background: $ff-bg-elevated;
+  color: $ff-text-secondary;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: $ff-font;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+
+  mat-icon { font-size: 18px; width: 18px; height: 18px; }
+
+  &:hover:not(.done) {
+    border-color: $ff-border-accent;
+    color: $ff-accent-primary;
+    background: $ff-accent-soft;
   }
+
+  &.done {
+    border-color: $ff-success;
+    background: rgba($ff-success, 0.12);
+    color: $ff-success;
+  }
+}
+
+/* ── Weight Input ─────────────────────────────────────────────────────────── */
+.weight-input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  mat-icon { font-size: 16px; width: 16px; height: 16px; color: $ff-text-dim; }
+}
+
+.weight-input {
+  flex: 1;
+  max-width: 200px;
+  height: 36px;
+  padding: 0 12px;
+  border-radius: $ff-radius-sm;
+  border: 1px solid $ff-border-default;
+  background: $ff-bg-input;
+  color: $ff-text-primary;
+  font-size: 13px;
+  font-family: $ff-font;
+  outline: none;
+  transition: border-color 0.18s ease;
+
+  &:focus { border-color: $ff-border-accent; }
+  &::placeholder { color: $ff-text-dim; }
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+}
+
+/* ── Session Footer ───────────────────────────────────────────────────────── */
+.session-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-top: 8px;
+}
+
+.cancel-session-btn {
+  height: 40px;
+  padding: 0 20px;
+  border-radius: $ff-radius-sm;
+  border: 1px solid $ff-border-default;
+  background: transparent;
+  color: $ff-text-secondary;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: $ff-font;
+  cursor: pointer;
+  transition: all 0.18s ease;
+
+  &:hover:not(:disabled) { border-color: $ff-danger; color: $ff-danger; }
+  &:disabled { opacity: 0.5; cursor: not-allowed; }
+}
+
+.complete-session-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 24px;
+  border-radius: $ff-radius-sm;
+  border: none;
+  background: $ff-success;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: $ff-font;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  mat-icon { font-size: 18px; width: 18px; height: 18px; }
+  &:hover:not(:disabled) { background: darken($ff-success, 8%); box-shadow: 0 4px 16px rgba($ff-success, 0.3); }
+  &:disabled { opacity: 0.6; cursor: not-allowed; }
 }
