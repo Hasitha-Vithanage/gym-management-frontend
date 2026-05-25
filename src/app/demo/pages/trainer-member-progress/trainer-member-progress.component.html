@@ -6,10 +6,10 @@
       <h2 class="page-title">Member Progress</h2>
       <p class="page-subtitle">Monitor training consistency across all active members</p>
     </div>
-    <button class="outline-btn" (click)="loadMembersProgress()">
+    <!-- <button class="outline-btn" (click)="loadMembersProgress()">
       <mat-icon>refresh</mat-icon>
       Refresh
-    </button>
+    </button> -->
   </div>
 
   <!-- Loading -->
@@ -25,28 +25,28 @@
     <!-- Summary cards -->
     <div class="summary-cards">
       <div class="summary-card active">
-        <mat-icon>check_circle</mat-icon>
+        <img src="../../../../assets/images/icon/white-tick.png" style="margin-right: 5px;">
         <div class="summary-card-info">
           <span class="summary-card-value">{{ activeCount }}</span>
           <span class="summary-card-label">Active</span>
         </div>
       </div>
       <div class="summary-card inactive">
-        <mat-icon>warning</mat-icon>
+        <img src="../../../../assets/images/icon/exclamation-icon-white.png" style="margin-right: 5px;">
         <div class="summary-card-info">
           <span class="summary-card-value">{{ inactiveCount }}</span>
           <span class="summary-card-label">Inactive</span>
         </div>
       </div>
       <div class="summary-card dropped">
-        <mat-icon>cancel</mat-icon>
+        <img src="../../../../assets/images/icon/white-close.png" style="margin-right: 5px;">
         <div class="summary-card-info">
           <span class="summary-card-value">{{ droppedCount }}</span>
           <span class="summary-card-label">Dropped Off</span>
         </div>
       </div>
       <div class="summary-card total">
-        <mat-icon>group</mat-icon>
+        <img src="../../../../assets/images/icon/total-member.png" style="margin-right: 5px;">
         <div class="summary-card-info">
           <span class="summary-card-value">{{ members.length }}</span>
           <span class="summary-card-label">Total</span>
@@ -57,7 +57,7 @@
     <!-- Filters -->
     <div class="filters-row">
       <div class="search-box">
-        <mat-icon>search</mat-icon>
+        <img src="../../../../assets/images/icon/search-16.png" style="margin-right: 2px;">
         <input
           type="text"
           placeholder="Search by member or program..."
@@ -76,7 +76,7 @@
 
     <!-- Empty state -->
     <div class="empty-state" *ngIf="filteredMembers.length === 0">
-      <mat-icon>people_outline</mat-icon>
+      <img src="../../../../assets/images/icon/people.png" style="margin-right: 5px;">
       <p>No members match the current filter.</p>
     </div>
 
