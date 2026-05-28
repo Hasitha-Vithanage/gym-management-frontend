@@ -276,18 +276,26 @@ select {
   }
 }
 
+/* Input error state */
+input.input-error,
+select.input-error {
+  border-color: $ff-danger !important;
+  background: rgba($ff-danger, 0.04) !important;
+}
+
 /* Error message */
 .error-msg {
   font-size: 12px;
   color: $ff-danger;
   margin-top: 4px;
   font-family: $ff-font;
+  animation: fadeIn 0.15s ease;
 }
 
 /* Radio Group */
 .radio-group {
   display: flex;
-  gap: 16px;
+  gap: 12px;
   flex-wrap: wrap;
   padding: 6px 0;
   clear: both;
@@ -308,6 +316,59 @@ select {
     accent-color: $ff-accent-primary;
     cursor: pointer;
   }
+}
+
+/* Experience Level Radio Cards */
+.radio-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  flex: 1 1 200px;
+  padding: 12px 14px;
+  border-radius: $ff-radius-sm;
+  border: 1.5px solid $ff-border-default;
+  background: $ff-bg-elevated;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease;
+
+  input[type='radio'] {
+    margin-top: 3px;
+    flex-shrink: 0;
+    width: 15px;
+    height: 15px;
+    accent-color: $ff-accent-primary;
+    cursor: pointer;
+  }
+
+  &.selected {
+    border-color: $ff-accent-primary;
+    background: rgba($ff-accent-primary, 0.06);
+  }
+
+  &:hover:not(.selected) {
+    border-color: $ff-border-accent;
+    background: $ff-bg-hover;
+  }
+}
+
+.radio-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.radio-card-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: $ff-text-primary;
+  font-family: $ff-font;
+}
+
+.radio-card-desc {
+  font-size: 11.5px;
+  color: $ff-text-secondary;
+  line-height: 1.5;
+  font-family: $ff-font;
 }
 
 /* Action Row */

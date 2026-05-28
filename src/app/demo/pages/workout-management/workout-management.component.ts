@@ -183,6 +183,11 @@ export class WorkoutManagementComponent implements OnInit {
     return 'Obese';
   }
 
+  isFieldInvalid(name: string): boolean {
+    const ctrl = this.formGroup.get(name);
+    return !!ctrl && ctrl.invalid && (ctrl.touched || this.submitted);
+  }
+
   formatGoal(goal: string): string {
     const map: Record<string, string> = {
       muscle_gain: 'Muscle Gain',

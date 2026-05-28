@@ -26,8 +26,9 @@
 
           <div class="field">
             <label for="age">Age <span class="required">*</span></label>
-            <input id="age" type="number" formControlName="age" placeholder="e.g. 25" />
-            <span class="error-msg" *ngIf="submitted && formGroup.get('age').invalid">
+            <input id="age" type="number" formControlName="age" placeholder="e.g. 25"
+              [class.input-error]="isFieldInvalid('age')" />
+            <span class="error-msg" *ngIf="isFieldInvalid('age')">
               <ng-container *ngIf="formGroup.get('age').hasError('required')">Age is required</ng-container>
               <ng-container *ngIf="formGroup.get('age').hasError('min')">Minimum age is 10</ng-container>
               <ng-container *ngIf="formGroup.get('age').hasError('max')">Maximum age is 100</ng-container>
@@ -36,8 +37,9 @@
 
           <div class="field">
             <label for="weight">Weight (kg) <span class="required">*</span></label>
-            <input id="weight" type="number" formControlName="weight" placeholder="e.g. 70" />
-            <span class="error-msg" *ngIf="submitted && formGroup.get('weight').invalid">
+            <input id="weight" type="number" formControlName="weight" placeholder="e.g. 70"
+              [class.input-error]="isFieldInvalid('weight')" />
+            <span class="error-msg" *ngIf="isFieldInvalid('weight')">
               <ng-container *ngIf="formGroup.get('weight').hasError('required')">Weight is required</ng-container>
               <ng-container *ngIf="formGroup.get('weight').hasError('min')">Minimum weight is 20 kg</ng-container>
               <ng-container *ngIf="formGroup.get('weight').hasError('max')">Maximum weight is 300 kg</ng-container>
@@ -46,8 +48,9 @@
 
           <div class="field">
             <label for="height">Height (cm) <span class="required">*</span></label>
-            <input id="height" type="number" formControlName="height" placeholder="e.g. 170" />
-            <span class="error-msg" *ngIf="submitted && formGroup.get('height').invalid">
+            <input id="height" type="number" formControlName="height" placeholder="e.g. 170"
+              [class.input-error]="isFieldInvalid('height')" />
+            <span class="error-msg" *ngIf="isFieldInvalid('height')">
               <ng-container *ngIf="formGroup.get('height').hasError('required')">Height is required</ng-container>
               <ng-container *ngIf="formGroup.get('height').hasError('min')">Minimum height is 100 cm</ng-container>
               <ng-container *ngIf="formGroup.get('height').hasError('max')">Maximum height is 250 cm</ng-container>
@@ -56,26 +59,28 @@
 
           <div class="field">
             <label for="fitnessGoal">Primary Fitness Goal <span class="required">*</span></label>
-            <select id="fitnessGoal" formControlName="fitnessGoal">
+            <select id="fitnessGoal" formControlName="fitnessGoal"
+              [class.input-error]="isFieldInvalid('fitnessGoal')">
               <option value="">Select goal</option>
               <option value="muscle_gain">Muscle Gain</option>
               <option value="fat_loss">Fat Loss</option>
               <option value="general_fitness">General Fitness</option>
               <option value="endurance">Endurance</option>
             </select>
-            <span class="error-msg" *ngIf="submitted && formGroup.get('fitnessGoal').invalid">
+            <span class="error-msg" *ngIf="isFieldInvalid('fitnessGoal')">
               Fitness goal is required
             </span>
           </div>
 
           <div class="field">
             <label for="gender">Gender <span class="required">*</span></label>
-            <select id="gender" formControlName="gender">
+            <select id="gender" formControlName="gender"
+              [class.input-error]="isFieldInvalid('gender')">
               <option value="">Select gender</option>
               <option value="Male">Male</option>
               <option value="Female">Female</option>
             </select>
-            <span class="error-msg" *ngIf="submitted && formGroup.get('gender').invalid">
+            <span class="error-msg" *ngIf="isFieldInvalid('gender')">
               Gender is required
             </span>
           </div>
@@ -83,14 +88,25 @@
           <fieldset class="field full radio-fieldset">
             <legend class="field-label">Fitness Experience Level <span class="required">*</span></legend>
             <div class="radio-group">
-              <label class="radio-item">
-                <input type="radio" formControlName="experienceLevel" value="Beginner" /> Beginner
+
+              <label class="radio-card" [class.selected]="formGroup.get('experienceLevel').value === 'Beginner'">
+                <input type="radio" formControlName="experienceLevel" value="Beginner" />
+                <div class="radio-card-content">
+                  <span class="radio-card-title">Beginner</span>
+                  <span class="radio-card-desc">New to exercise or returning after a long break. Less than 6 months of consistent training.</span>
+                </div>
               </label>
-              <label class="radio-item">
-                <input type="radio" formControlName="experienceLevel" value="Intermediate" /> Intermediate
+
+              <label class="radio-card" [class.selected]="formGroup.get('experienceLevel').value === 'Intermediate'">
+                <input type="radio" formControlName="experienceLevel" value="Intermediate" />
+                <div class="radio-card-content">
+                  <span class="radio-card-title">Intermediate</span>
+                  <span class="radio-card-desc">6+ months of regular training with a solid base of fitness knowledge and exercise form.</span>
+                </div>
               </label>
+
             </div>
-            <span class="error-msg" *ngIf="submitted && formGroup.get('experienceLevel').invalid">
+            <span class="error-msg" *ngIf="isFieldInvalid('experienceLevel')">
               Experience level is required
             </span>
           </fieldset>
