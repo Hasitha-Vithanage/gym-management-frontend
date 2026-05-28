@@ -35,4 +35,5 @@ export enum authenticationEnum {
   Monthly_Sales = 29,
   Manage_Exercises = 30,
   Workout_Templates = 31,
+  Workout_Plan_Generator = 32,
 }

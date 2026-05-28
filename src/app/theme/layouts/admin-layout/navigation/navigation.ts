@@ -245,7 +245,7 @@ export const NavigationItems: NavigationItem[] = [
         classes: 'nav-item',
         url: '/pages/workout-plan-generator',
         icon: '../../../../assets/images/icon/workout-plan-generator-light.png',
-        auth: [authenticationEnum.Workout_Plan],
+        auth: [authenticationEnum.Workout_Plan_Generator],
         breadcrumbs: false
       },
       {
