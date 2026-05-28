@@ -96,17 +96,21 @@
         <tbody>
           <tr *ngFor="let m of filteredMembers">
 
-            <td class="member-cell">
-              <div class="member-avatar">{{ (m.memberName ?? 'M')[0].toUpperCase() }}</div>
-              <div class="member-info">
-                <span class="member-name">{{ m.memberName ?? 'Member #' + m.userId }}</span>
-                <span class="member-id">ID: {{ m.userId }}</span>
+            <td>
+              <div class="member-cell">
+                <div class="member-avatar">{{ (m.memberName ?? 'M')[0].toUpperCase() }}</div>
+                <div class="member-info">
+                  <span class="member-name">{{ m.memberName ?? 'Member #' + m.userId }}</span>
+                  <span class="member-id">ID: {{ m.userId }}</span>
+                </div>
               </div>
             </td>
 
-            <td class="program-cell">
-              <span class="program-name">{{ m.programName ?? '—' }}</span>
-              <span class="program-meta" *ngIf="m.daysPerWeek">{{ m.daysPerWeek }} days/week</span>
+            <td>
+              <div class="program-cell">
+                <span class="program-name">{{ m.programName ?? '—' }}</span>
+                <span class="program-meta" *ngIf="m.daysPerWeek">{{ m.daysPerWeek }} days/week</span>
+              </div>
             </td>
 
             <td class="week-cell">

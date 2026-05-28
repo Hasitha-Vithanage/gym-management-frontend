@@ -4,13 +4,13 @@
   <div class="page-header">
     <div class="header-left">
       <button mat-button class="back-button" (click)="goBack()">
-        <mat-icon>arrow_back</mat-icon>
+        <img src="../../../../assets/images/icon/back-arrow.png">
         Back
       </button>
       <div class="header-info">
         <h2 class="page-title">Assign Exercises</h2>
         <span class="template-badge" *ngIf="templateData">
-          <mat-icon class="badge-icon">fitness_center</mat-icon>
+           <img class="badge-icon" src="../../../../assets/images/icon/workout-orange.png" style="margin-right: 5px;">
           {{ templateData.templateName }}
         </span>
       </div>
@@ -21,7 +21,6 @@
       (click)="saveAssignments()"
       [disabled]="assignedExercises.length === 0"
     >
-      <mat-icon>save</mat-icon>
       Save Assignments
     </button>
   </div>
@@ -32,12 +31,11 @@
     <!-- ════ LEFT: Browse Exercises ════ -->
     <div class="browse-panel">
       <div class="panel-title">
-        <mat-icon class="panel-icon">search</mat-icon>
         Browse Exercises
       </div>
 
       <div class="search-wrap">
-        <mat-icon class="s-icon">search</mat-icon>
+         <img class="s-icon" src="../../../../assets/images/icon/search-16.png">
         <input
           id="exercise-search"
           type="text"
@@ -65,13 +63,12 @@
               <span class="chip" *ngIf="ex.category">{{ ex.category }}</span>
             </div>
             <button class="add-btn" (click)="quickAdd(ex); $event.stopPropagation()">
-              <mat-icon>add</mat-icon> Add to Template
+              <img src="../../../../assets/images/icon/add-16.png"> Add to Template
             </button>
           </div>
         </ng-container>
         <ng-template #noExercises>
           <div class="empty-browse">
-            <mat-icon>fitness_center</mat-icon>
             <p>No exercises found</p>
           </div>
         </ng-template>
@@ -84,7 +81,7 @@
       <!-- Config form -->
       <div class="config-card">
         <div class="panel-title">
-          <mat-icon class="panel-icon">tune</mat-icon>
+          <img src="../../../../assets/images/icon/tune-16.png">
           Exercise Configuration
           <span class="selected-ex-label" *ngIf="selectedExercise">
             — {{ selectedExercise.exerciseName }}
@@ -139,10 +136,10 @@
             </div>
             <div class="form-actions">
               <button type="button" class="btn-add" (click)="addExerciseToTemplate()">
-                <mat-icon>add_circle</mat-icon> Add
+              Add
               </button>
               <button type="button" class="btn-reset" (click)="resetForm()">
-                <mat-icon>refresh</mat-icon> Reset
+              Reset
               </button>
             </div>
           </div>
@@ -152,7 +149,7 @@
       <!-- Workout Split View -->
       <div class="split-card">
         <div class="panel-title">
-          <mat-icon class="panel-icon">calendar_view_week</mat-icon>
+          <img src="../../../../assets/images/icon/calendar_view_week.png" style="margin-right: 5px;">
           Workout Split
           <span class="count-badge" *ngIf="assignedExercises.length > 0">
             {{ assignedExercises.length }} exercise{{ assignedExercises.length !== 1 ? 's' : '' }}
