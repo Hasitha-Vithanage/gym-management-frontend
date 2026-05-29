@@ -131,11 +131,7 @@ export class EquipmentRegistrationComponent {
       autoFocus: false,
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result?.action === 'add') {
-        this.dataSource.data = [result.data, ...this.dataSource.data];
-      }
-    });
+    dialogRef.afterClosed().subscribe(() => this.populateData());
   }
 
   // Edit Data function
@@ -148,13 +144,7 @@ export class EquipmentRegistrationComponent {
       dialogRef.componentInstance.onEdit(data);
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result?.action === 'edit') {
-        const newData = this.dataSource.data.filter(item => item.id !== result.data.id);
-        // Add the updated item to the top
-        this.dataSource.data = [result.data, ...newData];
-      }
-    });
+    dialogRef.afterClosed().subscribe(() => this.populateData());
   }
 
       public deleteData(data: any): void {

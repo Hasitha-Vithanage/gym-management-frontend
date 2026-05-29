@@ -43,6 +43,14 @@ export class HttpService {
     return window.localStorage.getItem('user_name');
   }
 
+  setFullNameToCache(firstName: string, lastName: string): void {
+    window.localStorage.setItem('user_full_name', `${firstName} ${lastName}`.trim());
+  }
+
+  getFullNameFromCache(): string | null {
+    return window.localStorage.getItem('user_full_name');
+  }
+
   public getUserName(): Observable<string> {
     return this.userNameBehaviorSubject.asObservable();
   }

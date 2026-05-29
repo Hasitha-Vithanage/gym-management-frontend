@@ -86,7 +86,9 @@
 
     <!-- No match state -->
     <ng-container *ngIf="noMatch">
-      <div class="no-match-container">
+
+      <!-- Trainer is assigned: they will create a custom plan -->
+      <div class="no-match-container" *ngIf="hasTrainer">
         <div class="no-match-icon-wrap">
           <mat-icon>schedule</mat-icon>
         </div>
@@ -102,6 +104,33 @@
           <span class="tag">BMI: {{ bmiCategory }}</span>
         </div>
       </div>
+
+      <!-- No trainer assigned: dead end — let member escalate to management -->
+      <div class="no-match-container" *ngIf="!hasTrainer">
+        <div class="no-match-icon-wrap no-match-icon-alert">
+          <mat-icon>person_off</mat-icon>
+        </div>
+        <h3 class="no-match-title">No Plan Available Yet</h3>
+        <p class="no-match-text">
+          We couldn't find a matching workout template for your profile, and no trainer is assigned to you.
+          Request a trainer below — gym management will be notified and will assign someone who can create a personalised plan for you.
+        </p>
+        <div class="no-match-tags">
+          <span class="tag">{{ level }}</span>
+          <span class="tag">{{ formatGoal(goal!) }}</span>
+          <span class="tag">BMI: {{ bmiCategory }}</span>
+        </div>
+        <div class="no-match-actions">
+          <button class="no-match-request-btn" (click)="requestTrainer()" [disabled]="trainerRequested">
+            <mat-icon>{{ trainerRequested ? 'check_circle' : 'person_add' }}</mat-icon>
+            {{ trainerRequested ? 'Request Sent' : 'Request a Trainer' }}
+          </button>
+          <p class="no-match-sent-note" *ngIf="trainerRequested">
+            Gym management has been notified and will assign a trainer to you shortly.
+          </p>
+        </div>
+      </div>
+
     </ng-container>
 
     <!-- Matched template -->
@@ -284,7 +313,7 @@
                   </div>
 
                   <!-- Optional weight input -->
-                  <div class="weight-input-row">
+                  <div class="weight-input-row" *ngIf="!isBodyweightEquipment(ex.equipmentType)">
                     <mat-icon>monitor_weight</mat-icon>
                     <input
                       type="number"
@@ -304,7 +333,7 @@
                 <button class="cancel-session-btn" (click)="cancelSession()" [disabled]="savingSession">
                   Cancel
                 </button>
-                <button class="complete-session-btn" (click)="completeSession()" [disabled]="savingSession">
+                <button class="complete-session-btn" (click)="confirmCompleteSession()" [disabled]="savingSession">
                   <mat-spinner *ngIf="savingSession" diameter="18"></mat-spinner>
                   <mat-icon *ngIf="!savingSession">check_circle</mat-icon>
                   {{ savingSession ? 'Saving...' : 'Complete Session' }}

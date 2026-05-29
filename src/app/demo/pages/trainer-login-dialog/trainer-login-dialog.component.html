@@ -9,12 +9,12 @@
   <!-- Form -->
   <form [formGroup]="trainerLoginForm" (ngSubmit)="onSubmit()" class="dialog-body">
 
-    <!-- Trainer Select -->
+    <!-- Employee Select -->
     <div class="row">
       <div class="field">
-        <label>Select Trainer *</label>
+        <label>Select Employee *</label>
         <select formControlName="trainerId" class="select-input">
-          <option [ngValue]="null" disabled>Select Trainer</option>
+          <option [ngValue]="null" disabled>Select Employee</option>
           <option *ngFor="let trainer of trainerList" [ngValue]="trainer.id">
             {{ trainer.firstName }} {{ trainer.lastName }} — {{ trainer.jobTitle }}
           </option>

@@ -95,6 +95,12 @@
     }
   }
 
+  .notif-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
   .mark-all-read {
     background: none;
     border: none;
@@ -108,6 +114,23 @@
 
     &:hover {
       background: $ff-accent-soft;
+    }
+  }
+
+  .clear-all-btn {
+    background: none;
+    border: none;
+    color: $ff-text-dim;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: all 0.2s;
+
+    &:hover {
+      background: rgba($ff-danger, 0.08);
+      color: $ff-danger;
     }
   }
 
@@ -173,6 +196,36 @@
 .notification-time {
   font-size: 11px;
   color: $ff-text-dim;
+}
+
+.notification-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.notif-clear-btn {
+  background: none;
+  border: none;
+  color: $ff-text-dim;
+  font-size: 11px;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 4px;
+  line-height: 1;
+  opacity: 0;
+  transition: all 0.15s;
+
+  .notification-item:hover & {
+    opacity: 1;
+  }
+
+  &:hover {
+    background: rgba($ff-danger, 0.1);
+    color: $ff-danger;
+  }
 }
 
 .notification-status {

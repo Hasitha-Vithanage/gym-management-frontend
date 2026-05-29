@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { WorkoutTemplatesService, WorkoutTemplate, TemplateMatchCriteria } from 'src/app/services/workout-templates/workout-templates.service';
 import { WorkoutManagementService } from 'src/app/services/workout-management/workout-management.service';
 import { NotificationService } from 'src/app/services/notification-service/notification.service';
@@ -8,6 +10,8 @@ import { HttpService } from 'src/app/services/http.service';
 import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
 import { UserWorkoutAssignmentService, UserWorkoutAssignment } from 'src/app/services/user-workout-assignment/user-workout-assignment.service';
 import { WorkoutSessionService, WorkoutSessionSummary, WorkoutSessionExercise } from 'src/app/services/workout-session/workout-session.service';
+import { UserProfileService } from 'src/app/services/user-profile/user-profile.service';
+import { TrainerRequestService } from 'src/app/services/trainer-request/trainer-request.service';
 
 @Component({
   selector: 'app-my-workout-plan',
@@ -21,6 +25,8 @@ export class MyWorkoutPlanComponent implements OnInit {
   isLoading = true;
   hasParams = false;
   noMatch = false;
+  trainerRequested = false;
+  private memberName = '';
 
   templateExercises: any[] = [];
   exercisesLoading = false;
@@ -57,10 +63,14 @@ export class MyWorkoutPlanComponent implements OnInit {
     private readonly httpService: HttpService,
     private readonly messageService: MessageServiceService,
     private readonly assignmentService: UserWorkoutAssignmentService,
-    private readonly sessionService: WorkoutSessionService
+    private readonly sessionService: WorkoutSessionService,
+    private readonly userProfileService: UserProfileService,
+    private readonly trainerRequestService: TrainerRequestService,
+    private readonly dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
+    this.memberName = this.httpService.getFullNameFromCache() || this.httpService.getLoginNameFromCache() || '';
     this.level       = this.route.snapshot.queryParamMap.get('level');
     this.goal        = this.route.snapshot.queryParamMap.get('goal');
     this.gender      = this.route.snapshot.queryParamMap.get('gender');
@@ -94,8 +104,10 @@ export class MyWorkoutPlanComponent implements OnInit {
         if (template) {
           this.saveAssignment(template);
           this.loadExercises(template.id!);
+          this.notifyTrainerWithMatch(template);
         } else {
           this.noMatch = true;
+          this.loadTrainerRequestStatus();
           this.notifyTrainerNoMatch();
         }
       },
@@ -304,6 +316,29 @@ export class MyWorkoutPlanComponent implements OnInit {
     return Array.from({ length: count }, (_, i) => i);
   }
 
+  confirmCompleteSession(): void {
+    if (!this.currentSessionId || this.savingSession) return;
+
+    const exercises  = this.exercisesForDay(this.activeSessionDay!);
+    const incomplete = exercises.filter(ex => this.getSetsCompleted(ex.id) < ex.sets);
+
+    let title: string;
+    let message: string;
+
+    if (incomplete.length === 0) {
+      title   = 'Complete Session';
+      message = 'Great work! You\'ve completed all exercises. Are you sure you want to complete this session?';
+    } else {
+      const names = incomplete.map(ex => ex.exerciseName).join(', ');
+      title   = 'Incomplete Exercises';
+      message = `You have ${incomplete.length} uncompleted exercise${incomplete.length > 1 ? 's' : ''}: ${names}. ` +
+                `Incomplete sets will be logged as partial. Are you sure you want to complete the session?`;
+    }
+
+    this.dialog.open(ConfirmDialogComponent, { width: '440px', data: { title, message } })
+      .afterClosed().subscribe(confirmed => { if (confirmed) this.completeSession(); });
+  }
+
   completeSession(): void {
     if (!this.currentSessionId || this.savingSession) return;
 
@@ -349,6 +384,74 @@ export class MyWorkoutPlanComponent implements OnInit {
   }
 
   // ── Helpers ──────────────────────────────────────────────────────────────────
+
+  isBodyweightEquipment(equipmentType: string): boolean {
+    if (!equipmentType) return false;
+    const t = equipmentType.toLowerCase();
+    return t === 'bodyweight' || t === 'resistance band';
+  }
+
+  get hasTrainer(): boolean {
+    return !!this.workoutService.getWorkoutData()?.trainerId;
+  }
+
+  private loadTrainerRequestStatus(): void {
+    const userId = Number(this.httpService.getUserId());
+    this.trainerRequestService.getByMemberId(userId).subscribe({
+      next: (request) => { this.trainerRequested = request?.status === 'PENDING'; },
+      error: () => { this.trainerRequested = false; }
+    });
+  }
+
+  requestTrainer(): void {
+    const userId = Number(this.httpService.getUserId());
+    const payload = {
+      memberId: userId,
+      memberName: this.memberName,
+      level: this.level ?? '',
+      goal: this.goal ?? '',
+      bmiCategory: this.bmiCategory ?? ''
+    };
+
+    this.trainerRequestService.createRequest(payload).subscribe({
+      next: () => {
+        this.sendManagerNotifications();
+        this.trainerRequested = true;
+        this.messageService.showSuccess('Request sent to gym management!');
+      },
+      error: (err) => {
+        if (err?.status === 409) {
+          this.trainerRequested = true;
+        } else {
+          this.messageService.showError('Failed to send request. Please try again.');
+        }
+      }
+    });
+  }
+
+  private sendManagerNotifications(): void {
+    this.userProfileService.getAllUsers().subscribe({
+      next: (users: any) => {
+        const managers = (users as any[]).filter(u => u.role === 'Manager');
+        const msg = `${this.memberName} has requested a trainer assignment. No matching template found for their profile (${this.level}, ${this.formatGoal(this.goal!)}, BMI: ${this.bmiCategory}). Please assign a trainer.`;
+        managers.forEach(m => this.notificationService.addNotification(msg, 'warning', m.id, this.memberName));
+      },
+      error: () => {}
+    });
+  }
+
+  private notifyTrainerWithMatch(template: WorkoutTemplate): void {
+    const workoutData = this.workoutService.getWorkoutData();
+    if (!workoutData?.trainerId) return;
+
+    this.assignTrainerService.getTrainerUserId(workoutData.trainerId).subscribe({
+      next: (response: any) => {
+        const msg = `Workout plan matched for ${this.memberName} — Template: "${template.templateName}", Goal: ${this.formatGoal(this.goal!)}, Level: ${this.level}.`;
+        this.notificationService.addNotification(msg, 'info', response.userId, workoutData);
+      },
+      error: () => {}
+    });
+  }
 
   private notifyTrainerNoMatch(): void {
     const workoutData = this.workoutService.getWorkoutData();

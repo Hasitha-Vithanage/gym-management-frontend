@@ -24,36 +24,17 @@
       </div>
 
       <div class="half-width">
-        <label for="waist">Waist Circumference (cm) <span class="required">*</span></label>
-        <input id="waist" type="number" placeholder="Enter Waist Circumference (cm)" formControlName="waist" />
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="half-width">
-        <label for="hip">Hip Circumference (cm) <span class="required">*</span></label>
-        <input id="hip" type="number" placeholder="Enter Hip Circumference (cm)" formControlName="hip" />
-      </div>
-
-      <div class="half-width">
-        <label for="neck">Neck Circumference (cm) <span class="required">*</span></label>
-        <input id="neck" type="number" placeholder="Enter Neck Circumference (cm)" formControlName="neck" />
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="half-width">
         <label for="bmi">BMI</label>
         <input id="bmi" type="number" placeholder="Auto-calculated" formControlName="bmi" readonly />
       </div>
-
-      <div class="half-width">
-        <label for="bodyFat">Body Fat %</label>
-        <input id="bodyFat" type="number" placeholder="Auto-calculated" formControlName="bodyFat" readonly />
-      </div>
     </div>
 
     <div class="row">
+      <div class="half-width">
+        <label for="bodyFat">Body Fat % <small class="optional-label">(optional — from scale or device)</small></label>
+        <input id="bodyFat" type="number" placeholder="e.g. 18.5" formControlName="bodyFat" />
+      </div>
+
       <div class="half-width">
         <label for="gender">Gender <span class="required">*</span></label>
         <select id="gender" formControlName="gender">
@@ -62,7 +43,9 @@
           <option value="Female">Female</option>
         </select>
       </div>
+    </div>
 
+    <div class="row">
       <div class="half-width">
         <label for="remarks">Remarks</label>
         <textarea id="remarks" maxlength="1000" placeholder="Enter Remarks" formControlName="remarks"></textarea>

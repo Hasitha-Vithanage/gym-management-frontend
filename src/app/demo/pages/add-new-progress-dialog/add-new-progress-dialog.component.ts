@@ -40,14 +40,11 @@ export class AddNewProgressDialogComponent {
 
     this.progressForm = this.fb.group({
       date: new FormControl(this.data?.purchaseDate || today, [Validators.required]),
-      weight: new FormControl('', Validators.required),
-      height: new FormControl('', Validators.required),
-      waist: new FormControl('', Validators.required),
-      hip: new FormControl('', Validators.required),
-      neck: new FormControl('', Validators.required),
-      bmi: new FormControl( ''),
-      bodyFat: new FormControl( ''),
-      gender: new FormControl('', Validators.required),
+      weight:  new FormControl(this.data?.weight  ?? '', Validators.required),
+      height:  new FormControl(this.data?.height  ?? '', Validators.required),
+      bmi:     new FormControl(this.data?.bmi     ?? ''),
+      bodyFat: new FormControl(''),
+      gender:  new FormControl(this.data?.gender  ?? '', Validators.required),
       remarks: new FormControl(''),
 
       frontImage: new FormControl(''),
@@ -69,7 +66,6 @@ export class AddNewProgressDialogComponent {
   ngOnInit(): void {
     this.progressForm.valueChanges.subscribe(values => {
       this.calculateBMI(values.height, values.weight);
-      this.calculateBodyFat(values);
     });
   }
 
@@ -83,21 +79,6 @@ export class AddNewProgressDialogComponent {
       const heightInMeters = height / 100;
       const bmi = weight / (heightInMeters * heightInMeters);
       this.progressForm.get('bmi').setValue(bmi.toFixed(2), { emitEvent: false });
-    }
-  }
-
-  // Function to calculate body fat percentage
-  calculateBodyFat(values: any): void {
-    const { gender, waist, neck, hip, height } = values;
-    if (gender && waist && neck && height && (gender === 'Male' || (gender === 'Female' && hip))) {
-      const logBase10 = Math.log10;
-      let bodyFat = 0;
-      if (gender === 'Male') {
-        bodyFat = 495 / (1.0324 - 0.19077 * logBase10(waist - neck) + 0.15456 * logBase10(height)) - 450;
-      } else {
-        bodyFat = 495 / (1.29579 - 0.35004 * logBase10(waist + hip - neck) + 0.221 * logBase10(height)) - 450;
-      }
-      this.progressForm.get('bodyFat').setValue(bodyFat.toFixed(2), { emitEvent: false });
     }
   }
 

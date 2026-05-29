@@ -221,6 +221,58 @@
   color: $ff-text-secondary;
 }
 
+.no-match-icon-alert {
+  background: rgba($ff-danger, 0.1);
+  mat-icon { color: $ff-danger; }
+}
+
+.no-match-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.no-match-request-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 38px;
+  padding: 0 22px;
+  border-radius: $ff-radius-sm;
+  border: 1.5px solid $ff-accent-primary;
+  background: transparent;
+  color: $ff-accent-primary;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: $ff-font;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  mat-icon { font-size: 18px; width: 18px; height: 18px; }
+
+  &:hover:not(:disabled) {
+    background: rgba($ff-accent-primary, 0.08);
+    box-shadow: $ff-shadow-orange;
+  }
+
+  &:disabled {
+    border-color: $ff-success;
+    color: $ff-success;
+    cursor: default;
+    opacity: 0.9;
+  }
+}
+
+.no-match-sent-note {
+  font-size: 13px;
+  color: $ff-success;
+  font-family: $ff-font;
+  margin: 0;
+  text-align: center;
+}
+
 /* ── Match Badge ──────────────────────────────────────────────────────────── */
 .match-badge {
   display: inline-flex;

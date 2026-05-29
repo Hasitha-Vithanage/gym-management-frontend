@@ -12,13 +12,74 @@
     </button>
   </div>
 
+  <!-- ── Awareness Card ──────────────────────────────────────────────────────── -->
+  <div class="tracking-guide-card">
+    <div class="guide-header">
+      <mat-icon>info_outline</mat-icon>
+      <strong>How Progress Tracking Works</strong>
+    </div>
+    <ul class="guide-tips">
+      <li><mat-icon>schedule</mat-icon> Log your measurements <strong>once a week or every 2 weeks</strong> for meaningful trends.</li>
+      <li><mat-icon>straighten</mat-icon> Each entry records your <strong>weight, waist, hip and neck</strong> measurements.</li>
+      <li><mat-icon>calculate</mat-icon> <strong>BMI and body fat %</strong> are calculated automatically from what you enter.</li>
+      <li><mat-icon>access_time</mat-icon> Measure at the <strong>same time of day</strong> (e.g. morning before eating) for consistent comparisons.</li>
+    </ul>
+  </div>
+
   <!-- ── Section: Body Measurements ─────────────────────────────────────────── -->
   <div class="section-label">
     <mat-icon>monitor_weight</mat-icon>
     Body Measurements
   </div>
 
-  <div class="charts-grid">
+  <!-- Empty state for new members -->
+  <ng-container *ngIf="!measurementsLoading && bodyMeasurements.length === 0">
+    <div class="empty-measurements-card">
+      <div class="empty-icon-wrap">
+        <mat-icon>monitor_weight</mat-icon>
+      </div>
+      <h3 class="empty-title">No measurements logged yet</h3>
+      <p class="empty-desc">Start tracking today to build your progress charts over time.</p>
+
+      <!-- Baseline summary from workout request -->
+      <ng-container *ngIf="prefillData">
+        <div class="baseline-banner">
+          <mat-icon>auto_awesome</mat-icon>
+          <span>We found data from your workout request — use it as your starting baseline:</span>
+        </div>
+        <div class="baseline-stats">
+          <div class="baseline-stat">
+            <span class="bs-label">Weight</span>
+            <span class="bs-value">{{ prefillData.weight }} kg</span>
+          </div>
+          <div class="baseline-stat">
+            <span class="bs-label">Height</span>
+            <span class="bs-value">{{ prefillData.height }} cm</span>
+          </div>
+          <div class="baseline-stat">
+            <span class="bs-label">BMI</span>
+            <span class="bs-value">{{ prefillData.bmi }} <small>{{ prefillData.bmiCategory }}</small></span>
+          </div>
+          <div class="baseline-stat" *ngIf="prefillData.estimatedBodyFat">
+            <span class="bs-label">Est. Body Fat</span>
+            <span class="bs-value">{{ prefillData.estimatedBodyFat }}% <small>est.</small></span>
+          </div>
+        </div>
+        <button class="primary-btn baseline-btn" (click)="openDialog(true)">
+          <mat-icon>add</mat-icon>
+          Log Starting Values
+        </button>
+        <p class="baseline-note">You can still adjust all values in the form before saving.</p>
+      </ng-container>
+
+      <button *ngIf="!prefillData" class="primary-btn" (click)="openDialog()">
+        <mat-icon>add</mat-icon>
+        Add First Measurement
+      </button>
+    </div>
+  </ng-container>
+
+  <div class="charts-grid" *ngIf="bodyMeasurements.length > 0">
 
     <div class="chart-card">
       <div class="chart-card-header">

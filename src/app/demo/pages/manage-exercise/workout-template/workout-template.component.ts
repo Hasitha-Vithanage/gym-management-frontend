@@ -93,14 +93,7 @@ assignExercises(template: any): void {
         autoFocus: false
       });
   
-      dialogRef.afterClosed().subscribe((result) => {
-        if (result?.action === 'add') {
-          this.dataSource = new MatTableDataSource([result.data, ...this.dataSource.data]);
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
-          this.cdr.markForCheck();
-        }
-      });
+      dialogRef.afterClosed().subscribe(() => this.populateData());
     }
   
     editData(data: any): void {
@@ -112,17 +105,7 @@ assignExercises(template: any): void {
         dialogRef.componentInstance.onEdit(data);
       });
   
-      dialogRef.afterClosed().subscribe((result) => {
-        if (result?.action === 'edit') {
-          const updatedData = this.dataSource.data.map((item) =>
-            item.id === result.data.id ? result.data : item
-          );
-          this.dataSource = new MatTableDataSource(updatedData);
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
-          this.cdr.markForCheck();
-        }
-      });
+      dialogRef.afterClosed().subscribe(() => this.populateData());
     }
   
     public deleteData(data: any): void {

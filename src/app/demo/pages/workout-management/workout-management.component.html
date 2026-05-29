@@ -64,7 +64,7 @@
               <option value="">Select goal</option>
               <option value="muscle_gain">Muscle Gain</option>
               <option value="fat_loss">Fat Loss</option>
-              <option value="general_fitness">General Fitness</option>
+              <option value="strength">Strength</option>
               <option value="endurance">Endurance</option>
             </select>
             <span class="error-msg" *ngIf="isFieldInvalid('fitnessGoal')">
@@ -102,6 +102,14 @@
                 <div class="radio-card-content">
                   <span class="radio-card-title">Intermediate</span>
                   <span class="radio-card-desc">6+ months of regular training with a solid base of fitness knowledge and exercise form.</span>
+                </div>
+              </label>
+
+              <label class="radio-card" [class.selected]="formGroup.get('experienceLevel').value === 'Advanced'">
+                <input type="radio" formControlName="experienceLevel" value="Advanced" />
+                <div class="radio-card-content">
+                  <span class="radio-card-title">Advanced</span>
+                  <span class="radio-card-desc">1+ year of consistent training with advanced knowledge of programming, form, and periodisation.</span>
                 </div>
               </label>
 
@@ -163,8 +171,8 @@
         <p *ngIf="formGroup.value.fitnessGoal === 'endurance'">
           Include long-distance runs and interval cardio. Hydration and breathing control matter a lot!
         </p>
-        <p *ngIf="formGroup.value.fitnessGoal === 'general_fitness'">
-          Mix it up: 3 cardio + 2 strength sessions per week is a solid plan.
+        <p *ngIf="formGroup.value.fitnessGoal === 'strength'">
+          Focus on progressive overload with low reps and heavy weights. Prioritise rest and recovery between sessions.
         </p>
       </div>
 
@@ -262,6 +270,13 @@
               <div class="no-trainer-msg">
                 <mat-icon>person_off</mat-icon>
                 <p>No trainer assigned yet.</p>
+                <button class="request-trainer-btn" (click)="requestTrainer()" [disabled]="trainerRequested">
+                  <mat-icon>{{ trainerRequested ? 'check_circle' : 'person_add' }}</mat-icon>
+                  {{ trainerRequested ? 'Request Sent' : 'Request a Trainer' }}
+                </button>
+                <small class="request-sent-note" *ngIf="trainerRequested">
+                  Gym management has been notified and will assign a trainer to you shortly.
+                </small>
               </div>
             </ng-template>
           </div>
@@ -270,11 +285,15 @@
       </div>
 
       <!-- Contextual note -->
-      <div class="plan-note">
-        <mat-icon>info_outline</mat-icon>
-        <p>
+      <div class="plan-note" [class.intermediate]="!trainer">
+        <mat-icon>{{ trainer ? 'info_outline' : 'warning_amber' }}</mat-icon>
+        <p *ngIf="trainer">
           We will match you with the best available workout template based on your profile.
           Your trainer will also be notified and can set up a personalised plan if needed.
+        </p>
+        <p *ngIf="!trainer">
+          We will match you with the best available workout template based on your profile.
+          You have no trainer assigned — use the <strong>Request a Trainer</strong> button above to notify gym management.
         </p>
       </div>
 

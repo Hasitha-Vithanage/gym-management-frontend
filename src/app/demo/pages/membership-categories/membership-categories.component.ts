@@ -82,11 +82,7 @@ export class MembershipCategoriesComponent implements OnInit {
       autoFocus: false
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.dataSource.data = [result, ...this.dataSource.data];
-      }
-    });
+    dialogRef.afterClosed().subscribe(() => this.populateData());
   }
 
   editData(data: any): void {
@@ -95,11 +91,7 @@ export class MembershipCategoriesComponent implements OnInit {
       data
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (!result) return;
-
-      this.dataSource.data = this.dataSource.data.map((item) => (item.id === result.id ? result : item));
-    });
+    dialogRef.afterClosed().subscribe(() => this.populateData());
   }
   public deleteData(data: any): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {

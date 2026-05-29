@@ -176,12 +176,36 @@ export class NavRightComponent implements OnInit {
     this.notificationService.markAsRead(notificationId);
   }
 
+  onNotificationClick(notification: any) {
+    this.markAsRead(notification.id);
+    this.showDropdown = false;
+
+    if (
+      notification.other &&
+      typeof notification.other === 'string' &&
+      notification.message?.includes('requested a trainer assignment')
+    ) {
+      this.router.navigate(['/pages/assign-trainer'], {
+        queryParams: { memberName: notification.other }
+      });
+    }
+  }
+
   markAllAsRead() {
     this.notifications.forEach((notification) => {
       if (!notification.readStatus) {
         this.notificationService.markAsRead(notification.id);
       }
     });
+  }
+
+  clearNotification(id: any, event: Event) {
+    event.stopPropagation();
+    this.notificationService.deleteNotification(id);
+  }
+
+  clearAllNotifications() {
+    this.notificationService.clearAllNotifications();
   }
 
   getRelativeTime(notification: any): string {

@@ -98,6 +98,7 @@ export class WorkoutTemplatesService {
       return this.getAllWorkoutTemplates().pipe(
         map((templates) => {
           const scored = templates
+            .filter(t => t.status === 'Active')
             .map(t => ({ template: t, score: this.scoreTemplate(t, criteria) }))
             .filter((entry): entry is { template: WorkoutTemplate; score: number } => entry.score !== null);
 

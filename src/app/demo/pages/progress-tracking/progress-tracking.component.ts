@@ -7,6 +7,7 @@ import { NewProgressServiceService } from 'src/app/services/new-progress/new-pro
 import { WorkoutSessionService } from 'src/app/services/workout-session/workout-session.service';
 import { UserWorkoutAssignmentService } from 'src/app/services/user-workout-assignment/user-workout-assignment.service';
 import { WorkoutTemplatesService } from 'src/app/services/workout-templates/workout-templates.service';
+import { WorkoutManagementService } from 'src/app/services/workout-management/workout-management.service';
 
 export interface BodyMeasurement {
   date: Date;
@@ -25,6 +26,7 @@ export class ProgressTrackingComponent implements OnInit {
 
   // ── Body measurement data (existing) ────────────────────────────────────────
   bodyMeasurements: BodyMeasurement[] = [];
+  measurementsLoading = true;
   weightChartOptions: any = {};
   bmiChartOptions: any = {};
   bodyFatChartOptions: any = {};
@@ -32,6 +34,9 @@ export class ProgressTrackingComponent implements OnInit {
   userName = this.http.getLoginNameFromCache();
   latestImage: any;
   previousImage: any;
+
+  // Pre-fill data from last workout request (for new members with no measurements)
+  prefillData: { weight: number; height: number; gender: string; bmi: number; bmiCategory: string; estimatedBodyFat: number | null } | null = null;
 
   // ── Workout session data (new) ───────────────────────────────────────────────
   activeAssignmentId: number | null = null;
@@ -49,7 +54,8 @@ export class ProgressTrackingComponent implements OnInit {
     private readonly http: HttpService,
     private readonly sessionService: WorkoutSessionService,
     private readonly assignmentService: UserWorkoutAssignmentService,
-    private readonly workoutTemplatesService: WorkoutTemplatesService
+    private readonly workoutTemplatesService: WorkoutTemplatesService,
+    private readonly workoutService: WorkoutManagementService
   ) {}
 
   ngOnInit(): void {
@@ -60,6 +66,7 @@ export class ProgressTrackingComponent implements OnInit {
   // ── Body measurements (existing logic, cleaned up) ───────────────────────────
 
   populateData(): void {
+    this.measurementsLoading = true;
     this.progressService.getWeightOverTimeData(this.userName).subscribe({
       next: (data) => {
         this.bodyMeasurements = data
@@ -74,14 +81,52 @@ export class ProgressTrackingComponent implements OnInit {
           })
           .sort((a: BodyMeasurement, b: BodyMeasurement) => a.date.getTime() - b.date.getTime());
 
+        this.measurementsLoading = false;
         this.updateWeightChart();
         this.updateBmiChart();
         this.updateBodyFatChart();
+
+        // Load prefill data for new members with no measurements
+        if (this.bodyMeasurements.length === 0) {
+          this.loadPrefillFromWorkoutRequest();
+        }
       },
-      error: () => {}
+      error: () => { this.measurementsLoading = false; }
     });
 
     this.progressService.getData().subscribe({ next: () => {}, error: () => {} });
+  }
+
+  private loadPrefillFromWorkoutRequest(): void {
+    const memberName = this.http.getFullNameFromCache() || this.http.getLoginNameFromCache() || '';
+    if (!memberName) return;
+
+    this.workoutService.getMyLastRequest(memberName).subscribe({
+      next: (req: any) => {
+        if (!req?.weight || !req?.height) return;
+
+        const bmi   = +(req.weight / Math.pow(req.height / 100, 2)).toFixed(1);
+        const sex   = req.gender?.toLowerCase() === 'male' ? 1 : 0;
+        let bmiCat: string;
+        if (bmi < 18.5)      bmiCat = 'Underweight';
+        else if (bmi < 25)   bmiCat = 'Normal';
+        else if (bmi < 30)   bmiCat = 'Overweight';
+        else                 bmiCat = 'Obese';
+        const estBf = req.age
+          ? +((1.20 * bmi) + (0.23 * req.age) - (10.8 * sex) - 5.4).toFixed(1)
+          : null;
+
+        this.prefillData = {
+          weight: req.weight,
+          height: req.height,
+          gender: req.gender,
+          bmi,
+          bmiCategory: bmiCat,
+          estimatedBodyFat: estBf
+        };
+      },
+      error: () => {}
+    });
   }
 
   createImageUrl(byteArray: any, mimeType: string): string {
@@ -89,14 +134,12 @@ export class ProgressTrackingComponent implements OnInit {
     return `data:${mimeType};base64,${btoa(binary)}`;
   }
 
-  openDialog(): void {
-    const dialogRef = this.dialog.open(AddNewProgressDialogComponent, { autoFocus: false });
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result?.action === 'add') {
-        this.dataSource.data = [result.data, ...this.dataSource.data];
-        this.populateData();
-      }
+  openDialog(usePrefill = false): void {
+    const dialogRef = this.dialog.open(AddNewProgressDialogComponent, {
+      autoFocus: false,
+      data: usePrefill && this.prefillData ? this.prefillData : null
     });
+    dialogRef.afterClosed().subscribe(() => this.populateData());
   }
 
   refreshData(): void {

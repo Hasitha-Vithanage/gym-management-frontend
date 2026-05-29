@@ -78,8 +78,6 @@ export class AddWorkoutTemplateComponent implements OnInit, OnDestroy {
     }
 
     if (this.mode === 'add') {
-      this.templateForm.patchValue({ status: 'Active' });
-
       this.workoutService.createWorkoutTemplate(this.prepareFormData()).subscribe({
         next: (response) => {
           this.messageService.showSuccess('Workout template added successfully!');

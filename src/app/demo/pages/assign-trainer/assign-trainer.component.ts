@@ -11,6 +11,7 @@ import { AssignTrainerDialogComponent } from '../assign-trainer-dialog/assign-tr
 import { MatDialog } from '@angular/material/dialog';
 import { QrCodeComponent } from '../qr-container/qr-code/qr-code.component';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { ActivatedRoute } from '@angular/router';
 
 const ELEMENT_DATA: any[] = [
   {
@@ -44,17 +45,32 @@ export class AssignTrainerComponent {
     private messageService: MessageServiceService,
     private http: HttpService,
     private notificationService: NotificationService,
-    // private dialog: MatDialog
+    private route: ActivatedRoute
   ) {
   }
 
   // runs when load the page
   ngOnInit(): void {
-    // get data request
-    // calling populate data function
     this.populateData();
 
-    
+    this.route.queryParams.subscribe(params => {
+      if (params['memberName']) {
+        this.openDialogWithMember(params['memberName']);
+      }
+    });
+  }
+
+  openDialogWithMember(memberName: string): void {
+    const dialogRef = this.dialog.open(AssignTrainerDialogComponent, {
+      autoFocus: false,
+      data: { preSelectedMemberName: memberName }
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result?.action === 'add') {
+        this.populateData();
+      }
+    });
   }
 
   // implementation of populateData function
@@ -101,11 +117,7 @@ export class AssignTrainerComponent {
       autoFocus: false,
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result?.action === 'add') {
-        this.dataSource.data = [result.data, ...this.dataSource.data];
-      }
-    });
+    dialogRef.afterClosed().subscribe(() => this.populateData());
   }
 
 
@@ -118,13 +130,7 @@ export class AssignTrainerComponent {
       dialogRef.componentInstance.onEdit(data);
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result?.action === 'edit') {
-        const newData = this.dataSource.data.filter(item => item.id !== result.data.id);
-        // Add the updated item to the top
-        this.dataSource.data = [result.data, ...newData];
-      }
-    });
+    dialogRef.afterClosed().subscribe(() => this.populateData());
   }
 
   // // delete button function

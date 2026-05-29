@@ -101,15 +101,7 @@ export class UploadMealPlanComponent {
       dialogRef.componentInstance.onEdit(data);
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result?.action === 'edit') {
-        const newData = this.dataSource.data.filter((item) => item.id !== result.data.id);
-        // Add the updated item to the top
-        this.dataSource.data = [result.data, ...newData];
-
-        this.populateData();
-      }
-    });
+    dialogRef.afterClosed().subscribe(() => this.populateData());
   }
 
   // // delete button function

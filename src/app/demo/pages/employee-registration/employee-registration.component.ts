@@ -111,15 +111,7 @@ export class EmployeeRegistrationComponent implements OnInit {
       autoFocus: false,
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result?.action === 'add' && result.data) {
-        const current = this.dataSource?.data || [];
-        this.dataSource = new MatTableDataSource([result.data, ...current]);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-        this.cdr.markForCheck();
-      }
-    });
+    dialogRef.afterClosed().subscribe(() => this.populateData());
   }
 
   // implementation of populateData function
@@ -159,15 +151,7 @@ export class EmployeeRegistrationComponent implements OnInit {
       dialogRef.componentInstance.onEdit(data);
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result?.action === 'edit' && result.data) {
-        const updated = this.dataSource.data.map(item => item.id === result.data.id ? result.data : item);
-        this.dataSource = new MatTableDataSource(updated);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-        this.cdr.markForCheck();
-      }
-    });
+    dialogRef.afterClosed().subscribe(() => this.populateData());
   }
 
 

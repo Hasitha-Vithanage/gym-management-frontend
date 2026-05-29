@@ -147,6 +147,150 @@
   }
 }
 
+/* ── Awareness / Guide Card ───────────────────────────────────────────────── */
+.tracking-guide-card {
+  background: rgba($ff-info, 0.06);
+  border: 1px solid rgba($ff-info, 0.2);
+  border-left: 4px solid $ff-info;
+  border-radius: $ff-radius-md;
+  padding: 16px 20px;
+  margin-bottom: 28px;
+
+  .guide-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+
+    mat-icon { font-size: 18px; width: 18px; height: 18px; color: $ff-info; flex-shrink: 0; }
+    strong { font-size: 14px; color: $ff-text-primary; font-family: $ff-font; }
+  }
+
+  .guide-tips {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    li {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: $ff-text-secondary;
+      font-family: $ff-font;
+
+      mat-icon { font-size: 16px; width: 16px; height: 16px; color: $ff-info; flex-shrink: 0; }
+      strong { color: $ff-text-primary; }
+    }
+  }
+}
+
+/* ── Empty Measurements State ─────────────────────────────────────────────── */
+.empty-measurements-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  background: $ff-bg-surface;
+  border: 1px solid $ff-border-default;
+  border-radius: $ff-radius-md;
+  padding: 36px 24px;
+  margin-bottom: 28px;
+  text-align: center;
+  box-shadow: $ff-shadow-card;
+
+  .empty-icon-wrap {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: rgba($ff-accent-primary, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    mat-icon { font-size: 28px; width: 28px; height: 28px; color: $ff-accent-primary; }
+  }
+
+  .empty-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: $ff-text-primary;
+    margin: 0;
+    font-family: $ff-font;
+  }
+
+  .empty-desc {
+    font-size: 13px;
+    color: $ff-text-secondary;
+    margin: 0;
+    font-family: $ff-font;
+  }
+}
+
+.baseline-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba($ff-success, 0.08);
+  border: 1px solid rgba($ff-success, 0.2);
+  border-radius: $ff-radius-sm;
+  padding: 10px 14px;
+  font-size: 13px;
+  color: $ff-text-secondary;
+  font-family: $ff-font;
+  max-width: 480px;
+
+  mat-icon { font-size: 18px; width: 18px; height: 18px; color: $ff-success; flex-shrink: 0; }
+  span strong { color: $ff-text-primary; }
+}
+
+.baseline-stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.baseline-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  background: $ff-bg-elevated;
+  border: 1px solid $ff-border-default;
+  border-radius: $ff-radius-sm;
+  padding: 10px 18px;
+  min-width: 90px;
+
+  .bs-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: $ff-text-dim;
+    text-transform: uppercase;
+    font-family: $ff-font;
+  }
+
+  .bs-value {
+    font-size: 16px;
+    font-weight: 700;
+    color: $ff-text-primary;
+    font-family: $ff-font;
+
+    small { font-size: 11px; font-weight: 500; color: $ff-text-secondary; margin-left: 2px; }
+  }
+}
+
+.baseline-btn { margin-top: 4px; }
+
+.baseline-note {
+  font-size: 11px;
+  color: $ff-text-dim;
+  font-family: $ff-font;
+  margin: 0;
+}
+
 /* ── No Data / Loading ────────────────────────────────────────────────────── */
 .no-data-card {
   display: flex;

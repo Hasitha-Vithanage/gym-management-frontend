@@ -111,16 +111,29 @@ export class AssignTrainerDialogComponent {
 
   // getMember function
   public getMembers(): void {
-    //Call Service to get members
     this.assignTrainerService.getMembers().subscribe({
       next: (response: any[]) => {
-        console.log('Members: ', response);
         this.memberList = response;
+        this.applyPreselectedMember();
       },
       error: (error) => {
         console.log('Error fetching members:', error);
       }
     });
+  }
+
+  private applyPreselectedMember(): void {
+    const name: string = this.data?.preSelectedMemberName;
+    if (!name) return;
+
+    const member = this.memberList.find((m: any) =>
+      (`${m.firstName} ${m.lastName}`).trim().toLowerCase() === name.trim().toLowerCase()
+    );
+
+    if (member) {
+      this.assignTrainerForm.patchValue({ member: member.firstName });
+      this.selectedMember = member.id;
+    }
   }
 
   // getMember function

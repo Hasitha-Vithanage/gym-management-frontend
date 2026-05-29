@@ -7,6 +7,9 @@ import { MessageServiceService } from 'src/app/services/message-service/message-
 import { NotificationService } from 'src/app/services/notification-service/notification.service';
 import { AssignTrainerServiceService } from 'src/app/services/assign-trainer/assign-trainer-service.service';
 import { UserWorkoutAssignmentService, UserWorkoutAssignment } from 'src/app/services/user-workout-assignment/user-workout-assignment.service';
+import { UserProfileService } from 'src/app/services/user-profile/user-profile.service';
+import { TrainerRequestService } from 'src/app/services/trainer-request/trainer-request.service';
+import { MemberServiceService } from 'src/app/services/member-service/member-service.service';
 
 @Component({
   selector: 'app-workout-management',
@@ -26,6 +29,7 @@ export class WorkoutManagementComponent implements OnInit {
   trainerDetails: any = null;
   trainer: any = null;
   isLoading = false;
+  trainerRequested = false;
 
   memberName!: string;
   activeAssignment: UserWorkoutAssignment | null = null;
@@ -38,11 +42,14 @@ export class WorkoutManagementComponent implements OnInit {
     private messageService: MessageServiceService,
     private notificationService: NotificationService,
     private assignTrainerService: AssignTrainerServiceService,
-    private assignmentService: UserWorkoutAssignmentService
+    private assignmentService: UserWorkoutAssignmentService,
+    private userProfileService: UserProfileService,
+    private trainerRequestService: TrainerRequestService,
+    private memberService: MemberServiceService
   ) {}
 
   ngOnInit(): void {
-    this.memberName = this.httpService.getLoginNameFromCache() ?? '';
+    this.memberName = this.httpService.getFullNameFromCache() || this.httpService.getLoginNameFromCache() || '';
 
     const userId = Number(this.httpService.getUserId());
     if (userId) {
@@ -63,6 +70,53 @@ export class WorkoutManagementComponent implements OnInit {
     this.formGroup.valueChanges.subscribe(() => {
       if (this.formGroup.valid) this.calculateBMI();
     });
+
+    // ── Auto-fill from member profile (age, gender) ──────────────────────────
+    if (userId) {
+      this.memberService.getUserById(userId).subscribe({
+        next: (userData: any) => {
+          if (userData?.customerLoginId) {
+            this.memberService.getMemberById(userData.customerLoginId).subscribe({
+              next: (memberData: any) => {
+                const patch: any = {};
+                if (memberData?.dateOfBirth) patch.age = this.calculateAge(memberData.dateOfBirth);
+                if (memberData?.gender) {
+                  const g: string = memberData.gender;
+                  patch.gender = g.charAt(0).toUpperCase() + g.slice(1).toLowerCase();
+                }
+                if (Object.keys(patch).length) this.formGroup.patchValue(patch);
+              },
+              error: () => {}
+            });
+          }
+        },
+        error: () => {}
+      });
+    }
+
+    // ── Auto-fill weight + height from last workout request ───────────────────
+    if (this.memberName) {
+      this.workoutService.getMyLastRequest(this.memberName).subscribe({
+        next: (lastRequest: any) => {
+          if (lastRequest) {
+            const patch: any = {};
+            if (lastRequest.weight) patch.weight = lastRequest.weight;
+            if (lastRequest.height) patch.height = lastRequest.height;
+            if (Object.keys(patch).length) this.formGroup.patchValue(patch);
+          }
+        },
+        error: () => {}
+      });
+    }
+  }
+
+  private calculateAge(dateOfBirth: string): number {
+    const today = new Date();
+    const birth = new Date(dateOfBirth);
+    let age = today.getFullYear() - birth.getFullYear();
+    const m = today.getMonth() - birth.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) age--;
+    return age;
   }
 
   proceedToConfirm(): void {
@@ -78,19 +132,75 @@ export class WorkoutManagementComponent implements OnInit {
         this.workoutService.getTrainerDetails(response.trainerId).subscribe({
           next: (trainerData) => {
             this.trainer = trainerData;
+            // Trainer is now assigned — mark any pending request as ASSIGNED
+            const userId = Number(this.httpService.getUserId());
+            this.trainerRequestService.updateStatus(userId, 'ASSIGNED').subscribe({ error: () => {} });
+            this.trainerRequested = false;
             this.isLoading = false;
             this.step = 'confirm';
           },
           error: () => {
-            this.isLoading = false;
-            this.step = 'confirm';
+            this.loadTrainerRequestStatus();
           }
         });
       },
       error: () => {
+        this.loadTrainerRequestStatus();
+      }
+    });
+  }
+
+  private loadTrainerRequestStatus(): void {
+    const userId = Number(this.httpService.getUserId());
+    this.trainerRequestService.getByMemberId(userId).subscribe({
+      next: (request) => {
+        this.trainerRequested = request?.status === 'PENDING';
+        this.isLoading = false;
+        this.step = 'confirm';
+      },
+      error: () => {
+        this.trainerRequested = false;
         this.isLoading = false;
         this.step = 'confirm';
       }
+    });
+  }
+
+  requestTrainer(): void {
+    const userId = Number(this.httpService.getUserId());
+    const payload = {
+      memberId: userId,
+      memberName: this.memberName,
+      level: this.formGroup.value.experienceLevel,
+      goal: this.formGroup.value.fitnessGoal,
+      bmiCategory: this.bmiCategory
+    };
+
+    this.trainerRequestService.createRequest(payload).subscribe({
+      next: () => {
+        this.sendManagerNotifications();
+        this.trainerRequested = true;
+        this.messageService.showSuccess('Request sent to gym management!');
+      },
+      error: (err) => {
+        // 409 = duplicate request already exists
+        if (err?.status === 409) {
+          this.trainerRequested = true;
+        } else {
+          this.messageService.showError('Failed to send request. Please try again.');
+        }
+      }
+    });
+  }
+
+  private sendManagerNotifications(): void {
+    this.userProfileService.getAllUsers().subscribe({
+      next: (users: any) => {
+        const managers = (users as any[]).filter(u => u.role === 'Manager');
+        const msg = `${this.memberName} has requested a trainer assignment. Please assign a trainer to this member.`;
+        managers.forEach(manager => this.notificationService.addNotification(msg, 'info', manager.id, this.memberName));
+      },
+      error: () => {}
     });
   }
 
@@ -100,7 +210,6 @@ export class WorkoutManagementComponent implements OnInit {
 
   goToMyPlan(): void {
     this.submitWorkoutRequest(() => {
-      if (this.trainer) this.notifyTrainer();
       this.workoutService.setWorkoutData({
         ...this.formGroup.value,
         bmi: this.bmi,
@@ -192,7 +301,7 @@ export class WorkoutManagementComponent implements OnInit {
     const map: Record<string, string> = {
       muscle_gain: 'Muscle Gain',
       fat_loss: 'Fat Loss',
-      general_fitness: 'General Fitness',
+      strength: 'Strength',
       endurance: 'Endurance'
     };
     return map[goal] || goal;

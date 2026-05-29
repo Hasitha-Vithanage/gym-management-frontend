@@ -12,8 +12,10 @@
     <div class="dropdown-menu dropdown-notification dropdown-menu-end pc-h-dropdown" ngbDropdownMenu>
       <div class="dropdown-header d-flex align-items-center justify-content-between">
         <h5 class="m-0">Notification</h5>
-        <button *ngIf="unreadCount > 0" (click)="markAllAsRead()" class="mark-all-read">Mark all as read</button>
-        <a class="bg-transparent"><i class="text-success d-flex f-20" antIcon theme="outline" type="check-circle"></i></a>
+        <div class="notif-header-actions">
+          <button *ngIf="unreadCount > 0" (click)="markAllAsRead()" class="mark-all-read">Mark all as read</button>
+          <button *ngIf="notifications.length > 0" (click)="clearAllNotifications()" class="clear-all-btn">Clear all</button>
+        </div>
       </div>
       <div class="dropdown-divider"></div>
       <ng-scrollbar style="min-height: 300px" visibility="hover">
@@ -23,7 +25,7 @@
               *ngFor="let notification of notifications"
               class="notification-item"
               [class.unread]="!notification.readStatus"
-              (click)="markAsRead(notification.id)"
+              (click)="onNotificationClick(notification)"
             >
               <div class="notification-icon" [class]="'icon-' + notification.type">
                 <span *ngIf="notification.type === 'success'">✓</span>
@@ -35,7 +37,10 @@
                 <div class="notification-message">{{ notification.message }}</div>
                 <div class="notification-time">{{ getRelativeTime(notification) }}</div>
               </div>
-              <div class="notification-status" *ngIf="!notification.readStatus"></div>
+              <div class="notification-actions">
+                <div class="notification-status" *ngIf="!notification.readStatus"></div>
+                <button class="notif-clear-btn" (click)="clearNotification(notification.id, $event)" title="Clear">✕</button>
+              </div>
             </div>
             <!-- <div>
               <a class="list-group-item list-group-item-action">

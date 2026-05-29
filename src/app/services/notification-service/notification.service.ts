@@ -61,12 +61,10 @@ export class NotificationService {
       other: details ?? null
     };
 
-    // save to db
+    // save to db — exclude the local id so the backend auto-generates it
+    const { id: _localId, ...notificationPayload } = notification;
 
-    const notificationtemp = notification;
-    notificationtemp.id = null;
-
-    this.addNotificationToDb(notificationtemp).subscribe({
+    this.addNotificationToDb(notificationPayload as any).subscribe({
       next: (response: any) => {
         console.log(response);
         this.addNotificationToBell([response]);
@@ -79,13 +77,17 @@ export class NotificationService {
   }
 
   public addNotificationToBell(notification: Notification[]): void {
-    // Add to main notifications
+    // Deduplicate by id to prevent re-adding on every navigation
     const currentNotifications = this.notifications.value;
-    this.notifications.next([...notification, ...currentNotifications]);
+    const existingIds = new Set(currentNotifications.map((n: any) => n.id));
+    const newOnes = notification.filter((n: any) => !existingIds.has(n.id));
+    if (newOnes.length === 0) return;
+
+    this.notifications.next([...newOnes, ...currentNotifications]);
 
     // Add to toast notifications
     const currentToasts = this.toastNotifications.value;
-    this.toastNotifications.next([...currentToasts, ...notification]);
+    this.toastNotifications.next([...currentToasts, ...newOnes]);
 
     // Auto-remove toast after 5 seconds
     // setTimeout(() => {
@@ -148,6 +150,32 @@ export class NotificationService {
 
   private generateId(): string {
     return Math.random().toString(36).substr(2, 9);
+  }
+
+  deleteNotification(id: any): void {
+    const requestUrl = environment.baseUrl + '/notification/' + id;
+    const headers = this.httpService.getAuthToken()
+      ? { Authorization: 'Bearer ' + this.httpService.getAuthToken() } : {};
+
+    this.http.delete(requestUrl, { headers }).subscribe({
+      next: () => {
+        const updated = this.notifications.value.filter((n: any) => n.id !== id);
+        this.notifications.next(updated);
+      },
+      error: (err) => console.log(err)
+    });
+  }
+
+  clearAllNotifications(): void {
+    const userId = this.httpService.getUserId();
+    const requestUrl = environment.baseUrl + '/notification/all/' + userId;
+    const headers = this.httpService.getAuthToken()
+      ? { Authorization: 'Bearer ' + this.httpService.getAuthToken() } : {};
+
+    this.http.delete(requestUrl, { headers }).subscribe({
+      next: () => this.notifications.next([]),
+      error: (err) => console.log(err)
+    });
   }
 
   public addNotificationToDb(notification: Notification) {

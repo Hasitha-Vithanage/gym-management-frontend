@@ -39,6 +39,15 @@ export class WorkoutManagementService {
     this.userDetails = null;
   }
 
+  getMyLastRequest(memberName: string): Observable<any> {
+    const requestUrl = environment.baseUrl + '/my-workout-request/' + encodeURIComponent(memberName);
+    let headers = {};
+    if (this.httpService.getAuthToken() !== null) {
+      headers = { Authorization: 'Bearer ' + this.httpService.getAuthToken() };
+    }
+    return this.http.get(requestUrl, { headers });
+  }
+
   sendWorkoutRequest(requestPayload: any) {
     const requestUrl = environment.baseUrl + '/sendRequest';
 

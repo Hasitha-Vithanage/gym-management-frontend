@@ -44,7 +44,7 @@ export class TrainerLoginDialogComponent implements OnInit {
       lastName:  ['', Validators.required],
       userName:  ['', Validators.required],
       password:  ['', Validators.required],
-      role:      ['TRAINER'],
+      role:      [''],
       userId:    [''],
       employee:  ['']
     });
@@ -52,18 +52,19 @@ export class TrainerLoginDialogComponent implements OnInit {
     this.getTrainers();
     this.populateData();
 
-    // Auto-fill first/last name when trainer is selected
+    // Auto-fill fields when employee is selected
     this.trainerLoginForm.get('trainerId')?.valueChanges.subscribe((selectedId) => {
-      const selectedTrainer = this.trainerList.find((t) => t.id === selectedId);
-      if (selectedTrainer) {
+      const selected = this.trainerList.find((t) => t.id === selectedId);
+      if (selected) {
         this.trainerLoginForm.patchValue({
-          firstName: selectedTrainer.firstName || '',
-          lastName:  selectedTrainer.lastName  || '',
-          userName: selectedTrainer.firstName || '',
+          firstName: selected.firstName || '',
+          lastName:  selected.lastName  || '',
+          userName:  selected.firstName || '',
+          role:      selected.jobTitle  || '',
           employee:  selectedId
         });
       } else {
-        this.trainerLoginForm.patchValue({ firstName: '', lastName: '', userName: '' });
+        this.trainerLoginForm.patchValue({ firstName: '', lastName: '', userName: '', role: '' });
       }
     });
   }
@@ -112,7 +113,7 @@ export class TrainerLoginDialogComponent implements OnInit {
       if (this.mode === 'add') {
         this.trainerLoginService.serviceCall(this.trainerLoginForm.getRawValue()).subscribe({
           next: (response: any) => {
-            this.messageService.showSuccess('Trainer registered successfully!');
+            this.messageService.showSuccess('Employee login created successfully!');
             this.dialogRef.close({ action: 'add', data: response });
           },
           error: (error) => {
