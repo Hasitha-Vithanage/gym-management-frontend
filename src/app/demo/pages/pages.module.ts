@@ -42,6 +42,7 @@ import { MyWorkoutPlanComponent } from './my-workout-plan/my-workout-plan.compon
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { MarkAttendanceComponent } from './mark-attendance/mark-attendance.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import { RejectRequestDialogComponent } from './reject-request-dialog/reject-request-dialog.component';
 import { AllFeedbacksComponent } from './all-feedbacks/all-feedbacks.component';
 import { UploadMealPlanComponent } from './upload-meal-plan/upload-meal-plan.component';
 import { UploadMealPlanDialogComponent } from './upload-meal-plan-dialog/upload-meal-plan-dialog.component';
@@ -69,6 +70,7 @@ import { WorkoutTemplateComponent } from './manage-exercise/workout-template/wor
 import { AddWorkoutTemplateComponent } from './manage-exercise/workout-template/add-workout-template/add-workout-template.component';
 import { ExerciseToTemplateComponent } from './manage-exercise/workout-template/exercise-to-template/exercise-to-template.component';
 import { TrainerMemberProgressComponent } from './trainer-member-progress/trainer-member-progress.component';
+import { MemberDashboardComponent } from './member-dashboard/member-dashboard.component';
 // icons
 
 export const MY_DATE_FORMATS = {
@@ -121,6 +123,7 @@ export const MY_DATE_FORMATS = {
     UserProfileComponent,
     MarkAttendanceComponent,
     ConfirmDialogComponent,
+    RejectRequestDialogComponent,
     AllFeedbacksComponent,
     UploadMealPlanComponent,
     UploadMealPlanDialogComponent,
@@ -145,7 +148,8 @@ export const MY_DATE_FORMATS = {
     WorkoutTemplateComponent,
     AddWorkoutTemplateComponent,
     ExerciseToTemplateComponent,
-    TrainerMemberProgressComponent
+    TrainerMemberProgressComponent,
+    MemberDashboardComponent
   ],
   imports: [
     CommonModule,

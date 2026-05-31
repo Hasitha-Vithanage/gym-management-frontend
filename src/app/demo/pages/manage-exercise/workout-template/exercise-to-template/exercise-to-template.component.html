@@ -25,6 +25,15 @@
     </button>
   </div>
 
+  <!-- Pending request assignment banner -->
+  <div class="pending-assign-banner" *ngIf="pendingRequestId">
+    <mat-icon>assignment_ind</mat-icon>
+    <span>
+      When you click <strong>Save Assignments</strong>, this template will be automatically assigned to
+      <strong>{{ pendingMemberName }}</strong>.
+    </span>
+  </div>
+
   <!-- ── Two-column body ── -->
   <div class="body-grid">
 

@@ -9,8 +9,18 @@ import { environment } from 'src/app/environments/environment';
 export class UserProfileService {
 
   constructor(
-    private http: HttpClient, private httpService: HttpService
+    private readonly http: HttpClient,
+    private readonly httpService: HttpService
   ) { }
+
+  updateUser(userId: number, data: { firstName: string; lastName: string; email: string }) {
+    const requestUrl = environment.baseUrl + '/user/' + userId.toString();
+    let headers = {};
+    if (this.httpService.getAuthToken() !== null) {
+      headers = { Authorization: 'Bearer ' + this.httpService.getAuthToken() };
+    }
+    return this.http.put(requestUrl, data, { headers });
+  }
 
   getUserData(userId: any) {
     const requestUrl = environment.baseUrl + '/get-user-data/'  + userId.toString();

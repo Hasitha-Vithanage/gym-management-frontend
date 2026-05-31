@@ -78,7 +78,12 @@ export default class LoginComponent implements OnInit {
           try {
             if (data.length > 0) {
               this.cacheService.set(userId.toString(), data);
-              this.router.navigate(['dashboard/default']);
+              const role = this.httpService.getUserRole();
+              if (role === 'MEMBER') {
+                this.router.navigate(['pages/member-dashboard']);
+              } else {
+                this.router.navigate(['dashboard/default']);
+              }
             } else {
               this._messageService.showError('User does not have privileges');
             }
@@ -109,6 +114,7 @@ export default class LoginComponent implements OnInit {
           this.httpService.setUserId(response.id);
           this.httpService.setLoginNameToCache(response.login);
           this.httpService.setFullNameToCache(response.firstName ?? '', response.lastName ?? '');
+          this.httpService.setUserRole(response.role ?? '');
           this.getData(response.id);
         })
         .catch((error) => {

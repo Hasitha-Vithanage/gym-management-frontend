@@ -10,7 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
 import { AddWorkoutTemplateComponent } from './add-workout-template/add-workout-template.component';
 import { ConfirmDialogComponent } from '../../confirm-dialog/confirm-dialog.component';
@@ -48,11 +48,19 @@ export class WorkoutTemplateComponent implements OnInit {
       private workoutService: WorkoutTemplatesService,
       private messageService: MessageServiceService,
       private cdr: ChangeDetectorRef,
-      private router: Router
+      private router: Router,
+      private route: ActivatedRoute
     ) {}
-  
+
     ngOnInit(): void {
       this.populateData();
+
+      // If navigated here from a pending custom request, auto-open the dialog with context
+      this.route.queryParams.subscribe(params => {
+        if (params['pendingRequestId']) {
+          this.openWorkoutTemplateDialogForRequest(params);
+        }
+      });
     }
   
     ngAfterViewInit(): void {
@@ -88,11 +96,37 @@ assignExercises(template: any): void {
   this.router.navigate(['/pages/exercise-to-template', template.id]);
 }
   
+    openWorkoutTemplateDialogForRequest(params: any): void {
+      const dialogRef = this.dialog.open(AddWorkoutTemplateComponent, {
+        autoFocus: false,
+        data: {
+          pendingRequestId: params['pendingRequestId'],
+          memberUserId:     params['memberUserId'],
+          memberName:       params['memberName'],
+          goal:             params['goal'],
+          level:            params['level']
+        }
+      });
+
+      dialogRef.afterClosed().subscribe((result) => {
+        this.populateData();
+        if (result?.action === 'add') {
+          this.router.navigate(['/pages/exercise-to-template', result.data.id], {
+            queryParams: {
+              pendingRequestId: params['pendingRequestId'],
+              memberUserId:     params['memberUserId'],
+              memberName:       params['memberName']
+            }
+          });
+        }
+      });
+    }
+
     openWorkoutTemplateDialog(): void {
       const dialogRef = this.dialog.open(AddWorkoutTemplateComponent, {
         autoFocus: false
       });
-  
+
       dialogRef.afterClosed().subscribe(() => this.populateData());
     }
   

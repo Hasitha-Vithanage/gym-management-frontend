@@ -39,6 +39,34 @@ export class WorkoutManagementService {
     this.userDetails = null;
   }
 
+  getPendingCustomRequests(): Observable<any[]> {
+    const requestUrl = environment.baseUrl + '/workout-plan-request/pending-custom';
+    let headers = {};
+    if (this.httpService.getAuthToken() !== null) {
+      headers = { Authorization: 'Bearer ' + this.httpService.getAuthToken() };
+    }
+    return this.http.get<any[]>(requestUrl, { headers });
+  }
+
+  getPendingCustomRequestsForTrainer(trainerUserId: number): Observable<any[]> {
+    const requestUrl = environment.baseUrl + '/workout-plan-request/pending-custom/trainer/' + trainerUserId;
+    let headers = {};
+    if (this.httpService.getAuthToken() !== null) {
+      headers = { Authorization: 'Bearer ' + this.httpService.getAuthToken() };
+    }
+    return this.http.get<any[]>(requestUrl, { headers });
+  }
+
+  updateStatusByUserId(memberName: string, status: string): Observable<any> {
+    const requestUrl = environment.baseUrl + '/workout-plan-request/user/'
+      + encodeURIComponent(memberName) + '/status?status=' + encodeURIComponent(status);
+    let headers = {};
+    if (this.httpService.getAuthToken() !== null) {
+      headers = { Authorization: 'Bearer ' + this.httpService.getAuthToken() };
+    }
+    return this.http.put(requestUrl, null, { headers });
+  }
+
   getMyLastRequest(memberName: string): Observable<any> {
     const requestUrl = environment.baseUrl + '/my-workout-request/' + encodeURIComponent(memberName);
     let headers = {};

@@ -105,10 +105,12 @@ export class MyWorkoutPlanComponent implements OnInit {
           this.saveAssignment(template);
           this.loadExercises(template.id!);
           this.notifyTrainerWithMatch(template);
+          this.workoutService.updateStatusByUserId(this.memberName, 'Auto Matched').subscribe({ error: () => {} });
         } else {
           this.noMatch = true;
           this.loadTrainerRequestStatus();
           this.notifyTrainerNoMatch();
+          this.workoutService.updateStatusByUserId(this.memberName, 'Pending Custom').subscribe({ error: () => {} });
         }
       },
       error: () => {
@@ -455,13 +457,34 @@ export class MyWorkoutPlanComponent implements OnInit {
 
   private notifyTrainerNoMatch(): void {
     const workoutData = this.workoutService.getWorkoutData();
-    if (!workoutData?.trainerId) return;
 
-    this.assignTrainerService.getTrainerUserId(workoutData.trainerId).subscribe({
+    if (workoutData?.trainerId) {
+      // Trainer ID already known from in-memory workout data (normal form-submit flow)
+      this.dispatchTrainerNoMatchNotification(workoutData.trainerId);
+    } else {
+      // Fallback: fetch trainer assignment from backend (covers page refresh / direct navigation)
+      const loginName = this.httpService.getLoginNameFromCache() ?? '';
+      if (!loginName) return;
+
+      this.workoutService.getTrainerById(loginName).subscribe({
+        next: (assignment: any) => {
+          if (assignment?.trainerId) {
+            this.dispatchTrainerNoMatchNotification(assignment.trainerId);
+          }
+        },
+        error: () => {}
+      });
+    }
+  }
+
+  private dispatchTrainerNoMatchNotification(trainerEmployeeId: number): void {
+    this.assignTrainerService.getTrainerUserId(trainerEmployeeId).subscribe({
       next: (response: any) => {
-        const memberName = this.httpService.getLoginNameFromCache() ?? 'A member';
-        const message = `No matching template found for ${memberName} — Goal: ${this.formatGoal(this.goal!)}, Level: ${this.level}, BMI: ${this.bmiCategory}. Please create a suitable template.`;
-        this.notificationService.addNotification(message, 'warning', response.userId, workoutData);
+        if (!response?.userId) return;
+        const message = `No matching template found for ${this.memberName} — ` +
+          `Goal: ${this.formatGoal(this.goal!)}, Level: ${this.level}, BMI: ${this.bmiCategory}. ` +
+          `A Pending Custom Request has been created. Please create a suitable template.`;
+        this.notificationService.addNotification(message, 'warning', response.userId);
       },
       error: () => {}
     });

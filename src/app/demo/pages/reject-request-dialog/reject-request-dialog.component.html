@@ -1,0 +1,53 @@
+<div class="form-section">
+
+  <!-- Header -->
+  <div class="title">
+    <h3 class="form-title">Reject Workout Request</h3>
+    <button class="close-light" (click)="onCancel()">&#x2715;</button>
+  </div>
+
+  <!-- Body -->
+  <div class="dialog-body">
+
+    <!-- Member info card -->
+    <div class="member-info-card">
+      <mat-icon>person</mat-icon>
+      <div>
+        <strong>{{ data.memberName }}</strong>
+        <p class="meta" *ngIf="data.goal || data.level">
+          <span *ngIf="data.goal">{{ data.goal }}</span>
+          <span *ngIf="data.goal && data.level"> &middot; </span>
+          <span *ngIf="data.level">{{ data.level }}</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Guidance note -->
+    <p class="info-note">
+      The member will be notified of this rejection along with your reason.
+      They will be able to resubmit a new workout request.
+    </p>
+
+    <!-- Reason field -->
+    <div class="field">
+      <label for="rejection-reason">Reason for Rejection <span class="required">*</span></label>
+      <textarea
+        id="rejection-reason"
+        [formControl]="reasonControl"
+        rows="4"
+        placeholder="e.g. No suitable template is currently available for this fitness profile. Please consider adjusting your goal or speak with the gym manager."
+      ></textarea>
+      <span class="required-message" *ngIf="submitted && reasonControl.invalid">
+        Please enter a reason (at least 5 characters).
+      </span>
+    </div>
+
+  </div>
+
+  <!-- Actions -->
+  <div class="action-row">
+    <button class="cancel-button" type="button" (click)="onCancel()">Cancel</button>
+    <button class="reject-button" type="button" (click)="onReject()">Reject &amp; Notify Member</button>
+  </div>
+
+</div>

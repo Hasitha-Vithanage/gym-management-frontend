@@ -1,16 +1,14 @@
 import { Component, inject, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { HttpService } from 'src/app/services/http.service';
+import { Router } from '@angular/router';
 import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
+import { WorkoutManagementService } from 'src/app/services/workout-management/workout-management.service';
+import { HttpService } from 'src/app/services/http.service';
+import { RejectRequestDialogComponent } from '../reject-request-dialog/reject-request-dialog.component';
 import { NotificationService } from 'src/app/services/notification-service/notification.service';
-import { WorkoutPlanUploadService } from 'src/app/services/workout-plan-upload/workout-plan-upload.service';
-import { UploadWorkoutPlanDialogComponent } from '../upload-workout-plan-dialog/upload-workout-plan-dialog.component';
-import { error } from 'console';
-import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-workout-plan-upload',
@@ -20,150 +18,97 @@ import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.compone
 })
 export class WorkoutPlanUploadComponent implements OnInit {
 
-  viewData(_t64: any) {
-    throw new Error('Method not implemented.');
-  }
-
-  refreshData() {
-    this.populateData();
-  }
-  openDialog() {
-    throw new Error('Method not implemented.');
-  }
-
-  dataSource: MatTableDataSource<any>;
+  dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  displayedColumns: string[] = [
-    'member',
-    'date',
-    'status',
-    'actions'
-  ];
+  displayedColumns: string[] = ['member', 'goal', 'level', 'ageWeight', 'date', 'actions'];
 
-  /* calling constructor */
+  readonly dialog = inject(MatDialog);
+
   constructor(
-    private fb: FormBuilder,
-    private uploadWorkoutService: WorkoutPlanUploadService,
+    private workoutService: WorkoutManagementService,
     private messageService: MessageServiceService,
-    private http: HttpService,
     private notificationService: NotificationService,
-    // private dialog: MatDialog
-  ) {
-  }
-  ngOnInit(): void {
+    private router: Router,
+    private http: HttpService
+  ) {}
 
+  ngOnInit(): void {
     this.populateData();
   }
 
-
-  // implementation of populateData function
   public populateData(): void {
-    try {
-      this.uploadWorkoutService.getData().subscribe({
-        next: (dataList: any[]) => {
-          if (dataList.length <= 0) {
-            return;
-          }
+    const trainerUserId = Number(this.http.getUserId());
+    if (!trainerUserId) return;
 
-          this.dataSource = new MatTableDataSource(dataList);
-
-          // sorting and pagination
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
-        },
-        // displaying error message
-        error: (error) => {
-          this.messageService.showError(error);
-        }
-      });
-    } catch (error) {
-      this.messageService.showError(error);
-    }
-  }
-
-
-  // table filter function
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    // pagination code
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
-  }
-
-
-  readonly dialog = inject(MatDialog);
-  uploadPlan(data: any) {
-    const dialogRef = this.dialog.open(UploadWorkoutPlanDialogComponent, {
-      autoFocus: false,
-      data: data
+    this.workoutService.getPendingCustomRequestsForTrainer(trainerUserId).subscribe({
+      next: (dataList: any[]) => {
+        this.dataSource = new MatTableDataSource(dataList);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      },
+      error: (err) => this.messageService.showError(err)
     });
-
-    dialogRef.afterOpened().subscribe(() => {
-      dialogRef.componentInstance.onEdit(data);
-    });
-
-    dialogRef.afterClosed().subscribe(() => this.populateData());
   }
 
+  applyFilter(event: Event): void {
+    this.dataSource.filter = (event.target as HTMLInputElement).value.trim().toLowerCase();
+    if (this.dataSource.paginator) this.dataSource.paginator.firstPage();
+  }
 
-  // // delete button function
-  // public deleteData(data: any): void {
-  //   const id = data.id;
-  //   try {
-  //     // calling deleteData function to send the delete request to the backend
-  //     this.uploadWorkoutService.deleteRecord(id).subscribe({
-  //       next: (respone: any) => {
-  //         const index = this.dataSource.data.findIndex((element) => element.id === id);
+  refreshData(): void {
+    this.populateData();
+  }
 
-  //         if (index != -1) {
-  //           this.dataSource.data.splice(index, 1);
-  //         }
-  //         this.dataSource = new MatTableDataSource(this.dataSource.data);
+  createAndAssign(req: any): void {
+    this.router.navigate(['/pages/workout-templates'], {
+      queryParams: {
+        pendingRequestId: req.id,
+        memberUserId:     req.memberUserId,
+        memberName:       req.userId,
+        goal:             req.fitnessGoal,
+        level:            req.experienceLevel
+      }
+    });
+  }
 
-  //         // displaying success message
-  //         this.messageService.showSuccess('Workout Plan Request record deleted successfully!');
-  //       },
-  //       // displaying error message
-  //       error: (error) => {
-  //         this.messageService.showError(error);
-  //       }
-  //     });
-  //   } catch (error) {
-  //     this.messageService.showError(error);
-  //   }
-  // }
-
-
-  public deleteData(data: any): void {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '350px',
+  rejectRequest(req: any): void {
+    this.dialog.open(RejectRequestDialogComponent, {
+      width: '500px',
       data: {
-        message: `Are you sure you want to delete ${data.userId}?`
+        memberName: req.userId,
+        goal: this.formatGoal(req.fitnessGoal),
+        level: req.experienceLevel
       }
-    });
+    }).afterClosed().subscribe((reason: string | null) => {
+      if (!reason) return;
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        const id = data.id;
-        this.uploadWorkoutService.deleteRecord(id).subscribe({
-          next: () => {
-            const index = this.dataSource.data.findIndex(item => item.id === id);
-            if (index !== -1) {
-              this.dataSource.data.splice(index, 1);
-            }
-            this.dataSource = new MatTableDataSource(this.dataSource.data);
-            this.messageService.showSuccess('Record deleted successfully!');
-          },
-          error: (error) => {
-            this.messageService.showError(error);
+      // Update request status to Rejected
+      this.workoutService.updateStatusByUserId(req.userId, 'Rejected').subscribe({
+        next: () => {
+          // Notify the member with the rejection reason
+          if (req.memberUserId) {
+            this.notificationService.addNotification(
+              `Your workout plan request has been rejected by your trainer. ` +
+              `Reason: ${reason}. Please resubmit your request or speak with the gym management.`,
+              'warning',
+              req.memberUserId
+            );
           }
-        });
-      }
+          this.messageService.showSuccess(`Request rejected and ${req.userId} has been notified.`);
+          this.populateData();
+        },
+        error: (err) => this.messageService.showError(err)
+      });
     });
+  }
+
+  formatGoal(goal: string): string {
+    const map: Record<string, string> = {
+      muscle_gain: 'Muscle Gain', fat_loss: 'Fat Loss',
+      strength: 'Strength', endurance: 'Endurance'
+    };
+    return map[goal] || goal;
   }
 }

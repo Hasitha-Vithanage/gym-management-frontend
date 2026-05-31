@@ -21,6 +21,25 @@
         <p class="card-subtitle">Create your fitness profile to personalise your workout experience.</p>
       </div>
 
+      <!-- Auto-fill awareness notice -->
+      <div class="prefill-notice" *ngIf="prefillSources.length > 0">
+        <mat-icon class="prefill-icon">auto_awesome</mat-icon>
+        <div class="prefill-body">
+          <strong>Some fields were pre-filled for you</strong>
+          <ul class="prefill-list">
+            <li *ngIf="prefillSources.includes('profile')">
+              <mat-icon>person</mat-icon>
+              <strong>Age</strong> and <strong>Gender</strong> were filled from your member profile.
+            </li>
+            <li *ngIf="prefillSources.includes('previous')">
+              <mat-icon>history</mat-icon>
+              <strong>Weight</strong> and <strong>Height</strong> were filled from your previous submission.
+            </li>
+          </ul>
+          <span class="prefill-tip">Please review and update any values if they have changed.</span>
+        </div>
+      </div>
+
       <form [formGroup]="formGroup" class="form-body">
         <div class="grid">
 

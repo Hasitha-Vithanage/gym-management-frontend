@@ -28,7 +28,7 @@ export const NavigationItems: NavigationItem[] = [
     title: 'Home',
     type: 'group',
     icon: '../../../../assets/images/icon/home-icon.png',
-    auth: [authenticationEnum.Home_Dashboard],
+    auth: [authenticationEnum.Home_Dashboard, authenticationEnum.Member_Dashboard],
     children: [
       {
         id: 'default',
@@ -38,6 +38,16 @@ export const NavigationItems: NavigationItem[] = [
         url: '/dashboard/default',
         icon: '../../../../assets/images/icon/dashboard-light-icon.png',
         auth: [authenticationEnum.Home_Dashboard],
+        breadcrumbs: false
+      },
+      {
+        id: 'memberDashboard',
+        title: 'Member Dashboard',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/pages/member-dashboard',
+        icon: '../../../../assets/images/icon/member-light-icon.png',
+        auth: [authenticationEnum.Member_Dashboard],
         breadcrumbs: false
       }
     ]
@@ -201,11 +211,13 @@ export const NavigationItems: NavigationItem[] = [
     type: 'group',
     icon: '../../../../assets/images/icon/workout-management-icon.png',
     auth: [
-      authenticationEnum.Workout_Plan,
-      authenticationEnum.Workout_Plan_Upload,
-      authenticationEnum.Workout_Plan_Diet,
+      authenticationEnum.Workout_Plan_Request,
+      authenticationEnum.Pending_Requests,
+      authenticationEnum.My_Workout_Plans,
       authenticationEnum.Progress_Tracking,
-      authenticationEnum.Manage_Exercises
+      authenticationEnum.Workout_Templates,
+      authenticationEnum.Manage_Exercises,
+      authenticationEnum.Member_Progress
     ],
     children: [
       {
@@ -235,27 +247,27 @@ export const NavigationItems: NavigationItem[] = [
         classes: 'nav-item',
         url: '/pages/workout',
         icon: '../../../../assets/images/icon/workout-plan-icon.png',
-        auth: [authenticationEnum.Workout_Plan],
+        auth: [authenticationEnum.Workout_Plan_Request],
         breadcrumbs: false
       },
-      {
-        id: 'workoutDet',
-        title: 'Workout Plan Generator',
-        type: 'item',
-        classes: 'nav-item',
-        url: '/pages/workout-plan-generator',
-        icon: '../../../../assets/images/icon/workout-plan-generator-light.png',
-        auth: [authenticationEnum.Workout_Plan_Generator],
-        breadcrumbs: false
-      },
+      // {
+      //   id: 'workoutDet',
+      //   title: 'Workout Plan Generator',
+      //   type: 'item',
+      //   classes: 'nav-item',
+      //   url: '/pages/workout-plan-generator',
+      //   icon: '../../../../assets/images/icon/workout-plan-generator-light.png',
+      //   auth: [authenticationEnum.Workout_Plan_Request],
+      //   breadcrumbs: false
+      // },
       {
         id: 'workoutPlanUploadDet',
-        title: 'Upload Workout Plan',
+        title: 'Pending Requests',
         type: 'item',
         classes: 'nav-item',
         url: '/pages/workout-plan-upload',
-        icon: '../../../../assets/images/icon/upload-icon.png',
-        auth: [authenticationEnum.Workout_Plan_Upload],
+        icon: '../../../../assets/images/icon/monthly-attendance-report-icon.png',
+        auth: [authenticationEnum.Pending_Requests],
         breadcrumbs: false
       },
       {
@@ -265,7 +277,7 @@ export const NavigationItems: NavigationItem[] = [
         classes: 'nav-item',
         url: '/pages/my-workout-plan',
         icon: '../../../../assets/images/icon/my-workout-plan-icon.png',
-        auth: [authenticationEnum.Workout_Plan_Diet],
+        auth: [authenticationEnum.My_Workout_Plans],
         breadcrumbs: false
       },
       {
@@ -315,7 +327,7 @@ export const NavigationItems: NavigationItem[] = [
     title: 'Class Scheduling',
     type: 'group',
     icon: '../../../../assets/images/icon/class-scheduling-icon.png',
-    auth: [authenticationEnum.Schedule_Class, authenticationEnum.Book_Class],
+    auth: [authenticationEnum.Schedule_Class || authenticationEnum.Book_Class],
     children: [
       {
         id: 'addClassDet',
@@ -344,7 +356,7 @@ export const NavigationItems: NavigationItem[] = [
     title: 'Nutrition & Meal Plan',
     type: 'group',
     icon: '../../../../assets/images/icon/nutrition-and-meal-icon.png',
-    auth: [authenticationEnum.Nutrition_Meal_Plan, authenticationEnum.Upload_Nutrition_Meal_Plan],
+    auth: [authenticationEnum.Nutrition_And_Meal_Plan, authenticationEnum.Goal_Based_Calorie_Target, authenticationEnum.Upload_Nutrition_Meal_Plan],
     children: [
       {
         id: 'nutritionDet',
@@ -353,7 +365,7 @@ export const NavigationItems: NavigationItem[] = [
         classes: 'nav-item',
         url: '/pages/nutrition&meal-plan',
         icon: '../../../../assets/images/icon/nutrition-and-meal-plans.png',
-        auth: [authenticationEnum.Nutrition_Meal_Plan],
+        auth: [authenticationEnum.Nutrition_And_Meal_Plan],
         breadcrumbs: false
       },
       {
@@ -363,7 +375,7 @@ export const NavigationItems: NavigationItem[] = [
         classes: 'nav-item',
         url: '/pages/goal-based-calorie-target',
         icon: '../../../../assets/images/icon/nutrition-and-meal-plans.png',
-        auth: [authenticationEnum.Nutrition_Meal_Plan],
+        auth: [authenticationEnum.Goal_Based_Calorie_Target],
         breadcrumbs: false
       },
       {
@@ -404,7 +416,7 @@ export const NavigationItems: NavigationItem[] = [
     title: 'Supplement Store',
     type: 'group',
     icon: '../../../../assets/images/icon/supplement-store-icon.png',
-    auth: [authenticationEnum.Inventory_Management],
+    auth: [authenticationEnum.Inventory_Management, authenticationEnum.Sales_And_Requests, authenticationEnum.Browse_Suplements],
     children: [
       {
         id: 'inventoryManagementDet',
@@ -423,7 +435,7 @@ export const NavigationItems: NavigationItem[] = [
         classes: 'nav-item',
         url: '/pages/supplement-sales-requests',
         icon: '../../../../assets/images/icon/sales-and-request.png',
-        auth: [authenticationEnum.Home_Dashboard],
+        auth: [authenticationEnum.Sales_And_Requests],
         breadcrumbs: false
       },
       {
@@ -433,7 +445,7 @@ export const NavigationItems: NavigationItem[] = [
         classes: 'nav-item',
         url: '/pages/browse-supplements',
         icon: '../../../../assets/images/icon/browse-supplements-icon.png',
-        auth: [authenticationEnum.Browse_Suppliment],
+        auth: [authenticationEnum.Browse_Suplements],
         breadcrumbs: false
       }
       // {
@@ -454,7 +466,7 @@ export const NavigationItems: NavigationItem[] = [
     title: 'Workflow',
     type: 'group',
     icon: '../../../../assets/images/icon/workflow-icon.png',
-    auth: [authenticationEnum.Home_Dashboard],
+    auth: [authenticationEnum.For_Your_Approval],
     children: [
       {
         id: 'forYourApprovalDet',
@@ -463,7 +475,7 @@ export const NavigationItems: NavigationItem[] = [
         classes: 'nav-item',
         url: '/pages/for-your-approval',
         icon: '../../../../assets/images/icon/for-your-approval-light-icon.png',
-        auth: [authenticationEnum.Home_Dashboard],
+        auth: [authenticationEnum.For_Your_Approval],
         breadcrumbs: false
       }
     ]
@@ -474,7 +486,7 @@ export const NavigationItems: NavigationItem[] = [
     title: 'Masters',
     type: 'group',
     icon: '../../../../assets/images/icon/masters-icon.png',
-    auth: [authenticationEnum.Equipments, authenticationEnum.Suppliers, authenticationEnum.Membership_Category],
+    auth: [authenticationEnum.Equipments, authenticationEnum.Suppliers, authenticationEnum.Membership_Categories],
     children: [
       {
         id: 'equipmentsDet',
@@ -503,7 +515,7 @@ export const NavigationItems: NavigationItem[] = [
         classes: 'nav-item',
         url: '/pages/membership-categories',
         icon: '../../../../assets/images/icon/membership-categories-icon.png',
-        auth: [authenticationEnum.Membership_Category],
+        auth: [authenticationEnum.Membership_Categories],
         breadcrumbs: false
       }
     ]
@@ -513,7 +525,7 @@ export const NavigationItems: NavigationItem[] = [
     title: 'Reports',
     type: 'group',
     icon: '../../../../assets/images/icon/reports-icon.png',
-    auth: [authenticationEnum.Employee_Report, authenticationEnum.Member_Report],
+    auth: [authenticationEnum.Reports],
     children: [
       {
         id: 'employeeReport',
@@ -522,7 +534,7 @@ export const NavigationItems: NavigationItem[] = [
         classes: 'nav-item',
         url: '/pages/reports/employees-report',
         icon: '../../../../assets/images/icon/employee-report-icon.png',
-        auth: [authenticationEnum.Employee_Report],
+        auth: [authenticationEnum.Reports],
         breadcrumbs: false
       }, // add other reports to here
       {
@@ -532,7 +544,7 @@ export const NavigationItems: NavigationItem[] = [
         classes: 'nav-item',
         url: '/pages/reports/members-report',
         icon: '../../../../assets/images/icon/member-report-icon.png',
-        auth: [authenticationEnum.Member_Report],
+        auth: [authenticationEnum.Reports],
         breadcrumbs: false
       },
       {
@@ -542,7 +554,7 @@ export const NavigationItems: NavigationItem[] = [
         classes: 'nav-item',
         url: '/pages/reports/monthly-attendance',
         icon: '../../../../assets/images/icon/monthly-attendance-report-icon.png',
-        auth: [authenticationEnum.Monthly_Attendance],
+        auth: [authenticationEnum.Reports],
         breadcrumbs: false
       },
       {
@@ -552,7 +564,7 @@ export const NavigationItems: NavigationItem[] = [
         classes: 'nav-item',
         url: '/pages/reports/monthly-sales',
         icon: '../../../../assets/images/icon/sales-report-icon.png',
-        auth: [authenticationEnum.Monthly_Sales],
+        auth: [authenticationEnum.Reports],
         breadcrumbs: false
       }
     ]

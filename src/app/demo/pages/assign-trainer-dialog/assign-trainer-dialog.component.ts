@@ -184,13 +184,22 @@ export class AssignTrainerDialogComponent {
   }
 
   public addNotification(detail): void {
+    const memberObj  = this.memberList.find((m: any) => m.id === this.selectedMember);
+    const trainerObj = this.trainerList.find((t: any) => t.id === this.selectedTrainer);
+    const memberName  = memberObj  ? `${memberObj.firstName} ${memberObj.lastName}`.trim()  : 'A member';
+    const trainerName = trainerObj ? `${trainerObj.firstName} ${trainerObj.lastName}`.trim() : 'Your trainer';
+
     this.assignTrainerService.getTrainerUserId(this.selectedTrainer).subscribe({
       next: (response: any) => {
         if (detail === 'add') {
-          this.notificationService.addNotification('New member has been assigned to you', 'info', response.userId);
+          this.notificationService.addNotification(
+            `${memberName} has been assigned to you as a new member.`,
+            'info',
+            response.userId
+          );
         }
       },
-      error: (error: any) => {
+      error: () => {
         this.messageService.showError('Error while sending notification to trainer');
       }
     });
@@ -198,10 +207,14 @@ export class AssignTrainerDialogComponent {
     this.assignTrainerService.getMemberUserId(this.selectedMember).subscribe({
       next: (response: any) => {
         if (detail === 'add') {
-          this.notificationService.addNotification('Your trainer is assigned to you now', 'info', response.userId);
+          this.notificationService.addNotification(
+            `${trainerName} has been assigned as your personal trainer.`,
+            'info',
+            response.userId
+          );
         }
       },
-      error: (error: any) => {
+      error: () => {
         this.messageService.showError('Error while sending notification to member');
       }
     });

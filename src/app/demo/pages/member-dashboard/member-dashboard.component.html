@@ -1,0 +1,147 @@
+<div class="member-dashboard">
+
+  <!-- PAGE TITLE -->
+  <h2 class="form-title">
+    <mat-icon class="title-icon">dashboard</mat-icon>
+    Member Dashboard
+  </h2>
+
+  <!-- WELCOME BANNER -->
+  <div class="welcome-banner">
+    <div class="welcome-left">
+      <div class="avatar-circle">
+        <mat-icon>person</mat-icon>
+      </div>
+      <div class="welcome-text">
+        <p class="greeting-label">{{ greeting }},</p>
+        <h3 class="member-name">{{ memberName }}</h3>
+        <p class="welcome-sub">Welcome to your personal fitness hub. Everything you need is right here.</p>
+      </div>
+    </div>
+    <div class="welcome-right">
+      <span *ngIf="!isLoading" class="plan-badge {{ getMembershipCategoryClass() }}">
+        {{ getMembershipCategory() }}
+      </span>
+      <div *ngIf="isLoading" class="skeleton-badge"></div>
+    </div>
+  </div>
+
+  <!-- STAT CARDS ROW -->
+  <div class="row g-3 mt-1">
+
+    <div class="col-md-6 col-xl-3">
+      <div class="stat-card">
+        <div class="stat-icon" style="background: rgba(59,130,246,0.12); color: #3B82F6;">
+          <mat-icon>card_membership</mat-icon>
+        </div>
+        <div class="stat-body">
+          <p class="stat-label">Membership Plan</p>
+          <h4 class="stat-value" *ngIf="!isLoading">{{ getMembershipCategory() }}</h4>
+          <div class="skeleton-line" *ngIf="isLoading"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-xl-3">
+      <div class="stat-card">
+        <div class="stat-icon" style="background: rgba(34,197,94,0.12); color: #22C55E;">
+          <mat-icon>verified_user</mat-icon>
+        </div>
+        <div class="stat-body">
+          <p class="stat-label">Payment Status</p>
+          <h4 class="stat-value text-{{ getPaymentStatusClass() }}" *ngIf="!isLoading">
+            {{ getPaymentStatus() }}
+          </h4>
+          <div class="skeleton-line" *ngIf="isLoading"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-xl-3">
+      <div class="stat-card">
+        <div class="stat-icon" style="background: rgba(251,191,36,0.12); color: #FBBF24;">
+          <mat-icon>event</mat-icon>
+        </div>
+        <div class="stat-body">
+          <p class="stat-label">Next Payment Due</p>
+          <h4 class="stat-value" *ngIf="!isLoading">{{ getNextPaymentDate() }}</h4>
+          <div class="skeleton-line" *ngIf="isLoading"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-xl-3">
+      <div class="stat-card">
+        <div class="stat-icon" style="background: rgba(167,139,250,0.12); color: #A78BFA;">
+          <mat-icon>hourglass_bottom</mat-icon>
+        </div>
+        <div class="stat-body">
+          <p class="stat-label">Days Until Payment</p>
+          <ng-container *ngIf="!isLoading">
+            <h4 class="stat-value"
+                [class.text-danger]="getDaysUntilPayment() !== null && getDaysUntilPayment()! <= 7"
+                [class.text-warning]="getDaysUntilPayment() !== null && getDaysUntilPayment()! > 7 && getDaysUntilPayment()! <= 14"
+                [class.text-success]="getDaysUntilPayment() !== null && getDaysUntilPayment()! > 14">
+              {{ getDaysUntilPayment() !== null ? getDaysUntilPayment() + ' days' : '—' }}
+            </h4>
+          </ng-container>
+          <div class="skeleton-line" *ngIf="isLoading"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- QUICK ACTIONS -->
+  <div class="section-card mt-4">
+    <div class="section-header">
+      <mat-icon class="section-icon">bolt</mat-icon>
+      <div>
+        <h5 class="section-title">Quick Actions</h5>
+        <p class="section-sub">Jump straight to what you need</p>
+      </div>
+    </div>
+    <div class="quick-actions-grid">
+      <button *ngFor="let action of quickActions"
+              class="qa-btn"
+              (click)="navigateTo(action.route)">
+        <mat-icon class="qa-icon">{{ action.icon }}</mat-icon>
+        <span>{{ action.label }}</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- GUIDED JOURNEY SECTION -->
+  <div class="section-card mt-4">
+    <div class="section-header">
+      <mat-icon class="section-icon">explore</mat-icon>
+      <div>
+        <h5 class="section-title">Your Fitness Journey</h5>
+        <p class="section-sub">Follow these steps to get the most out of your membership — start anywhere, go at your own pace</p>
+      </div>
+    </div>
+
+    <div class="journey-grid">
+      <div *ngFor="let step of journeySteps"
+           class="journey-card"
+           (click)="navigateTo(step.route)">
+
+        <div class="step-number" [style.background]="step.accentColor + '22'" [style.color]="step.accentColor">
+          {{ step.step }}
+        </div>
+
+        <div class="step-emoji">{{ step.emoji }}</div>
+
+        <h6 class="step-title">{{ step.title }}</h6>
+        <p class="step-desc">{{ step.description }}</p>
+
+        <div class="step-footer">
+          <span class="step-cta" [style.color]="step.accentColor">
+            Get Started <mat-icon class="cta-arrow">arrow_forward</mat-icon>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

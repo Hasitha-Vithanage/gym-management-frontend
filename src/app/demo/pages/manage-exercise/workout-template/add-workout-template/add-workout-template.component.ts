@@ -64,6 +64,22 @@ export class AddWorkoutTemplateComponent implements OnInit, OnDestroy {
       // Meta
       status: ['Draft', Validators.required], // default to Draft
     });
+
+    // Pre-fill from pending request context when opened from Pending Custom Requests
+    if (this.data?.pendingRequestId) {
+      const goalMap: Record<string, string> = {
+        muscle_gain: 'Muscle Gain', fat_loss: 'Fat Loss',
+        strength: 'Strength', endurance: 'Endurance'
+      };
+      this.templateForm.patchValue({
+        goal:            goalMap[this.data.goal] || this.data.goal || '',
+        difficultyLevel: this.data.level || ''
+      });
+    }
+  }
+
+  get fromPendingRequest(): boolean {
+    return !!this.data?.pendingRequestId;
   }
 
   ngOnDestroy(): void {

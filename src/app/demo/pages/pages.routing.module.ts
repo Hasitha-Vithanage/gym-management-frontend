@@ -42,6 +42,7 @@ import { ManageExerciseComponent } from './manage-exercise/manage-exercise.compo
 import { WorkoutTemplateComponent } from './manage-exercise/workout-template/workout-template.component';
 import { ExerciseToTemplateComponent } from './manage-exercise/workout-template/exercise-to-template/exercise-to-template.component';
 import { TrainerMemberProgressComponent } from './trainer-member-progress/trainer-member-progress.component';
+import { MemberDashboardComponent } from './member-dashboard/member-dashboard.component';
 
 export const PagesRoutes: Routes = [
   {
@@ -219,5 +220,9 @@ export const PagesRoutes: Routes = [
   {
     path: 'reports/monthly-sales',
     component: MonthlySalesComponent
+  },
+  {
+    path: 'member-dashboard',
+    component: MemberDashboardComponent
   },
 ];

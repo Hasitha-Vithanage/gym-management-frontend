@@ -30,6 +30,7 @@ export class WorkoutManagementComponent implements OnInit {
   trainer: any = null;
   isLoading = false;
   trainerRequested = false;
+  prefillSources: string[] = [];
 
   memberName!: string;
   activeAssignment: UserWorkoutAssignment | null = null;
@@ -84,7 +85,10 @@ export class WorkoutManagementComponent implements OnInit {
                   const g: string = memberData.gender;
                   patch.gender = g.charAt(0).toUpperCase() + g.slice(1).toLowerCase();
                 }
-                if (Object.keys(patch).length) this.formGroup.patchValue(patch);
+                if (Object.keys(patch).length) {
+                  this.formGroup.patchValue(patch);
+                  this.prefillSources.push('profile');
+                }
               },
               error: () => {}
             });
@@ -102,7 +106,10 @@ export class WorkoutManagementComponent implements OnInit {
             const patch: any = {};
             if (lastRequest.weight) patch.weight = lastRequest.weight;
             if (lastRequest.height) patch.height = lastRequest.height;
-            if (Object.keys(patch).length) this.formGroup.patchValue(patch);
+            if (Object.keys(patch).length) {
+              this.formGroup.patchValue(patch);
+              this.prefillSources.push('previous');
+            }
           }
         },
         error: () => {}
@@ -126,7 +133,9 @@ export class WorkoutManagementComponent implements OnInit {
     this.calculateBMI();
     this.isLoading = true;
 
-    this.workoutService.getTrainerById(this.memberName).subscribe({
+    // Use login name — the backend looks up by login via userRepository.findByLogin()
+    const loginName = this.httpService.getLoginNameFromCache() ?? '';
+    this.workoutService.getTrainerById(loginName).subscribe({
       next: (response) => {
         this.trainerDetails = response;
         this.workoutService.getTrainerDetails(response.trainerId).subscribe({
@@ -232,9 +241,11 @@ export class WorkoutManagementComponent implements OnInit {
   private submitWorkoutRequest(onSuccess: () => void): void {
     const payload = {
       userId: this.memberName,
+      memberUserId: Number(this.httpService.getUserId()),
       age: this.formGroup.value.age,
       weight: this.formGroup.value.weight,
       height: this.formGroup.value.height,
+      gender: this.formGroup.value.gender,
       fitnessGoal: this.formGroup.value.fitnessGoal,
       experienceLevel: this.formGroup.value.experienceLevel,
       trainerId: this.trainerDetails?.id ?? null

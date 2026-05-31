@@ -6,6 +6,24 @@
   color: $ff-text-primary;
 }
 
+/* Pending assignment context banner */
+.pending-assign-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 16px 16px 0;
+  padding: 12px 18px;
+  background: rgba($ff-success, 0.08);
+  border: 1px solid rgba($ff-success, 0.25);
+  border-left: 4px solid $ff-success;
+  border-radius: $ff-radius-sm;
+  font-size: 13px;
+  color: $ff-text-secondary;
+
+  mat-icon { color: $ff-success; font-size: 20px; width: 20px; height: 20px; flex-shrink: 0; }
+  strong { color: $ff-text-primary; }
+}
+
 /* ================================
    PAGE CONTAINER
 ================================ */

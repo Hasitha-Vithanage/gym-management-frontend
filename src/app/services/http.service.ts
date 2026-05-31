@@ -51,6 +51,14 @@ export class HttpService {
     return window.localStorage.getItem('user_full_name');
   }
 
+  setUserRole(role: string): void {
+    window.localStorage.setItem('user_role', role);
+  }
+
+  getUserRole(): string | null {
+    return window.localStorage.getItem('user_role');
+  }
+
   public getUserName(): Observable<string> {
     return this.userNameBehaviorSubject.asObservable();
   }

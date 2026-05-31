@@ -97,6 +97,24 @@ export class MemberServiceService {
     return this.http.get(requestUrl, { headers: headers });
   }
 
+  getMemberProfile(userId: number) {
+    const requestUrl = environment.baseUrl + '/member/profile/' + userId.toString();
+    let headers = {};
+    if (this.httpService.getAuthToken() !== null) {
+      headers = { Authorization: 'Bearer ' + this.httpService.getAuthToken() };
+    }
+    return this.http.get(requestUrl, { headers });
+  }
+
+  updateMemberProfile(userId: number, data: any) {
+    const requestUrl = environment.baseUrl + '/member/profile/' + userId.toString();
+    let headers = {};
+    if (this.httpService.getAuthToken() !== null) {
+      headers = { Authorization: 'Bearer ' + this.httpService.getAuthToken() };
+    }
+    return this.http.put(requestUrl, data, { headers });
+  }
+
   // GetUser by ID
   getMemberById(userId: number) {
     const requestUrl = environment.baseUrl + '/member/' + userId.toString();

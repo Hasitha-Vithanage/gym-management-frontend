@@ -48,6 +48,25 @@
   }
 }
 
+/* Assignment context banner */
+.assignment-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 0 20px 4px;
+  padding: 12px 16px;
+  background: rgba($ff-success, 0.08);
+  border: 1px solid rgba($ff-success, 0.25);
+  border-left: 4px solid $ff-success;
+  border-radius: $ff-radius-sm;
+  font-size: 13px;
+  color: $ff-text-secondary;
+  font-family: $ff-font;
+
+  mat-icon { color: $ff-success; font-size: 18px; width: 18px; height: 18px; flex-shrink: 0; margin-top: 1px; }
+  strong { color: $ff-text-primary; }
+}
+
 /* Body */
 .form-body {
   padding: 20px;
