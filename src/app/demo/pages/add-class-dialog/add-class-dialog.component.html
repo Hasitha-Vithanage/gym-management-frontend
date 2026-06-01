@@ -9,17 +9,43 @@
   <!-- Form -->
   <form [formGroup]="classForm" (ngSubmit)="onSubmit()" class="dialog-body">
 
-    <!-- Row 1: Class Title + Description -->
+    <!-- Row 1: Class Title + Class Type -->
     <div class="row">
       <div class="field">
         <label for="classTitle">Class Title <span class="required">*</span></label>
-        <input id="classTitle" type="text" placeholder="Ex: Cardio" formControlName="classTitle" />
+        <input id="classTitle" type="text" placeholder="Ex: Morning HIIT" formControlName="classTitle" />
         <span class="error-msg" *ngIf="submitted && classForm.get('classTitle').hasError('required')">Class Title is required</span>
         <span class="error-msg" *ngIf="submitted && classForm.get('classTitle').hasError('maxlength')">Maximum 50 characters allowed</span>
       </div>
       <div class="field">
+        <label for="classType">Class Type <span class="required">*</span></label>
+        <select id="classType" formControlName="classType" class="select-input">
+          <option value="" disabled>Select class type</option>
+          <option value="HIIT">HIIT</option>
+          <option value="Zumba">Zumba</option>
+          <option value="Yoga">Yoga</option>
+          <option value="Pilates">Pilates</option>
+          <option value="Body Pump">Body Pump</option>
+          <option value="Cardio Kickboxing">Cardio Kickboxing</option>
+          <option value="Cycling / Spin">Cycling / Spin</option>
+          <option value="Core & Abs">Core &amp; Abs</option>
+          <option value="TRX Training">TRX Training</option>
+          <option value="Functional Fitness">Functional Fitness</option>
+          <option value="Boxing Fitness">Boxing Fitness</option>
+          <option value="CrossFit">CrossFit</option>
+          <option value="Stretching">Stretching</option>
+          <option value="Aqua Aerobics">Aqua Aerobics</option>
+          <option value="Other">Other</option>
+        </select>
+        <span class="error-msg" *ngIf="submitted && classForm.get('classType').hasError('required')">Class Type is required</span>
+      </div>
+    </div>
+
+    <!-- Row 1b: Description (full width) -->
+    <div class="row">
+      <div class="field">
         <label for="description">Description <span class="required">*</span></label>
-        <input id="description" type="text" placeholder="Ex: 2 hour cardio session" formControlName="description" />
+        <input id="description" type="text" placeholder="Ex: High intensity interval training for fat burn" formControlName="description" />
         <span class="error-msg" *ngIf="submitted && classForm.get('description').hasError('required')">Description is required</span>
         <span class="error-msg" *ngIf="submitted && classForm.get('description').hasError('maxlength')">Maximum 200 characters allowed</span>
       </div>

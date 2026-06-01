@@ -1,12 +1,10 @@
-import { Component, inject, ViewChild } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { HttpService } from 'src/app/services/http.service';
 import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
-import { NotificationService } from 'src/app/services/notification-service/notification.service';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { AddClassDialogComponent } from '../add-class-dialog/add-class-dialog.component';
 import { AddClassService } from 'src/app/services/add-class/add-class.service';
@@ -17,165 +15,125 @@ import { AddClassService } from 'src/app/services/add-class/add-class.service';
   templateUrl: './add-class.component.html',
   styleUrl: './add-class.component.scss'
 })
-export class AddClassComponent {
+export class AddClassComponent implements OnInit {
 
-  displayedColumns: string[] = [
+  readonly displayedColumns: string[] = [
     'classTitle',
-    'description',
+    'classType',
     'date',
     'startTime',
     'endTime',
     'conductorName',
-    'profession',
-    'totalSlots',
     'remainingSlots',
     'fee',
     'status',
     'actions'
   ];
-  dataSource: MatTableDataSource<any>;
+
+  dataSource = new MatTableDataSource<any>();
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  registerButtonLabel = 'Register';
-  mode = 'add';
-  selectedData;
-  isDisabled = false;
-  submitted = false;
-  userName;
-
-  /* calling constructor */
-  constructor(
-    private fb: FormBuilder,
-    private addClassService: AddClassService,
-    private messageService: MessageServiceService,
-    private http: HttpService,
-    private notificationService: NotificationService,
-    // private dialog: MatDialog
-  ) {
-  }
-
-  // runs when load the page
-  ngOnInit(): void {
-    // get data request
-    // calling populate data function
-    this.populateData();
-    this.userName = this.http.getLoginNameFromCache();
-    console.log(this.userName);
-  }
-
-  formatTime(data: any[]): string {
-    try {
-    // Split hours/minutes/seconds
-    const time = data.join(':');
-    const [hour, minute, second] = time.split(':').map(Number);
-
-    // Create a Date in local time zone (no need to deal with UTC)
-    const date = new Date();
-    date.setHours(hour, minute, second || 0, 0);  // hour, minute, second, ms
-
-    return date.toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: true
-    });
-  } catch (e) {
-    console.error('Time parse error:', e);
-    return 'Invalid Time';
-  }
-  }
-
-  // table filter function
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    // pagination code
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
-  }
-
-  // Dialog Box
   readonly dialog = inject(MatDialog);
-  openDialog(): void {
-    const dialogRef = this.dialog.open(AddClassDialogComponent, {
-      autoFocus: false,
-    });
 
-    dialogRef.afterClosed().subscribe(() => this.populateData());
+  constructor(
+    private readonly addClassService: AddClassService,
+    private readonly messageService: MessageServiceService,
+    private readonly http: HttpService
+  ) {}
+
+  ngOnInit(): void {
+    this.populateData();
   }
 
-  // implementation of populateData function
-  public populateData(): void {
-    try {
-      this.addClassService.getData().subscribe({
-        next: (dataList: any[]) => {
-          if (dataList.length <= 0) {
-            return;
-          }
+  // ── Data ──────────────────────────────────────────────────────────────────
 
-          this.dataSource = new MatTableDataSource(dataList);
+  populateData(): void {
+    this.addClassService.getData().subscribe({
+      next: (dataList: any[]) => {
+        this.dataSource.data = dataList ?? [];
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      },
+      error: (err) => this.messageService.showError(err)
+    });
+  }
 
-          // sorting and pagination
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
+  refreshData(): void {
+    this.populateData();
+  }
+
+  applyFilter(event: Event): void {
+    const value = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = value.trim().toLowerCase();
+    if (this.dataSource.paginator) this.dataSource.paginator.firstPage();
+  }
+
+  // ── Dialog ────────────────────────────────────────────────────────────────
+
+  openDialog(): void {
+    this.dialog.open(AddClassDialogComponent, { autoFocus: false })
+      .afterClosed().subscribe(() => this.populateData());
+  }
+
+  editData(data: any): void {
+    const ref = this.dialog.open(AddClassDialogComponent, { autoFocus: false });
+    ref.afterOpened().subscribe(() => ref.componentInstance.onEdit(data));
+    ref.afterClosed().subscribe(() => this.populateData());
+  }
+
+  deleteData(data: any): void {
+    this.dialog.open(ConfirmDialogComponent, {
+      width: '350px',
+      data: { message: `Are you sure you want to delete "${data.classTitle}"?` }
+    }).afterClosed().subscribe(confirmed => {
+      if (!confirmed) return;
+      this.addClassService.deleteData(data.id).subscribe({
+        next: () => {
+          this.dataSource.data = this.dataSource.data.filter(i => i.id !== data.id);
+          this.messageService.showSuccess('Class deleted successfully.');
         },
-        // displaying error message
-        error: (error) => {
-          this.messageService.showError(error);
-        }
+        error: (err) => this.messageService.showError(err)
       });
-    } catch (error) {
-      this.messageService.showError(error);
+    });
+  }
+
+  // ── Display helpers ───────────────────────────────────────────────────────
+
+  formatTime(data: any): string {
+    try {
+      const arr: number[] = Array.isArray(data) ? data : String(data).split(':').map(Number);
+      const [h, m, s] = arr;
+      const d = new Date();
+      d.setHours(h, m, s ?? 0, 0);
+      return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+    } catch {
+      return '—';
     }
   }
 
-  // Edit Data function
-  editData(data: any): void {
-    const dialogRef = this.dialog.open(AddClassDialogComponent, {
-      autoFocus: false,
-    });
-
-    dialogRef.afterOpened().subscribe(() => {
-      dialogRef.componentInstance.onEdit(data);
-    });
-
-    dialogRef.afterClosed().subscribe(() => this.populateData());
+  getTypeClass(type: string): string {
+    if (!type) return 'default';
+    const t = type.toLowerCase();
+    if (t.includes('hiit') || t.includes('crossfit') || t.includes('boxing')) return 'hiit';
+    if (t.includes('zumba') || t.includes('dance'))                           return 'zumba';
+    if (t.includes('yoga') || t.includes('pilates') || t.includes('stretch')) return 'yoga';
+    if (t.includes('cycling') || t.includes('spin'))                          return 'cycling';
+    if (t.includes('body pump') || t.includes('trx') || t.includes('functional')) return 'pilates';
+    return 'default';
   }
 
-
-
-  public deleteData(data: any): void {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '350px',
-      data: {
-        message: `Are you sure you want to delete ${data.classTitle}?`
-      }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        const id = data.id;
-        this.addClassService.deleteData(id).subscribe({
-          next: () => {
-            const index = this.dataSource.data.findIndex(item => item.id === id);
-            if (index !== -1) {
-              this.dataSource.data.splice(index, 1);
-            }
-            this.dataSource = new MatTableDataSource(this.dataSource.data);
-            this.messageService.showSuccess('Record deleted successfully!');
-          },
-          error: (error) => {
-            this.messageService.showError(error);
-          }
-        });
-      }
-    });
+  getSlotsClass(remaining: number, total: number): string {
+    if (!total) return 'ok';
+    const pct = remaining / total;
+    if (pct <= 0.2) return 'low';
+    if (pct <= 0.5) return 'medium';
+    return 'ok';
   }
 
-  //refresh button function
-  public refreshData(): void {
-    this.populateData();
+  getSlotsPercent(remaining: number, total: number): number {
+    if (!total) return 0;
+    return Math.round((remaining / total) * 100);
   }
 }

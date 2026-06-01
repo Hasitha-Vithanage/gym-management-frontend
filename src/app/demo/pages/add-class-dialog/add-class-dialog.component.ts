@@ -1,10 +1,9 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { HttpService } from 'src/app/services/http.service';
 import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
-import { NotificationService } from 'src/app/services/notification-service/notification.service';
 import { AddClassService } from 'src/app/services/add-class/add-class.service';
 import moment from 'moment';
 
@@ -53,7 +52,7 @@ export const futureDateValidator: ValidatorFn = (control: AbstractControl): Vali
     return { invalidDate: true }; // Invalid format
   }
 
-  if (isNaN(selectedDate.getTime())) {
+  if (Number.isNaN(selectedDate.getTime())) {
     console.warn('Invalid date object:', selectedDate);
     return { invalidDate: true }; // Invalid date
   }
@@ -76,7 +75,7 @@ export const futureDateValidator: ValidatorFn = (control: AbstractControl): Vali
   templateUrl: './add-class-dialog.component.html',
   styleUrl: './add-class-dialog.component.scss'
 })
-export class AddClassDialogComponent {
+export class AddClassDialogComponent implements OnInit {
   classForm: FormGroup;
   saveButtonLabel = 'Schedule';
   mode = 'add';
@@ -90,29 +89,26 @@ export class AddClassDialogComponent {
   startEndTimeCustomValidationStatus = false;
 
   constructor(
-    private fb: FormBuilder,
+    private readonly fb: FormBuilder,
     public dialogRef: MatDialogRef<AddClassDialogComponent>,
-    private http: HttpService,
-    private addClassService: AddClassService,
-    private messageService: MessageServiceService,
+    private readonly http: HttpService,
+    private readonly addClassService: AddClassService,
+    private readonly messageService: MessageServiceService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
 
   ngOnInit() {
-    // Get today's date
-    const today = new Date().toISOString().split('T')[0]; // Format as YYYY-MM-DD
-    const userName = this.http.getLoginNameFromCache();
-
     this.classForm = this.fb.group(
       {
         classTitle: ['', [Validators.required, Validators.maxLength(50)]],
+        classType:  ['', [Validators.required]],
         description: ['', [Validators.required, Validators.maxLength(200)]],
         date: ['', [Validators.required, futureDateValidator]],
         startTime: ['', [Validators.required]],
         endTime: ['', [Validators.required]],
         conductorName: ['', [Validators.required, Validators.maxLength(50), Validators.pattern(/^[A-Za-z\s.'-]+$/)]],
         profession: ['', [Validators.required, Validators.maxLength(50), Validators.pattern(/^[A-Za-z\s&-]+$/)]],
-        totalSlots: ['', [Validators.required, Validators.min(1), Validators.max(25), Validators.pattern(/^[0-9]+$/)]],
+        totalSlots: ['', [Validators.required, Validators.min(1), Validators.max(25), Validators.pattern(/^\d+$/)]],
         fee: ['', [Validators.required, Validators.min(0), Validators.pattern(/^\d+(\.\d{1,2})?$/)]],
         status: ['', [Validators.required]]
       },
@@ -168,36 +164,6 @@ export class AddClassDialogComponent {
     }
   }
 
-  // onEdit(data: any): void {
-  //   this.classForm.patchValue({
-  //     classTitle: data.classTitle,
-  //     description: data.description,
-  //     date: new Date(data.date),
-  //     startTime: data.startTime,
-  //     endTime: data.endTime,
-  //     conductorName: data.conductorName,
-  //     profession: data.profession,
-  //     totalSlots: data.totalSlots,
-  //     remainingSlots: data.remainingSlots,
-  //     fee: data.fee,
-  //     status: data.status,
-  //   });
-  //   this.registerButtonLabel = 'Update';
-  //   this.mode = 'edit';
-  //   this.selectedData = data;
-
-  //   this.submitDisabled = true;
-  //   // patching date values after formatting
-  //   this.classForm.patchValue({
-  //     joinedDate: new Date(data.joinedDate),
-  //     dateOfBirth: new Date(data.dateOfBirth),
-  //   });
-
-  //   this.classForm.valueChanges.subscribe(() => {
-  //     this.submitDisabled = /* !this.memberForm.valid || */ this.classForm.pristine;
-  //   });
-  // }
-
   onEdit(data: any): void {
     this.saveButtonLabel = 'Update';
     this.mode = 'edit';
@@ -207,6 +173,7 @@ export class AddClassDialogComponent {
 
     this.classForm.patchValue({
       classTitle: data.classTitle,
+      classType:  data.classType,
       description: data.description,
       date: moment(data.date).format('YYYY-MM-DD'),
       startTime: startTimeString,
