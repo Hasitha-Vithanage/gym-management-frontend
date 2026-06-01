@@ -1,12 +1,7 @@
-import { Component, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AddClassService } from 'src/app/services/add-class/add-class.service';
-import { BookClassService } from 'src/app/services/book-class/book-class.service';
-import { HttpService } from 'src/app/services/http.service';
 import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
-import { NewSupplementServiceService } from 'src/app/services/new-supplement/new-supplement-service.service';
 
 @Component({
   selector: 'app-book-class',
@@ -14,73 +9,72 @@ import { NewSupplementServiceService } from 'src/app/services/new-supplement/new
   templateUrl: './book-class.component.html',
   styleUrl: './book-class.component.scss'
 })
-export class BookClassComponent {
-
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-
-  constructor(
-    private addClassService: AddClassService,
-    private bookClassService: BookClassService,
-    private router: Router,
-    private http: HttpService,
-    private messageService: MessageServiceService,
-  ) { }
-
-  dataSource = new MatTableDataSource<any>;
-
-  // OnInit function
-  ngOnInit(): void {
-    this.populateData();
-  }
-
-  formatTime(data: any[]): string {
-    try {
-      // Split hours/minutes/seconds
-      const time = data.join(':');
-      const [hour, minute, second] = time.split(':').map(Number);
-
-      // Create a Date in local time zone (no need to deal with UTC)
-      const date = new Date();
-      date.setHours(hour, minute, second || 0, 0);  // hour, minute, second, ms
-
-      return date.toLocaleTimeString([], {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: true
-      });
-    } catch (e) {
-      console.error('Time parse error:', e);
-      return 'Invalid Time';
-    }
-  }
+export class BookClassComponent implements OnInit {
 
   classes: any[] = [];
+  isLoading = true;
 
-  populateData(): void {
-    this.addClassService.getData().subscribe((response: any[]) => {
-      this.classes = response.map(item => ({
-        ...item,
-        // imageSrc: `data:${item.imageType};base64,${item.image}`,
-        // name: item.productName
-      }));
-      this.dataSource.data = this.classes;
+  constructor(
+    private readonly addClassService: AddClassService,
+    private readonly messageService: MessageServiceService,
+    private readonly router: Router
+  ) {}
+
+  ngOnInit(): void {
+    this.loadClasses();
+  }
+
+  loadClasses(): void {
+    this.isLoading = true;
+    this.addClassService.getData().subscribe({
+      next: (response: any[]) => {
+        // Only show scheduled classes with a future or today date
+        this.classes = (response ?? []).filter(c => c.status === 'Scheduled');
+        this.isLoading = false;
+      },
+      error: () => {
+        this.messageService.showError('Could not load classes. Please try again.');
+        this.isLoading = false;
+      }
     });
   }
 
-  bookClass(data: any) {
-    // Prepare payload
-    const payload = {
-      ...data,
-      username: this.http.getLoginNameFromCache()
-    };
-    console.log('Viewing supplement:', payload);
-    this.router.navigate(['/pages/book-class-submit/', payload.id]);
+  openConfirmation(cls: any): void {
+    this.router.navigate(['/pages/book-class-submit', cls.id]);
   }
 
-  //   viewDetails(supplement: any): void {
-  //   // Navigate to the supplement details page with the selected supplement's ID
-  //   console.log('Viewing supplement:', supplement);
-  //   this.router.navigate(['/pages/supplement-details', supplement.id]);
+  isFullyBooked(cls: any): boolean {
+    return cls.remainingSlots <= 0;
+  }
 
-  // }
+  getSlotsClass(remaining: number, total: number): string {
+    if (!total) return 'ok';
+    const pct = remaining / total;
+    if (pct <= 0)   return 'full';
+    if (pct <= 0.2) return 'low';
+    if (pct <= 0.5) return 'medium';
+    return 'ok';
+  }
+
+  getTypeClass(type: string): string {
+    if (!type) return 'default';
+    const t = type.toLowerCase();
+    if (t.includes('hiit') || t.includes('crossfit') || t.includes('boxing')) return 'hiit';
+    if (t.includes('zumba') || t.includes('dance'))                           return 'zumba';
+    if (t.includes('yoga') || t.includes('pilates') || t.includes('stretch')) return 'yoga';
+    if (t.includes('cycling') || t.includes('spin'))                          return 'cycling';
+    return 'default';
+  }
+
+  formatTime(data: any): string {
+    try {
+      const arr: number[] = Array.isArray(data) ? data : String(data).split(':').map(Number);
+      const [h, m, s] = arr;
+      const d = new Date();
+      d.setHours(h, m, s ?? 0, 0);
+      return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+    } catch {
+      return '—';
+    }
+  }
 }

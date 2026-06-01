@@ -8,35 +8,21 @@ import { environment } from 'src/app/environments/environment';
 })
 export class BookClassService {
 
-  constructor(private http: HttpClient, private httpService: HttpService) { }
+  constructor(private readonly http: HttpClient, private readonly httpService: HttpService) { }
 
-  // serviceCall(data: FormData) {
-  //   console.log('Booking Class with details Array:', data);
-
-  //   const requestUrl = environment.baseUrl + '/book-class';
-
-  //   let headers = {};
-  //   if (this.httpService.getAuthToken() !== null) {
-  //     headers = {
-  //       Authorization: 'Bearer ' + this.httpService.getAuthToken()
-  //     };
-  //   }
-  //   // Combine all data into a single request body
-  //   return this.http.post(requestUrl, data, { headers: headers });
-  // }
-
-  bookClass(formData: any) {
-
-    const requestUrl = environment.baseUrl + '/booking-class';
-
-    let headers = {};
-    if (this.httpService.getAuthToken() !== null) {
-      headers = {
-        Authorization: 'Bearer ' + this.httpService.getAuthToken()
-      };
-    }
-    // Combine all data into a single request body
-    return this.http.post(requestUrl, formData, { headers: headers });
+  private get headers() {
+    const token = this.httpService.getAuthToken();
+    return token ? { Authorization: 'Bearer ' + token } : {};
   }
 
+  confirmBooking(classId: number, userId: number) {
+    const url = `${environment.baseUrl}/booking-class/confirm/${classId}`;
+    return this.http.post(url, { userId }, { headers: this.headers });
+  }
+
+  // Legacy endpoint kept for backward compatibility
+  bookClass(formData: any) {
+    const url = environment.baseUrl + '/booking-class';
+    return this.http.post(url, formData, { headers: this.headers });
+  }
 }

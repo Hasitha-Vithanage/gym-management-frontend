@@ -103,14 +103,8 @@
       </div>
     </div>
 
-    <!-- Row 5: Class Fee + Status -->
+    <!-- Row 5: Status (full width) -->
     <div class="row">
-      <div class="field">
-        <label for="fee">Class Fee (LKR) <span class="required">*</span></label>
-        <input id="fee" type="text" placeholder="e.g. 1500" formControlName="fee" />
-        <span class="error-msg" *ngIf="submitted && classForm.get('fee').hasError('required')">Class fee is required</span>
-        <span class="error-msg" *ngIf="submitted && classForm.get('fee').hasError('pattern')">Enter a valid amount (up to 2 decimal places)</span>
-      </div>
       <div class="field">
         <label for="status">Status <span class="required">*</span></label>
         <select id="status" formControlName="status" class="select-input">

@@ -109,7 +109,6 @@ export class AddClassDialogComponent implements OnInit {
         conductorName: ['', [Validators.required, Validators.maxLength(50), Validators.pattern(/^[A-Za-z\s.'-]+$/)]],
         profession: ['', [Validators.required, Validators.maxLength(50), Validators.pattern(/^[A-Za-z\s&-]+$/)]],
         totalSlots: ['', [Validators.required, Validators.min(1), Validators.max(25), Validators.pattern(/^\d+$/)]],
-        fee: ['', [Validators.required, Validators.min(0), Validators.pattern(/^\d+(\.\d{1,2})?$/)]],
         status: ['', [Validators.required]]
       },
       { validators: startTimeBeforeEndTimeValidator }
@@ -182,7 +181,6 @@ export class AddClassDialogComponent implements OnInit {
       profession: data.profession,
       totalSlots: data.totalSlots,
       remainingSlots: data.remainingSlots,
-      fee: data.fee,
       status: data.status
     });
 

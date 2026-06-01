@@ -25,7 +25,6 @@ export class AddClassComponent implements OnInit {
     'endTime',
     'conductorName',
     'remainingSlots',
-    'fee',
     'status',
     'actions'
   ];

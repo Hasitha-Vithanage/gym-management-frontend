@@ -1,45 +1,77 @@
-<div class="container">
-  <h2 class="form-title">Browse Classes</h2>
+<div class="page-wrapper">
 
-  <div class="supplement-grid">
-    <div class="supplement-card" *ngFor="let class of classes">
+  <h2 class="page-title">
+    <mat-icon class="title-icon">event</mat-icon>
+    Book a Class
+  </h2>
+
+  <!-- SKELETON -->
+  <div *ngIf="isLoading" class="skeleton-grid">
+    <div class="skeleton-card" *ngFor="let i of [1,2,3,4,5,6]"></div>
+  </div>
+
+  <!-- EMPTY STATE -->
+  <div *ngIf="!isLoading && classes.length === 0" class="empty-state">
+    <mat-icon>event_busy</mat-icon>
+    <p>No classes scheduled at the moment. Check back soon!</p>
+  </div>
+
+  <!-- CLASS CARDS -->
+  <div *ngIf="!isLoading && classes.length > 0" class="class-grid">
+    <div *ngFor="let cls of classes"
+         class="class-card"
+         [class.fully-booked]="isFullyBooked(cls)">
+
       <!-- Header -->
-      <div class="card-header">
-        <h3>{{ class.classTitle }}</h3>
-        <span class="badge" [ngClass]="class.status.toLowerCase()">{{ class.status }}</span>
+      <div class="class-card-header">
+        <span class="type-badge {{ getTypeClass(cls.classType) }}">
+          {{ cls.classType || 'Class' }}
+        </span>
+        <span class="slots-badge {{ getSlotsClass(cls.remainingSlots, cls.totalSlots) }}">
+          <ng-container *ngIf="!isFullyBooked(cls)">{{ cls.remainingSlots }} slots left</ng-container>
+          <ng-container *ngIf="isFullyBooked(cls)">Fully Booked</ng-container>
+        </span>
       </div>
 
-      <!-- Description -->
-      <p class="description">{{ class.description }}</p>
+      <!-- Title -->
+      <h3 class="class-title">{{ cls.classTitle }}</h3>
+      <p class="class-description">{{ cls.description }}</p>
 
-      <!-- Body -->
-      <div class="card-body">
-        <div class="row">
-          <span class="label">📅 Date:</span>
-          <span class="value">{{ class.date | date: 'MMM d, y' }}</span>
+      <!-- Details -->
+      <div class="class-details">
+        <div class="detail-row">
+          <mat-icon>calendar_today</mat-icon>
+          <span>{{ cls.date | date:'EEE, dd MMM yyyy' }}</span>
         </div>
-        <div class="row">
-          <span class="label">🕒 Time:</span>
-          <span class="value">{{ formatTime(class.endTime) }} - {{ formatTime(class.endTime) }}</span>
+        <div class="detail-row">
+          <mat-icon>schedule</mat-icon>
+          <span>{{ formatTime(cls.startTime) }} – {{ formatTime(cls.endTime) }}</span>
         </div>
-        <div class="row">
-          <span class="label">👤 Trainer:</span>
-          <span class="value">{{ class.conductorName }}</span>
-        </div>
-        <div class="row">
-          <span class="label">💰 Fee:</span>
-          <span class="value">LKR {{ class.fee }}</span>
-        </div>
-        <div class="row">
-          <span class="label">🎟️ Slots Left:</span>
-          <span class="value">{{ class.remainingSlots }} / {{ class.totalSlots }}</span>
+        <div class="detail-row">
+          <mat-icon>person</mat-icon>
+          <span>{{ cls.conductorName }} <span class="profession">· {{ cls.profession }}</span></span>
         </div>
       </div>
 
-      <!-- Book Button -->
-      <div class="card-footer">
-        <button mat-raised-button color="primary" (click)="bookClass(class)">Book Class</button>
+      <!-- Slots progress bar -->
+      <div class="slots-bar-wrapper">
+        <div class="slots-bar-track">
+          <div class="slots-bar-fill {{ getSlotsClass(cls.remainingSlots, cls.totalSlots) }}"
+               [style.width.%]="(cls.remainingSlots / cls.totalSlots) * 100">
+          </div>
+        </div>
+        <span class="slots-count">{{ cls.remainingSlots }}/{{ cls.totalSlots }}</span>
       </div>
+
+      <!-- Book button -->
+      <button class="book-btn"
+              [disabled]="isFullyBooked(cls)"
+              (click)="openConfirmation(cls)">
+        <mat-icon>{{ isFullyBooked(cls) ? 'block' : 'how_to_reg' }}</mat-icon>
+        {{ isFullyBooked(cls) ? 'Fully Booked' : 'Book This Class' }}
+      </button>
+
     </div>
   </div>
+
 </div>

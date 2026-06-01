@@ -1,73 +1,130 @@
-<div class="checkout-container">
-  <!-- Shipping & Billing Form -->
-  <div class="billing-form">
-    <h2>Student Details</h2>
-    <!-- Back Button -->
-    <button mat-button class="back-button" (click)="backButton()">
+<div class="confirm-page">
+
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <button class="back-btn" (click)="goBack()">
       <mat-icon>arrow_back</mat-icon>
-      Back
+      <span>Back to Classes</span>
     </button>
-    <form [formGroup]="classBookForm">
-      <div class="form-group">
-        <div class="row">
-          <mat-form-field appearance="outline" class="half-width">
-            <mat-label>First Name</mat-label>
-            <mat-icon matPrefix>person</mat-icon>
-            <input matInput matInput maxlength="20" placeholder="Enter First Name" type="text" formControlName="firstName" />
-          </mat-form-field>
-          <mat-form-field appearance="outline" class="half-width">
-            <mat-label>Last Name</mat-label>
-            <mat-icon matPrefix>person</mat-icon>
-            <input matInput matInput maxlength="20" placeholder="Enter Last Name" type="text" formControlName="lastName" />
-          </mat-form-field>
-        </div>
+    <h2 class="page-title">
+      <mat-icon class="title-icon">how_to_reg</mat-icon>
+      Confirm Booking
+    </h2>
+  </div>
 
-        <div class="row">
-          <mat-form-field appearance="outline" class="half-width">
-            <mat-label>Email</mat-label>
-            <mat-icon matPrefix>email</mat-icon>
-            <input matInput matInput maxlength="50" placeholder="Enter Email" type="email" formControlName="email" />
-          </mat-form-field>
-          <mat-form-field appearance="outline" class="half-width">
-            <mat-label>Phone</mat-label>
-            <mat-icon matPrefix>phone</mat-icon>
-            <input matInput matInput maxlength="10" placeholder="Enter Phone" type="text" formControlName="phone" />
-          </mat-form-field>
-        </div>
+  <!-- SKELETON -->
+  <div *ngIf="isLoading" class="skeleton-layout">
+    <div class="skeleton-panel"></div>
+    <div class="skeleton-panel"></div>
+  </div>
 
-        <div class="row">
-          <div class="half-width pdf-upload-wrapper">
-            <label for="pdfUpload">Upload Payslip (Image)</label>
-            <input type="file" id="pdfUpload" accept="application/pdf" (change)="onFileSelected($event)" required />
+  <!-- SUCCESS STATE -->
+  <div *ngIf="!isLoading && isConfirmed" class="success-card">
+    <div class="success-icon">
+      <mat-icon>check_circle</mat-icon>
+    </div>
+    <h3>You're all set!</h3>
+    <p>Your spot in <strong>{{ classDetails?.classTitle }}</strong> has been confirmed.</p>
+    <p class="success-sub">
+      {{ classDetails?.date | date:'EEE, dd MMM yyyy' }} &nbsp;·&nbsp;
+      {{ formatTime(classDetails?.startTime) }} – {{ formatTime(classDetails?.endTime) }}
+    </p>
+    <button class="btn-dashboard" (click)="goToDashboard()">
+      <mat-icon>dashboard</mat-icon>
+      Go to Dashboard
+    </button>
+  </div>
+
+  <!-- CONFIRMATION LAYOUT -->
+  <div *ngIf="!isLoading && !isConfirmed" class="confirm-layout">
+
+    <!-- LEFT: Class Details -->
+    <div class="info-panel">
+      <h5 class="panel-heading">
+        <mat-icon>event</mat-icon>
+        Class Details
+      </h5>
+
+      <div class="detail-block">
+        <div class="detail-row">
+          <span class="detail-label">Class</span>
+          <span class="detail-value highlight">{{ classDetails?.classTitle }}</span>
+        </div>
+        <div class="detail-row" *ngIf="classDetails?.classType">
+          <span class="detail-label">Type</span>
+          <span class="detail-value">{{ classDetails?.classType }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Date</span>
+          <span class="detail-value">{{ classDetails?.date | date:'EEE, dd MMM yyyy' }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Time</span>
+          <span class="detail-value">{{ formatTime(classDetails?.startTime) }} – {{ formatTime(classDetails?.endTime) }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Trainer</span>
+          <span class="detail-value">{{ classDetails?.conductorName }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Duration</span>
+          <span class="detail-value">{{ classDetails?.profession }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Slots Left</span>
+          <span class="detail-value" [class.text-danger]="classDetails?.remainingSlots <= 3">
+            {{ classDetails?.remainingSlots }} / {{ classDetails?.totalSlots }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Member Details + Confirm -->
+    <div class="confirm-panel">
+      <h5 class="panel-heading">
+        <mat-icon>person</mat-icon>
+        Your Details
+      </h5>
+
+      <div class="member-info-card">
+        <p class="member-info-hint">
+          <mat-icon>info</mat-icon>
+          Your details are pre-filled from your profile
+        </p>
+        <div class="detail-block">
+          <div class="detail-row">
+            <span class="detail-label">Name</span>
+            <span class="detail-value">{{ memberDetails?.firstName }} {{ memberDetails?.lastName }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Email</span>
+            <span class="detail-value">{{ memberDetails?.email || '—' }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Phone</span>
+            <span class="detail-value">{{ memberDetails?.phoneNumber || '—' }}</span>
           </div>
         </div>
       </div>
-    </form>
+
+      <!-- Fully Booked notice -->
+      <div *ngIf="isFullyBooked" class="full-notice">
+        <mat-icon>block</mat-icon>
+        <span>This class is fully booked. Please choose another class.</span>
+      </div>
+
+      <!-- Confirm button -->
+      <button *ngIf="!isFullyBooked"
+              class="confirm-btn"
+              (click)="confirmBooking()"
+              [disabled]="isConfirming">
+        <mat-icon>{{ isConfirming ? 'hourglass_empty' : 'check_circle' }}</mat-icon>
+        {{ isConfirming ? 'Confirming…' : 'Confirm Booking' }}
+      </button>
+
+      <p class="cancel-note">Changed your mind? <a (click)="goBack()">Go back to classes</a></p>
+    </div>
+
   </div>
 
-  <!-- Order Summary -->
-  <div class="order-summary">
-    <h2>Class Details</h2>
-    <div class="summary-item">
-      <strong>Class Title:</strong>
-      {{ class?.classTitle }}
-    </div>
-    <div class="summary-item">
-      <strong>Description:</strong>
-      {{ class?.description }}
-    </div>
-    <div class="summary-item">
-      <strong>Date:</strong>
-      {{ class?.date | date: 'MMM d, y' }}
-    </div>
-    <div class="summary-item">
-      <strong>Time:</strong>
-      {{ formatTime(class?.startTime) }} - {{ formatTime(class?.endTime) }}
-    </div>
-    <div class="summary-item total">
-      <strong>Fee:</strong>
-      {{ class?.fee }} LKR
-    </div>
-    <button class="place-order-btn" (click)="bookClass()">Book Class</button>
-  </div>
 </div>
