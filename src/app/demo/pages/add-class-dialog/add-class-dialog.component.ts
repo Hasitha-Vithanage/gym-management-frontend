@@ -106,9 +106,14 @@ export class AddClassDialogComponent implements OnInit {
 
     if (this.classForm.invalid) return;
 
+    const newTotal = this.classForm.value.totalSlots;
+    const remainingSlots = this.mode === 'edit'
+      ? this.selectedData.remainingSlots + (newTotal - this.selectedData.totalSlots)
+      : newTotal;
+
     const payload = {
       ...this.classForm.value,
-      remainingSlots: this.classForm.value.totalSlots,
+      remainingSlots: Math.max(0, remainingSlots),
       ...(this.mode === 'edit' ? { id: this.selectedData.id } : {})
     };
 

@@ -327,7 +327,7 @@ export const NavigationItems: NavigationItem[] = [
     title: 'Class Scheduling',
     type: 'group',
     icon: '../../../../assets/images/icon/class-scheduling-icon.png',
-    auth: [authenticationEnum.Schedule_Class || authenticationEnum.Book_Class],
+    auth: [authenticationEnum.Schedule_Class, authenticationEnum.Book_Class],
     children: [
       {
         id: 'addClassDet',
