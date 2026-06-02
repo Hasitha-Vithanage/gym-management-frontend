@@ -73,6 +73,7 @@ export class AddClassDialogComponent implements OnInit {
   today: Date = new Date();
   submitDisabled;
   startEndTimeCustomValidationStatus = false;
+  trainers: any[] = [];
 
   constructor(
     private readonly fb: FormBuilder,
@@ -86,19 +87,19 @@ export class AddClassDialogComponent implements OnInit {
   ngOnInit() {
     this.classForm = this.fb.group(
       {
-        classTitle: ['', [Validators.required, Validators.maxLength(50)]],
-        classType:  ['', [Validators.required]],
-        description: ['', [Validators.required, Validators.maxLength(200)]],
-        date: ['', [Validators.required, futureDateValidator]],
-        startTime: ['', [Validators.required]],
-        endTime: ['', [Validators.required]],
-        conductorName: ['', [Validators.required, Validators.maxLength(50), Validators.pattern(/^[A-Za-z\s.'-]+$/)]],
-        profession: ['', [Validators.required, Validators.maxLength(50), Validators.pattern(/^[A-Za-z\s&-]+$/)]],
-        totalSlots: ['', [Validators.required, Validators.min(1), Validators.max(25), Validators.pattern(/^\d+$/)]],
-        status: ['', [Validators.required]]
+        classTitle:        ['', [Validators.required, Validators.maxLength(50)]],
+        classType:         ['', [Validators.required]],
+        description:       ['', [Validators.required, Validators.maxLength(200)]],
+        date:              ['', [Validators.required, futureDateValidator]],
+        startTime:         ['', [Validators.required]],
+        endTime:           ['', [Validators.required]],
+        trainerEmployeeId: ['', [Validators.required]],
+        totalSlots:        ['', [Validators.required, Validators.min(1), Validators.max(25), Validators.pattern(/^\d+$/)]],
+        status:            ['', [Validators.required]]
       },
       { validators: startTimeBeforeEndTimeValidator }
     );
+    this.loadTrainers();
   }
 
   onSubmit(): void {
@@ -111,8 +112,15 @@ export class AddClassDialogComponent implements OnInit {
       ? this.selectedData.remainingSlots + (newTotal - this.selectedData.totalSlots)
       : newTotal;
 
+    const selectedTrainerId = +this.classForm.value.trainerEmployeeId;
+    const selectedTrainer = this.trainers.find(t => t.id === selectedTrainerId);
+    const conductorName = selectedTrainer
+      ? `${selectedTrainer.firstName} ${selectedTrainer.lastName}`.trim()
+      : '';
+
     const payload = {
       ...this.classForm.value,
+      conductorName,
       remainingSlots: Math.max(0, remainingSlots),
       ...(this.mode === 'edit' ? { id: this.selectedData.id } : {})
     };
@@ -152,22 +160,27 @@ export class AddClassDialogComponent implements OnInit {
     const endTimeString = this.formatTimeArray(data.endTime);
 
     this.classForm.patchValue({
-      classTitle: data.classTitle,
-      classType:  data.classType,
-      description: data.description,
-      date: moment(data.date).format('YYYY-MM-DD'),
-      startTime: startTimeString,
-      endTime: endTimeString,
-      conductorName: data.conductorName,
-      profession: data.profession,
-      totalSlots: data.totalSlots,
-      remainingSlots: data.remainingSlots,
-      status: data.status
+      classTitle:        data.classTitle,
+      classType:         data.classType,
+      description:       data.description,
+      date:              moment(data.date).format('YYYY-MM-DD'),
+      startTime:         startTimeString,
+      endTime:           endTimeString,
+      trainerEmployeeId: data.trainerEmployeeId?.toString() ?? '',
+      totalSlots:        data.totalSlots,
+      status:            data.status
     });
 
     this.classForm.get('date').clearValidators();
     this.classForm.get('date').setValidators(Validators.required);
     this.classForm.get('date').updateValueAndValidity();
+  }
+
+  loadTrainers(): void {
+    this.addClassService.getTrainers().subscribe({
+      next: (data: any[]) => { this.trainers = data ?? []; },
+      error: () => this.messageService.showError('Failed to load trainers. Please try again.')
+    });
   }
 
   public resetData(): void {

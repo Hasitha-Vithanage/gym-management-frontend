@@ -67,6 +67,14 @@ export class AddClassService {
     return this.http.delete(requestUrl, { headers: headers });
   }
 
+  getTrainers() {
+    const requestUrl = environment.baseUrl + '/getTrainers';
+    const headers = this.httpService.getAuthToken()
+      ? { Authorization: 'Bearer ' + this.httpService.getAuthToken() }
+      : {};
+    return this.http.get<any[]>(requestUrl, { headers });
+  }
+
   getData() {
 
     // creating requesting URL
