@@ -21,11 +21,9 @@ export const startTimeBeforeEndTimeValidator: ValidatorFn = (control: AbstractCo
 
 function convertToDate(time: string | number[] | Date): Date {
   if (Array.isArray(time)) {
-    // if input is like [10, 30]
     return new Date(0, 0, 0, time[0], time[1]);
   }
   if (typeof time === 'string') {
-    // if input is like "10:30"
     const [hour, minute] = time.split(':').map(Number);
     return new Date(0, 0, 0, hour, minute);
   }
@@ -34,37 +32,25 @@ function convertToDate(time: string | number[] | Date): Date {
 
 export const futureDateValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
   const inputDate = control.value;
-  console.log('futureDateValidator called:', { inputDate, type: typeof inputDate }); // Debug log
 
-  if (!inputDate) {
-    return null; // Don't validate if empty (let required validator handle this)
-  }
+  if (!inputDate) return null;
 
-  // Convert input to Date object
   let selectedDate: Date;
   if (typeof inputDate === 'string') {
-    // Handle YYYY-MM-DD format (common for <input type="date">)
     selectedDate = new Date(inputDate);
   } else if (inputDate instanceof Date) {
     selectedDate = inputDate;
   } else {
-    console.warn('Unexpected date format:', inputDate);
-    return { invalidDate: true }; // Invalid format
+    return { invalidDate: true };
   }
 
   if (Number.isNaN(selectedDate.getTime())) {
-    console.warn('Invalid date object:', selectedDate);
-    return { invalidDate: true }; // Invalid date
+    return { invalidDate: true };
   }
 
-  // Normalize to midnight for date-only comparison
   selectedDate.setHours(0, 0, 0, 0);
-
-  // Get today's date, normalized to midnight
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-
-  console.log('Comparing dates:', { selectedDate, today }); // Debug log
 
   return selectedDate < today ? { futureDateValidator: true } : null;
 };
@@ -115,51 +101,41 @@ export class AddClassDialogComponent implements OnInit {
     );
   }
 
-  /* onsubmit function */
-  onSubmit() {
+  onSubmit(): void {
     this.submitted = true;
 
-    // Validate form
-    if (this.classForm.invalid) {
-      return;
-    }
+    if (this.classForm.invalid) return;
 
-    // Prepare payload
     const payload = {
       ...this.classForm.value,
       remainingSlots: this.classForm.value.totalSlots,
       ...(this.mode === 'edit' ? { id: this.selectedData.id } : {})
     };
 
-    console.log('Payload:', this.selectedData);
+    this.isDisabled = true;
 
-    try {
-      if (this.mode === 'add') {
-        this.addClassService.serviceCall(payload).subscribe({
-          next: (response: any) => {
-            this.messageService.showSuccess('Class Scheduled successfully!');
-            this.dialogRef.close({ action: 'add', data: response });
-          },
-          error: (error) => {
-            this.messageService.showError(error);
-          }
-        });
-      } else if (this.mode === 'edit') {
-        this.addClassService.editData(payload.id, payload).subscribe({
-          next: (response: any) => {
-            this.messageService.showSuccess('Class details updated successfully!');
-            this.dialogRef.close({ action: 'edit', data: response });
-          },
-          error: (error) => {
-            this.messageService.showError(error);
-          }
-        });
-      }
-
-      this.isDisabled = true;
-      this.mode = 'add';
-    } catch (error) {
-      this.messageService.showError(error);
+    if (this.mode === 'add') {
+      this.addClassService.serviceCall(payload).subscribe({
+        next: (response: any) => {
+          this.messageService.showSuccess('Class scheduled successfully!');
+          this.dialogRef.close({ action: 'add', data: response });
+        },
+        error: (err) => {
+          this.messageService.showError(err ?? 'Failed to schedule the class. Please try again.');
+          this.isDisabled = false;
+        }
+      });
+    } else if (this.mode === 'edit') {
+      this.addClassService.editData(payload.id, payload).subscribe({
+        next: (response: any) => {
+          this.messageService.showSuccess('Class details updated successfully!');
+          this.dialogRef.close({ action: 'edit', data: response });
+        },
+        error: (err) => {
+          this.messageService.showError(err ?? 'Failed to update the class. Please try again.');
+          this.isDisabled = false;
+        }
+      });
     }
   }
 
@@ -185,15 +161,13 @@ export class AddClassDialogComponent implements OnInit {
     });
 
     this.classForm.get('date').clearValidators();
-    this.classForm.get('date').updateValueAndValidity();
     this.classForm.get('date').setValidators(Validators.required);
     this.classForm.get('date').updateValueAndValidity();
   }
 
-  // reset button function
   public resetData(): void {
     this.classForm.reset();
-    this.classForm.setErrors = null;
+    this.classForm.setErrors(null);
     this.classForm.updateValueAndValidity();
     this.classForm.enable();
     this.isDisabled = false;
@@ -201,13 +175,12 @@ export class AddClassDialogComponent implements OnInit {
     this.saveButtonLabel = 'Schedule';
   }
 
-  // Dialog close function
   closeDialog(): void {
     this.dialogRef.close();
   }
 
-  onDateChange(_event: any) {
-    // Native date input already provides YYYY-MM-DD — no conversion needed
+  onDateChange(_event: any): void {
+    // Native date input provides YYYY-MM-DD directly — no conversion needed.
   }
 
   formatTimeArray(arr: number[]): string {
@@ -216,6 +189,6 @@ export class AddClassDialogComponent implements OnInit {
   }
 
   pad(num: number): string {
-    return num.toString().padStart(2, '0'); // ensures two digits
+    return num.toString().padStart(2, '0');
   }
 }

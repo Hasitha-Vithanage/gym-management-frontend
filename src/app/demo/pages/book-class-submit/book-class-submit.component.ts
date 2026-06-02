@@ -36,7 +36,10 @@ export class BookClassSubmitComponent implements OnInit {
     if (classId) {
       this.addClassService.getClassById(+classId).subscribe({
         next: (data) => { this.classDetails = data; this.isLoadingClass = false; },
-        error: () => { this.messageService.showError('Could not load class details.'); this.isLoadingClass = false; }
+        error: (err) => {
+          this.messageService.showError(err ?? 'Could not load class details. Please try again.');
+          this.isLoadingClass = false;
+        }
       });
     }
 
@@ -78,8 +81,7 @@ export class BookClassSubmitComponent implements OnInit {
         this.messageService.showSuccess('Class booked successfully! See you there.');
       },
       error: (err) => {
-        const msg = err?.error?.message ?? 'Booking failed. Please try again.';
-        this.messageService.showError(msg);
+        this.messageService.showError(err ?? 'Booking failed. Please try again.');
         this.isConfirming = false;
       }
     });

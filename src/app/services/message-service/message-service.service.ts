@@ -5,31 +5,34 @@ import { ToastrService } from 'ngx-toastr';
   providedIn: 'root'
 })
 export class MessageServiceService {
-  toasts: { message: string; duration: number; type: 'success' | 'error' }[] = [];
 
   constructor(private toastrService: ToastrService) {}
 
-  showSuccess(message: string, duration: number = 3000) {
-    this.toastrService.success('Scucess!', message, {
-      timeOut: duration
-    });
+  showSuccess(message: string, duration: number = 3000): void {
+    this.toastrService.success(message, 'Success', { timeOut: duration });
   }
 
-  showError(message: string, duration: number = 8000) {
-    this.toastrService.error(this.extractUserMessage(message), 'Error', {
-      timeOut: duration
-    });
+  showError(message: string, duration: number = 8000): void {
+    this.toastrService.error(this.safeMessage(message), 'Error', { timeOut: duration });
   }
 
-  showInfo(message: string, duration: number = 5000) {
-    this.toastrService.info(message, 'Info', {
-      timeOut: duration
-    });
+  showWarning(message: string, duration: number = 5000): void {
+    this.toastrService.warning(this.safeMessage(message), 'Warning', { timeOut: duration });
   }
 
-  extractUserMessage(fullMessage: string): string {
-    // Extract text after last colon (':')
-    const lastColonIndex = fullMessage.lastIndexOf(':');
-    return lastColonIndex !== -1 ? fullMessage.substring(lastColonIndex + 1).trim() : fullMessage;
+  showInfo(message: string, duration: number = 5000): void {
+    this.toastrService.info(this.safeMessage(message), 'Info', { timeOut: duration });
+  }
+
+  /** Ensures the toast never shows undefined, [object Object], or raw Java stack traces. */
+  private safeMessage(message: any): string {
+    if (!message || typeof message !== 'string' || message.trim() === '') {
+      return 'An unexpected error occurred. Please try again.';
+    }
+    const technical = ['Exception', 'org.', 'com.bit', 'java.', 'hibernate', 'SQL', 'Request error with:'];
+    if (technical.some(p => message.includes(p))) {
+      return 'An unexpected error occurred. Please try again.';
+    }
+    return message.trim();
   }
 }

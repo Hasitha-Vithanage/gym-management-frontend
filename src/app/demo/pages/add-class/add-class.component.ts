@@ -69,10 +69,10 @@ export class AddClassComponent implements OnInit {
     if (this.dataSource.paginator) this.dataSource.paginator.firstPage();
   }
 
-  // ── Dialog ────────────────────────────────────────────────────────────────
+  // Dialog
 
   openDialog(): void {
-    this.dialog.open(AddClassDialogComponent, { autoFocus: false })
+    this.dialog.open(AddClassDialogComponent, { autoFocus: true })
       .afterClosed().subscribe(() => this.populateData());
   }
 
@@ -98,7 +98,7 @@ export class AddClassComponent implements OnInit {
     });
   }
 
-  // ── Display helpers ───────────────────────────────────────────────────────
+  // Display helpers
 
   formatTime(data: any): string {
     try {
