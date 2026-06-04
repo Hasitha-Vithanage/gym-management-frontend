@@ -20,6 +20,16 @@ export class BookClassService {
     return this.http.post(url, { userId }, { headers: this.headers });
   }
 
+  getMyBookings(userId: number) {
+    const url = `${environment.baseUrl}/my-bookings/${userId}`;
+    return this.http.get<any[]>(url, { headers: this.headers });
+  }
+
+  cancelBooking(bookingId: number, userId: number) {
+    const url = `${environment.baseUrl}/my-bookings/${bookingId}/cancel`;
+    return this.http.put(url, { userId }, { headers: this.headers });
+  }
+
   // Legacy endpoint kept for backward compatibility
   bookClass(formData: any) {
     const url = environment.baseUrl + '/booking-class';
