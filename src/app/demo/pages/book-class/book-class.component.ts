@@ -28,8 +28,14 @@ export class BookClassComponent implements OnInit {
     this.isLoading = true;
     this.addClassService.getData().subscribe({
       next: (response: any[]) => {
-        // Only show scheduled classes with a future or today date
-        this.classes = (response ?? []).filter(c => c.status === 'Scheduled');
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        this.classes = (response ?? []).filter(c => {
+          if (c.status !== 'Scheduled') return false;
+          const classDate = new Date(c.date);
+          classDate.setHours(0, 0, 0, 0);
+          return classDate >= today;
+        });
         this.isLoading = false;
       },
       error: () => {
