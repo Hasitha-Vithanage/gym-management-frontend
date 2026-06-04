@@ -19,7 +19,7 @@
   </div>
 
   <!-- SUCCESS STATE -->
-  <div *ngIf="!isLoading && isConfirmed" class="success-card">
+  <!-- <div *ngIf="!isLoading && isConfirmed" class="success-card">
     <div class="success-icon">
       <mat-icon>check_circle</mat-icon>
     </div>
@@ -29,11 +29,12 @@
       {{ classDetails?.date | date:'EEE, dd MMM yyyy' }} &nbsp;·&nbsp;
       {{ formatTime(classDetails?.startTime) }} – {{ formatTime(classDetails?.endTime) }}
     </p>
-    <button class="btn-dashboard" (click)="goToDashboard()">
-      <mat-icon>dashboard</mat-icon>
-      Go to Dashboard
+    <p class="redirect-note">Redirecting to My Bookings…</p>
+    <button class="btn-dashboard" (click)="goToMyBookings()">
+      <mat-icon>event_note</mat-icon>
+      View My Bookings
     </button>
-  </div>
+  </div> -->
 
   <!-- CONFIRMATION LAYOUT -->
   <div *ngIf="!isLoading && !isConfirmed" class="confirm-layout">

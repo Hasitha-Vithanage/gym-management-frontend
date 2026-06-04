@@ -12,6 +12,16 @@
   padding: 24px 28px;
 }
 
+// ─── PAGE HEADER ─────────────────────────────────────────────────────────────
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
 // ─── PAGE TITLE ──────────────────────────────────────────────────────────────
 .page-title {
   font-size: 22px;
@@ -20,11 +30,34 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 24px;
+  margin: 0;
 
   .title-icon {
     font-size: 24px;
     color: $ff-accent-primary;
+  }
+}
+
+.my-bookings-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 18px;
+  border-radius: $ff-radius-sm;
+  border: 1px solid $ff-border-accent;
+  background: transparent;
+  color: $ff-accent-primary;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: $ff-font;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+
+  mat-icon { font-size: 18px; width: 18px; height: 18px; }
+
+  &:hover {
+    background: $ff-accent-primary;
+    color: #fff;
   }
 }
 

@@ -1,9 +1,15 @@
 <div class="page-wrapper">
 
-  <h2 class="page-title">
-    <mat-icon class="title-icon">event</mat-icon>
-    Book a Class
-  </h2>
+  <div class="page-header">
+    <h2 class="page-title">
+      <mat-icon class="title-icon">event</mat-icon>
+      Book a Class
+    </h2>
+    <button class="my-bookings-btn" routerLink="/pages/my-bookings">
+      <mat-icon>event_note</mat-icon>
+      My Bookings
+    </button>
+  </div>
 
   <!-- SKELETON -->
   <div *ngIf="isLoading" class="skeleton-grid">

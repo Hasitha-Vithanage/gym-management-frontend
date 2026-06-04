@@ -71,6 +71,7 @@ import { AddWorkoutTemplateComponent } from './manage-exercise/workout-template/
 import { ExerciseToTemplateComponent } from './manage-exercise/workout-template/exercise-to-template/exercise-to-template.component';
 import { TrainerMemberProgressComponent } from './trainer-member-progress/trainer-member-progress.component';
 import { MemberDashboardComponent } from './member-dashboard/member-dashboard.component';
+import { MyBookingsComponent } from './my-bookings/my-bookings.component';
 // icons
 
 export const MY_DATE_FORMATS = {
@@ -149,7 +150,8 @@ export const MY_DATE_FORMATS = {
     AddWorkoutTemplateComponent,
     ExerciseToTemplateComponent,
     TrainerMemberProgressComponent,
-    MemberDashboardComponent
+    MemberDashboardComponent,
+    MyBookingsComponent
   ],
   imports: [
     CommonModule,

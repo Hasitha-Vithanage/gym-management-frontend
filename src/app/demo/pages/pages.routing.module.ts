@@ -43,6 +43,7 @@ import { WorkoutTemplateComponent } from './manage-exercise/workout-template/wor
 import { ExerciseToTemplateComponent } from './manage-exercise/workout-template/exercise-to-template/exercise-to-template.component';
 import { TrainerMemberProgressComponent } from './trainer-member-progress/trainer-member-progress.component';
 import { MemberDashboardComponent } from './member-dashboard/member-dashboard.component';
+import { MyBookingsComponent } from './my-bookings/my-bookings.component';
 
 export const PagesRoutes: Routes = [
   {
@@ -224,5 +225,9 @@ export const PagesRoutes: Routes = [
   {
     path: 'member-dashboard',
     component: MemberDashboardComponent
+  },
+  {
+    path: 'my-bookings',
+    component: MyBookingsComponent
   },
 ];

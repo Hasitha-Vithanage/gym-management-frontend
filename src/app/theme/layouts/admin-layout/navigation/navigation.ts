@@ -327,7 +327,7 @@ export const NavigationItems: NavigationItem[] = [
     title: 'Class Scheduling',
     type: 'group',
     icon: '../../../../assets/images/icon/class-scheduling-icon.png',
-    auth: [authenticationEnum.Schedule_Class, authenticationEnum.Book_Class],
+    auth: [authenticationEnum.Schedule_Class, authenticationEnum.Book_Class, authenticationEnum.My_Bookings],
     children: [
       {
         id: 'addClassDet',
@@ -347,6 +347,16 @@ export const NavigationItems: NavigationItem[] = [
         url: '/pages/book-class',
         icon: '../../../../assets/images/icon/book-class-icon.png',
         auth: [authenticationEnum.Book_Class],
+        breadcrumbs: false
+      },
+      {
+        id: 'myBookingsDet',
+        title: 'My Bookings',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/pages/my-bookings',
+        icon: '../../../../assets/images/icon/book-class-icon.png',
+        auth: [authenticationEnum.My_Bookings],
         breadcrumbs: false
       }
     ]

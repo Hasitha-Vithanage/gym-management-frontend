@@ -79,6 +79,7 @@ export class BookClassSubmitComponent implements OnInit {
         this.isConfirmed = true;
         this.isConfirming = false;
         this.messageService.showSuccess('Class booked successfully! See you there.');
+        this.router.navigate(['/pages/my-bookings']);
       },
       error: (err) => {
         this.messageService.showError(err ?? 'Booking failed. Please try again.');
@@ -89,6 +90,10 @@ export class BookClassSubmitComponent implements OnInit {
 
   goBack(): void {
     this.router.navigate(['/pages/book-class']);
+  }
+
+  goToMyBookings(): void {
+    this.router.navigate(['/pages/my-bookings']);
   }
 
   goToDashboard(): void {

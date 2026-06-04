@@ -37,4 +37,5 @@ export enum authenticationEnum {
   Payments = 32,
   Ratings_And_Feedback = 33,
   Feedback_History = 34,
+  My_Bookings = 35,
 }
