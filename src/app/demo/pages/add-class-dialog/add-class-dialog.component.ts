@@ -114,9 +114,14 @@ export class AddClassDialogComponent implements OnInit {
 
     const selectedTrainerId = +this.classForm.value.trainerEmployeeId;
     const selectedTrainer = this.trainers.find(t => t.id === selectedTrainerId);
-    const conductorName = selectedTrainer
-      ? `${selectedTrainer.firstName} ${selectedTrainer.lastName}`.trim()
-      : '';
+
+    if (!selectedTrainer) {
+      this.messageService.showError('Selected trainer could not be found. Please reload the form and try again.');
+      this.isDisabled = false;
+      return;
+    }
+
+    const conductorName = `${selectedTrainer.firstName} ${selectedTrainer.lastName}`.trim();
 
     const payload = {
       ...this.classForm.value,
@@ -171,8 +176,7 @@ export class AddClassDialogComponent implements OnInit {
       status:            data.status
     });
 
-    this.classForm.get('date').clearValidators();
-    this.classForm.get('date').setValidators(Validators.required);
+    this.classForm.get('date').setValidators([Validators.required, futureDateValidator]);
     this.classForm.get('date').updateValueAndValidity();
   }
 
