@@ -70,6 +70,7 @@ import { ExerciseToTemplateComponent } from './manage-exercise/workout-template/
 import { TrainerMemberProgressComponent } from './trainer-member-progress/trainer-member-progress.component';
 import { MemberDashboardComponent } from './member-dashboard/member-dashboard.component';
 import { MyBookingsComponent } from './my-bookings/my-bookings.component';
+import { ZXingScannerModule } from '@zxing/ngx-scanner';
 // icons
 
 export const MY_DATE_FORMATS = {
@@ -157,6 +158,7 @@ export const MY_DATE_FORMATS = {
     MaterialModule,
     ReactiveFormsModule,
     NgxChartsModule,
+    ZXingScannerModule,
 ],
   exports: [],
   providers: [

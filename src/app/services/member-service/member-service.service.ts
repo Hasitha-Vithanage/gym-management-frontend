@@ -127,4 +127,22 @@ export class MemberServiceService {
     }
     return this.http.get(requestUrl, { headers: headers });
   }
+
+  markAttendanceByMemberNo(memberNo: string) {
+    const requestUrl = environment.baseUrl + '/memberService/mark-attendance/present/' + memberNo;
+    let headers = {};
+    if (this.httpService.getAuthToken() !== null) {
+      headers = { Authorization: 'Bearer ' + this.httpService.getAuthToken() };
+    }
+    return this.http.post(requestUrl, {}, { headers });
+  }
+
+  getTodayAttendance() {
+    const requestUrl = environment.baseUrl + '/memberService/attendance/today';
+    let headers = {};
+    if (this.httpService.getAuthToken() !== null) {
+      headers = { Authorization: 'Bearer ' + this.httpService.getAuthToken() };
+    }
+    return this.http.get(requestUrl, { headers });
+  }
 }

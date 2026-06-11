@@ -1,12 +1,14 @@
-import { Component, Inject } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { error } from 'console';
-import { EmpolyeeServiceService } from 'src/app/services/employee-service/empolyee-service.service';
-import { HttpService } from 'src/app/services/http.service';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { BarcodeFormat } from '@zxing/library';
+import { interval, Subscription } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { MemberServiceService } from 'src/app/services/member-service/member-service.service';
 import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
-import { NotificationService } from 'src/app/services/notification-service/notification.service';
+
+interface ScanFeedback {
+  success: boolean;
+  message: string;
+}
 
 @Component({
   selector: 'app-mark-attendance',
@@ -14,114 +16,158 @@ import { NotificationService } from 'src/app/services/notification-service/notif
   templateUrl: './mark-attendance.component.html',
   styleUrl: './mark-attendance.component.scss'
 })
-export class MarkAttendanceComponent {
+export class MarkAttendanceComponent implements OnInit, OnDestroy {
 
-  attendanceForm: FormGroup;
-  employeeList: any;
-  memberList: any;
-  submitted;
+  // Scanner state
+  scannerEnabled = true;
+  allowedFormats = [BarcodeFormat.QR_CODE];
+  hasCamera: boolean | null = null;
+  hasPermission: boolean | null = null;
+  scanFeedback: ScanFeedback | null = null;
+  isMarkingAttendance = false;
+  private lastScanned = '';
+  private feedbackTimer: ReturnType<typeof setTimeout>;
+
+  // Manual search
+  memberList: any[] = [];
+  memberMap: { [memberNo: string]: any } = {};
+  filteredMembers: any[] = [];
+  searchQuery = '';
+
+  // Today's check-ins
+  todayCheckIns: any[] = [];
+  checkInCount = 0;
+
+  private pollSub: Subscription;
 
   constructor(
-    private fb: FormBuilder,
-      private employeeService: EmpolyeeServiceService,
-      private memberService: MemberServiceService,
-      private messageService: MessageServiceService,
-  ) {
-
-  }
+    private readonly memberService: MemberServiceService,
+    private readonly messageService: MessageServiceService
+  ) {}
 
   ngOnInit(): void {
-
-      const today = new Date();
-  const formattedToday = today.toISOString().split('T')[0];
-
-    this.attendanceForm = this.fb.group({
-      attendanceDate: [formattedToday, Validators.required],
-      attendanceType: ['', Validators.required],
-      employee: [null],
-      member: [null],
-      attendanceStatus: ['', Validators.required]
+    this.loadMembers();
+    this.loadTodayCheckIns();
+    this.pollSub = interval(30000).pipe(
+      switchMap(() => this.memberService.getTodayAttendance())
+    ).subscribe({
+      next: (data: any) => { this.todayCheckIns = data; this.checkInCount = data.length; },
+      error: () => {}
     });
-
-    this.getEmployee();
-    this.getMember();
   }
 
-  futureDateValidator(control: AbstractControl) {
-    if (!control.value) return null;
-    const inputDate = new Date(control.value);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    return inputDate > today ? { futureDate: true } : null;
+  ngOnDestroy(): void {
+    this.pollSub?.unsubscribe();
+    clearTimeout(this.feedbackTimer);
   }
 
+  // ── Scanner events ────────────────────────────────────────────────
 
-    onSubmit() {
-      console.log("click");
-            this.submitted = true;
-
-      if(this.attendanceForm.invalid) {
-        return;
-      }
-
-      if(this.attendanceForm.get('attendanceType').value === 'employee') {
-        this.employeeService.markAttendance(this.attendanceForm.value).subscribe({
-          next: (response) => {
-            console.log("Employee attendance marked!");
-            this.messageService.showSuccess("Employee attendance marked successfully!")
-          },
-          error: (error) => {
-            this.messageService.showError(error);
-          }
-        });
-      } else if (this.attendanceForm.get('attendanceType').value === 'member') {
-        this.memberService.markAttendance(this.attendanceForm.value).subscribe({
-          next: (response) => {
-            console.log("Member attendance marked!");
-            this.messageService.showSuccess("Member attendance marked successfully!")
-          },
-          error: (error) => {
-            this.messageService.showError(error);
-          }
-        });
-      }
+  onCamerasFound(devices: MediaDeviceInfo[]): void {
+    this.hasCamera = devices.length > 0;
   }
 
+  onCamerasNotFound(): void {
+    this.hasCamera = false;
+  }
 
+  onPermissionResponse(granted: boolean): void {
+    this.hasPermission = granted;
+  }
 
-  getEmployee(): void {
-    this.employeeService.getData().subscribe({
-      next: (response) => {
-        console.log("Employee List: ", response);
-        this.employeeList = response;
+  onScanSuccess(result: string): void {
+    if (result === this.lastScanned || this.isMarkingAttendance) return;
+    this.lastScanned = result;
+
+    const parts = result.split('/');
+    const memberNo = parts.at(-1);
+    if (!memberNo) { this.showFeedback(false, 'Invalid QR code'); return; }
+
+    this.submitAttendance(memberNo);
+    setTimeout(() => { this.lastScanned = ''; }, 4000);
+  }
+
+  // ── Manual search ─────────────────────────────────────────────────
+
+  onSearchChange(): void {
+    const q = this.searchQuery.toLowerCase().trim();
+    const active = this.memberList.filter(m => !m.isDeleted);
+    if (!q) { this.filteredMembers = active; return; }
+    this.filteredMembers = active.filter(m =>
+      m.firstName?.toLowerCase().includes(q) ||
+      m.lastName?.toLowerCase().includes(q) ||
+      m.memberNo?.toLowerCase().includes(q)
+    );
+  }
+
+  markManual(member: any): void {
+    this.submitAttendance(member.memberNo);
+    this.searchQuery = '';
+    this.filteredMembers = this.memberList.filter((m: any) => !m.isDeleted);
+  }
+
+  // ── Core attendance logic ─────────────────────────────────────────
+
+  private submitAttendance(memberNo: string): void {
+    this.isMarkingAttendance = true;
+    this.memberService.markAttendanceByMemberNo(memberNo).subscribe({
+      next: () => {
+        this.isMarkingAttendance = false;
+        this.showFeedback(true, `${this.getMemberName(memberNo)} checked in!`);
+        this.loadTodayCheckIns();
       },
-      error: (error) => {
-        this.messageService.showError(error);
+      error: (err) => {
+        this.isMarkingAttendance = false;
+        const message = typeof err === 'string' ? err : 'Failed to mark attendance';
+        this.showFeedback(false, message);
       }
     });
   }
 
-  getMember(): void {
+  private loadMembers(): void {
     this.memberService.getData().subscribe({
-      next: (response) => {
-        console.log("Member List: ", response);
-        this.memberList = response;
+      next: (data: any) => {
+        this.memberList = data;
+        this.memberMap = {};
+        data.forEach((m: any) => { this.memberMap[m.memberNo] = m; });
+        this.filteredMembers = data.filter((m: any) => !m.isDeleted);
       },
-      error: (error) => {
-        this.messageService.showError(error);
-      }
+      error: () => {}
     });
   }
 
-  // submitAttendance() {
-  //   if (this.attendanceType && this.selectedPersonId && this.attendanceStatus) {
-  //     console.log('Submitting Attendance:', {
-  //       type: this.attendanceType,
-  //       personId: this.selectedPersonId,
-  //       status: this.attendanceStatus,
-  //       date: this.attendanceDate
-  //     });
-  //     // Show success or toast here
-  //   }
-  // }
+  private loadTodayCheckIns(): void {
+    this.memberService.getTodayAttendance().subscribe({
+      next: (data: any) => { this.todayCheckIns = data; this.checkInCount = data.length; },
+      error: () => {}
+    });
+  }
+
+  private showFeedback(success: boolean, message: string): void {
+    this.scanFeedback = { success, message };
+    clearTimeout(this.feedbackTimer);
+    this.feedbackTimer = setTimeout(() => { this.scanFeedback = null; }, 3500);
+  }
+
+  // ── Template helpers ──────────────────────────────────────────────
+
+  getMemberName(memberNo: string): string {
+    const m = this.memberMap[memberNo];
+    return m ? `${m.firstName} ${m.lastName}` : memberNo;
+  }
+
+  getMemberInitials(memberNo: string): string {
+    const m = this.memberMap[memberNo];
+    return m ? `${m.firstName?.[0] ?? ''}${m.lastName?.[0] ?? ''}`.toUpperCase() : '?';
+  }
+
+  getMemberPhoto(memberNo: string): string | null {
+    const m = this.memberMap[memberNo];
+    return m?.image ? `data:${m.imageType};base64,${m.image}` : null;
+  }
+
+  formatTime(dateTime: string): string {
+    if (!dateTime) return '';
+    return new Date(dateTime).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+  }
 }
