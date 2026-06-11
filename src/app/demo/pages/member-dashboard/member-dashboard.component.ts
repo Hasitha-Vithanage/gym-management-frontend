@@ -87,10 +87,10 @@ export class MemberDashboardComponent implements OnInit, OnDestroy {
   ];
 
   readonly quickActions: QuickAction[] = [
-    { label: 'Book a Class',      icon: 'event',           route: '/pages/book-class' },
-    { label: 'My Workout',        icon: 'fitness_center',  route: '/pages/my-workout-plan' },
-    { label: 'Track Progress',    icon: 'trending_up',     route: '/pages/progress-tracking' },
-    { label: 'My Meal Plan',      icon: 'restaurant_menu', route: '/pages/nutrition&meal-plan' },
+    { label: 'Book a Class',      icon: 'event-orange',           route: '/pages/book-class' },
+    { label: 'My Workout',        icon: 'fitness-center',  route: '/pages/my-workout-plan' },
+    { label: 'Track Progress',    icon: 'trending-up',     route: '/pages/progress-tracking' },
+    { label: 'My Meal Plan',      icon: 'restaurant-menu', route: '/pages/nutrition&meal-plan' },
     { label: 'Leave Feedback',    icon: 'star_rate',       route: '/pages/ratings&feedback' },
     { label: 'Buy Supplements',   icon: 'shopping_bag',    route: '/pages/browse-supplements' }
   ];
