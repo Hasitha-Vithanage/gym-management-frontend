@@ -97,4 +97,9 @@ export class TrainerLoginServiceService {
     // sending POST request to the server
     return this.http.delete(requestUrl, { headers: headers });
   }
+
+  toggleStatus(id: number) {
+    const requestUrl = environment.baseUrl + '/trainer-login/' + id + '/status';
+    return this.http.patch(requestUrl, {});
+  }
 }

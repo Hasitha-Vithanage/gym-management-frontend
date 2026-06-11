@@ -145,18 +145,6 @@ export class MemberDashboardComponent implements OnInit, OnDestroy {
       });
   }
 
-  getMembershipCategory(): string {
-    return this.memberDetails?.membershipCategory || '—';
-  }
-
-  getMembershipCategoryClass(): string {
-    const cat = (this.memberDetails?.membershipCategory || '').toLowerCase();
-    if (cat.includes('gold'))     return 'gold';
-    if (cat.includes('silver'))   return 'silver';
-    if (cat.includes('platinum')) return 'platinum';
-    return 'basic';
-  }
-
   getPaymentStatus(): string {
     return this.paymentDetails?.paymentStatus || '—';
   }

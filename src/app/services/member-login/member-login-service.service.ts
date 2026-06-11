@@ -109,4 +109,9 @@ constructor(private http: HttpClient, private httpService: HttpService) { }
     // sending POST request to the server
     return this.http.delete(requestUrl, { headers: headers });
   }
+
+  toggleStatus(id: number) {
+    const requestUrl = environment.baseUrl + '/member-login/' + id + '/status';
+    return this.http.patch(requestUrl, {});
+  }
 }

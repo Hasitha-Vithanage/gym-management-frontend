@@ -140,27 +140,6 @@
       </div>
     </div>
 
-    <div class="row">
-      <div class="half-width">
-        <label for="injuries">Injuries</label>
-        <textarea id="injuries" maxlength="300" placeholder="Optional" formControlName="injuries"></textarea>
-        <span class="required-message" *ngIf="submitted && memberForm.get('injuries').invalid">
-          <ng-container *ngIf="memberForm.get('injuries').hasError('maxlength')">Maximum 300 characters allowed</ng-container>
-        </span>
-      </div>
-
-      <div class="half-width">
-        <label for="membershipCategory">Membership Category <span class="required">*</span></label>
-        <select id="membershipCategory" formControlName="membershipCategory">
-          <option value="" disabled>-- Select Category --</option>
-          <option *ngFor="let cat of membershipCategoryList" [value]="cat.categoryName">{{ cat.categoryName }}</option>
-        </select>
-        <span class="required-message" *ngIf="submitted && memberForm.get('membershipCategory').invalid">
-          <ng-container *ngIf="memberForm.get('membershipCategory').hasError('required')">Membership Category is required</ng-container>
-        </span>
-      </div>
-    </div>
-
     <div class="row upload-section">
       <button type="button" class="choose-file-btn" (click)="fileInput.click()">
         Choose Photo

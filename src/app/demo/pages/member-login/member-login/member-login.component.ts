@@ -28,6 +28,7 @@ displayedColumns: string[] = [
      'firstName',
      'lastName',
      'userName',
+     'status',
      'actions'
    ];
  
@@ -164,7 +165,23 @@ displayedColumns: string[] = [
        });
      }
  
-   //refresh button function
+   public toggleStatus(data: any): void {
+    this.memberLoginService.toggleStatus(data.id).subscribe({
+      next: (response: any) => {
+        const index = this.dataSource.data.findIndex(item => item.id === data.id);
+        if (index !== -1) {
+          this.dataSource.data[index].active = response.active;
+          this.dataSource = new MatTableDataSource(this.dataSource.data);
+        }
+        this.messageService.showSuccess(response.active ? 'Login activated.' : 'Login deactivated.');
+      },
+      error: (error) => {
+        this.messageService.showError(error);
+      }
+    });
+  }
+
+  //refresh button function
    public refreshData(): void {
      this.populateData();
    }

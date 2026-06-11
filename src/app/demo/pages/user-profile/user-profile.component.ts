@@ -112,14 +112,6 @@ export class UserProfileComponent implements OnInit {
     return `${this.memberData?.firstName ?? ''} ${this.memberData?.lastName ?? ''}`.trim() || '—';
   }
 
-  getMembershipClass(): string {
-    const cat = (this.memberData?.membershipCategory ?? '').toLowerCase();
-    if (cat.includes('gold'))     return 'gold';
-    if (cat.includes('silver'))   return 'silver';
-    if (cat.includes('platinum')) return 'platinum';
-    return 'basic';
-  }
-
   goBack(): void {
     const role = this.http.getUserRole();
     this.router.navigate([role === 'MEMBER' ? '/pages/member-dashboard' : '/dashboard/default']);

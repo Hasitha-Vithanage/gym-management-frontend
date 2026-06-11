@@ -14,7 +14,7 @@ import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.compone
 const ELEMENT_DATA: any[] = [
   {
     memberNo: 1, firstName: 'Hydrogen', lastName: 1.0079, nic: 'H', dateOfBirth: 1, address: 'Hydrogen', phoneNumber: 1.0079, email: 'H',
-    emergencyContactNumber: 1, bloodType: 'Hydrogen', joinedDate: 1.0079, gender: 'H', injuries: 1, membershipCategory: 'Hydrogen'
+    emergencyContactNumber: 1, bloodType: 'Hydrogen', joinedDate: 1.0079, gender: 'H'
   },
 ];
 @Component({
@@ -43,7 +43,7 @@ export class MemberRegistrationComponent {
   }
 
   displayedColumns: string[] = ['memberNo', 'firstName', 'lastName', 'nic', 'dateOfBirth', 'address', 'phoneNumber', 'email', 'emergencyContactNumber', 'bloodType',
-    'joinedDate', 'gender', 'injuries', 'membershipCategory', 'actions'];
+    'joinedDate', 'gender', 'actions'];
   dataSource: MatTableDataSource<any>;
 
   constructor(private fb: FormBuilder,
@@ -65,8 +65,6 @@ export class MemberRegistrationComponent {
       bloodType: new FormControl(""),
       joinedDate: new FormControl(""),
       gender: new FormControl(""),
-      injuries: new FormControl(""),
-      membershipCategory: new FormControl(""),
       image: new FormControl('', [Validators.required]),
       imageName: new FormControl(''),
       imageType: new FormControl(''),

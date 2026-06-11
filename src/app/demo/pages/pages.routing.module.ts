@@ -30,7 +30,6 @@ import { UploadMealPlanComponent } from './upload-meal-plan/upload-meal-plan.com
 import { AddClassComponent } from './add-class/add-class.component';
 import { BookClassComponent } from './book-class/book-class.component';
 import { BookClassSubmitComponent } from './book-class-submit/book-class-submit.component';
-import { MembershipCategoriesComponent } from './membership-categories/membership-categories.component';
 import { PaymentsComponent } from './payments/payments.component';
 import { OrderDetailsComponent } from './order-details/order-details.component';
 import { MonthlyAttendanceComponent } from './monthly-attendance/monthly-attendance.component';
@@ -201,10 +200,6 @@ export const PagesRoutes: Routes = [
   {
     path: 'book-class-submit/:id',
     component: BookClassSubmitComponent
-  },
-  {
-    path: 'membership-categories',
-    component: MembershipCategoriesComponent
   },
   {
     path: 'payments',

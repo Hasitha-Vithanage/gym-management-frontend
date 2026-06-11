@@ -1,5 +1,10 @@
 @import 'src/scss/settings/colors';
 
+::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
 /* Form Container */
 .form-container {
   width: 750px;

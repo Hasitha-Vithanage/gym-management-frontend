@@ -19,28 +19,11 @@
       </div>
     </div>
     <div class="welcome-right">
-      <span *ngIf="!isLoading" class="plan-badge {{ getMembershipCategoryClass() }}">
-        {{ getMembershipCategory() }}
-      </span>
-      <div *ngIf="isLoading" class="skeleton-badge"></div>
     </div>
   </div>
 
   <!-- STAT CARDS ROW -->
   <div class="row g-3 mt-1">
-
-    <div class="col-md-6 col-xl-3">
-      <div class="stat-card">
-        <div class="stat-icon" style="background: rgba(59,130,246,0.12); color: #3B82F6;">
-          <mat-icon>card_membership</mat-icon>
-        </div>
-        <div class="stat-body">
-          <p class="stat-label">Membership Plan</p>
-          <h4 class="stat-value" *ngIf="!isLoading">{{ getMembershipCategory() }}</h4>
-          <div class="skeleton-line" *ngIf="isLoading"></div>
-        </div>
-      </div>
-    </div>
 
     <div class="col-md-6 col-xl-3">
       <div class="stat-card">

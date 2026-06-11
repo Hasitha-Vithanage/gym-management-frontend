@@ -31,7 +31,6 @@ export class PaymentsComponent {
 
    displayedColumns: string[] = [
       'member',
-      'membershipCategory',
       'amount',
       'paymentStatus',
       'paymentDate',

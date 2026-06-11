@@ -35,10 +35,6 @@
       <h3 class="display-name">{{ getFullName() }}</h3>
       <p class="display-member-no">Member # {{ memberData?.memberNo || '—' }}</p>
 
-      <span class="plan-badge {{ getMembershipClass() }}">
-        {{ memberData?.membershipCategory || 'Standard' }}
-      </span>
-
       <div class="divider"></div>
 
       <div class="left-meta-item">
@@ -179,20 +175,8 @@
         <div class="info-grid">
 
           <div class="info-card">
-            <p class="info-label">Membership Category <span class="readonly-tag">read-only</span></p>
-            <p class="info-value">
-              <span class="plan-badge {{ getMembershipClass() }}">{{ memberData?.membershipCategory || '—' }}</span>
-            </p>
-          </div>
-
-          <div class="info-card">
             <p class="info-label">Blood Type <span class="readonly-tag">read-only</span></p>
             <p class="info-value">{{ memberData?.bloodType || '—' }}</p>
-          </div>
-
-          <div class="info-card wide-card">
-            <p class="info-label">Injuries / Medical Notes <span class="readonly-tag">read-only</span></p>
-            <p class="info-value">{{ memberData?.injuries || 'None recorded' }}</p>
           </div>
 
         </div>

@@ -518,16 +518,7 @@ export const NavigationItems: NavigationItem[] = [
         auth: [authenticationEnum.Suppliers],
         breadcrumbs: false
       },
-      {
-        id: 'membershipCategoriesDet',
-        title: 'Membership Categories',
-        type: 'item',
-        classes: 'nav-item',
-        url: '/pages/membership-categories',
-        icon: '../../../../assets/images/icon/membership-categories-icon.png',
-        auth: [authenticationEnum.Membership_Categories],
-        breadcrumbs: false
-      }
+
     ]
   },
   {

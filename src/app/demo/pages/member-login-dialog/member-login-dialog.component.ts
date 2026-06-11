@@ -53,8 +53,9 @@ export class MemberLoginDialogComponent implements OnInit {
     this.getMembers();
     this.populateData();
 
-    // Auto-fill first/last name when member is selected
+    // Auto-fill first/last name when member is selected (add mode only)
     this.memberLoginForm.get('memberId')?.valueChanges.subscribe((selectedId) => {
+      if (this.mode !== 'add') return;
       if (selectedId) {
         this.getMemberById(selectedId);
       } else {
@@ -66,11 +67,10 @@ export class MemberLoginDialogComponent implements OnInit {
   public getMembers(): void {
     this.memberLoginService.getMembers().subscribe({
       next: (response: any[]) => {
-        console.log('Members: ', response);
         this.memberList = response;
       },
       error: (error) => {
-        console.log('Error fetching members:', error);
+            console.log('Error fetching members:', error);
       }
     });
 
@@ -85,7 +85,7 @@ export class MemberLoginDialogComponent implements OnInit {
         this.memberLoginForm.patchValue({
           firstName: response.firstName,
           lastName: response.lastName,
-          userName: response.firstName,
+          userName: `${response.firstName}.${response.lastName}`.toLowerCase(),
           member: memberId
         });
       },
@@ -133,16 +133,16 @@ export class MemberLoginDialogComponent implements OnInit {
   }
 
   onEdit(data: any): void {
+    this.mode = 'edit';
+    this.selectedData = data;
     this.memberLoginForm.patchValue({
-      memberId: data.id,
+      memberId: data.member,
       firstName: data.firstName,
       lastName: data.lastName,
       userName: data.userName,
       password: data.password,
       userId: data.userId
     });
-    this.mode = 'edit';
-    this.selectedData = data;
     this.submitDisabled = true;
 
     this.memberLoginForm.valueChanges.subscribe(() => {

@@ -5,7 +5,6 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MemberServiceService } from 'src/app/services/member-service/member-service.service';
-import { MembershipCategoryService } from 'src/app/services/membership-category/membership-category.service';
 import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
 
 @Component({
@@ -24,7 +23,6 @@ export class NewMemberDialogComponent implements OnInit {
   selectedImageUrl;
   isFileSelected = false;
   submitDisabled;
-  membershipCategoryList: any[] = []; // List of suppliers
   today: string = new Date().toISOString().split('T')[0];
   minDoj: string;
   maxDoj: string;
@@ -34,7 +32,6 @@ export class NewMemberDialogComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private memberService: MemberServiceService,
-    private membershipCategoryService: MembershipCategoryService,
     public dialogRef: MatDialogRef<NewMemberDialogComponent>,
     private sanitizer: DomSanitizer,
     private messageService: MessageServiceService
@@ -70,8 +67,6 @@ export class NewMemberDialogComponent implements OnInit {
       bloodType: new FormControl('', Validators.required),
       joinedDate: new FormControl('', [Validators.required, this.joiningDateValidator]),
       gender: new FormControl('', Validators.required),
-      injuries: new FormControl('', Validators.maxLength(300)),
-      membershipCategory: new FormControl('', Validators.required),
       image: new FormControl(''),
       imageName: new FormControl(''),
       imageType: new FormControl('')
@@ -86,7 +81,6 @@ export class NewMemberDialogComponent implements OnInit {
     maxDojDate.setFullYear(maxDojDate.getFullYear() + 1);
     this.maxDoj = maxDojDate.toISOString().split('T')[0];
 
-    this.getMembershipCategory();
     this.generateEmployeeId();
   }
 
@@ -130,20 +124,6 @@ export class NewMemberDialogComponent implements OnInit {
     if (inputDate < minDate) return { tooOld: true };
     if (inputDate > maxDate) return { tooFuture: true };
     return null;
-  }
-
-  // getMembershipCategory function
-  public getMembershipCategory(): void {
-    //Call Service to get suppliers
-    this.membershipCategoryService.getData().subscribe({
-      next: (response: any[]) => {
-        console.log('Membership Category: ', response);
-        this.membershipCategoryList = response;
-      },
-      error: (error) => {
-        console.log('Error fetching suppliers:', error);
-      }
-    });
   }
 
   /* OnSubmit function */
@@ -215,8 +195,6 @@ export class NewMemberDialogComponent implements OnInit {
       bloodType: data.bloodType,
       joinedDate: data.joinedDate,
       gender: data.gender,
-      injuries: data.injuries,
-      membershipCategory: data.membershipCategory,
       image: data.image,
       imageName: data.imageName,
       imageType: data.imageType
