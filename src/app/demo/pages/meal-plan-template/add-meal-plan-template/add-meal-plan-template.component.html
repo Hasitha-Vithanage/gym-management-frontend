@@ -1,0 +1,132 @@
+<div class="form-container">
+
+  <div class="form-header">
+    <h2>{{ mode === 'add' ? 'Add Meal Plan Template' : 'Edit Meal Plan Template' }}</h2>
+    <button class="close-btn" (click)="closeDialog()">
+      <img src="../../../../../assets/images/icon/close-light.png" style="height:18px;width:18px">
+    </button>
+  </div>
+
+  <form [formGroup]="templateForm" (ngSubmit)="onSubmit()" class="form-body">
+
+    <!-- Template Info -->
+    <h3 class="section-title">Template Info</h3>
+    <hr>
+
+    <div class="grid">
+      <div class="field full">
+        <label>Template Name <span class="required">*</span></label>
+        <input type="text" placeholder="e.g. High-Protein Fat Loss Plan" formControlName="templateName" />
+        <span class="error" *ngIf="submitted && templateForm.get('templateName')?.invalid">
+          Template name is required (min 3 characters).
+        </span>
+      </div>
+
+      <div class="field full">
+        <label>Description</label>
+        <textarea placeholder="Brief overview of this meal plan..." formControlName="description"></textarea>
+      </div>
+
+      <div class="field">
+        <label>Primary Goal <span class="required">*</span></label>
+        <select formControlName="goal">
+          <option value="">Select Goal</option>
+          <option>Fat Loss</option>
+          <option>Muscle Gain</option>
+          <option>Strength</option>
+          <option>Endurance</option>
+          <option>General Health</option>
+        </select>
+        <span class="error" *ngIf="submitted && templateForm.get('goal')?.invalid">Goal is required.</span>
+      </div>
+
+      <div class="field">
+        <label>Status <span class="required">*</span></label>
+        <select formControlName="status">
+          <option>Active</option>
+          <option>Inactive</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Duration (weeks) <span class="required">*</span></label>
+        <input type="number" min="1" placeholder="e.g. 4" formControlName="durationWeeks" />
+        <span class="error" *ngIf="submitted && templateForm.get('durationWeeks')?.invalid">Required.</span>
+      </div>
+    </div>
+
+    <!-- Macro Targets -->
+    <h3 class="section-title">Daily Macro Targets</h3>
+    <hr>
+
+    <div class="grid">
+      <div class="field">
+        <label>Daily Calories (kcal) <span class="required">*</span></label>
+        <input type="number" min="500" placeholder="e.g. 2000" formControlName="dailyCalorieTarget" />
+        <span class="error" *ngIf="submitted && templateForm.get('dailyCalorieTarget')?.invalid">Required (min 500).</span>
+      </div>
+
+      <div class="field">
+        <label>Protein Target (g) <span class="required">*</span></label>
+        <input type="number" min="0" placeholder="e.g. 150" formControlName="proteinTargetG" />
+        <span class="error" *ngIf="submitted && templateForm.get('proteinTargetG')?.invalid">Required.</span>
+      </div>
+
+      <div class="field">
+        <label>Carbs Target (g) <span class="required">*</span></label>
+        <input type="number" min="0" placeholder="e.g. 200" formControlName="carbsTargetG" />
+        <span class="error" *ngIf="submitted && templateForm.get('carbsTargetG')?.invalid">Required.</span>
+      </div>
+
+      <div class="field">
+        <label>Fat Target (g) <span class="required">*</span></label>
+        <input type="number" min="0" placeholder="e.g. 65" formControlName="fatTargetG" />
+        <span class="error" *ngIf="submitted && templateForm.get('fatTargetG')?.invalid">Required.</span>
+      </div>
+    </div>
+
+    <!-- Matching Criteria -->
+    <h3 class="section-title">Matching Criteria</h3>
+    <hr>
+
+    <div class="criteria-grid">
+
+      <div class="criteria-group">
+        <label class="criteria-label">Suitable Goals</label>
+        <div class="checkbox-list">
+          <label class="cb-item" *ngFor="let g of allGoals">
+            <input type="checkbox" [checked]="isGoalSelected(g)" (change)="toggleGoal(g)" />
+            <span>{{ g }}</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="criteria-group">
+        <label class="criteria-label">Suitable BMI Categories</label>
+        <div class="checkbox-list">
+          <label class="cb-item" *ngFor="let b of allBmiCategories">
+            <input type="checkbox" [checked]="isBmiSelected(b)" (change)="toggleBmi(b)" />
+            <span>{{ b }}</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="criteria-group">
+        <label class="criteria-label">Dietary Tags</label>
+        <div class="checkbox-list">
+          <label class="cb-item" *ngFor="let t of allDietaryTags">
+            <input type="checkbox" [checked]="isTagSelected(t)" (change)="toggleTag(t)" />
+            <span>{{ t }}</span>
+          </label>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="action-buttons">
+      <button type="submit" class="register-button field">{{ registerButtonLabel }}</button>
+      <button type="button" class="reset-button field" (click)="resetData()">Reset</button>
+    </div>
+
+  </form>
+</div>

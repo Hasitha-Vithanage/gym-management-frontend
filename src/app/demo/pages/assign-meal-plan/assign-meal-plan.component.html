@@ -1,0 +1,132 @@
+<div class="assign-container">
+
+  <!-- Page Title -->
+  <h2 class="page-title">
+    <img src="../../../../assets/images/icon/nutrition-and-meal-plans.png" style="height:20px;width:20px">
+    Assign Meal Plan
+  </h2>
+
+  <!-- Search Bar -->
+  <div class="search-section">
+    <div class="search-wrap">
+      <img src="../../../../assets/images/icon/member-light-icon.png" class="search-icon">
+      <input
+        type="text"
+        [(ngModel)]="memberUsername"
+        placeholder="Enter member username…"
+        class="member-input"
+        (keyup.enter)="loadSuggestions()"
+      />
+    </div>
+    <button class="load-btn" (click)="loadSuggestions()" [disabled]="isLoading">
+      {{ isLoading ? 'Loading…' : 'Load Suggestions' }}
+    </button>
+  </div>
+
+  <!-- Member Profile Card -->
+  <div class="profile-card" *ngIf="memberProfile">
+    <div class="profile-header">
+      <span class="profile-title">Member Profile</span>
+      <span class="profile-user">{{ memberUsername }}</span>
+    </div>
+    <div class="profile-body">
+      <div class="profile-field">
+        <span class="pf-label">Fitness Goal</span>
+        <span class="pf-value">{{ memberProfile.fitnessGoal || '—' }}</span>
+      </div>
+      <div class="profile-field">
+        <span class="pf-label">Dietary Preferences</span>
+        <span class="pf-value">
+          <ng-container *ngIf="memberProfile.dietaryPreferences?.length > 0; else noPref">
+            <span class="tag" *ngFor="let p of memberProfile.dietaryPreferences">{{ p }}</span>
+          </ng-container>
+          <ng-template #noPref>None specified</ng-template>
+        </span>
+      </div>
+      <div class="profile-field" *ngIf="memberProfile.allergies">
+        <span class="pf-label">Allergies</span>
+        <span class="pf-value">{{ memberProfile.allergies }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="no-profile-notice" *ngIf="suggestions.length > 0 && !memberProfile">
+    <mat-icon>info_outline</mat-icon>
+    <span>No nutrition profile found for this member — showing all available templates.</span>
+  </div>
+
+  <!-- Suggestions -->
+  <ng-container *ngIf="suggestions.length > 0">
+
+    <div class="suggestions-header">
+      <span class="s-count">{{ suggestions.length }} template{{ suggestions.length !== 1 ? 's' : '' }} found</span>
+      <span class="s-reason" *ngIf="suggestions[0]">{{ suggestions[0].matchReason }}</span>
+    </div>
+
+    <div class="suggestions-grid">
+      <div class="suggestion-card" *ngFor="let s of suggestions">
+
+        <div class="card-top">
+          <div class="card-name">{{ s.template.templateName }}</div>
+          <span class="match-badge {{ matchBadgeClass(s.matchRound) }}">{{ matchLabel(s.matchRound) }}</span>
+        </div>
+
+        <div class="card-goal">{{ s.template.goal }}</div>
+
+        <div class="macro-row">
+          <div class="macro-item">
+            <span class="m-label">Calories</span>
+            <span class="m-val cal">{{ s.template.dailyCalorieTarget }} kcal</span>
+          </div>
+          <div class="macro-item">
+            <span class="m-label">Protein</span>
+            <span class="m-val prot">{{ s.template.proteinTargetG }}g</span>
+          </div>
+          <div class="macro-item">
+            <span class="m-label">Carbs</span>
+            <span class="m-val carb">{{ s.template.carbsTargetG }}g</span>
+          </div>
+          <div class="macro-item">
+            <span class="m-label">Fat</span>
+            <span class="m-val fat">{{ s.template.fatTargetG }}g</span>
+          </div>
+        </div>
+
+        <div class="card-meta">
+          <span>{{ s.template.durationWeeks }} weeks</span>
+          <span>{{ s.template.foodItemCount ?? 0 }} food items</span>
+          <span *ngIf="s.matchScore > 0" class="score-chip">+{{ s.matchScore }} score</span>
+        </div>
+
+        <div class="tag-row" *ngIf="s.template.dietaryTags?.length > 0">
+          <span class="dtag" *ngFor="let t of s.template.dietaryTags">{{ t }}</span>
+        </div>
+
+        <!-- Confirm inline panel -->
+        <div class="confirm-panel" *ngIf="confirmingTemplate === s">
+          <div class="confirm-row">
+            <label class="confirm-label">Duration (weeks)</label>
+            <input type="number" [(ngModel)]="durationWeeks" min="1" class="duration-input" />
+          </div>
+          <div class="confirm-actions">
+            <button class="btn-confirm" (click)="confirmAssign()">Confirm Assign</button>
+            <button class="btn-cancel" (click)="cancelConfirm()">Cancel</button>
+          </div>
+        </div>
+
+        <button class="assign-btn" *ngIf="confirmingTemplate !== s" (click)="openConfirm(s)">
+          Assign This Plan
+        </button>
+
+      </div>
+    </div>
+
+  </ng-container>
+
+  <!-- Empty state after loading -->
+  <div class="empty-state" *ngIf="!isLoading && suggestions.length === 0 && memberUsername">
+    <mat-icon>search_off</mat-icon>
+    <p>No suggestions yet. Enter a member username and click <strong>Load Suggestions</strong>.</p>
+  </div>
+
+</div>

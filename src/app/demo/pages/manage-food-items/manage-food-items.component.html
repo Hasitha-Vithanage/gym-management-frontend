@@ -1,0 +1,95 @@
+<div class="container">
+  <div class="table-section">
+
+    <h2 class="form-title">
+      <img src="../../../../assets/images/icon/nutrition-and-meal-plans.png"
+        style="margin-right:5px;height:18px;width:18px" />
+      Manage Food Items
+    </h2>
+
+    <div class="toolbar">
+      <div class="add-new">
+        <button mat-raised-button class="new-button" (click)="openAddDialog()">
+          <img src="../../../../assets/images/icon/add-light-icon.png"
+            style="margin-right:5px;height:18px;width:18px" />
+          Add New Food Item
+        </button>
+      </div>
+      <div class="table-filter">
+        <div class="search-bar">
+          <img src="../../../../assets/images/icon/search.png"
+            style="margin-right:5px;height:18px;width:18px" />
+          <input type="text" placeholder="Search..." (keyup)="applyFilter($event)" />
+        </div>
+        <button mat-icon-button class="refresh-button" (click)="refreshData()">
+          <img src="../../../../assets/images/icon/refresh.png" style="height:18px;width:18px" />
+        </button>
+      </div>
+    </div>
+
+    <div class="table-wrapper">
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+        <ng-container matColumnDef="foodName">
+          <th mat-header-cell *matHeaderCellDef>Food Name</th>
+          <td mat-cell *matCellDef="let f">{{ f.foodName }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="category">
+          <th mat-header-cell *matHeaderCellDef>Category</th>
+          <td mat-cell *matCellDef="let f">{{ f.category }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="caloriesPer100g">
+          <th mat-header-cell *matHeaderCellDef>Cal/100g</th>
+          <td mat-cell *matCellDef="let f">{{ f.caloriesPer100g }} kcal</td>
+        </ng-container>
+
+        <ng-container matColumnDef="proteinG">
+          <th mat-header-cell *matHeaderCellDef>Protein</th>
+          <td mat-cell *matCellDef="let f">{{ f.proteinG }}g</td>
+        </ng-container>
+
+        <ng-container matColumnDef="carbsG">
+          <th mat-header-cell *matHeaderCellDef>Carbs</th>
+          <td mat-cell *matCellDef="let f">{{ f.carbsG }}g</td>
+        </ng-container>
+
+        <ng-container matColumnDef="fatG">
+          <th mat-header-cell *matHeaderCellDef>Fat</th>
+          <td mat-cell *matCellDef="let f">{{ f.fatG }}g</td>
+        </ng-container>
+
+        <ng-container matColumnDef="servingDescription">
+          <th mat-header-cell *matHeaderCellDef>Serving</th>
+          <td mat-cell *matCellDef="let f">{{ f.servingDescription || '—' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th style="text-align:center" mat-header-cell *matHeaderCellDef>Actions</th>
+          <td style="display:flex;justify-content:center" mat-cell *matCellDef="let f">
+            <div class="action-column">
+              <button mat-icon-button class="gray-icon-btn" matTooltip="Edit" (click)="editData(f)">
+                <img src="../../../../assets/images/icon/edit-light.png" style="height:18px;width:18px">
+              </button>
+              <button mat-icon-button class="gray-icon-btn" matTooltip="Delete" (click)="deleteData(f)">
+                <img src="../../../../assets/images/icon/delete-light.png" style="height:18px;width:18px">
+              </button>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+        <tr *ngIf="dataSource?.data?.length === 0">
+          <td [attr.colspan]="displayedColumns.length" class="no-data">No food items found</td>
+        </tr>
+
+      </table>
+    </div>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 25]" class="pagination"></mat-paginator>
+
+  </div>
+</div>

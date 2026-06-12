@@ -1,0 +1,102 @@
+<div class="form-container">
+
+  <div class="form-header">
+    <h2>{{ mode === 'add' ? 'Add New Food Item' : 'Edit Food Item' }}</h2>
+    <button class="close-btn" (click)="closeDialog()">
+      <img src="../../../../../assets/images/icon/close-light.png" style="height:18px;width:18px">
+    </button>
+  </div>
+
+  <form [formGroup]="foodItemForm" (ngSubmit)="onSubmit()" class="form-body">
+
+    <!-- Basic Info -->
+    <h3 class="section-title">Basic Info</h3>
+    <hr>
+
+    <div class="grid">
+      <div class="field full">
+        <label>Food Name <span class="required">*</span></label>
+        <input type="text" placeholder="e.g. Chicken Breast" formControlName="foodName" />
+        <span class="error" *ngIf="submitted && foodItemForm.get('foodName')?.invalid">
+          Food name is required (min 2 characters).
+        </span>
+      </div>
+
+      <div class="field">
+        <label>Category <span class="required">*</span></label>
+        <select formControlName="category">
+          <option value="">Select Category</option>
+          <option>Protein</option>
+          <option>Carbohydrate</option>
+          <option>Vegetable</option>
+          <option>Fruit</option>
+          <option>Dairy</option>
+          <option>Fat & Oil</option>
+          <option>Legume</option>
+          <option>Grain</option>
+          <option>Beverage</option>
+          <option>Snack</option>
+          <option>Other</option>
+        </select>
+        <span class="error" *ngIf="submitted && foodItemForm.get('category')?.invalid">
+          Category is required.
+        </span>
+      </div>
+
+      <div class="field">
+        <label>Serving Description</label>
+        <input type="text" placeholder="e.g. 1 medium piece (120g)" formControlName="servingDescription" />
+      </div>
+    </div>
+
+    <!-- Macros -->
+    <h3 class="section-title">Macros per 100g</h3>
+    <hr>
+
+    <div class="grid">
+      <div class="field">
+        <label>Calories (kcal) <span class="required">*</span></label>
+        <input type="number" min="0" placeholder="e.g. 165" formControlName="caloriesPer100g" />
+        <span class="error" *ngIf="submitted && foodItemForm.get('caloriesPer100g')?.invalid">Required.</span>
+      </div>
+
+      <div class="field">
+        <label>Protein (g) <span class="required">*</span></label>
+        <input type="number" min="0" step="0.1" placeholder="e.g. 31.0" formControlName="proteinG" />
+        <span class="error" *ngIf="submitted && foodItemForm.get('proteinG')?.invalid">Required.</span>
+      </div>
+
+      <div class="field">
+        <label>Carbs (g) <span class="required">*</span></label>
+        <input type="number" min="0" step="0.1" placeholder="e.g. 0.0" formControlName="carbsG" />
+        <span class="error" *ngIf="submitted && foodItemForm.get('carbsG')?.invalid">Required.</span>
+      </div>
+
+      <div class="field">
+        <label>Fat (g) <span class="required">*</span></label>
+        <input type="number" min="0" step="0.1" placeholder="e.g. 3.6" formControlName="fatG" />
+        <span class="error" *ngIf="submitted && foodItemForm.get('fatG')?.invalid">Required.</span>
+      </div>
+    </div>
+
+    <!-- Dietary Tags -->
+    <h3 class="section-title">Dietary Tags</h3>
+    <hr>
+
+    <div class="grid">
+      <div class="field full">
+        <label>Tags (comma-separated)</label>
+        <input type="text"
+          placeholder="e.g. High-Protein, Gluten-Free, Dairy-Free"
+          formControlName="dietaryTagsRaw" />
+        <span class="hint">Common tags: Vegan, Vegetarian, Gluten-Free, Dairy-Free, Keto, High-Protein, Low-Carb</span>
+      </div>
+    </div>
+
+    <div class="action-buttons">
+      <button type="submit" class="register-button field">{{ registerButtonLabel }}</button>
+      <button type="button" class="reset-button field" (click)="resetData()">Reset</button>
+    </div>
+
+  </form>
+</div>

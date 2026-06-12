@@ -71,6 +71,12 @@ import { TrainerMemberProgressComponent } from './trainer-member-progress/traine
 import { MemberDashboardComponent } from './member-dashboard/member-dashboard.component';
 import { MyBookingsComponent } from './my-bookings/my-bookings.component';
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
+import { ManageFoodItemsComponent } from './manage-food-items/manage-food-items.component';
+import { AddFoodItemComponent } from './manage-food-items/add-food-item/add-food-item.component';
+import { MealPlanTemplateComponent } from './meal-plan-template/meal-plan-template.component';
+import { AddMealPlanTemplateComponent } from './meal-plan-template/add-meal-plan-template/add-meal-plan-template.component';
+import { FoodToTemplateComponent } from './food-to-template/food-to-template.component';
+import { AssignMealPlanComponent } from './assign-meal-plan/assign-meal-plan.component';
 // icons
 
 export const MY_DATE_FORMATS = {
@@ -148,7 +154,13 @@ export const MY_DATE_FORMATS = {
     ExerciseToTemplateComponent,
     TrainerMemberProgressComponent,
     MemberDashboardComponent,
-    MyBookingsComponent
+    MyBookingsComponent,
+    ManageFoodItemsComponent,
+    AddFoodItemComponent,
+    MealPlanTemplateComponent,
+    AddMealPlanTemplateComponent,
+    FoodToTemplateComponent,
+    AssignMealPlanComponent
   ],
   imports: [
     CommonModule,

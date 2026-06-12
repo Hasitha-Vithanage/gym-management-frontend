@@ -43,6 +43,10 @@ import { ExerciseToTemplateComponent } from './manage-exercise/workout-template/
 import { TrainerMemberProgressComponent } from './trainer-member-progress/trainer-member-progress.component';
 import { MemberDashboardComponent } from './member-dashboard/member-dashboard.component';
 import { MyBookingsComponent } from './my-bookings/my-bookings.component';
+import { ManageFoodItemsComponent } from './manage-food-items/manage-food-items.component';
+import { MealPlanTemplateComponent } from './meal-plan-template/meal-plan-template.component';
+import { FoodToTemplateComponent } from './food-to-template/food-to-template.component';
+import { AssignMealPlanComponent } from './assign-meal-plan/assign-meal-plan.component';
 
 export const PagesRoutes: Routes = [
   {
@@ -224,5 +228,21 @@ export const PagesRoutes: Routes = [
   {
     path: 'my-bookings',
     component: MyBookingsComponent
+  },
+  {
+    path: 'manage-food-items',
+    component: ManageFoodItemsComponent
+  },
+  {
+    path: 'meal-plan-templates',
+    component: MealPlanTemplateComponent
+  },
+  {
+    path: 'food-to-template/:id',
+    component: FoodToTemplateComponent
+  },
+  {
+    path: 'assign-meal-plan',
+    component: AssignMealPlanComponent
   },
 ];

@@ -366,8 +366,42 @@ export const NavigationItems: NavigationItem[] = [
     title: 'Nutrition & Meal Plan',
     type: 'group',
     icon: '../../../../assets/images/icon/nutrition-and-meal-icon.png',
-    auth: [authenticationEnum.Nutrition_And_Meal_Plan, authenticationEnum.Goal_Based_Calorie_Target, authenticationEnum.Upload_Nutrition_Meal_Plan],
+    auth: [
+      authenticationEnum.Nutrition_And_Meal_Plan,
+      authenticationEnum.Goal_Based_Calorie_Target,
+      authenticationEnum.Upload_Nutrition_Meal_Plan
+    ],
     children: [
+      {
+        id: 'manageFoodItemsDet',
+        title: 'Manage Food Items',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/pages/manage-food-items',
+        icon: '../../../../assets/images/icon/nutrition-and-meal-plans.png',
+        auth: [authenticationEnum.Upload_Nutrition_Meal_Plan],
+        breadcrumbs: false
+      },
+      {
+        id: 'mealPlanTemplatesDet',
+        title: 'Meal Plan Templates',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/pages/meal-plan-templates',
+        icon: '../../../../assets/images/icon/template-light.png',
+        auth: [authenticationEnum.Upload_Nutrition_Meal_Plan],
+        breadcrumbs: false
+      },
+      {
+        id: 'assignMealPlanDet',
+        title: 'Assign Meal Plan',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/pages/assign-meal-plan',
+        icon: '../../../../assets/images/icon/assign-light.png',
+        auth: [authenticationEnum.Upload_Nutrition_Meal_Plan],
+        breadcrumbs: false
+      },
       {
         id: 'nutritionDet',
         title: 'Nutrition & Meal Plan',
@@ -386,16 +420,6 @@ export const NavigationItems: NavigationItem[] = [
         url: '/pages/goal-based-calorie-target',
         icon: '../../../../assets/images/icon/nutrition-and-meal-plans.png',
         auth: [authenticationEnum.Goal_Based_Calorie_Target],
-        breadcrumbs: false
-      },
-      {
-        id: 'uploadNutritionDet',
-        title: 'Upload Meal Plan',
-        type: 'item',
-        classes: 'nav-item',
-        url: '/pages/upload-meal-plan',
-        icon: '../../../../assets/images/icon/upload-icon.png',
-        auth: [authenticationEnum.Upload_Nutrition_Meal_Plan],
         breadcrumbs: false
       }
     ]
