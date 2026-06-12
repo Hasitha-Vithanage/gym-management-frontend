@@ -1,177 +1,105 @@
 <div class="container two-column-layout">
   <div class="card form-card">
     <div class="nutrition-container">
-      <h2 class="page-title">🍎 Nutrition & Meal Plans</h2>
-      <p class="welcome-text">Welcome! Start by choosing one of the options below to manage your personalized diet plans.</p>
+      <h2 class="page-title">Nutrition & Meal Plans</h2>
+      <p class="welcome-text">Welcome! Choose an option below to manage your personalized nutrition.</p>
 
       <div class="button-panel">
-        <button mat-raised-button color="primary" (click)="activeView = 'myPlans'">🍽️ My Meal Plans</button>
-        <button mat-raised-button color="accent" (click)="activeView = 'request'">📤 Request a Meal Plan</button>
-        <!-- <button mat-raised-button color="warn" (click)="activeView = 'predefined'">📚 Predefined Plans</button> -->
+        <button mat-raised-button color="primary" (click)="activeView = 'myPlans'">My Meal Plan</button>
+        <button mat-raised-button color="accent" (click)="activeView = 'request'">Submit Nutrition Profile</button>
       </div>
 
       <div *ngIf="!activeView" class="illustration">
-        <img src="assets/images/logo-dark.png" alt="Meal Planning" />
+        <img src="assets/images/logo-dark.png" alt="Nutrition Planning" />
       </div>
 
-      <!-- My Meal Plans Section -->
+      <!-- My Meal Plan Section -->
       <div *ngIf="activeView === 'myPlans'">
-        <h2 class="section-heading">🍽️ My Meal Plans</h2>
-        <mat-card *ngFor="let plan of myMealPlans" class="meal-plan-card">
-          <!-- <mat-card-header>
-            <mat-card-title>{{ plan.title }}</mat-card-title>
-            <mat-card-subtitle>{{ plan.date | date: 'mediumDate' }}</mat-card-subtitle>
-          </mat-card-header> -->
-
+        <h2 class="section-heading">My Meal Plan</h2>
+        <mat-card class="info-card">
           <mat-card-content>
-            <div *ngIf="hasPdf; else noPdfTemplate" class="pdf-frame-container">
-              <iframe [src]="pdfUrl" class="pdf-frame" frameborder="0" aria-label="Meal Plan PDF"></iframe>
-
-              <div class="action-buttons">
-                <button mat-raised-button color="primary" (click)="downloadPdf()">
-                  <mat-icon>download</mat-icon>
-                  Download Plan
-                </button>
-              </div>
-
-              <p class="last-updated" *ngIf="mealPlanLastUpdated">Last updated: {{ mealPlanLastUpdated | date: 'medium' }}</p>
+            <div class="no-plan-container">
+              <mat-icon class="no-plan-icon">restaurant_menu</mat-icon>
+              <p class="no-plan-text">Your assigned meal plan will appear here once your trainer assigns one.</p>
+              <p class="no-plan-subtext">Make sure you have submitted your nutrition profile so your trainer can find the best plan for you.</p>
             </div>
-
-            <!-- No PDF Template -->
-            <ng-template #noPdfTemplate>
-              <div class="no-pdf-container">
-                <mat-icon class="no-pdf-icon">insert_drive_file</mat-icon>
-                <p class="no-pdf-text">No Meal plan has been uploaded yet.</p>
-              </div>
-            </ng-template>
           </mat-card-content>
-          <hr />
         </mat-card>
       </div>
 
-      <!-- Request a Meal Plan Section -->
+      <!-- Nutrition Profile Form Section -->
       <div *ngIf="activeView === 'request'">
-        <!-- Show request status if already submitted -->
-        <div *ngIf="hasRequestedPlan" class="request-status">
+
+        <div *ngIf="hasExistingProfile" class="request-status">
           <mat-card class="status-card">
-            <mat-card-title>✅ Meal Plan Request Already Sent</mat-card-title>
+            <mat-card-title>Nutrition Profile Already Submitted</mat-card-title>
             <mat-card-content>
-              <p>
-                Your request was submitted on
-                <strong>28/05/2025</strong>
-                .
-              </p>
-              <p>We’ll notify you once your personalized plan is ready.</p>
+              <p>Your nutrition profile is on record. Your trainer will assign a suitable meal plan for you.</p>
             </mat-card-content>
           </mat-card>
         </div>
 
-        <!-- Request form content -->
-        <form [formGroup]="mealPlanRequestForm" (ngSubmit)="onSubmit()" class="request-form">
-          <h2>📤 Request a Meal Plan</h2>
+        <form *ngIf="!hasExistingProfile" [formGroup]="nutritionProfileForm" (ngSubmit)="onSubmit()" class="request-form">
+          <h2>Submit Nutrition Profile</h2>
 
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Username</mat-label>
             <mat-icon matPrefix>person</mat-icon>
-            <input matInput placeholder="Your full name" formControlName="userId" required readonly />
-            <mat-error *ngIf="mealPlanRequestForm.get('name')?.hasError('required')">Name is required</mat-error>
+            <input matInput formControlName="userId" readonly />
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Requested Date</mat-label>
+            <mat-label>Date</mat-label>
             <mat-icon matPrefix>calendar_today</mat-icon>
-            <input matInput [matDatepicker]="join" placeholder="MM/DD/YYYY" formControlName="requestedDate" readonly />
-            <mat-datepicker-toggle matSuffix [for]="join"></mat-datepicker-toggle>
-            <mat-datepicker #join></mat-datepicker>
+            <input matInput [matDatepicker]="datePicker" formControlName="submittedDate" readonly />
+            <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
+            <mat-datepicker #datePicker></mat-datepicker>
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Primary Fitness Goal</mat-label>
             <mat-icon matPrefix>flag</mat-icon>
             <mat-select formControlName="fitnessGoal" required>
-              <mat-option value="Muscle Gain">💪 Muscle Gain</mat-option>
-              <mat-option value="Fat Loss">🔥 Fat Loss</mat-option>
-              <mat-option value="General Fitness">⚡ General Fitness</mat-option>
-              <mat-option value="Endurance">🏃 Endurance</mat-option>
+              <mat-option value="Muscle Gain">Muscle Gain</mat-option>
+              <mat-option value="Fat Loss">Fat Loss</mat-option>
+              <mat-option value="General Fitness">General Fitness</mat-option>
+              <mat-option value="Endurance">Endurance</mat-option>
             </mat-select>
-            <mat-error *ngIf="mealPlanRequestForm.get('fitnessGoal')?.hasError('required')">Fitness goal is required</mat-error>
+            <mat-error *ngIf="nutritionProfileForm.get('fitnessGoal')?.hasError('required')">Fitness goal is required</mat-error>
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Dietary Preferences</mat-label>
             <mat-icon matPrefix>restaurant</mat-icon>
             <mat-select formControlName="dietaryPreferences" multiple>
-              <mat-option value="vegetarian">Vegetarian</mat-option>
-              <mat-option value="vegan">Vegan</mat-option>
-              <mat-option value="pescatarian">Pescatarian</mat-option>
-              <mat-option value="keto">Keto</mat-option>
-              <mat-option value="none">None</mat-option>
+              <mat-option value="Vegetarian">Vegetarian</mat-option>
+              <mat-option value="Vegan">Vegan</mat-option>
+              <mat-option value="Pescatarian">Pescatarian</mat-option>
+              <mat-option value="Keto">Keto</mat-option>
+              <mat-option value="None">None</mat-option>
             </mat-select>
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Allergies / Food Restrictions</mat-label>
             <mat-icon matPrefix>warning</mat-icon>
-            <input matInput placeholder="E.g. nuts, gluten, lactose" formControlName="allergies" />
+            <input matInput placeholder="e.g. nuts, gluten, dairy" formControlName="allergies" />
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Additional Notes</mat-label>
             <mat-icon matPrefix>notes</mat-icon>
-            <textarea matInput rows="4" placeholder="Any other info you'd like to share" formControlName="additionalNotes"></textarea>
+            <textarea matInput rows="4" placeholder="Any other information for your trainer" formControlName="additionalNotes"></textarea>
           </mat-form-field>
 
           <div class="form-actions">
-            <button mat-raised-button color="primary" type="submit" class="register-button" [disabled]="mealPlanRequestForm.invalid">
-              Submit Request
+            <button mat-raised-button color="primary" type="submit" [disabled]="nutritionProfileForm.invalid || isDisabled">
+              Submit Profile
             </button>
             <button mat-button type="button" (click)="onReset()">Reset</button>
           </div>
         </form>
-      </div>
 
-      <!-- Predefined Plans Section -->
-      <div *ngIf="activeView === 'predefined'">
-        <!-- Predefined plans content -->
-        <h2 class="section-heading">📚 Predefined Meal Plans</h2>
-
-        <mat-accordion displayMode="flat" multi>
-          <mat-expansion-panel *ngFor="let plan of predefinedPlans" class="plan-panel">
-            <mat-expansion-panel-header>
-              <mat-panel-title style="font-weight: bold">{{ plan.title }} — {{ plan.totalCalories }} kcal</mat-panel-title>
-              <mat-panel-description>Created by {{ plan.trainer }} • {{ plan.date | date: 'mediumDate' }}</mat-panel-description>
-            </mat-expansion-panel-header>
-
-            <div class="meal-block" *ngFor="let meal of plan.meals">
-              <h4>{{ meal.name }} ({{ meal.time }})</h4>
-
-              <table class="styled-meal-table">
-                <thead>
-                  <tr>
-                    <th>Food Item</th>
-                    <th>Quantity</th>
-                    <th>Calories</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let item of meal.items">
-                    <td>{{ item.name }}</td>
-                    <td>{{ item.quantity }}</td>
-                    <td>{{ item.calories }} kcal</td>
-                  </tr>
-                </tbody>
-              </table>
-
-              <p class="meal-total">Subtotal: {{ meal.totalCalories }} kcal</p>
-              <mat-divider></mat-divider>
-            </div>
-
-            <mat-action-row>
-              <button mat-raised-button color="primary" (click)="selectPlan(plan)">Select Plan</button>
-              <button mat-raised-button color="accent" (click)="viewDetails(plan)">View Details</button>
-            </mat-action-row>
-          </mat-expansion-panel>
-        </mat-accordion>
       </div>
     </div>
   </div>

@@ -6,97 +6,28 @@ import { HttpClient } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
-export class NutritionAndMealPlansServiceService {
+export class NutritionProfileService {
 
-  constructor(private http: HttpClient, private httpService: HttpService) { }
+  constructor(private readonly http: HttpClient, private readonly httpService: HttpService) { }
 
-  // backend calling function
-  serviceCall(employee_details: any) {
-    console.log("Service Call!");
-
-    // creating requesting URL
-    const requestUrl = environment.baseUrl + '/nutrition&meal-plan'; // http://localhost:8080/employee
-
-    let headers = {};
-
-    if (this.httpService.getAuthToken() !== null) {
-      headers = {
-        Authorization: 'Bearer ' + this.httpService.getAuthToken()
-      };
-    }
-
-    // sending POST request to the server
-    return this.http.post(requestUrl, employee_details, { headers: headers });
+  private get headers(): { [key: string]: string } {
+    const token = this.httpService.getAuthToken();
+    return token ? { Authorization: 'Bearer ' + token } : {};
   }
 
-  // getData function
-  getData() {
-
-    // creating requesting URL
-    const requestUrl = environment.baseUrl + '/nutrition&meal-plan'; // http://localhost:8080/employee
-
-    let headers = {};
-
-    if (this.httpService.getAuthToken() !== null) {
-      headers = {
-        Authorization: 'Bearer ' + this.httpService.getAuthToken()
-      };
-    }
-
-    // sending GET request to the server
-    return this.http.get(requestUrl, { headers: headers });
+  submitProfile(profileData: any) {
+    return this.http.post(`${environment.baseUrl}/nutrition-profile`, profileData, { headers: this.headers });
   }
 
-  // check if user has already requested a meal plan
-  hasExistingRequest(username: string) {
-    const requestUrl = `${environment.baseUrl}/nutrition&meal-plan/${username}`;
-
-    let headers = {};
-    if (this.httpService.getAuthToken() !== null) {
-      headers = {
-        Authorization: 'Bearer ' + this.httpService.getAuthToken()
-      };
-    }
-
-    return this.http.get<boolean>(requestUrl, { headers: headers });
+  getAllProfiles() {
+    return this.http.get(`${environment.baseUrl}/nutrition-profile`, { headers: this.headers });
   }
 
-
-  // editData function
-  editData(id: number, employee_details: any) {
-    console.log("In editData!");
-
-    // creating requesting URL
-    const requestUrl = environment.baseUrl + '/nutrition&meal-plan/' + id.toString(); // http://localhost:8080/employee
-
-    let headers = {};
-
-    if (this.httpService.getAuthToken() !== null) {
-      headers = {
-        Authorization: 'Bearer ' + this.httpService.getAuthToken()
-      };
-    }
-
-    // sending POST request to the server
-    return this.http.put(requestUrl, employee_details, { headers: headers });
+  hasProfile(userId: string) {
+    return this.http.get<boolean>(`${environment.baseUrl}/nutrition-profile/exists/${userId}`, { headers: this.headers });
   }
 
-  // deleteData function
-  deleteData(id: number) {
-    console.log("In deleteData!");
-
-    // creating requesting URL
-    const requestUrl = environment.baseUrl + '/nutrition&meal-plan/' + id.toString(); // http://localhost:8080/employee
-
-    let headers = {};
-
-    if (this.httpService.getAuthToken() !== null) {
-      headers = {
-        Authorization: 'Bearer ' + this.httpService.getAuthToken()
-      };
-    }
-
-    // sending POST request to the server
-    return this.http.delete(requestUrl, { headers: headers });
+  getProfileByUserId(userId: string) {
+    return this.http.get(`${environment.baseUrl}/nutrition-profile/${userId}`, { headers: this.headers });
   }
 }
