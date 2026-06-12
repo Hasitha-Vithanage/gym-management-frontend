@@ -8,6 +8,8 @@ import { WorkoutSessionService } from 'src/app/services/workout-session/workout-
 import { UserWorkoutAssignmentService } from 'src/app/services/user-workout-assignment/user-workout-assignment.service';
 import { WorkoutTemplatesService } from 'src/app/services/workout-templates/workout-templates.service';
 import { WorkoutManagementService } from 'src/app/services/workout-management/workout-management.service';
+import { UserMealPlanAssignmentMealService } from 'src/app/services/user-meal-plan-assignment-meal/user-meal-plan-assignment-meal.service';
+import { MealPlanTemplateService } from 'src/app/services/meal-plan-template/meal-plan-template.service';
 
 export interface BodyMeasurement {
   date: Date;
@@ -38,6 +40,12 @@ export class ProgressTrackingComponent implements OnInit {
   // Pre-fill data from last workout request (for new members with no measurements)
   prefillData: { weight: number; height: number; gender: string; bmi: number; bmiCategory: string; estimatedBodyFat: number | null } | null = null;
 
+  // ── Meal plan data ────────────────────────────────────────────────────────────
+  mealPlanLoading = false;
+  activeMealAssignment: any = null;
+  todayMealItems: any[] = [];
+  currentPlanDay = 1;
+
   // ── Workout session data (new) ───────────────────────────────────────────────
   activeAssignmentId: number | null = null;
   templateExercises: any[] = [];
@@ -55,12 +63,15 @@ export class ProgressTrackingComponent implements OnInit {
     private readonly sessionService: WorkoutSessionService,
     private readonly assignmentService: UserWorkoutAssignmentService,
     private readonly workoutTemplatesService: WorkoutTemplatesService,
-    private readonly workoutService: WorkoutManagementService
+    private readonly workoutService: WorkoutManagementService,
+    private readonly mealAssignmentService: UserMealPlanAssignmentMealService,
+    private readonly mealTemplateService: MealPlanTemplateService
   ) {}
 
   ngOnInit(): void {
     this.populateData();
     this.loadWorkoutData();
+    this.loadMealPlanData();
   }
 
   // ── Body measurements (existing logic, cleaned up) ───────────────────────────
@@ -145,6 +156,67 @@ export class ProgressTrackingComponent implements OnInit {
   refreshData(): void {
     this.populateData();
     this.loadWorkoutData();
+  }
+
+  // ── Meal plan data ────────────────────────────────────────────────────────────
+
+  private loadMealPlanData(): void {
+    const userId = this.http.getLoginNameFromCache();
+    if (!userId) return;
+
+    this.mealPlanLoading = true;
+    this.mealAssignmentService.getActiveAssignment(userId).subscribe({
+      next: (assignment: any) => {
+        if (assignment) {
+          this.activeMealAssignment = assignment;
+          this.calculateCurrentPlanDay(assignment.startDate);
+          this.loadTodayMealItems(assignment.templateId);
+        } else {
+          this.mealPlanLoading = false;
+        }
+      },
+      error: () => { this.mealPlanLoading = false; }
+    });
+  }
+
+  private calculateCurrentPlanDay(startDateStr: string): void {
+    const start = new Date(startDateStr).getTime();
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const msPerDay = 24 * 60 * 60 * 1000;
+    const daysSinceStart = Math.floor((today.getTime() - start) / msPerDay) + 1;
+    this.currentPlanDay = ((daysSinceStart - 1) % 7) + 1;
+  }
+
+  private loadTodayMealItems(templateId: number): void {
+    this.mealTemplateService.getMealItems(templateId).subscribe({
+      next: (items: any[]) => {
+        this.todayMealItems = items.filter((i) => Number(i.dayOfWeek) === this.currentPlanDay);
+        this.mealPlanLoading = false;
+      },
+      error: () => { this.mealPlanLoading = false; }
+    });
+  }
+
+  get todayCalories(): number {
+    return Math.round(this.todayMealItems.reduce((s, i) => s + (i.caloriesForPortion ?? 0), 0));
+  }
+
+  get todayProtein(): number {
+    return Math.round(this.todayMealItems.reduce((s, i) => s + (i.proteinG ?? 0), 0) * 10) / 10;
+  }
+
+  get todayCarbs(): number {
+    return Math.round(this.todayMealItems.reduce((s, i) => s + (i.carbsG ?? 0), 0) * 10) / 10;
+  }
+
+  get todayFat(): number {
+    return Math.round(this.todayMealItems.reduce((s, i) => s + (i.fatG ?? 0), 0) * 10) / 10;
+  }
+
+  progressPct(actual: number, target: number): number {
+    if (!target || target <= 0) return 0;
+    return Math.min(100, Math.round((actual / target) * 100));
   }
 
   // ── Workout session charts (new) ─────────────────────────────────────────────

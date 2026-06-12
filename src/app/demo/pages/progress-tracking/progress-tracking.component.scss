@@ -316,6 +316,139 @@
   margin-bottom: 8px;
 }
 
+/* ── Nutrition Today Panel ────────────────────────────────────────────────── */
+.nutrition-panel {
+  background: $ff-bg-surface;
+  border: 1px solid $ff-border-default;
+  border-radius: $ff-radius-md;
+  box-shadow: $ff-shadow-card;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.nutrition-plan-strip {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  background: $ff-bg-elevated;
+  border-bottom: 1px solid $ff-border-default;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.nutrition-plan-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.nutrition-plan-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: $ff-text-primary;
+}
+
+.nutrition-goal-chip {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: $ff-accent-soft;
+  color: $ff-accent-primary;
+  border: 1px solid rgba(255, 107, 0, 0.2);
+}
+
+.nutrition-day-badge {
+  font-size: 12px;
+  font-weight: 700;
+  color: $ff-accent-primary;
+  background: $ff-accent-soft;
+  border: 1px solid rgba(255, 107, 0, 0.2);
+  border-radius: $ff-radius-sm;
+  padding: 4px 12px;
+}
+
+.nutrition-macros-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: $ff-border-default;
+
+  @media (max-width: 900px) { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 480px) { grid-template-columns: 1fr; }
+}
+
+.nutrition-macro-card {
+  background: $ff-bg-surface;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.nmc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.nmc-label {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: $ff-text-secondary;
+}
+
+.nmc-values {
+  font-size: 12px;
+  color: $ff-text-dim;
+
+  strong { font-size: 14px; font-weight: 700; color: $ff-text-primary; }
+}
+
+.nmc-bar-track {
+  height: 8px;
+  background: $ff-bg-elevated;
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid $ff-border-default;
+}
+
+.nmc-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.5s ease;
+
+  &.cal  { background: $ff-accent-primary; }
+  &.prot { background: #3b82f6; }
+  &.carb { background: #eab308; }
+  &.fat  { background: #ef4444; }
+}
+
+.nmc-pct {
+  font-size: 11px;
+  color: $ff-text-dim;
+  text-align: right;
+}
+
+.nutrition-footer-note {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 20px;
+  background: $ff-bg-elevated;
+  border-top: 1px solid $ff-border-default;
+  font-size: 12px;
+  color: $ff-text-dim;
+
+  mat-icon { font-size: 14px; width: 14px; height: 14px; flex-shrink: 0; }
+}
+
 /* ── Photo comparison (kept for future use) ───────────────────────────────── */
 .photo-comparison-section {
   margin-top: 32px;

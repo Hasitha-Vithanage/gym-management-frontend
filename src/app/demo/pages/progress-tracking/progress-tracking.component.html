@@ -209,4 +209,106 @@
 
   </div>
 
+  <!-- ── Section: Nutrition Today ───────────────────────────────────────────── -->
+  <div class="section-label" style="margin-top: 36px;">
+    <mat-icon>restaurant_menu</mat-icon>
+    Nutrition Today
+  </div>
+
+  <!-- Loading -->
+  <div class="charts-loading" *ngIf="mealPlanLoading">
+    <mat-spinner diameter="28"></mat-spinner>
+    <span>Loading nutrition data...</span>
+  </div>
+
+  <!-- No active meal plan -->
+  <div class="no-data-card" *ngIf="!mealPlanLoading && !activeMealAssignment">
+    <mat-icon>no_meals</mat-icon>
+    <p>No active meal plan. Ask your trainer to assign one after submitting your nutrition profile.</p>
+  </div>
+
+  <!-- Nutrition panel -->
+  <div class="nutrition-panel" *ngIf="!mealPlanLoading && activeMealAssignment">
+
+    <!-- Plan info strip -->
+    <div class="nutrition-plan-strip">
+      <div class="nutrition-plan-info">
+        <span class="nutrition-plan-name">{{ activeMealAssignment.template?.templateName }}</span>
+        <span class="nutrition-goal-chip">{{ activeMealAssignment.template?.goal }}</span>
+      </div>
+      <div class="nutrition-day-badge">Day {{ currentPlanDay }} of plan</div>
+    </div>
+
+    <!-- Macro bars grid -->
+    <div class="nutrition-macros-grid">
+
+      <div class="nutrition-macro-card">
+        <div class="nmc-header">
+          <span class="nmc-label">Calories</span>
+          <span class="nmc-values">
+            <strong>{{ todayCalories }}</strong> / {{ activeMealAssignment.template?.dailyCalorieTarget }} kcal
+          </span>
+        </div>
+        <div class="nmc-bar-track">
+          <div class="nmc-bar-fill cal"
+               [style.width.%]="progressPct(todayCalories, activeMealAssignment.template?.dailyCalorieTarget)">
+          </div>
+        </div>
+        <div class="nmc-pct">{{ progressPct(todayCalories, activeMealAssignment.template?.dailyCalorieTarget) }}% of target</div>
+      </div>
+
+      <div class="nutrition-macro-card">
+        <div class="nmc-header">
+          <span class="nmc-label">Protein</span>
+          <span class="nmc-values">
+            <strong>{{ todayProtein }}g</strong> / {{ activeMealAssignment.template?.proteinTargetG }}g
+          </span>
+        </div>
+        <div class="nmc-bar-track">
+          <div class="nmc-bar-fill prot"
+               [style.width.%]="progressPct(todayProtein, activeMealAssignment.template?.proteinTargetG)">
+          </div>
+        </div>
+        <div class="nmc-pct">{{ progressPct(todayProtein, activeMealAssignment.template?.proteinTargetG) }}% of target</div>
+      </div>
+
+      <div class="nutrition-macro-card">
+        <div class="nmc-header">
+          <span class="nmc-label">Carbohydrates</span>
+          <span class="nmc-values">
+            <strong>{{ todayCarbs }}g</strong> / {{ activeMealAssignment.template?.carbsTargetG }}g
+          </span>
+        </div>
+        <div class="nmc-bar-track">
+          <div class="nmc-bar-fill carb"
+               [style.width.%]="progressPct(todayCarbs, activeMealAssignment.template?.carbsTargetG)">
+          </div>
+        </div>
+        <div class="nmc-pct">{{ progressPct(todayCarbs, activeMealAssignment.template?.carbsTargetG) }}% of target</div>
+      </div>
+
+      <div class="nutrition-macro-card">
+        <div class="nmc-header">
+          <span class="nmc-label">Fat</span>
+          <span class="nmc-values">
+            <strong>{{ todayFat }}g</strong> / {{ activeMealAssignment.template?.fatTargetG }}g
+          </span>
+        </div>
+        <div class="nmc-bar-track">
+          <div class="nmc-bar-fill fat"
+               [style.width.%]="progressPct(todayFat, activeMealAssignment.template?.fatTargetG)">
+          </div>
+        </div>
+        <div class="nmc-pct">{{ progressPct(todayFat, activeMealAssignment.template?.fatTargetG) }}% of target</div>
+      </div>
+
+    </div>
+
+    <div class="nutrition-footer-note">
+      <mat-icon>info_outline</mat-icon>
+      Values reflect the meals assigned to Day {{ currentPlanDay }} of your plan template.
+    </div>
+
+  </div>
+
 </div>

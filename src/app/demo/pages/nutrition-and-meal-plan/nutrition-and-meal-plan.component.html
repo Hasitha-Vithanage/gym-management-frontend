@@ -88,21 +88,23 @@
           <p>No meals assigned for today's day in your plan.</p>
         </div>
 
-        <div *ngFor="let slot of mealSlots" class="slot-block" *ngIf="slotHasItems(currentPlanDay, slot)">
-          <div class="slot-header">{{ slotLabel(slot) }}</div>
-          <div class="food-rows">
-            <div class="food-row" *ngFor="let item of itemsForSlot(currentPlanDay, slot)">
-              <div class="food-name">{{ item.foodItemName }}</div>
-              <div class="food-stats">
-                <span class="stat-chip portion">{{ item.portionGrams }}g</span>
-                <span class="stat-chip cal">{{ item.caloriesForPortion | number:'1.0-0' }} kcal</span>
-                <span class="stat-chip prot" *ngIf="item.proteinG">P {{ item.proteinG }}g</span>
-                <span class="stat-chip carb" *ngIf="item.carbsG">C {{ item.carbsG }}g</span>
-                <span class="stat-chip fat" *ngIf="item.fatG">F {{ item.fatG }}g</span>
+        <ng-container *ngFor="let slot of mealSlots">
+          <div class="slot-block" *ngIf="slotHasItems(currentPlanDay, slot)">
+            <div class="slot-header">{{ slotLabel(slot) }}</div>
+            <div class="food-rows">
+              <div class="food-row" *ngFor="let item of itemsForSlot(currentPlanDay, slot)">
+                <div class="food-name">{{ item.foodItemName }}</div>
+                <div class="food-stats">
+                  <span class="stat-chip portion">{{ item.portionGrams }}g</span>
+                  <span class="stat-chip cal">{{ item.caloriesForPortion | number:'1.0-0' }} kcal</span>
+                  <span class="stat-chip prot" *ngIf="item.proteinG">P {{ item.proteinG }}g</span>
+                  <span class="stat-chip carb" *ngIf="item.carbsG">C {{ item.carbsG }}g</span>
+                  <span class="stat-chip fat" *ngIf="item.fatG">F {{ item.fatG }}g</span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        </ng-container>
 
         <!-- Today's Totals -->
         <div class="today-totals" *ngIf="todayItems.length > 0">
