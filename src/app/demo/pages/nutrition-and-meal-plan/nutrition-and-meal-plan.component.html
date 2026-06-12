@@ -1,106 +1,380 @@
-<div class="container two-column-layout">
-  <div class="card form-card">
-    <div class="nutrition-container">
-      <h2 class="page-title">Nutrition & Meal Plans</h2>
-      <p class="welcome-text">Welcome! Choose an option below to manage your personalized nutrition.</p>
+<div class="nm-page">
 
-      <div class="button-panel">
-        <button mat-raised-button color="primary" (click)="activeView = 'myPlans'">My Meal Plan</button>
-        <button mat-raised-button color="accent" (click)="activeView = 'request'">Submit Nutrition Profile</button>
-      </div>
-
-      <div *ngIf="!activeView" class="illustration">
-        <img src="assets/images/logo-dark.png" alt="Nutrition Planning" />
-      </div>
-
-      <!-- My Meal Plan Section -->
-      <div *ngIf="activeView === 'myPlans'">
-        <h2 class="section-heading">My Meal Plan</h2>
-        <mat-card class="info-card">
-          <mat-card-content>
-            <div class="no-plan-container">
-              <mat-icon class="no-plan-icon">restaurant_menu</mat-icon>
-              <p class="no-plan-text">Your assigned meal plan will appear here once your trainer assigns one.</p>
-              <p class="no-plan-subtext">Make sure you have submitted your nutrition profile so your trainer can find the best plan for you.</p>
-            </div>
-          </mat-card-content>
-        </mat-card>
-      </div>
-
-      <!-- Nutrition Profile Form Section -->
-      <div *ngIf="activeView === 'request'">
-
-        <div *ngIf="hasExistingProfile" class="request-status">
-          <mat-card class="status-card">
-            <mat-card-title>Nutrition Profile Already Submitted</mat-card-title>
-            <mat-card-content>
-              <p>Your nutrition profile is on record. Your trainer will assign a suitable meal plan for you.</p>
-            </mat-card-content>
-          </mat-card>
-        </div>
-
-        <form *ngIf="!hasExistingProfile" [formGroup]="nutritionProfileForm" (ngSubmit)="onSubmit()" class="request-form">
-          <h2>Submit Nutrition Profile</h2>
-
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Username</mat-label>
-            <mat-icon matPrefix>person</mat-icon>
-            <input matInput formControlName="userId" readonly />
-          </mat-form-field>
-
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Date</mat-label>
-            <mat-icon matPrefix>calendar_today</mat-icon>
-            <input matInput [matDatepicker]="datePicker" formControlName="submittedDate" readonly />
-            <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
-            <mat-datepicker #datePicker></mat-datepicker>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Primary Fitness Goal</mat-label>
-            <mat-icon matPrefix>flag</mat-icon>
-            <mat-select formControlName="fitnessGoal" required>
-              <mat-option value="Muscle Gain">Muscle Gain</mat-option>
-              <mat-option value="Fat Loss">Fat Loss</mat-option>
-              <mat-option value="General Fitness">General Fitness</mat-option>
-              <mat-option value="Endurance">Endurance</mat-option>
-            </mat-select>
-            <mat-error *ngIf="nutritionProfileForm.get('fitnessGoal')?.hasError('required')">Fitness goal is required</mat-error>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Dietary Preferences</mat-label>
-            <mat-icon matPrefix>restaurant</mat-icon>
-            <mat-select formControlName="dietaryPreferences" multiple>
-              <mat-option value="Vegetarian">Vegetarian</mat-option>
-              <mat-option value="Vegan">Vegan</mat-option>
-              <mat-option value="Pescatarian">Pescatarian</mat-option>
-              <mat-option value="Keto">Keto</mat-option>
-              <mat-option value="None">None</mat-option>
-            </mat-select>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Allergies / Food Restrictions</mat-label>
-            <mat-icon matPrefix>warning</mat-icon>
-            <input matInput placeholder="e.g. nuts, gluten, dairy" formControlName="allergies" />
-          </mat-form-field>
-
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Additional Notes</mat-label>
-            <mat-icon matPrefix>notes</mat-icon>
-            <textarea matInput rows="4" placeholder="Any other information for your trainer" formControlName="additionalNotes"></textarea>
-          </mat-form-field>
-
-          <div class="form-actions">
-            <button mat-raised-button color="primary" type="submit" [disabled]="nutritionProfileForm.invalid || isDisabled">
-              Submit Profile
-            </button>
-            <button mat-button type="button" (click)="onReset()">Reset</button>
-          </div>
-        </form>
-
-      </div>
+  <!-- ── Page Header ── -->
+  <div class="nm-header">
+    <h2 class="nm-title">
+      <img src="../../../../assets/images/icon/nutrition-and-meal-plans.png" style="height:22px;width:22px">
+      Nutrition &amp; Meal Plans
+    </h2>
+    <div class="nm-tabs">
+      <button class="nm-tab" [class.active]="activeView === 'myPlans'" (click)="activeView = 'myPlans'">
+        My Meal Plan
+      </button>
+      <button class="nm-tab" [class.active]="activeView === 'request'" (click)="activeView = 'request'">
+        Nutrition Profile
+      </button>
     </div>
   </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!--  MY MEAL PLAN                              -->
+  <!-- ══════════════════════════════════════════ -->
+  <div *ngIf="activeView === 'myPlans'" class="nm-content">
+
+    <!-- Loading spinner -->
+    <div class="nm-loading" *ngIf="isLoadingPlan">
+      <mat-spinner [diameter]="40"></mat-spinner>
+      <p>Loading your meal plan…</p>
+    </div>
+
+    <!-- No active plan -->
+    <div class="no-plan" *ngIf="!isLoadingPlan && !activeAssignment">
+      <mat-icon class="no-plan-icon">restaurant_menu</mat-icon>
+      <h3>No Active Meal Plan</h3>
+      <p>Your trainer will assign a personalised meal plan once they review your nutrition profile.</p>
+      <button class="go-profile-btn" (click)="activeView = 'request'"
+              *ngIf="!hasExistingProfile">
+        Submit Nutrition Profile
+      </button>
+      <p *ngIf="hasExistingProfile" class="profile-submitted-note">
+        Your nutrition profile is submitted. Your trainer will assign a plan soon.
+      </p>
+    </div>
+
+    <!-- Active plan view -->
+    <ng-container *ngIf="!isLoadingPlan && activeAssignment">
+
+      <!-- Plan Summary Card -->
+      <div class="plan-header-card">
+        <div class="plan-header-left">
+          <div class="plan-name">{{ activeAssignment.template?.templateName }}</div>
+          <div class="plan-meta-row">
+            <span class="plan-meta-chip">Goal: {{ activeAssignment.template?.goal }}</span>
+            <span class="plan-meta-chip">{{ activeAssignment.template?.durationWeeks }} weeks</span>
+            <span class="plan-meta-chip">
+              {{ activeAssignment.template?.dailyCalorieTarget }} kcal/day target
+            </span>
+            <span class="plan-meta-chip">
+              Assigned by {{ activeAssignment.assignedBy }}
+            </span>
+          </div>
+        </div>
+        <div class="current-day-badge">
+          Day {{ currentPlanDay }}
+          <span class="of-plan">of plan</span>
+        </div>
+      </div>
+
+      <!-- Plan Tabs -->
+      <div class="plan-tabs">
+        <button class="plan-tab" [class.active]="planTab === 'today'" (click)="planTab = 'today'">
+          Today's Plan
+        </button>
+        <button class="plan-tab" [class.active]="planTab === 'week'" (click)="planTab = 'week'">
+          My Week
+        </button>
+        <button class="plan-tab" [class.active]="planTab === 'summary'" (click)="planTab = 'summary'">
+          Nutrition Summary
+        </button>
+      </div>
+
+      <!-- ── TODAY'S PLAN ── -->
+      <div *ngIf="planTab === 'today'" class="tab-content">
+
+        <div class="today-day-label">Day {{ currentPlanDay }}</div>
+
+        <div *ngIf="todayItems.length === 0" class="empty-day">
+          <mat-icon>no_meals</mat-icon>
+          <p>No meals assigned for today's day in your plan.</p>
+        </div>
+
+        <div *ngFor="let slot of mealSlots" class="slot-block" *ngIf="slotHasItems(currentPlanDay, slot)">
+          <div class="slot-header">{{ slotLabel(slot) }}</div>
+          <div class="food-rows">
+            <div class="food-row" *ngFor="let item of itemsForSlot(currentPlanDay, slot)">
+              <div class="food-name">{{ item.foodItemName }}</div>
+              <div class="food-stats">
+                <span class="stat-chip portion">{{ item.portionGrams }}g</span>
+                <span class="stat-chip cal">{{ item.caloriesForPortion | number:'1.0-0' }} kcal</span>
+                <span class="stat-chip prot" *ngIf="item.proteinG">P {{ item.proteinG }}g</span>
+                <span class="stat-chip carb" *ngIf="item.carbsG">C {{ item.carbsG }}g</span>
+                <span class="stat-chip fat" *ngIf="item.fatG">F {{ item.fatG }}g</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Today's Totals -->
+        <div class="today-totals" *ngIf="todayItems.length > 0">
+          <div class="totals-label">Today's Totals</div>
+          <div class="totals-row">
+            <div class="total-chip cal-total">{{ todayCalories }} kcal</div>
+            <span class="totals-divider">·</span>
+            <span class="total-text">Target: {{ activeAssignment.template?.dailyCalorieTarget }} kcal</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ── MY WEEK ── -->
+      <div *ngIf="planTab === 'week'" class="tab-content">
+
+        <div *ngIf="mealItems.length === 0" class="empty-day">
+          <mat-icon>calendar_today</mat-icon>
+          <p>No food items have been assigned to this plan yet.</p>
+        </div>
+
+        <div class="week-columns" *ngIf="mealItems.length > 0">
+          <div class="week-day" *ngFor="let day of usedDays" [class.today]="day === currentPlanDay">
+
+            <div class="week-day-header">
+              <span class="wday-label">Day {{ day }}</span>
+              <span class="wday-today-tag" *ngIf="day === currentPlanDay">Today</span>
+              <span class="wday-cal">{{ dayCalories(day) | number:'1.0-0' }} kcal</span>
+            </div>
+
+            <div *ngFor="let slot of mealSlots">
+              <ng-container *ngIf="slotHasItems(day, slot)">
+                <div class="week-slot-label">{{ slotLabel(slot) }}</div>
+                <div class="week-food-item" *ngFor="let item of itemsForSlot(day, slot)">
+                  <div class="wfi-name">{{ item.foodItemName }}</div>
+                  <div class="wfi-stats">{{ item.portionGrams }}g · {{ item.caloriesForPortion | number:'1.0-0' }} kcal</div>
+                </div>
+              </ng-container>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ── NUTRITION SUMMARY ── -->
+      <div *ngIf="planTab === 'summary'" class="tab-content">
+
+        <div class="summary-grid">
+
+          <!-- Today's Intake -->
+          <div class="summary-card">
+            <div class="summary-card-title">Today's Intake</div>
+
+            <div class="macro-bar-item">
+              <div class="macro-bar-label">
+                <span>Calories</span>
+                <span>{{ todayCalories }} / {{ activeAssignment.template?.dailyCalorieTarget }} kcal</span>
+              </div>
+              <div class="macro-bar-track">
+                <div class="macro-bar-fill cal-fill"
+                     [style.width.%]="progressPct(todayCalories, activeAssignment.template?.dailyCalorieTarget)">
+                </div>
+              </div>
+              <div class="macro-bar-pct">
+                {{ progressPct(todayCalories, activeAssignment.template?.dailyCalorieTarget) }}%
+              </div>
+            </div>
+
+            <div class="macro-bar-item">
+              <div class="macro-bar-label">
+                <span>Protein</span>
+                <span>{{ todayProtein }} / {{ activeAssignment.template?.proteinTargetG }}g</span>
+              </div>
+              <div class="macro-bar-track">
+                <div class="macro-bar-fill prot-fill"
+                     [style.width.%]="progressPct(todayProtein, activeAssignment.template?.proteinTargetG)">
+                </div>
+              </div>
+              <div class="macro-bar-pct">
+                {{ progressPct(todayProtein, activeAssignment.template?.proteinTargetG) }}%
+              </div>
+            </div>
+
+            <div class="macro-bar-item">
+              <div class="macro-bar-label">
+                <span>Carbs</span>
+                <span>{{ todayCarbs }} / {{ activeAssignment.template?.carbsTargetG }}g</span>
+              </div>
+              <div class="macro-bar-track">
+                <div class="macro-bar-fill carb-fill"
+                     [style.width.%]="progressPct(todayCarbs, activeAssignment.template?.carbsTargetG)">
+                </div>
+              </div>
+              <div class="macro-bar-pct">
+                {{ progressPct(todayCarbs, activeAssignment.template?.carbsTargetG) }}%
+              </div>
+            </div>
+
+            <div class="macro-bar-item">
+              <div class="macro-bar-label">
+                <span>Fat</span>
+                <span>{{ todayFat }} / {{ activeAssignment.template?.fatTargetG }}g</span>
+              </div>
+              <div class="macro-bar-track">
+                <div class="macro-bar-fill fat-fill"
+                     [style.width.%]="progressPct(todayFat, activeAssignment.template?.fatTargetG)">
+                </div>
+              </div>
+              <div class="macro-bar-pct">
+                {{ progressPct(todayFat, activeAssignment.template?.fatTargetG) }}%
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Plan Details -->
+          <div class="summary-card">
+            <div class="summary-card-title">Plan Details</div>
+
+            <div class="detail-row">
+              <span class="dr-label">Template</span>
+              <span class="dr-value">{{ activeAssignment.template?.templateName }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="dr-label">Primary Goal</span>
+              <span class="dr-value">{{ activeAssignment.template?.goal }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="dr-label">Duration</span>
+              <span class="dr-value">{{ activeAssignment.template?.durationWeeks }} weeks</span>
+            </div>
+            <div class="detail-row">
+              <span class="dr-label">Start Date</span>
+              <span class="dr-value">{{ activeAssignment.startDate | date: 'mediumDate' }}</span>
+            </div>
+            <div class="detail-row" *ngIf="activeAssignment.endDate">
+              <span class="dr-label">End Date</span>
+              <span class="dr-value">{{ activeAssignment.endDate | date: 'mediumDate' }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="dr-label">Current Plan Day</span>
+              <span class="dr-value">Day {{ currentPlanDay }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="dr-label">Status</span>
+              <span class="dr-value status-active">{{ activeAssignment.status }}</span>
+            </div>
+
+            <div class="daily-targets-title">Daily Targets</div>
+            <div class="targets-row">
+              <div class="target-chip cal-target">
+                <span class="tc-val">{{ activeAssignment.template?.dailyCalorieTarget }}</span>
+                <span class="tc-label">kcal</span>
+              </div>
+              <div class="target-chip prot-target">
+                <span class="tc-val">{{ activeAssignment.template?.proteinTargetG }}g</span>
+                <span class="tc-label">Protein</span>
+              </div>
+              <div class="target-chip carb-target">
+                <span class="tc-val">{{ activeAssignment.template?.carbsTargetG }}g</span>
+                <span class="tc-label">Carbs</span>
+              </div>
+              <div class="target-chip fat-target">
+                <span class="tc-val">{{ activeAssignment.template?.fatTargetG }}g</span>
+                <span class="tc-label">Fat</span>
+              </div>
+            </div>
+
+            <div class="detail-row" *ngIf="activeAssignment.template?.dietaryTags?.length > 0">
+              <span class="dr-label">Dietary Tags</span>
+              <span class="dr-value">
+                <span class="dtag" *ngFor="let t of activeAssignment.template.dietaryTags">{{ t }}</span>
+              </span>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+    </ng-container>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!--  NUTRITION PROFILE FORM                    -->
+  <!-- ══════════════════════════════════════════ -->
+  <div *ngIf="activeView === 'request'" class="nm-content">
+
+    <div *ngIf="hasExistingProfile" class="profile-submitted-card">
+      <mat-icon>check_circle</mat-icon>
+      <div>
+        <strong>Nutrition Profile Submitted</strong>
+        <p>Your profile is on record. Your trainer will review it and assign a suitable meal plan.</p>
+      </div>
+    </div>
+
+    <form *ngIf="!hasExistingProfile" [formGroup]="nutritionProfileForm" (ngSubmit)="onSubmit()" class="request-form">
+      <h3 class="form-section-title">Submit Nutrition Profile</h3>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Username</mat-label>
+        <mat-icon matPrefix>person</mat-icon>
+        <input matInput formControlName="userId" readonly />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Date</mat-label>
+        <mat-icon matPrefix>calendar_today</mat-icon>
+        <input matInput [matDatepicker]="datePicker" formControlName="submittedDate" readonly />
+        <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
+        <mat-datepicker #datePicker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Primary Fitness Goal</mat-label>
+        <mat-icon matPrefix>flag</mat-icon>
+        <mat-select formControlName="fitnessGoal" required>
+          <mat-option value="Fat Loss">Fat Loss</mat-option>
+          <mat-option value="Muscle Gain">Muscle Gain</mat-option>
+          <mat-option value="Strength">Strength</mat-option>
+          <mat-option value="Endurance">Endurance</mat-option>
+          <mat-option value="General Health">General Health</mat-option>
+        </mat-select>
+        <mat-error *ngIf="nutritionProfileForm.get('fitnessGoal')?.hasError('required')">
+          Fitness goal is required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Dietary Preferences</mat-label>
+        <mat-icon matPrefix>restaurant</mat-icon>
+        <mat-select formControlName="dietaryPreferences" multiple>
+          <mat-option value="Vegan">Vegan</mat-option>
+          <mat-option value="Vegetarian">Vegetarian</mat-option>
+          <mat-option value="Gluten-Free">Gluten-Free</mat-option>
+          <mat-option value="Dairy-Free">Dairy-Free</mat-option>
+          <mat-option value="Keto">Keto</mat-option>
+          <mat-option value="High-Protein">High-Protein</mat-option>
+          <mat-option value="Low-Carb">Low-Carb</mat-option>
+          <mat-option value="None">None</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Allergies / Food Restrictions</mat-label>
+        <mat-icon matPrefix>warning</mat-icon>
+        <input matInput placeholder="e.g. nuts, gluten, dairy" formControlName="allergies" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Additional Notes</mat-label>
+        <mat-icon matPrefix>notes</mat-icon>
+        <textarea matInput rows="4" placeholder="Any other information for your trainer"
+                  formControlName="additionalNotes"></textarea>
+      </mat-form-field>
+
+      <div class="form-actions">
+        <button mat-raised-button color="primary" type="submit"
+                [disabled]="nutritionProfileForm.invalid || isDisabled">
+          Submit Profile
+        </button>
+        <button mat-button type="button" (click)="onReset()">Reset</button>
+      </div>
+    </form>
+
+  </div>
+
+  <!-- Landing (no tab selected) -->
+  <div *ngIf="!activeView" class="nm-landing">
+    <img src="assets/images/logo-dark.png" alt="Nutrition" class="landing-img" />
+    <p class="landing-text">Select a tab above to view your meal plan or submit your nutrition profile.</p>
+  </div>
+
 </div>

@@ -97,8 +97,7 @@ export class AssignMealPlanComponent {
         const templateName = this.confirmingTemplate.template.templateName;
         this.notificationService.addNotification(
           `Your meal plan "${templateName}" has been assigned! Check your Nutrition & Meal Plan section.`,
-          'success',
-          this.memberUsername.trim()
+          'success'
         );
         this.messageService.showSuccess(`Meal plan assigned to ${this.memberUsername} successfully!`);
         this.confirmingTemplate = null;
