@@ -242,19 +242,11 @@
     <!-- Macro bars grid -->
     <div class="nutrition-macros-grid">
 
-      <div class="nutrition-macro-card">
-        <div class="nmc-header">
-          <span class="nmc-label">Calories</span>
-          <span class="nmc-values">
-            <strong>{{ todayCalories }}</strong> / {{ activeMealAssignment.template?.dailyCalorieTarget }} kcal
-          </span>
-        </div>
-        <div class="nmc-bar-track">
-          <div class="nmc-bar-fill cal"
-               [style.width.%]="progressPct(todayCalories, activeMealAssignment.template?.dailyCalorieTarget)">
-          </div>
-        </div>
-        <div class="nmc-pct">{{ progressPct(todayCalories, activeMealAssignment.template?.dailyCalorieTarget) }}% of target</div>
+      <div class="nutrition-macro-card nmc-target-card cal">
+        <mat-icon class="nmc-target-icon">local_fire_department</mat-icon>
+        <div class="nmc-target-value">{{ activeMealAssignment.template?.dailyCalorieTarget }} kcal</div>
+        <div class="nmc-target-label">Daily Calorie Target</div>
+        <div class="nmc-target-note">Fuel your body for the day ahead</div>
       </div>
 
       <div class="nutrition-macro-card nmc-target-card prot">

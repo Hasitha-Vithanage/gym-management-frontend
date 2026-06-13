@@ -442,6 +442,7 @@
   text-align: center;
   border-radius: $ff-radius-sm;
 
+  &.cal  { background: rgba(255, 107, 0, 0.07);  border: 1px solid rgba(255, 107, 0, 0.2); }
   &.prot { background: rgba(59, 130, 246, 0.07); border: 1px solid rgba(59, 130, 246, 0.2); }
   &.carb { background: rgba(234, 179, 8, 0.07);  border: 1px solid rgba(234, 179, 8, 0.2); }
   &.fat  { background: rgba(239, 68, 68, 0.07);  border: 1px solid rgba(239, 68, 68, 0.2); }
@@ -450,9 +451,10 @@
     font-size: 24px; width: 24px; height: 24px; opacity: 0.7;
   }
 
+  &.cal  .nmc-target-icon { color: $ff-accent-primary; }
   &.prot .nmc-target-icon { color: #3b82f6; }
-  &.carb .nmc-target-icon { color: #a16207; }
-  &.fat  .nmc-target-icon { color: #b91c1c; }
+  &.carb .nmc-target-icon { color: #eab308; }
+  &.fat  .nmc-target-icon { color: #ef4444; }
 }
 
 .nmc-target-value {
