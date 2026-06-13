@@ -1,10 +1,9 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { UserMealPlanAssignmentMealService } from 'src/app/services/user-meal-plan-assignment-meal/user-meal-plan-assignment-meal.service';
 import { NutritionProfileService } from 'src/app/services/nutrition-and-meal-plans/nutrition-and-meal-plans-service.service';
 import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
 import { HttpService } from 'src/app/services/http.service';
 import { NotificationService } from 'src/app/services/notification-service/notification.service';
-import { MealPlanTemplateService } from 'src/app/services/meal-plan-template/meal-plan-template.service';
 
 @Component({
   selector: 'app-assign-meal-plan',
@@ -13,7 +12,7 @@ import { MealPlanTemplateService } from 'src/app/services/meal-plan-template/mea
   styleUrl: './assign-meal-plan.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AssignMealPlanComponent implements OnInit {
+export class AssignMealPlanComponent {
 
   memberUsername = '';
   isLoading = false;
@@ -25,37 +24,14 @@ export class AssignMealPlanComponent implements OnInit {
   confirmingTemplate: any = null;
   durationWeeks: number = 4;
 
-  allTemplates: any[] = [];
-  templatesLoading = false;
-
   constructor(
     private assignmentService: UserMealPlanAssignmentMealService,
     private profileService: NutritionProfileService,
     private messageService: MessageServiceService,
     private httpService: HttpService,
     private notificationService: NotificationService,
-    private templateService: MealPlanTemplateService,
     private cdr: ChangeDetectorRef
   ) {}
-
-  ngOnInit(): void {
-    this.loadAllTemplates();
-  }
-
-  private loadAllTemplates(): void {
-    this.templatesLoading = true;
-    this.templateService.getAllTemplates().subscribe({
-      next: (templates) => {
-        this.allTemplates = templates;
-        this.templatesLoading = false;
-        this.cdr.markForCheck();
-      },
-      error: () => {
-        this.templatesLoading = false;
-        this.cdr.markForCheck();
-      }
-    });
-  }
 
   loadSuggestions(): void {
     const username = this.memberUsername.trim();

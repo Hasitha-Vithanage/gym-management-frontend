@@ -149,7 +149,7 @@
   border: 1px solid rgba(234, 179, 8, 0.2);
   border-radius: $ff-radius-sm;
   font-size: 13px;
-  color: #a16207;
+  color: #92400e;
   mat-icon { font-size: 18px; width: 18px; height: 18px; }
 }
 
@@ -221,9 +221,9 @@
   white-space: nowrap;
   flex-shrink: 0;
 
-  &.badge-exact { background: rgba(34, 197, 94, 0.12); color: #16a34a; }
-  &.badge-goal  { background: rgba(59, 130, 246, 0.12); color: #2563eb; }
-  &.badge-all   { background: rgba(107, 114, 128, 0.12); color: #6b7280; }
+  &.badge-exact { background: rgba(34, 197, 94, 0.12); color: #15803d; }
+  &.badge-goal  { background: rgba(59, 130, 246, 0.12); color: #1d4ed8; }
+  &.badge-all   { background: rgba(107, 114, 128, 0.12); color: #4b5563; }
 }
 
 .card-goal {
@@ -465,14 +465,16 @@
   @media (max-width: 640px) { display: none; }
 }
 
-/* ── Template Library ─────────────────────────────────────────────────────── */
-.library-header {
+/* ── Macro Guide ─────────────────────────────────────────────────────────── */
+.macro-guide-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 4px;
 }
 
-.library-title {
+.macro-guide-title {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -484,93 +486,90 @@
   mat-icon { font-size: 16px; width: 16px; height: 16px; color: $ff-accent-primary; }
 }
 
-.library-count {
+.macro-guide-sub {
   font-size: 12px;
   color: $ff-text-dim;
+  font-style: italic;
 }
 
-.library-loading {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 13px;
-  color: $ff-text-secondary;
-  padding: 8px 0;
-}
-
-.library-grid {
+.macro-guide-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
 }
 
-.library-card {
+.goal-card {
   background: $ff-bg-surface;
   border: 1px solid $ff-border-default;
   border-radius: $ff-radius-md;
-  padding: 14px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
   box-shadow: $ff-shadow-card;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  border-top: 3px solid transparent;
 
-  &:hover { border-color: $ff-border-accent; box-shadow: $ff-shadow-hover; }
+  &.goal-loss      { border-top-color: #16a34a; }
+  &.goal-gain      { border-top-color: #2563eb; }
+  &.goal-maintain  { border-top-color: $ff-accent-primary; }
+  &.goal-recomp    { border-top-color: #7c3aed; }
+  &.goal-endurance { border-top-color: #0891b2; }
+
+  &.goal-loss .goal-card-header mat-icon      { color: #16a34a; }
+  &.goal-gain .goal-card-header mat-icon      { color: #2563eb; }
+  &.goal-maintain .goal-card-header mat-icon  { color: $ff-accent-primary; }
+  &.goal-recomp .goal-card-header mat-icon    { color: #7c3aed; }
+  &.goal-endurance .goal-card-header mat-icon { color: #0891b2; }
 }
 
-.lc-top {
+.goal-card-header {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   gap: 8px;
-}
-
-.lc-name {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 700;
   color: $ff-text-primary;
-  flex: 1;
-  line-height: 1.3;
+  mat-icon { font-size: 20px; width: 20px; height: 20px; }
 }
 
-.lc-goal-chip {
-  font-size: 10.5px;
-  font-weight: 700;
-  padding: 3px 8px;
-  border-radius: 999px;
-  background: $ff-accent-soft;
-  color: $ff-accent-primary;
-  border: 1px solid rgba(255,107,0,0.2);
-  white-space: nowrap;
-  flex-shrink: 0;
+.goal-strategy {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: $ff-text-secondary;
+  font-weight: 500;
+  padding: 6px 10px;
+  background: $ff-bg-elevated;
+  border-radius: $ff-radius-sm;
+  mat-icon { font-size: 14px; width: 14px; height: 14px; color: $ff-accent-primary; }
 }
 
-.lc-macros {
+.goal-macros {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 4px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
 }
 
-.lc-macro {
+.gm-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
-  padding: 6px 4px;
+  gap: 3px;
+  padding: 8px 4px;
   background: $ff-bg-elevated;
   border-radius: $ff-radius-sm;
 }
 
-.lc-m-val {
-  font-size: 12px;
+.gm-pct {
+  font-size: 16px;
   font-weight: 700;
-  &.cal  { color: $ff-text-primary; }
   &.prot { color: #2563eb; }
   &.carb { color: #a16207; }
   &.fat  { color: #b91c1c; }
 }
 
-.lc-m-lbl {
+.gm-label {
   font-size: 9.5px;
   text-transform: uppercase;
   letter-spacing: 0.4px;
@@ -578,31 +577,72 @@
   font-weight: 600;
 }
 
-.lc-meta {
+.goal-tips {
+  margin: 0;
+  padding-left: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  li {
+    font-size: 12px;
+    color: $ff-text-secondary;
+    line-height: 1.5;
+  }
+}
+
+/* ── Quick Reference Strip ───────────────────────────────────────────────── */
+.qref-section {
+  background: $ff-bg-surface;
+  border: 1px solid $ff-border-default;
+  border-radius: $ff-radius-md;
+  padding: 16px;
+  box-shadow: $ff-shadow-card;
+}
+
+.qref-title {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 11.5px;
-  color: $ff-text-dim;
-  flex-wrap: wrap;
-
-  mat-icon { font-size: 14px; width: 14px; height: 14px; }
-}
-
-.lc-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-  margin-left: 4px;
-}
-
-.lc-tag {
-  font-size: 10px;
-  padding: 1px 6px;
-  border-radius: 999px;
-  background: $ff-bg-elevated;
+  font-size: 13px;
+  font-weight: 700;
   color: $ff-text-secondary;
-  border: 1px solid $ff-border-default;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-bottom: 12px;
+  mat-icon { font-size: 16px; width: 16px; height: 16px; color: $ff-accent-primary; }
+}
+
+.qref-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 8px;
+}
+
+.qref-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 8px;
+  background: $ff-bg-elevated;
+  border-radius: $ff-radius-sm;
+  text-align: center;
+}
+
+.qref-val {
+  font-size: 15px;
+  font-weight: 700;
+  &.prot  { color: #1d4ed8; }
+  &.carb  { color: #92400e; }
+  &.fat   { color: #b91c1c; }
+  &.water { color: #0891b2; }
+}
+
+.qref-label {
+  font-size: 11px;
+  color: $ff-text-dim;
+  line-height: 1.4;
 }
 
 /* Empty State */

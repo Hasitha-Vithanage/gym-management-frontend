@@ -56,53 +56,209 @@
     </div>
   </div>
 
-  <!-- ── Available Templates Library ── shown before any search ── -->
+  <!-- ── Macro Guide by Fitness Goal ── shown before any search ── -->
   <ng-container *ngIf="!hasSearched">
-    <div class="library-header">
-      <span class="library-title">
-        <mat-icon>library_books</mat-icon>
-        Available Templates
+    <div class="macro-guide-header">
+      <span class="macro-guide-title">
+        <mat-icon>bar_chart</mat-icon>
+        Macro Guide by Fitness Goal
       </span>
-      <span class="library-count">{{ allTemplates.length }} template{{ allTemplates.length !== 1 ? 's' : '' }}</span>
+      <span class="macro-guide-sub">Reference for selecting the right template</span>
     </div>
 
-    <div class="library-loading" *ngIf="templatesLoading">
-      <mat-spinner [diameter]="24"></mat-spinner>
-      <span>Loading templates…</span>
+    <div class="macro-guide-grid">
+
+      <!-- Weight Loss -->
+      <div class="goal-card goal-loss">
+        <div class="goal-card-header">
+          <mat-icon>trending_down</mat-icon>
+          <span>Weight Loss</span>
+        </div>
+        <div class="goal-strategy">
+          <mat-icon>bolt</mat-icon>
+          300–500 kcal calorie deficit per day
+        </div>
+        <div class="goal-macros">
+          <div class="gm-item">
+            <span class="gm-pct prot">35%</span>
+            <span class="gm-label">Protein</span>
+          </div>
+          <div class="gm-item">
+            <span class="gm-pct carb">35%</span>
+            <span class="gm-label">Carbs</span>
+          </div>
+          <div class="gm-item">
+            <span class="gm-pct fat">30%</span>
+            <span class="gm-label">Fat</span>
+          </div>
+        </div>
+        <ul class="goal-tips">
+          <li>Prioritise lean proteins to preserve muscle mass</li>
+          <li>Limit refined carbs and added sugars</li>
+          <li>Keep healthy fats for hormone balance</li>
+        </ul>
+      </div>
+
+      <!-- Muscle Gain -->
+      <div class="goal-card goal-gain">
+        <div class="goal-card-header">
+          <mat-icon>fitness_center</mat-icon>
+          <span>Muscle Gain</span>
+        </div>
+        <div class="goal-strategy">
+          <mat-icon>bolt</mat-icon>
+          200–400 kcal calorie surplus per day
+        </div>
+        <div class="goal-macros">
+          <div class="gm-item">
+            <span class="gm-pct prot">30%</span>
+            <span class="gm-label">Protein</span>
+          </div>
+          <div class="gm-item">
+            <span class="gm-pct carb">45%</span>
+            <span class="gm-label">Carbs</span>
+          </div>
+          <div class="gm-item">
+            <span class="gm-pct fat">25%</span>
+            <span class="gm-label">Fat</span>
+          </div>
+        </div>
+        <ul class="goal-tips">
+          <li>1.6–2.2g protein per kg of bodyweight</li>
+          <li>Complex carbs fuel training and recovery</li>
+          <li>Time carbs around workouts for best results</li>
+        </ul>
+      </div>
+
+      <!-- Maintenance -->
+      <div class="goal-card goal-maintain">
+        <div class="goal-card-header">
+          <mat-icon>balance</mat-icon>
+          <span>Maintenance</span>
+        </div>
+        <div class="goal-strategy">
+          <mat-icon>bolt</mat-icon>
+          Match daily TDEE — no surplus or deficit
+        </div>
+        <div class="goal-macros">
+          <div class="gm-item">
+            <span class="gm-pct prot">25%</span>
+            <span class="gm-label">Protein</span>
+          </div>
+          <div class="gm-item">
+            <span class="gm-pct carb">45%</span>
+            <span class="gm-label">Carbs</span>
+          </div>
+          <div class="gm-item">
+            <span class="gm-pct fat">30%</span>
+            <span class="gm-label">Fat</span>
+          </div>
+        </div>
+        <ul class="goal-tips">
+          <li>Focus on whole foods and nutrient density</li>
+          <li>Adjust calories if weight trends up or down</li>
+          <li>Balanced macros support energy and recovery</li>
+        </ul>
+      </div>
+
+      <!-- Body Recomposition -->
+      <div class="goal-card goal-recomp">
+        <div class="goal-card-header">
+          <mat-icon>autorenew</mat-icon>
+          <span>Body Recomposition</span>
+        </div>
+        <div class="goal-strategy">
+          <mat-icon>bolt</mat-icon>
+          Slight deficit (~10% below TDEE)
+        </div>
+        <div class="goal-macros">
+          <div class="gm-item">
+            <span class="gm-pct prot">40%</span>
+            <span class="gm-label">Protein</span>
+          </div>
+          <div class="gm-item">
+            <span class="gm-pct carb">35%</span>
+            <span class="gm-label">Carbs</span>
+          </div>
+          <div class="gm-item">
+            <span class="gm-pct fat">25%</span>
+            <span class="gm-label">Fat</span>
+          </div>
+        </div>
+        <ul class="goal-tips">
+          <li>Highest protein ratio — protects existing muscle</li>
+          <li>Resistance training is essential alongside diet</li>
+          <li>Progress is slower but results are sustainable</li>
+        </ul>
+      </div>
+
+      <!-- Endurance / Performance -->
+      <div class="goal-card goal-endurance">
+        <div class="goal-card-header">
+          <mat-icon>directions_run</mat-icon>
+          <span>Endurance / Performance</span>
+        </div>
+        <div class="goal-strategy">
+          <mat-icon>bolt</mat-icon>
+          Match or slightly exceed TDEE
+        </div>
+        <div class="goal-macros">
+          <div class="gm-item">
+            <span class="gm-pct prot">20%</span>
+            <span class="gm-label">Protein</span>
+          </div>
+          <div class="gm-item">
+            <span class="gm-pct carb">55%</span>
+            <span class="gm-label">Carbs</span>
+          </div>
+          <div class="gm-item">
+            <span class="gm-pct fat">25%</span>
+            <span class="gm-label">Fat</span>
+          </div>
+        </div>
+        <ul class="goal-tips">
+          <li>High carbs are the primary fuel for endurance</li>
+          <li>Carb-load 24–48 hrs before long training sessions</li>
+          <li>Electrolyte intake is critical for performance</li>
+        </ul>
+      </div>
+
     </div>
 
-    <div class="library-grid" *ngIf="!templatesLoading && allTemplates.length > 0">
-      <div class="library-card" *ngFor="let t of allTemplates">
-        <div class="lc-top">
-          <div class="lc-name">{{ t.templateName }}</div>
-          <span class="lc-goal-chip">{{ t.goal }}</span>
+    <!-- Quick Nutrition Reference Strip -->
+    <div class="qref-section">
+      <div class="qref-title">
+        <mat-icon>lightbulb_outline</mat-icon>
+        Quick Nutrition Reference
+      </div>
+      <div class="qref-grid">
+        <div class="qref-card">
+          <span class="qref-val prot">4 kcal</span>
+          <span class="qref-label">per gram of Protein</span>
         </div>
-        <div class="lc-macros">
-          <div class="lc-macro">
-            <span class="lc-m-val cal">{{ t.dailyCalorieTarget }}</span>
-            <span class="lc-m-lbl">kcal</span>
-          </div>
-          <div class="lc-macro">
-            <span class="lc-m-val prot">{{ t.proteinTargetG }}g</span>
-            <span class="lc-m-lbl">Protein</span>
-          </div>
-          <div class="lc-macro">
-            <span class="lc-m-val carb">{{ t.carbsTargetG }}g</span>
-            <span class="lc-m-lbl">Carbs</span>
-          </div>
-          <div class="lc-macro">
-            <span class="lc-m-val fat">{{ t.fatTargetG }}g</span>
-            <span class="lc-m-lbl">Fat</span>
-          </div>
+        <div class="qref-card">
+          <span class="qref-val carb">4 kcal</span>
+          <span class="qref-label">per gram of Carbohydrate</span>
         </div>
-        <div class="lc-meta">
-          <mat-icon>schedule</mat-icon> {{ t.durationWeeks }} weeks
-          <span class="lc-tags" *ngIf="t.dietaryTags?.length > 0">
-            <span class="lc-tag" *ngFor="let tag of t.dietaryTags">{{ tag }}</span>
-          </span>
+        <div class="qref-card">
+          <span class="qref-val fat">9 kcal</span>
+          <span class="qref-label">per gram of Fat</span>
+        </div>
+        <div class="qref-card">
+          <span class="qref-val water">2–3 L</span>
+          <span class="qref-label">daily water intake recommended</span>
+        </div>
+        <div class="qref-card">
+          <span class="qref-val prot">1.6–2.2g</span>
+          <span class="qref-label">protein/kg body weight for muscle</span>
+        </div>
+        <div class="qref-card">
+          <span class="qref-val carb">300–500 kcal</span>
+          <span class="qref-label">deficit for healthy weight loss</span>
         </div>
       </div>
     </div>
+
   </ng-container>
 
   <!-- Member Profile Card -->
