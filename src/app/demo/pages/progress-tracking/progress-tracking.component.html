@@ -257,49 +257,25 @@
         <div class="nmc-pct">{{ progressPct(todayCalories, activeMealAssignment.template?.dailyCalorieTarget) }}% of target</div>
       </div>
 
-      <div class="nutrition-macro-card">
-        <div class="nmc-header">
-          <span class="nmc-label">Protein</span>
-          <span class="nmc-values">
-            <strong>{{ todayProtein }}g</strong> / {{ activeMealAssignment.template?.proteinTargetG }}g
-          </span>
-        </div>
-        <div class="nmc-bar-track">
-          <div class="nmc-bar-fill prot"
-               [style.width.%]="progressPct(todayProtein, activeMealAssignment.template?.proteinTargetG)">
-          </div>
-        </div>
-        <div class="nmc-pct">{{ progressPct(todayProtein, activeMealAssignment.template?.proteinTargetG) }}% of target</div>
+      <div class="nutrition-macro-card nmc-target-card prot">
+        <mat-icon class="nmc-target-icon">egg_alt</mat-icon>
+        <div class="nmc-target-value">{{ activeMealAssignment.template?.proteinTargetG }}g</div>
+        <div class="nmc-target-label">Daily Protein Target</div>
+        <div class="nmc-target-note">Supports muscle repair &amp; growth</div>
       </div>
 
-      <div class="nutrition-macro-card">
-        <div class="nmc-header">
-          <span class="nmc-label">Carbohydrates</span>
-          <span class="nmc-values">
-            <strong>{{ todayCarbs }}g</strong> / {{ activeMealAssignment.template?.carbsTargetG }}g
-          </span>
-        </div>
-        <div class="nmc-bar-track">
-          <div class="nmc-bar-fill carb"
-               [style.width.%]="progressPct(todayCarbs, activeMealAssignment.template?.carbsTargetG)">
-          </div>
-        </div>
-        <div class="nmc-pct">{{ progressPct(todayCarbs, activeMealAssignment.template?.carbsTargetG) }}% of target</div>
+      <div class="nutrition-macro-card nmc-target-card carb">
+        <mat-icon class="nmc-target-icon">grain</mat-icon>
+        <div class="nmc-target-value">{{ activeMealAssignment.template?.carbsTargetG }}g</div>
+        <div class="nmc-target-label">Daily Carbs Target</div>
+        <div class="nmc-target-note">Your primary energy source</div>
       </div>
 
-      <div class="nutrition-macro-card">
-        <div class="nmc-header">
-          <span class="nmc-label">Fat</span>
-          <span class="nmc-values">
-            <strong>{{ todayFat }}g</strong> / {{ activeMealAssignment.template?.fatTargetG }}g
-          </span>
-        </div>
-        <div class="nmc-bar-track">
-          <div class="nmc-bar-fill fat"
-               [style.width.%]="progressPct(todayFat, activeMealAssignment.template?.fatTargetG)">
-          </div>
-        </div>
-        <div class="nmc-pct">{{ progressPct(todayFat, activeMealAssignment.template?.fatTargetG) }}% of target</div>
+      <div class="nutrition-macro-card nmc-target-card fat">
+        <mat-icon class="nmc-target-icon">opacity</mat-icon>
+        <div class="nmc-target-value">{{ activeMealAssignment.template?.fatTargetG }}g</div>
+        <div class="nmc-target-label">Daily Fat Target</div>
+        <div class="nmc-target-note">Essential for hormones &amp; joints</div>
       </div>
 
     </div>

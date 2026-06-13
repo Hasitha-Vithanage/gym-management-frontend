@@ -414,16 +414,16 @@ export const NavigationItems: NavigationItem[] = [
         auth: [authenticationEnum.Nutrition_And_Meal_Plan],
         breadcrumbs: false
       },
-      {
-        id: 'goalBasedCalorieTargetDet',
-        title: 'Goal-Based Calorie Target',
-        type: 'item',
-        classes: 'nav-item',
-        url: '/pages/goal-based-calorie-target',
-        icon: '../../../../assets/images/icon/nutrition-and-meal-plans.png',
-        auth: [authenticationEnum.Goal_Based_Calorie_Target],
-        breadcrumbs: false
-      }
+      // {
+      //   id: 'goalBasedCalorieTargetDet',
+      //   title: 'Goal-Based Calorie Target',
+      //   type: 'item',
+      //   classes: 'nav-item',
+      //   url: '/pages/goal-based-calorie-target',
+      //   icon: '../../../../assets/images/icon/nutrition-and-meal-plans.png',
+      //   auth: [authenticationEnum.Goal_Based_Calorie_Target],
+      //   breadcrumbs: false
+      // }
     ]
   },
   /* side navigation bar item for Progress Tracking module */

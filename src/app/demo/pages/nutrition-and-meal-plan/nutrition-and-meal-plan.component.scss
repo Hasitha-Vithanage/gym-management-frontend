@@ -279,9 +279,9 @@
 
   &.portion { background: $ff-bg-elevated; color: $ff-text-secondary; border: 1px solid $ff-border-default; }
   &.cal  { background: rgba(255, 107, 0, 0.10); color: $ff-accent-primary; }
-  &.prot { background: rgba(59, 130, 246, 0.10); color: #2563eb; }
-  &.carb { background: rgba(234, 179, 8, 0.10);  color: #a16207; }
-  &.fat  { background: rgba(239, 68, 68, 0.10);  color: #b91c1c; }
+  &.prot { background: rgba(59, 130, 246, 0.10); color: #93c5fd; }
+  &.carb { background: rgba(234, 179, 8, 0.10);  color: #fcd34d; }
+  &.fat  { background: rgba(239, 68, 68, 0.10);  color: #fca5a5; }
 }
 
 .empty-day {
@@ -545,9 +545,182 @@
   .tc-label { font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.3px; opacity: 0.75; }
 
   &.cal-target  { background: rgba(255, 107, 0, 0.10); color: $ff-accent-primary; }
-  &.prot-target { background: rgba(59, 130, 246, 0.10); color: #2563eb; }
-  &.carb-target { background: rgba(234, 179, 8, 0.10);  color: #a16207; }
-  &.fat-target  { background: rgba(239, 68, 68, 0.10);  color: #b91c1c; }
+  &.prot-target { background: rgba(59, 130, 246, 0.10); color: #93c5fd; }
+  &.carb-target { background: rgba(234, 179, 8, 0.10);  color: #fcd34d; }
+  &.fat-target  { background: rgba(239, 68, 68, 0.10);  color: #fca5a5; }
+}
+
+/* Motivational Quote Banner */
+.quote-banner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: linear-gradient(135deg, rgba(255, 107, 0, 0.12) 0%, rgba(255, 107, 0, 0.04) 100%);
+  border: 1px solid rgba(255, 107, 0, 0.25);
+  border-left: 4px solid $ff-accent-primary;
+  border-radius: $ff-radius-md;
+  padding: 18px 20px;
+  margin-bottom: 16px;
+}
+
+.quote-icon {
+  font-size: 36px;
+  width: 36px;
+  height: 36px;
+  color: $ff-accent-primary;
+  opacity: 0.6;
+  flex-shrink: 0;
+}
+
+.quote-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.quote-text {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: $ff-text-primary;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+.quote-author {
+  font-size: 12px;
+  color: $ff-accent-primary;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+/* Did You Know? Card */
+.did-you-know-card {
+  margin-top: 16px;
+  background: $ff-bg-elevated;
+  border: 1px solid $ff-border-default;
+  border-radius: $ff-radius-md;
+  padding: 16px;
+}
+
+.dyk-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid $ff-border-default;
+}
+
+.dyk-header-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  color: #eab308;
+}
+
+.dyk-title {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: $ff-text-secondary;
+}
+
+.dyk-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+
+  @media (max-width: 900px) { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 560px) { grid-template-columns: 1fr; }
+}
+
+.dyk-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px;
+  background: $ff-bg-surface;
+  border: 1px solid $ff-border-default;
+  border-radius: $ff-radius-sm;
+}
+
+.dyk-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  margin-top: 1px;
+
+  &.dyk-icon--muscle    { color: $ff-accent-primary; }
+  &.dyk-icon--protein   { color: #3b82f6; }
+  &.dyk-icon--water     { color: #06b6d4; }
+  &.dyk-icon--slow      { color: #a855f7; }
+  &.dyk-icon--sleep     { color: #6366f1; }
+  &.dyk-icon--consistent{ color: #16a34a; }
+}
+
+.dyk-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.dyk-headline {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: $ff-text-primary;
+}
+
+.dyk-body {
+  font-size: 11.5px;
+  color: $ff-text-secondary;
+  line-height: 1.5;
+}
+
+/* Nutrition Tips card */
+.tips-card { gap: 10px !important; }
+
+.tip-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid $ff-border-default;
+  &:last-child { border-bottom: none; }
+}
+
+.tip-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  margin-top: 2px;
+
+  &.tip-icon--water   { color: #3b82f6; }
+  &.tip-icon--time    { color: #eab308; }
+  &.tip-icon--plan    { color: $ff-accent-primary; }
+  &.tip-icon--protein { color: #a855f7; }
+  &.tip-icon--sleep   { color: #6366f1; }
+}
+
+.tip-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.tip-headline {
+  font-size: 13px;
+  font-weight: 700;
+  color: $ff-text-primary;
+}
+
+.tip-body {
+  font-size: 12px;
+  color: $ff-text-secondary;
+  line-height: 1.5;
 }
 
 .dtag {

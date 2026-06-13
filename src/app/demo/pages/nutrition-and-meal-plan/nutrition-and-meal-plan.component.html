@@ -155,69 +155,58 @@
 
         <div class="summary-grid">
 
-          <!-- Today's Intake -->
-          <div class="summary-card">
-            <div class="summary-card-title">Today's Intake</div>
+          <!-- Nutrition Tips -->
+          <div class="summary-card tips-card">
+            <div class="summary-card-title">Nutrition Tips</div>
 
-            <div class="macro-bar-item">
-              <div class="macro-bar-label">
-                <span>Calories</span>
-                <span>{{ todayCalories }} / {{ activeAssignment.template?.dailyCalorieTarget }} kcal</span>
-              </div>
-              <div class="macro-bar-track">
-                <div class="macro-bar-fill cal-fill"
-                     [style.width.%]="progressPct(todayCalories, activeAssignment.template?.dailyCalorieTarget)">
-                </div>
-              </div>
-              <div class="macro-bar-pct">
-                {{ progressPct(todayCalories, activeAssignment.template?.dailyCalorieTarget) }}%
+            <div class="tip-item">
+              <mat-icon class="tip-icon tip-icon--water">water_drop</mat-icon>
+              <div class="tip-text">
+                <span class="tip-headline">Stay Hydrated</span>
+                <span class="tip-body">Drink at least 2L of water daily — hydration keeps your metabolism running and aids muscle recovery.</span>
               </div>
             </div>
 
-            <div class="macro-bar-item">
-              <div class="macro-bar-label">
-                <span>Protein</span>
-                <span>{{ todayProtein }} / {{ activeAssignment.template?.proteinTargetG }}g</span>
-              </div>
-              <div class="macro-bar-track">
-                <div class="macro-bar-fill prot-fill"
-                     [style.width.%]="progressPct(todayProtein, activeAssignment.template?.proteinTargetG)">
-                </div>
-              </div>
-              <div class="macro-bar-pct">
-                {{ progressPct(todayProtein, activeAssignment.template?.proteinTargetG) }}%
+            <div class="tip-item">
+              <mat-icon class="tip-icon tip-icon--time">schedule</mat-icon>
+              <div class="tip-text">
+                <span class="tip-headline">Eat Consistently</span>
+                <span class="tip-body">Eat every 3–4 hours to keep energy levels stable and avoid overeating at main meals.</span>
               </div>
             </div>
 
-            <div class="macro-bar-item">
-              <div class="macro-bar-label">
-                <span>Carbs</span>
-                <span>{{ todayCarbs }} / {{ activeAssignment.template?.carbsTargetG }}g</span>
-              </div>
-              <div class="macro-bar-track">
-                <div class="macro-bar-fill carb-fill"
-                     [style.width.%]="progressPct(todayCarbs, activeAssignment.template?.carbsTargetG)">
-                </div>
-              </div>
-              <div class="macro-bar-pct">
-                {{ progressPct(todayCarbs, activeAssignment.template?.carbsTargetG) }}%
+            <div class="tip-item">
+              <mat-icon class="tip-icon tip-icon--plan">restaurant_menu</mat-icon>
+              <div class="tip-text">
+                <span class="tip-headline">Follow Your Plan</span>
+                <span class="tip-body">Stick to your assigned meals — consistency over weeks delivers far better results than occasional perfection.</span>
               </div>
             </div>
 
-            <div class="macro-bar-item">
-              <div class="macro-bar-label">
-                <span>Fat</span>
-                <span>{{ todayFat }} / {{ activeAssignment.template?.fatTargetG }}g</span>
-              </div>
-              <div class="macro-bar-track">
-                <div class="macro-bar-fill fat-fill"
-                     [style.width.%]="progressPct(todayFat, activeAssignment.template?.fatTargetG)">
-                </div>
-              </div>
-              <div class="macro-bar-pct">
-                {{ progressPct(todayFat, activeAssignment.template?.fatTargetG) }}%
+            <div class="tip-item">
+              <mat-icon class="tip-icon tip-icon--protein">fitness_center</mat-icon>
+              <div class="tip-text">
+                <span class="tip-headline">Prioritise Protein</span>
+                <span class="tip-body">Include a protein source at every meal to support muscle repair, especially after training sessions.</span>
               </div>
             </div>
+
+            <div class="tip-item">
+              <mat-icon class="tip-icon tip-icon--sleep">bedtime</mat-icon>
+              <div class="tip-text">
+                <span class="tip-headline">Rest &amp; Recover</span>
+                <span class="tip-body">Aim for 7–8 hours of sleep — your body rebuilds and resets hormones while you rest.</span>
+              </div>
+            </div>
+
+                    <!-- Motivational Quote Banner -->
+        <div class="quote-banner">
+          <mat-icon class="quote-icon">format_quote</mat-icon>
+          <div class="quote-content">
+            <p class="quote-text">Take care of your body. It's the only place you have to live.</p>
+            <span class="quote-author">— Jim Rohn</span>
+          </div>
+        </div>
 
           </div>
 
@@ -284,6 +273,66 @@
           </div>
 
         </div>
+
+        <!-- Did You Know? -->
+        <div class="did-you-know-card">
+          <div class="dyk-header">
+            <mat-icon class="dyk-header-icon">lightbulb</mat-icon>
+            <span class="dyk-title">Did You Know?</span>
+          </div>
+          <div class="dyk-grid">
+
+            <div class="dyk-item">
+              <mat-icon class="dyk-icon dyk-icon--muscle">bolt</mat-icon>
+              <div class="dyk-text">
+                <span class="dyk-headline">Muscle Burns More</span>
+                <span class="dyk-body">Muscle burns approximately 3× more calories than fat at rest — building strength boosts your metabolism around the clock.</span>
+              </div>
+            </div>
+
+            <div class="dyk-item">
+              <mat-icon class="dyk-icon dyk-icon--protein">egg_alt</mat-icon>
+              <div class="dyk-text">
+                <span class="dyk-headline">Protein Keeps You Fuller</span>
+                <span class="dyk-body">Your body digests protein more slowly than carbs, keeping you satisfied for longer and stabilising energy levels.</span>
+              </div>
+            </div>
+
+            <div class="dyk-item">
+              <mat-icon class="dyk-icon dyk-icon--water">water_drop</mat-icon>
+              <div class="dyk-text">
+                <span class="dyk-headline">Water Before Meals</span>
+                <span class="dyk-body">Drinking a glass of water before meals can reduce calorie intake — hydration is an effortless part of your plan.</span>
+              </div>
+            </div>
+
+            <div class="dyk-item">
+              <mat-icon class="dyk-icon dyk-icon--slow">timer</mat-icon>
+              <div class="dyk-text">
+                <span class="dyk-headline">Eat Slowly</span>
+                <span class="dyk-body">It takes around 20 minutes for your brain to register fullness — slowing down naturally prevents overeating.</span>
+              </div>
+            </div>
+
+            <div class="dyk-item">
+              <mat-icon class="dyk-icon dyk-icon--sleep">bedtime</mat-icon>
+              <div class="dyk-text">
+                <span class="dyk-headline">Sleep Affects Hunger</span>
+                <span class="dyk-body">Poor sleep increases hunger hormones by up to 28%, making cravings much harder to resist the next day.</span>
+              </div>
+            </div>
+
+            <div class="dyk-item">
+              <mat-icon class="dyk-icon dyk-icon--consistent">repeat</mat-icon>
+              <div class="dyk-text">
+                <span class="dyk-headline">Consistency Wins</span>
+                <span class="dyk-body">A consistent, balanced diet over months outperforms any short-term perfect diet every single time.</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
       </div>
 
     </ng-container>
