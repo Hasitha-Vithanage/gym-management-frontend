@@ -23,6 +23,88 @@
     </button>
   </div>
 
+  <!-- ── How it works guide ── shown before any search ── -->
+  <div class="how-it-works" *ngIf="!hasSearched">
+    <div class="hiw-title">
+      <mat-icon>info_outline</mat-icon>
+      How to assign a meal plan
+    </div>
+    <div class="hiw-steps">
+      <div class="hiw-step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-label">Search a member</div>
+          <div class="step-desc">Enter the member's username and click <strong>Load Suggestions</strong>.</div>
+        </div>
+      </div>
+      <div class="hiw-divider"></div>
+      <div class="hiw-step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-label">Review suggestions</div>
+          <div class="step-desc">The system matches templates to the member's fitness goal and BMI category.</div>
+        </div>
+      </div>
+      <div class="hiw-divider"></div>
+      <div class="hiw-step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-label">Assign the plan</div>
+          <div class="step-desc">Pick the best-fit template, set the duration, and confirm the assignment.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Available Templates Library ── shown before any search ── -->
+  <ng-container *ngIf="!hasSearched">
+    <div class="library-header">
+      <span class="library-title">
+        <mat-icon>library_books</mat-icon>
+        Available Templates
+      </span>
+      <span class="library-count">{{ allTemplates.length }} template{{ allTemplates.length !== 1 ? 's' : '' }}</span>
+    </div>
+
+    <div class="library-loading" *ngIf="templatesLoading">
+      <mat-spinner [diameter]="24"></mat-spinner>
+      <span>Loading templates…</span>
+    </div>
+
+    <div class="library-grid" *ngIf="!templatesLoading && allTemplates.length > 0">
+      <div class="library-card" *ngFor="let t of allTemplates">
+        <div class="lc-top">
+          <div class="lc-name">{{ t.templateName }}</div>
+          <span class="lc-goal-chip">{{ t.goal }}</span>
+        </div>
+        <div class="lc-macros">
+          <div class="lc-macro">
+            <span class="lc-m-val cal">{{ t.dailyCalorieTarget }}</span>
+            <span class="lc-m-lbl">kcal</span>
+          </div>
+          <div class="lc-macro">
+            <span class="lc-m-val prot">{{ t.proteinTargetG }}g</span>
+            <span class="lc-m-lbl">Protein</span>
+          </div>
+          <div class="lc-macro">
+            <span class="lc-m-val carb">{{ t.carbsTargetG }}g</span>
+            <span class="lc-m-lbl">Carbs</span>
+          </div>
+          <div class="lc-macro">
+            <span class="lc-m-val fat">{{ t.fatTargetG }}g</span>
+            <span class="lc-m-lbl">Fat</span>
+          </div>
+        </div>
+        <div class="lc-meta">
+          <mat-icon>schedule</mat-icon> {{ t.durationWeeks }} weeks
+          <span class="lc-tags" *ngIf="t.dietaryTags?.length > 0">
+            <span class="lc-tag" *ngFor="let tag of t.dietaryTags">{{ tag }}</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
   <!-- Member Profile Card -->
   <div class="profile-card" *ngIf="memberProfile">
     <div class="profile-header">
@@ -123,10 +205,10 @@
 
   </ng-container>
 
-  <!-- Empty state after loading -->
-  <div class="empty-state" *ngIf="!isLoading && suggestions.length === 0 && memberUsername">
+  <!-- Empty state after a search returns nothing -->
+  <div class="empty-state" *ngIf="!isLoading && hasSearched && suggestions.length === 0">
     <mat-icon>search_off</mat-icon>
-    <p>No suggestions yet. Enter a member username and click <strong>Load Suggestions</strong>.</p>
+    <p>No templates found for this member. Check the username and try again.</p>
   </div>
 
 </div>

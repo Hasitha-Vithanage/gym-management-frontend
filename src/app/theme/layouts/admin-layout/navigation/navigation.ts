@@ -367,9 +367,11 @@ export const NavigationItems: NavigationItem[] = [
     type: 'group',
     icon: '../../../../assets/images/icon/nutrition-and-meal-icon.png',
     auth: [
+      authenticationEnum.Manage_Food_Items,
+      authenticationEnum.Meal_Plan_Templates,
+      authenticationEnum.Assign_Meal_Plan,
       authenticationEnum.Nutrition_And_Meal_Plan,
       authenticationEnum.Goal_Based_Calorie_Target,
-      authenticationEnum.Upload_Nutrition_Meal_Plan
     ],
     children: [
       {
@@ -379,7 +381,7 @@ export const NavigationItems: NavigationItem[] = [
         classes: 'nav-item',
         url: '/pages/manage-food-items',
         icon: '../../../../assets/images/icon/nutrition-and-meal-plans.png',
-        auth: [authenticationEnum.Upload_Nutrition_Meal_Plan],
+        auth: [authenticationEnum.Manage_Food_Items],
         breadcrumbs: false
       },
       {
@@ -389,7 +391,7 @@ export const NavigationItems: NavigationItem[] = [
         classes: 'nav-item',
         url: '/pages/meal-plan-templates',
         icon: '../../../../assets/images/icon/template-light.png',
-        auth: [authenticationEnum.Upload_Nutrition_Meal_Plan],
+        auth: [authenticationEnum.Meal_Plan_Templates],
         breadcrumbs: false
       },
       {
@@ -399,7 +401,7 @@ export const NavigationItems: NavigationItem[] = [
         classes: 'nav-item',
         url: '/pages/assign-meal-plan',
         icon: '../../../../assets/images/icon/assign-light.png',
-        auth: [authenticationEnum.Upload_Nutrition_Meal_Plan],
+        auth: [authenticationEnum.Assign_Meal_Plan],
         breadcrumbs: false
       },
       {

@@ -560,42 +560,203 @@
 }
 
 /* ── Nutrition Profile Form (request tab) ── */
-.profile-submitted-card {
+
+.nf-submitted-card {
   display: flex;
   align-items: flex-start;
-  gap: 12px;
-  padding: 16px;
+  gap: 16px;
+  padding: 20px;
   background: rgba(34, 197, 94, 0.07);
   border: 1px solid rgba(34, 197, 94, 0.25);
-  border-radius: $ff-radius-sm;
-  color: #166534;
+  border-left: 4px solid #16a34a;
+  border-radius: $ff-radius-md;
 
-  mat-icon { font-size: 26px; width: 26px; height: 26px; flex-shrink: 0; color: #16a34a; }
-  strong { font-size: 14px; font-weight: 700; }
-  p { margin: 4px 0 0; font-size: 13px; color: #15803d; }
+  .nf-submitted-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(34, 197, 94, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    mat-icon { font-size: 24px; width: 24px; height: 24px; color: #16a34a; }
+  }
+
+  .nf-submitted-body {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    strong { font-size: 14px; font-weight: 700; color: $ff-text-primary; }
+    p { margin: 0; font-size: 13px; color: $ff-text-secondary; }
+  }
 }
 
-.form-section-title {
-  font-size: 16px;
+.nf-header {
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid $ff-border-default;
+}
+
+.nf-title {
+  font-size: 18px;
   font-weight: 700;
   color: $ff-text-primary;
-  margin: 0 0 16px;
+  margin: 0 0 4px;
 }
 
-.request-form {
-  max-width: 580px;
+.nf-subtitle {
+  font-size: 13px;
+  color: $ff-text-secondary;
+  margin: 0;
 }
 
-.full-width {
-  width: 100%;
+.nf-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
   margin-bottom: 4px;
+
+  @media (max-width: 640px) { grid-template-columns: 1fr; }
 }
 
-.form-actions {
+.nf-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  &.nf-full { grid-column: 1 / -1; }
+}
+
+.nf-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: $ff-text-secondary;
+}
+
+.nf-req { color: $ff-danger; margin-left: 2px; }
+
+.nf-input,
+.nf-select,
+.nf-textarea {
+  padding: 0 12px;
+  height: 40px;
+  border-radius: $ff-radius-sm;
+  border: 1px solid $ff-border-default;
+  background: $ff-bg-input;
+  color: $ff-text-primary;
+  font-size: 14px;
+  font-family: $ff-font;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, background 0.2s ease;
+
+  &::placeholder { color: $ff-text-dim; }
+  &:focus { border-color: $ff-border-accent; background: $ff-bg-elevated; outline: none; }
+  &:disabled { background: $ff-bg-elevated; color: $ff-text-dim; cursor: not-allowed; opacity: 0.6; }
+  option { background: $ff-bg-elevated; color: $ff-text-primary; }
+}
+
+.nf-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%239BA3B8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-color: $ff-bg-input;
+  padding-right: 32px;
+  cursor: pointer;
+}
+
+.nf-textarea {
+  height: auto;
+  padding: 10px 12px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.nf-check-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+
+  @media (max-width: 800px) { grid-template-columns: repeat(2, 1fr); }
+}
+
+.nf-check-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: 1px solid $ff-border-default;
+  border-radius: $ff-radius-sm;
+  background: $ff-bg-elevated;
+  cursor: pointer;
+  font-size: 13px;
+  color: $ff-text-secondary;
+  font-family: $ff-font;
+  transition: border-color 0.2s, background 0.2s;
+  user-select: none;
+
+  input[type='checkbox'] {
+    accent-color: $ff-accent-primary;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  &:has(input:checked) {
+    border-color: $ff-accent-primary;
+    background: $ff-accent-soft;
+    color: $ff-text-primary;
+  }
+}
+
+.nf-error {
+  font-size: 12px;
+  color: $ff-danger;
+}
+
+.nf-actions {
   display: flex;
   gap: 10px;
   align-items: center;
-  margin-top: 16px;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid $ff-border-default;
+}
+
+.nf-submit-btn {
+  height: 40px;
+  padding: 0 24px;
+  border-radius: $ff-radius-sm;
+  border: none;
+  background: $ff-accent-primary;
+  color: #fff;
+  font-size: 13.5px;
+  font-weight: 600;
+  font-family: $ff-font;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover:not(:disabled) { background: $ff-accent-hover; box-shadow: $ff-shadow-orange; }
+  &:disabled { opacity: 0.5; cursor: not-allowed; }
+}
+
+.nf-reset-btn {
+  height: 40px;
+  padding: 0 18px;
+  border-radius: $ff-radius-sm;
+  border: 1px solid $ff-border-default;
+  background: transparent;
+  color: $ff-text-secondary;
+  font-size: 13.5px;
+  font-weight: 500;
+  font-family: $ff-font;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover { border-color: $ff-border-accent; color: $ff-text-primary; background: $ff-bg-elevated; }
 }
 
 /* ── Landing ── */
@@ -614,14 +775,4 @@
   color: $ff-text-dim;
   font-style: italic;
   text-align: center;
-}
-
-/* Material overrides */
-mat-icon[matPrefix] {
-  color: #5e5959;
-  margin-right: 8px;
-  font-size: 20px;
-  vertical-align: middle;
-  transition: color 0.3s ease;
-  user-select: none;
 }

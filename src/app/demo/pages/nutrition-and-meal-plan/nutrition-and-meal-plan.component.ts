@@ -18,7 +18,7 @@ import { MealPlanTemplateService } from 'src/app/services/meal-plan-template/mea
 export class NutritionAndMealPlanComponent implements OnInit {
 
   // ─── Top-level view toggle ───────────────────────────────────────────
-  activeView: 'myPlans' | 'request' | null = null;
+  activeView: 'myPlans' | 'request' | null = 'myPlans';
 
   // ─── Nutrition profile form ───────────────────────────────────────────
   hasExistingProfile = false;
@@ -36,6 +36,8 @@ export class NutritionAndMealPlanComponent implements OnInit {
   planTab: 'today' | 'week' | 'summary' = 'today';
 
   readonly mealSlots = ['Breakfast', 'MidMorning', 'Lunch', 'EveningSnack', 'Dinner'];
+
+  readonly allDietaryPrefs = ['Vegan', 'Vegetarian', 'Gluten-Free', 'Dairy-Free', 'Keto', 'High-Protein', 'Low-Carb', 'None'];
 
   constructor(
     private readonly fb: FormBuilder,
@@ -98,6 +100,20 @@ export class NutritionAndMealPlanComponent implements OnInit {
   onReset(): void {
     this.nutritionProfileForm.reset();
     this.submitted = false;
+  }
+
+  isDietaryPrefSelected(pref: string): boolean {
+    const val: string[] = this.nutritionProfileForm.get('dietaryPreferences')?.value ?? [];
+    return val.includes(pref);
+  }
+
+  toggleDietaryPref(pref: string): void {
+    const ctrl = this.nutritionProfileForm.get('dietaryPreferences')!;
+    const val: string[] = [...(ctrl.value ?? [])];
+    const idx = val.indexOf(pref);
+    if (idx >= 0) val.splice(idx, 1);
+    else val.push(pref);
+    ctrl.setValue(val);
   }
 
   addNotification(): void {

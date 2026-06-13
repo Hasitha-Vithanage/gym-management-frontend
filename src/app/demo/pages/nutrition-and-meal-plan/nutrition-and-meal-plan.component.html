@@ -294,82 +294,90 @@
   <!-- ══════════════════════════════════════════ -->
   <div *ngIf="activeView === 'request'" class="nm-content">
 
-    <div *ngIf="hasExistingProfile" class="profile-submitted-card">
-      <mat-icon>check_circle</mat-icon>
-      <div>
+    <!-- Already submitted -->
+    <div *ngIf="hasExistingProfile" class="nf-submitted-card">
+      <div class="nf-submitted-icon">
+        <mat-icon>check_circle</mat-icon>
+      </div>
+      <div class="nf-submitted-body">
         <strong>Nutrition Profile Submitted</strong>
         <p>Your profile is on record. Your trainer will review it and assign a suitable meal plan.</p>
       </div>
     </div>
 
-    <form *ngIf="!hasExistingProfile" [formGroup]="nutritionProfileForm" (ngSubmit)="onSubmit()" class="request-form">
-      <h3 class="form-section-title">Submit Nutrition Profile</h3>
+    <!-- Form -->
+    <ng-container *ngIf="!hasExistingProfile">
 
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Username</mat-label>
-        <mat-icon matPrefix>person</mat-icon>
-        <input matInput formControlName="userId" readonly />
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Date</mat-label>
-        <mat-icon matPrefix>calendar_today</mat-icon>
-        <input matInput [matDatepicker]="datePicker" formControlName="submittedDate" readonly />
-        <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
-        <mat-datepicker #datePicker></mat-datepicker>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Primary Fitness Goal</mat-label>
-        <mat-icon matPrefix>flag</mat-icon>
-        <mat-select formControlName="fitnessGoal" required>
-          <mat-option value="Fat Loss">Fat Loss</mat-option>
-          <mat-option value="Muscle Gain">Muscle Gain</mat-option>
-          <mat-option value="Strength">Strength</mat-option>
-          <mat-option value="Endurance">Endurance</mat-option>
-          <mat-option value="General Health">General Health</mat-option>
-        </mat-select>
-        <mat-error *ngIf="nutritionProfileForm.get('fitnessGoal')?.hasError('required')">
-          Fitness goal is required
-        </mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Dietary Preferences</mat-label>
-        <mat-icon matPrefix>restaurant</mat-icon>
-        <mat-select formControlName="dietaryPreferences" multiple>
-          <mat-option value="Vegan">Vegan</mat-option>
-          <mat-option value="Vegetarian">Vegetarian</mat-option>
-          <mat-option value="Gluten-Free">Gluten-Free</mat-option>
-          <mat-option value="Dairy-Free">Dairy-Free</mat-option>
-          <mat-option value="Keto">Keto</mat-option>
-          <mat-option value="High-Protein">High-Protein</mat-option>
-          <mat-option value="Low-Carb">Low-Carb</mat-option>
-          <mat-option value="None">None</mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Allergies / Food Restrictions</mat-label>
-        <mat-icon matPrefix>warning</mat-icon>
-        <input matInput placeholder="e.g. nuts, gluten, dairy" formControlName="allergies" />
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Additional Notes</mat-label>
-        <mat-icon matPrefix>notes</mat-icon>
-        <textarea matInput rows="4" placeholder="Any other information for your trainer"
-                  formControlName="additionalNotes"></textarea>
-      </mat-form-field>
-
-      <div class="form-actions">
-        <button mat-raised-button color="primary" type="submit"
-                [disabled]="nutritionProfileForm.invalid || isDisabled">
-          Submit Profile
-        </button>
-        <button mat-button type="button" (click)="onReset()">Reset</button>
+      <div class="nf-header">
+        <h2 class="nf-title">Submit Nutrition Profile</h2>
+        <p class="nf-subtitle">Tell us about your dietary goals so your trainer can assign the best meal plan for you.</p>
       </div>
-    </form>
+
+      <form [formGroup]="nutritionProfileForm" (ngSubmit)="onSubmit()">
+
+        <div class="nf-grid">
+
+          <div class="nf-field">
+            <label class="nf-label" for="nf-userId">Username</label>
+            <input id="nf-userId" type="text" class="nf-input" formControlName="userId" readonly />
+          </div>
+
+          <div class="nf-field">
+            <label class="nf-label" for="nf-date">Date</label>
+            <input id="nf-date" type="date" class="nf-input" formControlName="submittedDate" readonly />
+          </div>
+
+          <div class="nf-field nf-full">
+            <label class="nf-label" for="nf-goal">Primary Fitness Goal <span class="nf-req">*</span></label>
+            <select id="nf-goal" class="nf-select" formControlName="fitnessGoal">
+              <option value="">Select a goal</option>
+              <option value="Fat Loss">Fat Loss</option>
+              <option value="Muscle Gain">Muscle Gain</option>
+              <option value="Strength">Strength</option>
+              <option value="Endurance">Endurance</option>
+              <option value="General Health">General Health</option>
+            </select>
+            <span class="nf-error" *ngIf="submitted && nutritionProfileForm.get('fitnessGoal')?.hasError('required')">
+              Fitness goal is required
+            </span>
+          </div>
+
+          <div class="nf-field nf-full">
+            <span class="nf-label">Dietary Preferences</span>
+            <div class="nf-check-grid">
+              <label class="nf-check-item" *ngFor="let pref of allDietaryPrefs">
+                <input type="checkbox"
+                       [checked]="isDietaryPrefSelected(pref)"
+                       (change)="toggleDietaryPref(pref)" />
+                <span>{{ pref }}</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="nf-field nf-full">
+            <label class="nf-label" for="nf-allergies">Allergies / Food Restrictions</label>
+            <input id="nf-allergies" type="text" class="nf-input" formControlName="allergies"
+                   placeholder="e.g. nuts, gluten, dairy — leave blank if none" />
+          </div>
+
+          <div class="nf-field nf-full">
+            <label class="nf-label" for="nf-notes">Additional Notes</label>
+            <textarea id="nf-notes" class="nf-textarea" formControlName="additionalNotes" rows="4"
+                      placeholder="Any other information for your trainer…"></textarea>
+          </div>
+
+        </div>
+
+        <div class="nf-actions">
+          <button type="submit" class="nf-submit-btn"
+                  [disabled]="nutritionProfileForm.invalid || isDisabled">
+            Submit Profile
+          </button>
+          <button type="button" class="nf-reset-btn" (click)="onReset()">Reset</button>
+        </div>
+
+      </form>
+    </ng-container>
 
   </div>
 
