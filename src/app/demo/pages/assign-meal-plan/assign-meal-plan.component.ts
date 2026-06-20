@@ -111,6 +111,16 @@ export class AssignMealPlanComponent {
     });
   }
 
+  onUsernameChange(value: string): void {
+    if (!value.trim()) {
+      this.hasSearched = false;
+      this.memberProfile = null;
+      this.suggestions = [];
+      this.confirmingTemplate = null;
+      this.cdr.markForCheck();
+    }
+  }
+
   matchBadgeClass(round: string): string {
     if (round === 'Exact') return 'badge-exact';
     if (round === 'GoalOnly') return 'badge-goal';

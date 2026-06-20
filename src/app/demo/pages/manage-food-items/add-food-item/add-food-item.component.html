@@ -26,17 +26,17 @@
         <label>Category <span class="required">*</span></label>
         <select formControlName="category">
           <option value="">Select Category</option>
-          <option>Protein</option>
-          <option>Carbohydrate</option>
-          <option>Vegetable</option>
-          <option>Fruit</option>
-          <option>Dairy</option>
-          <option>Fat & Oil</option>
-          <option>Legume</option>
-          <option>Grain</option>
-          <option>Beverage</option>
-          <option>Snack</option>
-          <option>Other</option>
+          <option value="Protein">Protein</option>
+          <option value="Carbohydrate">Carbohydrate</option>
+          <option value="Vegetable">Vegetable</option>
+          <option value="Fruit">Fruit</option>
+          <option value="Dairy">Dairy</option>
+          <option value="Fat & Oil">Fat & Oil</option>
+          <option value="Legume">Legume</option>
+          <option value="Grain">Grain</option>
+          <option value="Beverage">Beverage</option>
+          <option value="Snack">Snack</option>
+          <option value="Other">Other</option>
         </select>
         <span class="error" *ngIf="submitted && foodItemForm.get('category')?.invalid">
           Category is required.

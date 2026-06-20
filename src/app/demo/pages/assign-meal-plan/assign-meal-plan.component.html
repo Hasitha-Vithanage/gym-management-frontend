@@ -16,6 +16,7 @@
         placeholder="Enter member username…"
         class="member-input"
         (keyup.enter)="loadSuggestions()"
+        (ngModelChange)="onUsernameChange($event)"
       />
     </div>
     <button class="load-btn" (click)="loadSuggestions()" [disabled]="isLoading">
