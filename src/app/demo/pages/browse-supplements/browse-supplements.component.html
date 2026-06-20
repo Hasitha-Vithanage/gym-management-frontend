@@ -50,6 +50,15 @@
   <div class="product-grid" *ngIf="!isLoading && filteredProducts.length > 0">
     <div class="product-card" *ngFor="let p of filteredProducts">
 
+      <div class="card-image">
+        <img *ngIf="p.image && p.imageType"
+          [src]="'data:' + p.imageType + ';base64,' + p.image"
+          class="product-img" [alt]="p.productName">
+        <div *ngIf="!p.image || !p.imageType" class="product-img-placeholder">
+          <mat-icon>fitness_center</mat-icon>
+        </div>
+      </div>
+
       <div class="card-top">
         <div class="card-category">{{ p.category }}</div>
         <span class="stock-chip {{ stockClass(p.stockQty) }}">

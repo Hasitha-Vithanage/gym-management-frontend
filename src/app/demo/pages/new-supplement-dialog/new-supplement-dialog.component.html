@@ -53,6 +53,27 @@
       </div>
     </div>
 
+    <!-- Product Image -->
+    <h3 class="section-title">Product Image</h3>
+    <hr>
+
+    <div class="grid">
+      <div class="field full">
+        <div class="image-upload-area" (click)="fileInput.click()">
+          <img *ngIf="selectedImageUrl" [src]="selectedImageUrl" class="image-preview" alt="Product preview">
+          <div *ngIf="!selectedImageUrl" class="upload-placeholder">
+            <mat-icon>add_photo_alternate</mat-icon>
+            <span>Click to upload product image</span>
+            <small>JPG, PNG or WEBP</small>
+          </div>
+        </div>
+        <input #fileInput type="file" accept="image/*" style="display:none" (change)="onFileSelected($event)">
+        <button type="button" class="remove-img-btn" *ngIf="selectedImageUrl" (click)="removeImage()">
+          Remove Image
+        </button>
+      </div>
+    </div>
+
     <!-- Pricing & Stock -->
     <h3 class="section-title">Pricing & Stock</h3>
     <hr>
@@ -77,9 +98,19 @@
 
     <div class="grid">
       <div class="field full">
-        <label>Tags (comma-separated)</label>
-        <input type="text" placeholder="e.g. Vegan, Gluten-Free, Sugar-Free" formControlName="tagsRaw" />
-        <span class="hint">Helps members filter products in the store.</span>
+        <label>Tags <span class="hint-inline">(click to select)</span></label>
+        <div class="tag-chips">
+          <button
+            type="button"
+            class="tag-chip"
+            [class.selected]="isTagSelected(tag)"
+            *ngFor="let tag of predefinedTags"
+            (click)="toggleTag(tag)">
+            {{ tag }}
+          </button>
+        </div>
+        <span class="hint" *ngIf="selectedTags.length === 0">No tags selected — helps members filter products in the store.</span>
+        <span class="hint" *ngIf="selectedTags.length > 0">Selected: {{ selectedTags.join(', ') }}</span>
       </div>
 
       <div class="field full">

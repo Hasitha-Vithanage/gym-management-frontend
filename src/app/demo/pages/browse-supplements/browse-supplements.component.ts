@@ -84,7 +84,8 @@ export class BrowseSupplementsComponent implements OnInit {
       result = result.filter(p =>
         p.productName?.toLowerCase().includes(term) ||
         p.brand?.toLowerCase().includes(term) ||
-        p.category?.toLowerCase().includes(term)
+        p.category?.toLowerCase().includes(term) ||
+        p.tags?.some((t: string) => t.toLowerCase().includes(term))
       );
     }
 

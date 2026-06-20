@@ -107,6 +107,36 @@
   gap: 16px;
 }
 
+.card-image {
+  width: 100%;
+  height: 160px;
+  border-radius: $ff-radius-sm;
+  overflow: hidden;
+  background: $ff-bg-surface;
+  border: 1px solid $ff-border-default;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.product-img-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  color: $ff-text-dim;
+  opacity: 0.3;
+
+  mat-icon { font-size: 40px; width: 40px; height: 40px; }
+}
+
 .product-card {
   background: $ff-bg-elevated;
   border: 1px solid $ff-border-default;
