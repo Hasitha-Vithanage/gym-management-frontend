@@ -1,0 +1,214 @@
+<div class="analytics-page">
+
+  <div class="page-header">
+    <h2 class="form-title">
+      <mat-icon class="title-icon">analytics</mat-icon>
+      Attendance Analytics
+    </h2>
+    <div class="header-actions">
+      <button mat-stroked-button class="dl-btn" (click)="printReport()"
+              [disabled]="isLoading && isPeakLoading && isAtRiskLoading">
+        <mat-icon>picture_as_pdf</mat-icon>
+        Print / Save as PDF
+      </button>
+    </div>
+  </div>
+
+  <!-- ─── KPI CARDS ──────────────────────────────────────────────────── -->
+  <div class="row g-3 mb-4">
+
+    <div class="col-xl-3 col-md-6">
+      <div class="stat-card">
+        <div class="stat-icon green">
+          <mat-icon>today</mat-icon>
+        </div>
+        <div class="stat-body">
+          <p class="stat-label">Today's Check-ins</p>
+          <h4 class="stat-value" *ngIf="!isLoading">{{ todayCount }}</h4>
+          <div class="skeleton-line" *ngIf="isLoading"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+      <div class="stat-card">
+        <div class="stat-icon orange">
+          <mat-icon>calendar_month</mat-icon>
+        </div>
+        <div class="stat-body">
+          <p class="stat-label">{{ monthNames[displayMonth - 1] }} Total</p>
+          <h4 class="stat-value" *ngIf="!isLoading">{{ thisMonthTotal }}</h4>
+          <div class="skeleton-line" *ngIf="isLoading"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+      <div class="stat-card">
+        <div class="stat-icon blue">
+          <mat-icon>history</mat-icon>
+        </div>
+        <div class="stat-body">
+          <p class="stat-label">Last Month Total</p>
+          <h4 class="stat-value" *ngIf="!isLoading">{{ lastMonthTotal }}</h4>
+          <div class="skeleton-line" *ngIf="isLoading"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+      <div class="stat-card">
+        <div class="stat-icon red">
+          <mat-icon>warning</mat-icon>
+        </div>
+        <div class="stat-body">
+          <p class="stat-label">At-Risk Members</p>
+          <h4 class="stat-value" [class.red-value]="atRiskMembers.length > 0" *ngIf="!isAtRiskLoading">
+            {{ atRiskMembers.length }}
+          </h4>
+          <div class="skeleton-line" *ngIf="isAtRiskLoading"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ─── DAILY CHECK-INS CHART ─────────────────────────────────────── -->
+  <div class="section-card mb-4">
+
+    <div class="section-header">
+      <mat-icon class="section-icon">bar_chart</mat-icon>
+      <div>
+        <h5 class="section-title">Daily Check-ins</h5>
+        <p class="section-sub">Number of members who checked in each day</p>
+      </div>
+    </div>
+
+    <div class="month-nav">
+      <button class="nav-btn" (click)="prevMonth()" [disabled]="isLoading">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+      <h5 class="month-title">{{ monthNames[displayMonth - 1] }} {{ displayYear }}</h5>
+      <button class="nav-btn" (click)="nextMonth()" [disabled]="isCurrentMonth || isLoading">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </div>
+
+    <div class="chart-loading" *ngIf="isLoading">
+      <mat-spinner diameter="36" color="accent"></mat-spinner>
+    </div>
+
+    <apx-chart *ngIf="!isLoading && dailyChartOptions"
+      [series]="dailyChartOptions.series"
+      [chart]="dailyChartOptions.chart"
+      [plotOptions]="dailyChartOptions.plotOptions"
+      [colors]="dailyChartOptions.colors"
+      [dataLabels]="dailyChartOptions.dataLabels"
+      [xaxis]="dailyChartOptions.xaxis"
+      [yaxis]="dailyChartOptions.yaxis"
+      [grid]="dailyChartOptions.grid"
+      [tooltip]="dailyChartOptions.tooltip">
+    </apx-chart>
+
+    <div class="chip-row" *ngIf="!isLoading">
+      <span class="chip orange">
+        <mat-icon>local_fire_department</mat-icon> Busiest Day: {{ peakDayLabel }}
+      </span>
+      <span class="chip blue">
+        <mat-icon>trending_up</mat-icon> Daily Avg: {{ avgDaily }}
+      </span>
+      <span class="chip green">
+        <mat-icon>event_available</mat-icon> Active Days: {{ activeDays }}
+      </span>
+    </div>
+
+  </div>
+
+  <!-- ─── PEAK HOURS CHART ───────────────────────────────────────────── -->
+  <div class="section-card mb-4">
+
+    <div class="section-header">
+      <mat-icon class="section-icon">schedule</mat-icon>
+      <div>
+        <h5 class="section-title">Peak Check-in Hours</h5>
+        <p class="section-sub">All-time distribution of when members arrive</p>
+      </div>
+      <div class="ms-auto" *ngIf="!isPeakLoading && peakHourLabel !== '—'">
+        <span class="chip orange">
+          <mat-icon>local_fire_department</mat-icon> Peak Hour: {{ peakHourLabel }}
+        </span>
+      </div>
+    </div>
+
+    <div class="chart-loading" *ngIf="isPeakLoading">
+      <mat-spinner diameter="36" color="accent"></mat-spinner>
+    </div>
+
+    <apx-chart *ngIf="!isPeakLoading && peakChartOptions"
+      [series]="peakChartOptions.series"
+      [chart]="peakChartOptions.chart"
+      [plotOptions]="peakChartOptions.plotOptions"
+      [colors]="peakChartOptions.colors"
+      [dataLabels]="peakChartOptions.dataLabels"
+      [xaxis]="peakChartOptions.xaxis"
+      [yaxis]="peakChartOptions.yaxis"
+      [grid]="peakChartOptions.grid"
+      [tooltip]="peakChartOptions.tooltip">
+    </apx-chart>
+
+  </div>
+
+  <!-- ─── AT-RISK MEMBERS TABLE ─────────────────────────────────────── -->
+  <div class="section-card">
+
+    <div class="section-header">
+      <mat-icon class="section-icon risk-icon">person_off</mat-icon>
+      <div>
+        <h5 class="section-title">At-Risk Members</h5>
+        <p class="section-sub">Members who haven't checked in for {{ atRiskDays }}+ days</p>
+      </div>
+    </div>
+
+    <div class="chart-loading" *ngIf="isAtRiskLoading">
+      <mat-spinner diameter="36" color="accent"></mat-spinner>
+    </div>
+
+    <ng-container *ngIf="!isAtRiskLoading">
+
+      <div class="empty-state" *ngIf="atRiskMembers.length === 0">
+        <mat-icon class="empty-icon">check_circle</mat-icon>
+        <p>All members are active — no one is at risk!</p>
+      </div>
+
+      <div class="table-wrapper" *ngIf="atRiskMembers.length > 0">
+        <table class="risk-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Member ID</th>
+              <th>Name</th>
+              <th>Last Visit</th>
+              <th>Days Inactive</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let m of atRiskMembers; let i = index">
+              <td class="index-cell">{{ i + 1 }}</td>
+              <td class="member-no-cell">{{ m.memberNo }}</td>
+              <td class="name-cell">{{ m.memberName }}</td>
+              <td class="date-cell">{{ formatDate(m.lastVisit) }}</td>
+              <td class="days-cell">
+                <span class="days-badge" [class.danger]="m.daysInactive > 20">
+                  {{ m.daysInactive }} days
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </ng-container>
+
+  </div>
+
+</div>

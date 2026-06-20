@@ -22,6 +22,8 @@ export class AllFeedbacksComponent {
   dataSource = new MatTableDataSource<any>([]);
   stars = Array(5).fill(0);
   analytics: any = null;
+  statusFilter = '';
+  private textSearch = '';
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -34,6 +36,14 @@ export class AllFeedbacksComponent {
   ) {}
 
   ngOnInit(): void {
+    this.dataSource.filterPredicate = (data: any, filter: string) => {
+      const sep = filter.indexOf('|||');
+      const text = sep < 0 ? filter : filter.slice(0, sep);
+      const status = sep < 0 ? '' : filter.slice(sep + 3);
+      const textOk = !text || JSON.stringify(data).toLowerCase().includes(text);
+      const statusOk = !status || data.status === status;
+      return textOk && statusOk;
+    };
     this.loadData();
     this.loadAnalytics();
   }
@@ -68,10 +78,20 @@ export class AllFeedbacksComponent {
   }
 
   applyFilter(event: Event): void {
-    const value = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = value.trim().toLowerCase();
+    this.textSearch = (event.target as HTMLInputElement).value.trim().toLowerCase();
+    this.dataSource.filter = `${this.textSearch}|||${this.statusFilter}`;
     if (this.dataSource.paginator) this.dataSource.paginator.firstPage();
   }
+
+  setStatusFilter(status: string): void {
+    this.statusFilter = status;
+    this.dataSource.filter = `${this.textSearch}|||${this.statusFilter}`;
+    if (this.dataSource.paginator) this.dataSource.paginator.firstPage();
+  }
+
+  get pendingCount(): number { return this.dataSource.data.filter((e: any) => e.status === 'PENDING').length; }
+  get reviewedCount(): number { return this.dataSource.data.filter((e: any) => e.status === 'REVIEWED').length; }
+  get resolvedCount(): number { return this.dataSource.data.filter((e: any) => e.status === 'RESOLVED').length; }
 
   updateStatus(data: any, newStatus: string): void {
     const label = newStatus === 'REVIEWED' ? 'Reviewed' : 'Resolved';

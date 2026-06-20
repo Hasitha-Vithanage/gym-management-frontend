@@ -1,155 +1,207 @@
-<div class="container">
+<div class="feedbacks-page">
 
-  <!-- Analytics Summary Cards -->
-  <div class="analytics-grid" *ngIf="analytics">
+  <!-- ─── PAGE HEADER ──────────────────────────────────────────────────────── -->
+  <div class="page-header">
+    <mat-icon class="title-icon">forum</mat-icon>
+    <div>
+      <h2 class="page-title">Feedback History</h2>
+      <p class="page-sub">Review and manage all member feedback submissions</p>
+    </div>
+  </div>
+
+  <!-- ─── ANALYTICS CARDS ───────────────────────────────────────────────────── -->
+  <div class="analytics-row">
+
     <div class="stat-card">
-      <div class="stat-icon total-icon">
-        <mat-icon>forum</mat-icon>
-      </div>
+      <div class="stat-icon total-icon"><mat-icon>bar_chart</mat-icon></div>
       <div class="stat-body">
-        <span class="stat-value">{{ analytics.total }}</span>
+        <span class="stat-value">{{ analytics?.total || 0 }}</span>
         <span class="stat-label">Total Feedbacks</span>
       </div>
     </div>
 
     <div class="stat-card">
-      <div class="stat-icon rating-icon">
-        <mat-icon>star</mat-icon>
-      </div>
+      <div class="stat-icon rating-icon"><mat-icon>star</mat-icon></div>
       <div class="stat-body">
-        <span class="stat-value">{{ analytics.averageRating }}</span>
+        <span class="stat-value">{{ (analytics?.averageRating || 0) | number: '1.1-1' }}</span>
         <span class="stat-label">Average Rating</span>
+        <div class="avg-stars">
+          <mat-icon *ngFor="let s of stars; let i = index" [class.on]="i < (analytics?.averageRating || 0)">
+            {{ i < (analytics?.averageRating || 0) ? 'star' : 'star_border' }}
+          </mat-icon>
+        </div>
       </div>
     </div>
 
     <div class="stat-card">
-      <div class="stat-icon pending-icon">
-        <mat-icon>pending_actions</mat-icon>
-      </div>
+      <div class="stat-icon pending-icon"><mat-icon>pending_actions</mat-icon></div>
       <div class="stat-body">
-        <span class="stat-value">{{ analytics.pending }}</span>
+        <span class="stat-value" [class.pending-val]="(analytics?.pending || 0) > 0">
+          {{ analytics?.pending || 0 }}
+        </span>
         <span class="stat-label">Pending Review</span>
+        <span class="stat-hint warn" *ngIf="(analytics?.pending || 0) > 0">Needs attention</span>
       </div>
     </div>
 
     <div class="stat-card">
-      <div class="stat-icon resolved-icon">
-        <mat-icon>check_circle</mat-icon>
-      </div>
+      <div class="stat-icon resolved-icon"><mat-icon>check_circle</mat-icon></div>
       <div class="stat-body">
-        <span class="stat-value">{{ analytics.resolved }}</span>
+        <span class="stat-value">{{ analytics?.resolved || 0 }}</span>
         <span class="stat-label">Resolved</span>
       </div>
     </div>
+
   </div>
 
-  <!-- Table Section -->
-  <div class="table-section">
-    <h2 class="form-title">
-      <img src="../../../../assets/images/icon/feedbacks-dark.png"
-        style="margin-right: 5px; height: 20px; width: 20px; vertical-align: middle;">
-      Feedback History
-    </h2>
+  <!-- ─── TABLE CARD ───────────────────────────────────────────────────────── -->
+  <div class="table-card">
 
-    <div class="toolbar">
-      <div class="add-new"></div>
-      <div class="table-filter">
+    <div class="table-card-header">
+      <div class="card-title">
+        <mat-icon>rate_review</mat-icon>
+        All Submissions
+        <span class="count-badge" *ngIf="dataSource.data.length > 0">{{ dataSource.data.length }}</span>
+      </div>
+      <div class="card-toolbar">
         <div class="search-bar">
-          <img src="../../../../assets/images/icon/search.png"
-            style="margin-right: 5px; height: 18px; width: 18px;">
-          <input type="text" placeholder="Search..." (keyup)="applyFilter($event)" />
+          <mat-icon>search</mat-icon>
+          <input type="text" placeholder="Search feedback…" (keyup)="applyFilter($event)" />
         </div>
-        <button class="refresh-button" (click)="refreshData()">
-          <img src="../../../../assets/images/icon/refresh.png" style="height: 18px; width: 18px;">
+        <button class="icon-btn" (click)="refreshData()" matTooltip="Refresh">
+          <mat-icon>refresh</mat-icon>
         </button>
       </div>
     </div>
 
+    <!-- Status filter tabs -->
+    <div class="filter-tabs">
+      <button class="ftab" [class.active]="statusFilter === ''" (click)="setStatusFilter('')">
+        All <span class="ftab-count">{{ dataSource.data.length }}</span>
+      </button>
+      <button class="ftab ftab-pending" [class.active]="statusFilter === 'PENDING'" (click)="setStatusFilter('PENDING')">
+        <span class="ftab-dot"></span>
+        Pending <span class="ftab-count">{{ pendingCount }}</span>
+      </button>
+      <button class="ftab ftab-reviewed" [class.active]="statusFilter === 'REVIEWED'" (click)="setStatusFilter('REVIEWED')">
+        <span class="ftab-dot"></span>
+        Reviewed <span class="ftab-count">{{ reviewedCount }}</span>
+      </button>
+      <button class="ftab ftab-resolved" [class.active]="statusFilter === 'RESOLVED'" (click)="setStatusFilter('RESOLVED')">
+        <span class="ftab-dot"></span>
+        Resolved <span class="ftab-count">{{ resolvedCount }}</span>
+      </button>
+    </div>
+
     <div class="table-wrapper">
-      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <table mat-table [dataSource]="dataSource" matSort class="feedback-table">
 
+        <!-- Category -->
         <ng-container matColumnDef="category">
-          <th mat-header-cell *matHeaderCellDef>Category</th>
-          <td mat-cell *matCellDef="let element">{{ element.category }}</td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Category</th>
+          <td mat-cell *matCellDef="let e">
+            <span class="cat-chip" [class.gym]="e.category === 'Gym'" [class.trainer]="e.category === 'Trainer'">
+              <mat-icon>{{ e.category === 'Gym' ? 'fitness_center' : 'person' }}</mat-icon>
+              {{ e.category }}
+            </span>
+          </td>
         </ng-container>
 
+        <!-- Target / Trainer -->
         <ng-container matColumnDef="targetName">
-          <th mat-header-cell *matHeaderCellDef>Trainer</th>
-          <td mat-cell *matCellDef="let element">{{ element.targetName || '—' }}</td>
+          <th mat-header-cell *matHeaderCellDef>Target</th>
+          <td mat-cell *matCellDef="let e" class="dim-text">{{ e.targetName || '—' }}</td>
         </ng-container>
 
+        <!-- Rating -->
         <ng-container matColumnDef="rating">
-          <th mat-header-cell *matHeaderCellDef>Rating</th>
-          <td mat-cell *matCellDef="let element">
-            <div class="table-stars">
-              <mat-icon *ngFor="let s of stars; let i = index" [class.filled]="i < element.rating">
-                {{ i < element.rating ? 'star' : 'star_border' }}
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Rating</th>
+          <td mat-cell *matCellDef="let e">
+            <div class="mini-stars">
+              <mat-icon *ngFor="let s of stars; let i = index" [class.on]="i < e.rating">
+                {{ i < e.rating ? 'star' : 'star_border' }}
               </mat-icon>
+              <span class="rating-num">{{ e.rating }}/5</span>
             </div>
           </td>
         </ng-container>
 
+        <!-- Feedback text -->
         <ng-container matColumnDef="feedback">
           <th mat-header-cell *matHeaderCellDef>Feedback</th>
-          <td mat-cell *matCellDef="let element" class="feedback-cell">{{ element.feedback }}</td>
+          <td mat-cell *matCellDef="let e">
+            <div class="feedback-cell">{{ e.feedback }}</div>
+          </td>
         </ng-container>
 
+        <!-- Date -->
         <ng-container matColumnDef="submittedAt">
-          <th mat-header-cell *matHeaderCellDef>Date</th>
-          <td mat-cell *matCellDef="let element">{{ element.submittedAt | date: 'dd/MM/yyyy' }}</td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+          <td mat-cell *matCellDef="let e" class="date-cell dim-text">
+            {{ e.submittedAt | date: 'MMM d, y' }}
+          </td>
         </ng-container>
 
+        <!-- Submitted by -->
         <ng-container matColumnDef="submittedBy">
           <th mat-header-cell *matHeaderCellDef>Submitted By</th>
-          <td mat-cell *matCellDef="let element">
-            {{ getDisplayName(element) }}
-            <span *ngIf="element.anonymous" class="anon-badge">anon</span>
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="status">
-          <th mat-header-cell *matHeaderCellDef>Status</th>
-          <td mat-cell *matCellDef="let element">
-            <span class="status-badge" [ngClass]="getStatusClass(element.status)">{{ element.status }}</span>
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="actions">
-          <th mat-header-cell *matHeaderCellDef style="text-align: center;">Actions</th>
-          <td mat-cell *matCellDef="let element">
-            <div class="action-column">
-              <button
-                *ngIf="element.status === 'PENDING'"
-                mat-icon-button
-                class="gray-icon-btn"
-                matTooltip="Mark as Reviewed"
-                (click)="updateStatus(element, 'REVIEWED')">
-                <mat-icon>rate_review</mat-icon>
-              </button>
-              <button
-                *ngIf="element.status === 'REVIEWED'"
-                mat-icon-button
-                class="gray-icon-btn resolve-btn"
-                matTooltip="Mark as Resolved"
-                (click)="updateStatus(element, 'RESOLVED')">
-                <mat-icon>check_circle</mat-icon>
-              </button>
-              <span *ngIf="element.status === 'RESOLVED'" class="resolved-label">Done</span>
+          <td mat-cell *matCellDef="let e">
+            <div class="submitter-cell">
+              <mat-icon class="submitter-icon" [class.anon-icon]="e.anonymous">
+                {{ e.anonymous ? 'person_off' : 'person' }}
+              </mat-icon>
+              <span>{{ getDisplayName(e) }}</span>
+              <span class="anon-tag" *ngIf="e.anonymous">ANON</span>
             </div>
+          </td>
+        </ng-container>
+
+        <!-- Status -->
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+          <td mat-cell *matCellDef="let e">
+            <span class="status-pill" [ngClass]="getStatusClass(e.status)">{{ e.status }}</span>
+          </td>
+        </ng-container>
+
+        <!-- Actions -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Action</th>
+          <td mat-cell *matCellDef="let e">
+            <button class="action-pill review" *ngIf="e.status === 'PENDING'"
+                    (click)="updateStatus(e, 'REVIEWED')"
+                    matTooltip="Mark this feedback as Reviewed">
+              <mat-icon>rate_review</mat-icon> Review
+            </button>
+            <button class="action-pill resolve" *ngIf="e.status === 'REVIEWED'"
+                    (click)="updateStatus(e, 'RESOLVED')"
+                    matTooltip="Mark this feedback as Resolved">
+              <mat-icon>task_alt</mat-icon> Resolve
+            </button>
+            <span class="done-chip" *ngIf="e.status === 'RESOLVED'">
+              <mat-icon>check_circle</mat-icon> Done
+            </span>
           </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-      </table>
 
-      <ng-container *ngIf="dataSource.data.length === 0">
-        <div class="no-data">No feedback records found</div>
-      </ng-container>
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell no-data-cell" [attr.colspan]="displayedColumns.length">
+            <div class="empty-state">
+              <mat-icon>rate_review</mat-icon>
+              <p *ngIf="statusFilter">No {{ statusFilter | lowercase }} feedback found</p>
+              <p *ngIf="!statusFilter">No feedback submissions yet</p>
+            </div>
+          </td>
+        </tr>
+
+      </table>
     </div>
 
-    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page" class="pagination">
-    </mat-paginator>
+    <mat-paginator [pageSizeOptions]="[10, 25, 50]" aria-label="Select page"></mat-paginator>
+
   </div>
 
 </div>

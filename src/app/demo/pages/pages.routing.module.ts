@@ -46,6 +46,8 @@ import { ManageFoodItemsComponent } from './manage-food-items/manage-food-items.
 import { MealPlanTemplateComponent } from './meal-plan-template/meal-plan-template.component';
 import { FoodToTemplateComponent } from './food-to-template/food-to-template.component';
 import { AssignMealPlanComponent } from './assign-meal-plan/assign-meal-plan.component';
+import { MyAttendanceComponent } from './my-attendance/my-attendance.component';
+import { AttendanceAnalyticsComponent } from './attendance-analytics/attendance-analytics.component';
 
 export const PagesRoutes: Routes = [
   {
@@ -235,5 +237,13 @@ export const PagesRoutes: Routes = [
   {
     path: 'assign-meal-plan',
     component: AssignMealPlanComponent
+  },
+  {
+    path: 'my-attendance',
+    component: MyAttendanceComponent
+  },
+  {
+    path: 'reports/attendance-analytics',
+    component: AttendanceAnalyticsComponent
   },
 ];

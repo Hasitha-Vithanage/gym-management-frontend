@@ -75,6 +75,8 @@ import { MealPlanTemplateComponent } from './meal-plan-template/meal-plan-templa
 import { AddMealPlanTemplateComponent } from './meal-plan-template/add-meal-plan-template/add-meal-plan-template.component';
 import { FoodToTemplateComponent } from './food-to-template/food-to-template.component';
 import { AssignMealPlanComponent } from './assign-meal-plan/assign-meal-plan.component';
+import { MyAttendanceComponent } from './my-attendance/my-attendance.component';
+import { AttendanceAnalyticsComponent } from './attendance-analytics/attendance-analytics.component';
 // icons
 
 export const MY_DATE_FORMATS = {
@@ -156,7 +158,9 @@ export const MY_DATE_FORMATS = {
     MealPlanTemplateComponent,
     AddMealPlanTemplateComponent,
     FoodToTemplateComponent,
-    AssignMealPlanComponent
+    AssignMealPlanComponent,
+    MyAttendanceComponent,
+    AttendanceAnalyticsComponent
   ],
   imports: [
     CommonModule,

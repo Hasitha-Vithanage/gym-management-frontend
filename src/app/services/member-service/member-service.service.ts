@@ -145,4 +145,40 @@ export class MemberServiceService {
     }
     return this.http.get(requestUrl, { headers });
   }
+
+  getAttendanceHistory(memberNo: string, year: number, month: number) {
+    const requestUrl = `${environment.baseUrl}/memberService/attendance/history/${memberNo}?year=${year}&month=${month}`;
+    let headers = {};
+    if (this.httpService.getAuthToken() !== null) {
+      headers = { Authorization: 'Bearer ' + this.httpService.getAuthToken() };
+    }
+    return this.http.get<any[]>(requestUrl, { headers });
+  }
+
+  getDailyCheckIns(year: number, month: number) {
+    const requestUrl = `${environment.baseUrl}/memberService/attendance/daily-counts?year=${year}&month=${month}`;
+    let headers = {};
+    if (this.httpService.getAuthToken() !== null) {
+      headers = { Authorization: 'Bearer ' + this.httpService.getAuthToken() };
+    }
+    return this.http.get<any[]>(requestUrl, { headers });
+  }
+
+  getPeakHours() {
+    const requestUrl = `${environment.baseUrl}/memberService/attendance/peak-hours`;
+    let headers = {};
+    if (this.httpService.getAuthToken() !== null) {
+      headers = { Authorization: 'Bearer ' + this.httpService.getAuthToken() };
+    }
+    return this.http.get<any[]>(requestUrl, { headers });
+  }
+
+  getAtRiskMembers(days: number = 14) {
+    const requestUrl = `${environment.baseUrl}/memberService/attendance/at-risk?days=${days}`;
+    let headers = {};
+    if (this.httpService.getAuthToken() !== null) {
+      headers = { Authorization: 'Bearer ' + this.httpService.getAuthToken() };
+    }
+    return this.http.get<any[]>(requestUrl, { headers });
+  }
 }

@@ -1,176 +1,224 @@
-<div class="container">
+<div class="feedback-page">
 
-  <!-- Form Section -->
-  <div class="form-section">
-    <h2 class="form-title">Ratings & Feedback</h2>
-
-    <form [formGroup]="feedbackForm" (ngSubmit)="onSubmit()">
-
-      <div class="row">
-        <div class="half-width">
-          <label for="category">Category <span class="required">*</span></label>
-          <select id="category" formControlName="category">
-            <option value="" disabled>-- Select Category --</option>
-            <option value="Gym">Gym</option>
-            <option value="Trainer">Trainer</option>
-          </select>
-          <span class="required-message" *ngIf="submitted && feedbackForm.get('category')?.invalid">
-            Category is required
-          </span>
-        </div>
-
-        <div class="half-width" *ngIf="showTrainerField">
-          <label for="targetName">Trainer <span class="required">*</span></label>
-          <select id="targetName" formControlName="targetName">
-            <option value="" disabled>-- Select Trainer --</option>
-            <option *ngFor="let trainer of trainerList" [value]="trainer.firstName">{{ trainer.firstName }}</option>
-          </select>
-          <span class="required-message" *ngIf="submitted && feedbackForm.get('targetName')?.invalid">
-            Trainer is required
-          </span>
-        </div>
-        <div class="half-width" *ngIf="!showTrainerField"></div>
-      </div>
-
-      <div class="row">
-        <div class="star-rating half-width">
-          <p class="field-label">Rating <span class="required">*</span></p>
-          <div class="stars-container">
-            <mat-icon
-              *ngFor="let star of stars; let i = index"
-              (click)="setRating(i + 1)"
-              [class.filled]="i < rating">
-              {{ i < rating ? 'star' : 'star_border' }}
-            </mat-icon>
-          </div>
-          <span class="required-message" *ngIf="submitted && rating < 1">
-            Please select a rating
-          </span>
-        </div>
-
-        <div class="checkbox-options half-width">
-          <label class="checkbox-item">
-            <input type="checkbox" formControlName="anonymous" />
-            Submit anonymously
-          </label>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="full-width">
-          <label for="feedback">Feedback <span class="required">*</span></label>
-          <textarea
-            id="feedback"
-            rows="4"
-            maxlength="1000"
-            placeholder="Share your experience in detail (minimum 10 characters)..."
-            formControlName="feedback">
-          </textarea>
-          <span class="required-message" *ngIf="submitted && feedbackForm.get('feedback')?.invalid">
-            <ng-container *ngIf="feedbackForm.get('feedback')?.hasError('required')">Feedback is required</ng-container>
-            <ng-container *ngIf="feedbackForm.get('feedback')?.hasError('minlength')">Minimum 10 characters required</ng-container>
-          </span>
-        </div>
-      </div>
-
-      <div class="row">
-        <button type="submit" class="register-button half-width">{{ submitLabel }}</button>
-        <button type="button" class="reset-button half-width" (click)="resetForm()">Reset</button>
-      </div>
-
-    </form>
+  <!-- ─── PAGE HEADER ──────────────────────────────────────────────────── -->
+  <div class="page-header">
+    <mat-icon class="title-icon">reviews</mat-icon>
+    <div>
+      <h2 class="page-title">Ratings &amp; Feedback</h2>
+      <p class="page-sub">Your opinion helps us improve your experience</p>
+    </div>
   </div>
 
-  <!-- Table Section -->
-  <div class="table-section">
-    <h2 class="form-title">
-      <img src="../../../../assets/images/icon/rating-icon-dark.png" alt="Rating"
-        style="margin-right: 5px; height: 20px; width: 20px; vertical-align: middle;">
-      My Feedback Records
-    </h2>
+  <div class="page-grid">
 
-    <div class="toolbar">
-      <div class="add-new"></div>
-      <div class="table-filter">
-        <div class="search-bar">
-          <img src="../../../../assets/images/icon/search.png" alt="Search"
-            style="margin-right: 5px; height: 18px; width: 18px;">
-          <input type="text" placeholder="Search..." (keyup)="applyFilter($event)" />
-        </div>
-        <button class="refresh-button" (click)="refreshData()">
-          <img src="../../../../assets/images/icon/refresh.png" style="height: 18px; width: 18px;">
-        </button>
+    <!-- ─── FORM CARD ────────────────────────────────────────────────── -->
+    <div class="form-card" [class.is-editing]="mode === 'edit'">
+
+      <div class="edit-banner" *ngIf="mode === 'edit'">
+        <mat-icon>edit_note</mat-icon>
+        Editing pending feedback — category and trainer cannot be changed.
       </div>
+
+      <div class="card-heading">
+        <mat-icon>{{ mode === 'edit' ? 'edit' : 'add_comment' }}</mat-icon>
+        {{ mode === 'edit' ? 'Edit Feedback' : 'Share Your Experience' }}
+      </div>
+
+      <form [formGroup]="feedbackForm" (ngSubmit)="onSubmit()">
+
+        <!-- Category Pills -->
+        <div class="form-group">
+          <span class="field-label">Category <span class="req">*</span></span>
+          <div class="pill-group">
+            <button type="button" class="pill"
+                    [class.active]="feedbackForm.get('category')?.value === 'Gym'"
+                    [disabled]="mode === 'edit'"
+                    (click)="setCategory('Gym')">
+              <mat-icon>fitness_center</mat-icon> Gym
+            </button>
+            <button type="button" class="pill"
+                    [class.active]="feedbackForm.get('category')?.value === 'Trainer'"
+                    [disabled]="mode === 'edit'"
+                    (click)="setCategory('Trainer')">
+              <mat-icon>person</mat-icon> Trainer
+            </button>
+          </div>
+          <span class="err" *ngIf="submitted && feedbackForm.get('category')?.invalid">
+            Please select a category
+          </span>
+        </div>
+
+        <!-- Trainer Select -->
+        <div class="form-group" *ngIf="showTrainerField">
+          <label class="field-label" for="trainerSel">Trainer <span class="req">*</span></label>
+          <select id="trainerSel" formControlName="targetName">
+            <option value="" disabled>Select a trainer…</option>
+            <option *ngFor="let t of trainerList" [value]="t.firstName">{{ t.firstName }}</option>
+          </select>
+          <span class="err" *ngIf="submitted && feedbackForm.get('targetName')?.invalid">
+            Please select a trainer
+          </span>
+        </div>
+
+        <!-- Star Rating -->
+        <div class="form-group">
+          <span class="field-label">
+            Your Rating <span class="req">*</span>
+            <span class="rating-hint" *ngIf="hoverRating || rating">
+              — <strong>{{ ratingLabel }}</strong>
+            </span>
+          </span>
+          <div class="stars-row">
+            <mat-icon *ngFor="let s of stars; let i = index"
+                      class="star"
+                      [class.on]="i < (hoverRating || rating)"
+                      (mouseenter)="hoverRating = i + 1"
+                      (mouseleave)="hoverRating = 0"
+                      (click)="setRating(i + 1)">
+              {{ i < (hoverRating || rating) ? 'star' : 'star_border' }}
+            </mat-icon>
+          </div>
+          <span class="err" *ngIf="submitted && rating < 1">Please select a rating</span>
+        </div>
+
+        <!-- Feedback Textarea -->
+        <div class="form-group">
+          <label class="field-label" for="fbText">Feedback <span class="req">*</span></label>
+          <textarea id="fbText" formControlName="feedback" rows="5" maxlength="1000"
+                    placeholder="Describe your experience in detail (min. 10 characters)…"></textarea>
+          <div class="textarea-meta">
+            <span class="err" *ngIf="submitted && feedbackForm.get('feedback')?.invalid">
+              <ng-container *ngIf="feedbackForm.get('feedback')?.hasError('required')">Feedback is required</ng-container>
+              <ng-container *ngIf="feedbackForm.get('feedback')?.hasError('minlength')">Minimum 10 characters required</ng-container>
+            </span>
+            <span class="char-count">{{ feedbackForm.get('feedback')?.value?.length || 0 }}&thinsp;/&thinsp;1000</span>
+          </div>
+        </div>
+
+        <!-- Anonymous Toggle -->
+        <div class="anon-row">
+          <mat-slide-toggle formControlName="anonymous" color="accent">
+            Submit anonymously
+          </mat-slide-toggle>
+          <p class="anon-hint">Your name won't be visible to trainers or staff</p>
+        </div>
+
+        <!-- Actions -->
+        <div class="form-actions">
+          <button type="submit" class="btn-primary">
+            <mat-icon>{{ mode === 'edit' ? 'save' : 'send' }}</mat-icon>
+            {{ submitLabel }}
+          </button>
+          <button type="button" class="btn-ghost" (click)="resetForm()">
+            Cancel
+          </button>
+        </div>
+
+      </form>
     </div>
 
-    <div class="table-wrapper">
-      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <!-- ─── HISTORY CARD ─────────────────────────────────────────────── -->
+    <div class="history-card">
 
-        <ng-container matColumnDef="category">
-          <th mat-header-cell *matHeaderCellDef>Category</th>
-          <td mat-cell *matCellDef="let element">{{ element.category }}</td>
-        </ng-container>
+      <div class="history-header">
+        <div class="history-title">
+          <mat-icon>history</mat-icon>
+          My Feedback
+          <span class="count-badge" *ngIf="dataSource.data.length > 0">{{ dataSource.data.length }}</span>
+        </div>
+        <div class="history-toolbar">
+          <div class="search-bar">
+            <mat-icon>search</mat-icon>
+            <input type="text" placeholder="Search…" (keyup)="applyFilter($event)" />
+          </div>
+          <button class="icon-btn" (click)="refreshData()" matTooltip="Refresh">
+            <mat-icon>refresh</mat-icon>
+          </button>
+        </div>
+      </div>
 
-        <ng-container matColumnDef="targetName">
-          <th mat-header-cell *matHeaderCellDef>Trainer</th>
-          <td mat-cell *matCellDef="let element">{{ element.targetName || '—' }}</td>
-        </ng-container>
+      <div class="table-wrapper">
+        <table mat-table [dataSource]="dataSource" matSort class="feedback-table">
 
-        <ng-container matColumnDef="rating">
-          <th mat-header-cell *matHeaderCellDef>Rating</th>
-          <td mat-cell *matCellDef="let element">
-            <div class="table-stars">
-              <mat-icon *ngFor="let s of stars; let i = index" [class.filled]="i < element.rating">
-                {{ i < element.rating ? 'star' : 'star_border' }}
-              </mat-icon>
-            </div>
-          </td>
-        </ng-container>
+          <ng-container matColumnDef="category">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Category</th>
+            <td mat-cell *matCellDef="let e">
+              <span class="cat-chip" [class.gym]="e.category === 'Gym'" [class.trainer]="e.category === 'Trainer'">
+                <mat-icon>{{ e.category === 'Gym' ? 'fitness_center' : 'person' }}</mat-icon>
+                {{ e.category }}
+              </span>
+            </td>
+          </ng-container>
 
-        <ng-container matColumnDef="feedback">
-          <th mat-header-cell *matHeaderCellDef>Feedback</th>
-          <td mat-cell *matCellDef="let element" class="feedback-cell">{{ element.feedback }}</td>
-        </ng-container>
+          <ng-container matColumnDef="targetName">
+            <th mat-header-cell *matHeaderCellDef>Trainer</th>
+            <td mat-cell *matCellDef="let e" class="dim-text">{{ e.targetName || '—' }}</td>
+          </ng-container>
 
-        <ng-container matColumnDef="submittedAt">
-          <th mat-header-cell *matHeaderCellDef>Date</th>
-          <td mat-cell *matCellDef="let element">{{ element.submittedAt | date: 'dd/MM/yyyy' }}</td>
-        </ng-container>
+          <ng-container matColumnDef="rating">
+            <th mat-header-cell *matHeaderCellDef>Rating</th>
+            <td mat-cell *matCellDef="let e">
+              <div class="mini-stars">
+                <mat-icon *ngFor="let s of stars; let i = index" [class.on]="i < e.rating">
+                  {{ i < e.rating ? 'star' : 'star_border' }}
+                </mat-icon>
+                <span class="rating-num">{{ e.rating }}/5</span>
+              </div>
+            </td>
+          </ng-container>
 
-        <ng-container matColumnDef="status">
-          <th mat-header-cell *matHeaderCellDef>Status</th>
-          <td mat-cell *matCellDef="let element">
-            <span class="status-badge" [ngClass]="getStatusClass(element.status)">{{ element.status }}</span>
-          </td>
-        </ng-container>
+          <ng-container matColumnDef="feedback">
+            <th mat-header-cell *matHeaderCellDef>Feedback</th>
+            <td mat-cell *matCellDef="let e">
+              <div class="feedback-cell">{{ e.feedback }}</div>
+            </td>
+          </ng-container>
 
-        <ng-container matColumnDef="actions">
-          <th mat-header-cell *matHeaderCellDef style="text-align: center;">Actions</th>
-          <td mat-cell *matCellDef="let element">
-            <div class="action-column">
-              <button
-                mat-icon-button
-                class="gray-icon-btn"
-                matTooltip="Edit (only available for pending feedback)"
-                [disabled]="element.status !== 'PENDING'"
-                (click)="editData(element)">
+          <ng-container matColumnDef="submittedAt">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+            <td mat-cell *matCellDef="let e" class="dim-text date-cell">
+              {{ e.submittedAt | date: 'MMM d, y' }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>Status</th>
+            <td mat-cell *matCellDef="let e">
+              <span class="status-pill" [ngClass]="getStatusClass(e.status)">{{ e.status }}</span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let e">
+              <button mat-icon-button class="edit-btn"
+                      [disabled]="e.status !== 'PENDING'"
+                      [matTooltip]="e.status === 'PENDING' ? 'Edit feedback' : 'Only pending feedback can be edited'"
+                      (click)="editData(e)">
                 <mat-icon>edit</mat-icon>
               </button>
-            </div>
-          </td>
-        </ng-container>
+            </td>
+          </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-      </table>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 
-      <ng-container *ngIf="dataSource.data.length === 0">
-        <div class="no-data">No feedback submitted yet</div>
-      </ng-container>
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell no-data-cell" [attr.colspan]="displayedColumns.length">
+              <div class="empty-state">
+                <mat-icon>rate_review</mat-icon>
+                <p>No feedback submitted yet — share your first experience!</p>
+              </div>
+            </td>
+          </tr>
+
+        </table>
+      </div>
+
+      <mat-paginator [pageSizeOptions]="[5, 10, 25]" aria-label="Select page"></mat-paginator>
+
     </div>
 
-    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page" class="pagination">
-    </mat-paginator>
   </div>
 
 </div>

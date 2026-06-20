@@ -20,6 +20,7 @@ export class RatingsAndFeedbackComponent {
   feedbackForm: FormGroup;
   submitLabel = 'Submit';
   rating = 0;
+  hoverRating = 0;
   stars = Array(5).fill(0);
   showTrainerField = false;
   mode = 'add';
@@ -102,6 +103,15 @@ export class RatingsAndFeedbackComponent {
     if (this.dataSource.paginator) this.dataSource.paginator.firstPage();
   }
 
+  get ratingLabel(): string {
+    return ['', 'Poor', 'Fair', 'Good', 'Great', 'Excellent'][this.hoverRating || this.rating] || '';
+  }
+
+  setCategory(value: string): void {
+    if (this.mode === 'edit') return;
+    this.feedbackForm.get('category')!.setValue(value);
+  }
+
   setRating(value: number): void {
     this.rating = value;
     this.feedbackForm.get('rating')!.setValue(value);
@@ -155,6 +165,7 @@ export class RatingsAndFeedbackComponent {
     this.selectedData = data;
     this.feedbackForm.get('category')!.disable();
     this.feedbackForm.get('targetName')!.disable();
+    window.setTimeout(() => document.querySelector<HTMLElement>('.form-card')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
   }
 
   resetForm(): void {
@@ -162,6 +173,7 @@ export class RatingsAndFeedbackComponent {
     this.feedbackForm.get('category')!.enable();
     this.feedbackForm.get('targetName')!.enable();
     this.rating = 0;
+    this.hoverRating = 0;
     this.submitLabel = 'Submit';
     this.mode = 'add';
     this.submitted = false;

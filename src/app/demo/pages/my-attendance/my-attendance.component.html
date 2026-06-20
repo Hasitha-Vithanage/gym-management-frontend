@@ -1,0 +1,129 @@
+<div class="attendance-page">
+
+  <h2 class="form-title">
+    <mat-icon class="title-icon">calendar_month</mat-icon>
+    My Attendance
+  </h2>
+
+  <!-- STAT CARDS -->
+  <div class="row g-3">
+
+    <div class="col-md-4">
+      <div class="stat-card">
+        <div class="stat-icon green">
+          <mat-icon>check_circle</mat-icon>
+        </div>
+        <div class="stat-body">
+          <p class="stat-label">Visits This Month</p>
+          <h4 class="stat-value" *ngIf="!isLoading">{{ visitsThisMonth }}</h4>
+          <div class="skeleton-line" *ngIf="isLoading"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="stat-card">
+        <div class="stat-icon orange">
+          <mat-icon>event_available</mat-icon>
+        </div>
+        <div class="stat-body">
+          <p class="stat-label">Last Check-In</p>
+          <h4 class="stat-value small" *ngIf="!isLoading">{{ formatLastVisit() }}</h4>
+          <div class="skeleton-line" *ngIf="isLoading"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="stat-card">
+        <div class="stat-icon blue">
+          <mat-icon>date_range</mat-icon>
+        </div>
+        <div class="stat-body">
+          <p class="stat-label">Viewing Month</p>
+          <h4 class="stat-value" *ngIf="!isLoading">{{ monthNames[displayMonth - 1] }} {{ displayYear }}</h4>
+          <div class="skeleton-line" *ngIf="isLoading"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- CALENDAR CARD -->
+  <div class="section-card mt-4">
+
+    <div class="month-nav">
+      <button class="nav-btn" (click)="prevMonth()" [disabled]="isLoading">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+      <h5 class="month-title">{{ monthNames[displayMonth - 1] }} {{ displayYear }}</h5>
+      <button class="nav-btn" (click)="nextMonth()" [disabled]="isCurrentMonth || isLoading">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </div>
+
+    <div class="calendar-loading" *ngIf="isLoading">
+      <mat-spinner diameter="36" color="accent"></mat-spinner>
+    </div>
+
+    <div *ngIf="!isLoading">
+
+      <div class="calendar-wrapper">
+
+        <div class="calendar-grid">
+          <div class="day-header" *ngFor="let h of dayHeaders">{{ h }}</div>
+        </div>
+
+        <div class="calendar-grid" *ngFor="let week of calendarWeeks">
+          <div *ngFor="let cell of week"
+               class="day-cell"
+               [class.attended]="cell.attended"
+               [class.today]="cell.isToday"
+               [class.future]="cell.isFuture"
+               [class.empty]="!cell.day">
+            <span class="day-number" *ngIf="cell.day">{{ cell.day }}</span>
+            <span class="check-time" *ngIf="cell.attended && cell.checkInTime">{{ cell.checkInTime }}</span>
+            <span class="today-pill" *ngIf="cell.isToday && !cell.attended">TODAY</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="legend">
+        <span class="legend-item">
+          <span class="legend-dot attended"></span> Visited
+        </span>
+        <span class="legend-item">
+          <span class="legend-dot today"></span> Today
+        </span>
+        <span class="legend-item">
+          <span class="legend-dot missed"></span> Not visited
+        </span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- WEEKLY BAR CHART -->
+  <div class="section-card mt-4" *ngIf="!isLoading && chartOptions">
+    <div class="section-header">
+      <mat-icon class="section-icon">bar_chart</mat-icon>
+      <div>
+        <h5 class="section-title">Visits by Week</h5>
+        <p class="section-sub">Breakdown of how many times you came in each week</p>
+      </div>
+    </div>
+    <apx-chart
+      [series]="chartOptions.series"
+      [chart]="chartOptions.chart"
+      [plotOptions]="chartOptions.plotOptions"
+      [colors]="chartOptions.colors"
+      [dataLabels]="chartOptions.dataLabels"
+      [xaxis]="chartOptions.xaxis"
+      [yaxis]="chartOptions.yaxis"
+      [grid]="chartOptions.grid"
+      [tooltip]="chartOptions.tooltip">
+    </apx-chart>
+  </div>
+
+</div>

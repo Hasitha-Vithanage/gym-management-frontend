@@ -593,6 +593,16 @@ export const NavigationItems: NavigationItem[] = [
         icon: '../../../../assets/images/icon/sales-report-icon.png',
         auth: [authenticationEnum.Reports],
         breadcrumbs: false
+      },
+      {
+        id: 'attendanceAnalytics',
+        title: 'Attendance Analytics',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/pages/reports/attendance-analytics',
+        icon: '../../../../assets/images/icon/monthly-attendance-report-icon.png',
+        auth: [authenticationEnum.Reports],
+        breadcrumbs: false
       }
     ]
   },
