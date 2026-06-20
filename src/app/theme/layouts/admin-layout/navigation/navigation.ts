@@ -483,7 +483,7 @@ export const NavigationItems: NavigationItem[] = [
         icon: '../../../../assets/images/icon/browse-supplements-icon.png',
         auth: [authenticationEnum.Browse_Suplements],
         breadcrumbs: false
-      }
+      },
       {
         id: 'myOrdersDet',
         title: 'My Orders',

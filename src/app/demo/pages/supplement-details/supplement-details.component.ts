@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpService } from 'src/app/services/http.service';
 import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
-import { NewSupplementServiceService } from 'src/app/services/new-supplement/new-supplement-service.service';
+import { SupplementProductService } from 'src/app/services/new-supplement/new-supplement-service.service';
 
 @Component({
   selector: 'app-supplement-details',
@@ -16,24 +16,13 @@ export class SupplementDetailsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private supplementService: NewSupplementServiceService,
+    private supplementService: SupplementProductService,
     private router: Router,
     private messageService: MessageServiceService,
         private http: HttpService,
   ) {}
 
-ngOnInit(): void {
-  const id = this.route.snapshot.paramMap.get('id');
-  if (id) {
-    this.supplementService.getSupplementById(+id).subscribe((data: any) => {
-      // Combine MIME type and base64 image string
-      if (data.image && data.imageType) {
-        data.imageSrc = `data:${data.imageType};base64,${data.image}`;
-      }
-      this.supplement = data;
-    });
-  }
-}
+ngOnInit(): void { }
 
 
   addToCart(): void {

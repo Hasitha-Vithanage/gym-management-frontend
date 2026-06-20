@@ -11,7 +11,7 @@ import { SalesReportChartComponent } from './sales-report-chart/sales-report-cha
 import { IconService } from '@ant-design/icons-angular';
 import { FallOutline, GiftOutline, MessageOutline, RiseOutline, SettingOutline } from '@ant-design/icons-angular/icons';
 import { DashboardService } from 'src/app/services/dashboard/dashboard.service';
-import { NewSupplementServiceService } from 'src/app/services/new-supplement/new-supplement-service.service';
+import { SupplementProductService } from 'src/app/services/new-supplement/new-supplement-service.service';
 import { MatTableDataSource } from '@angular/material/table';
 
 interface MenuItem {
@@ -220,7 +220,7 @@ export class DefaultComponent implements OnInit, OnDestroy {
   constructor(
     private readonly iconService: IconService,
     private readonly dashboardService: DashboardService,
-    private readonly supplementService: NewSupplementServiceService,
+    private readonly supplementService: SupplementProductService,
     private readonly router: Router
   ) {
     this.iconService.addIcon(
@@ -270,7 +270,7 @@ export class DefaultComponent implements OnInit, OnDestroy {
     this.isLoadingSupplements = true;
  
     this.supplementService
-      .getData()
+      .getProductsForStaff()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (products: SupplementProduct[]) => {
