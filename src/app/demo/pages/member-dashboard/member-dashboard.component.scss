@@ -118,6 +118,44 @@
   flex-shrink: 0;
 }
 
+// ─── QR BUTTON ──────────────────────────────────────────────────────────────
+.qr-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 22px;
+  border-radius: $ff-radius-sm;
+  border: 1.5px solid $ff-accent-primary;
+  background: $ff-accent-soft;
+  color: $ff-accent-primary;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, transform 0.2s, box-shadow 0.2s;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+
+  &:hover:not(:disabled) {
+    background: $ff-accent-primary;
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: $ff-shadow-orange;
+  }
+
+  &:active:not(:disabled) { transform: translateY(0); }
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+}
+
 // ─── SKELETON LOADERS ───────────────────────────────────────────────────────
 @keyframes shimmer {
   0%   { background-position: -400px 0; }

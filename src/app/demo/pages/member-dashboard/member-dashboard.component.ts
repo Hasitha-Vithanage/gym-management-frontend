@@ -2,9 +2,11 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject, forkJoin } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
 import { HttpService } from 'src/app/services/http.service';
 import { MemberServiceService } from 'src/app/services/member-service/member-service.service';
 import { PaymentsService } from 'src/app/services/payments/payments.service';
+import { QrCodeComponent } from '../qr-container/qr-code/qr-code.component';
 
 interface JourneyStep {
   step: number;
@@ -101,7 +103,8 @@ export class MemberDashboardComponent implements OnInit, OnDestroy {
     private readonly httpService: HttpService,
     private readonly memberService: MemberServiceService,
     private readonly paymentsService: PaymentsService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -126,7 +129,7 @@ export class MemberDashboardComponent implements OnInit, OnDestroy {
     const userId = Number(this.httpService.getUserId());
 
     forkJoin({
-      member: this.memberService.getMemberById(userId),
+      member: this.memberService.getMemberProfile(userId),
       payments: this.paymentsService.getData()
     })
       .pipe(takeUntil(this.destroy$))
@@ -169,5 +172,13 @@ export class MemberDashboardComponent implements OnInit, OnDestroy {
 
   navigateTo(route: string): void {
     this.router.navigate([route]);
+  }
+
+  showMyQrCode(): void {
+    if (!this.memberDetails) return;
+    this.dialog.open(QrCodeComponent, {
+      data: { value: this.memberDetails },
+      panelClass: 'qr-dialog'
+    });
   }
 }
