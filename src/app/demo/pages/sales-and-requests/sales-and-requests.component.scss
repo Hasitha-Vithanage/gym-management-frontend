@@ -205,6 +205,18 @@ table { width: 100%; border-collapse: collapse; background: $ff-bg-surface; }
 
     .mdc-data-table__row:last-child .mdc-data-table__cell { border-bottom: none !important; }
 
+    .mat-mdc-no-data-row {
+      background: $ff-bg-surface !important;
+      td {
+        color: $ff-text-dim !important;
+        font-style: italic;
+        font-size: 13.5px !important;
+        padding: 16px !important;
+        border-bottom: none !important;
+        background: $ff-bg-surface !important;
+      }
+    }
+
     td.mat-mdc-cell {
       color: $ff-text-secondary !important;
       border-bottom: 1px solid $ff-border-default !important;

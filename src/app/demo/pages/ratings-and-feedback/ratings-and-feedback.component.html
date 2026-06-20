@@ -5,6 +5,7 @@
     <h2 class="form-title">Ratings & Feedback</h2>
 
     <form [formGroup]="feedbackForm" (ngSubmit)="onSubmit()">
+
       <div class="row">
         <div class="half-width">
           <label for="category">Category <span class="required">*</span></label>
@@ -13,33 +14,38 @@
             <option value="Gym">Gym</option>
             <option value="Trainer">Trainer</option>
           </select>
-          <span class="required-message" *ngIf="submitted && feedbackForm.get('category').invalid">
-            <ng-container *ngIf="feedbackForm.get('category').hasError('required')">Category is required</ng-container>
+          <span class="required-message" *ngIf="submitted && feedbackForm.get('category')?.invalid">
+            Category is required
           </span>
         </div>
 
         <div class="half-width" *ngIf="showTrainerField">
-          <label for="trainer">Trainer <span class="required">*</span></label>
-          <select id="trainer" formControlName="trainer">
+          <label for="targetName">Trainer <span class="required">*</span></label>
+          <select id="targetName" formControlName="targetName">
             <option value="" disabled>-- Select Trainer --</option>
             <option *ngFor="let trainer of trainerList" [value]="trainer.firstName">{{ trainer.firstName }}</option>
           </select>
-          <span class="required-message" *ngIf="submitted && feedbackForm.get('trainer').invalid">
-            <ng-container *ngIf="feedbackForm.get('trainer').hasError('required')">Trainer is required</ng-container>
+          <span class="required-message" *ngIf="submitted && feedbackForm.get('targetName')?.invalid">
+            Trainer is required
           </span>
         </div>
-
         <div class="half-width" *ngIf="!showTrainerField"></div>
       </div>
 
       <div class="row">
         <div class="star-rating half-width">
-          <p class="field-label">Rating</p>
+          <p class="field-label">Rating <span class="required">*</span></p>
           <div class="stars-container">
-            <mat-icon *ngFor="let star of stars; let i = index" (click)="setRating(i + 1)" [class.filled]="i < rating">
+            <mat-icon
+              *ngFor="let star of stars; let i = index"
+              (click)="setRating(i + 1)"
+              [class.filled]="i < rating">
               {{ i < rating ? 'star' : 'star_border' }}
             </mat-icon>
           </div>
+          <span class="required-message" *ngIf="submitted && rating < 1">
+            Please select a rating
+          </span>
         </div>
 
         <div class="checkbox-options half-width">
@@ -52,50 +58,47 @@
 
       <div class="row">
         <div class="full-width">
-          <label for="feedback">Feedback</label>
-          <textarea id="feedback" rows="3" maxlength="1000" placeholder="Enter your feedback here..."
-            formControlName="feedback"></textarea>
+          <label for="feedback">Feedback <span class="required">*</span></label>
+          <textarea
+            id="feedback"
+            rows="4"
+            maxlength="1000"
+            placeholder="Share your experience in detail (minimum 10 characters)..."
+            formControlName="feedback">
+          </textarea>
+          <span class="required-message" *ngIf="submitted && feedbackForm.get('feedback')?.invalid">
+            <ng-container *ngIf="feedbackForm.get('feedback')?.hasError('required')">Feedback is required</ng-container>
+            <ng-container *ngIf="feedbackForm.get('feedback')?.hasError('minlength')">Minimum 10 characters required</ng-container>
+          </span>
         </div>
       </div>
 
       <div class="row">
-        <div class="half-width">
-          <label for="date">Date</label>
-          <input id="date" type="date" formControlName="date" />
-        </div>
-
-        <div class="half-width">
-          <label for="username">Submitted By</label>
-          <input id="username" type="text" maxlength="50" placeholder="Username" formControlName="username" readonly />
-        </div>
-      </div>
-
-      <div class="row">
-        <button type="submit" class="register-button half-width">{{ registerButtonLabel }}</button>
+        <button type="submit" class="register-button half-width">{{ submitLabel }}</button>
         <button type="button" class="reset-button half-width" (click)="resetForm()">Reset</button>
       </div>
+
     </form>
   </div>
 
   <!-- Table Section -->
   <div class="table-section">
     <h2 class="form-title">
-      <img src="../../../../assets/images/icon/rating-icon-dark.png" alt="Rating" style="margin-right: 5px; height: 20px; width: 20px; vertical-align: middle;">
+      <img src="../../../../assets/images/icon/rating-icon-dark.png" alt="Rating"
+        style="margin-right: 5px; height: 20px; width: 20px; vertical-align: middle;">
       My Feedback Records
     </h2>
 
     <div class="toolbar">
       <div class="add-new"></div>
-
       <div class="table-filter">
         <div class="search-bar">
-          <img src="../../../../assets/images/icon/search-icon.png" alt="Search"
+          <img src="../../../../assets/images/icon/search.png" alt="Search"
             style="margin-right: 5px; height: 18px; width: 18px;">
           <input type="text" placeholder="Search..." (keyup)="applyFilter($event)" />
         </div>
-
         <button class="refresh-button" (click)="refreshData()">
-          <img src="../../../../assets/images/icon/refresh-icon.png" style="height: 18px; width: 18px;">
+          <img src="../../../../assets/images/icon/refresh.png" style="height: 18px; width: 18px;">
         </button>
       </div>
     </div>
@@ -108,36 +111,49 @@
           <td mat-cell *matCellDef="let element">{{ element.category }}</td>
         </ng-container>
 
-        <ng-container matColumnDef="trainer">
+        <ng-container matColumnDef="targetName">
           <th mat-header-cell *matHeaderCellDef>Trainer</th>
-          <td mat-cell *matCellDef="let element">{{ element.trainer }}</td>
+          <td mat-cell *matCellDef="let element">{{ element.targetName || '—' }}</td>
         </ng-container>
 
         <ng-container matColumnDef="rating">
           <th mat-header-cell *matHeaderCellDef>Rating</th>
-          <td mat-cell *matCellDef="let element">{{ element.rating }} Stars</td>
+          <td mat-cell *matCellDef="let element">
+            <div class="table-stars">
+              <mat-icon *ngFor="let s of stars; let i = index" [class.filled]="i < element.rating">
+                {{ i < element.rating ? 'star' : 'star_border' }}
+              </mat-icon>
+            </div>
+          </td>
         </ng-container>
 
         <ng-container matColumnDef="feedback">
           <th mat-header-cell *matHeaderCellDef>Feedback</th>
-          <td mat-cell *matCellDef="let element">{{ element.feedback }}</td>
+          <td mat-cell *matCellDef="let element" class="feedback-cell">{{ element.feedback }}</td>
         </ng-container>
 
-        <ng-container matColumnDef="date">
-          <th mat-header-cell *matHeaderCellDef>Submitted Date</th>
-          <td mat-cell *matCellDef="let element">{{ element.date | date: 'dd/MM/yyyy' }}</td>
+        <ng-container matColumnDef="submittedAt">
+          <th mat-header-cell *matHeaderCellDef>Date</th>
+          <td mat-cell *matCellDef="let element">{{ element.submittedAt | date: 'dd/MM/yyyy' }}</td>
         </ng-container>
 
-        <ng-container matColumnDef="username">
-          <th mat-header-cell *matHeaderCellDef>Submitted By</th>
-          <td mat-cell *matCellDef="let element">{{ element.username }}</td>
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>Status</th>
+          <td mat-cell *matCellDef="let element">
+            <span class="status-badge" [ngClass]="getStatusClass(element.status)">{{ element.status }}</span>
+          </td>
         </ng-container>
 
         <ng-container matColumnDef="actions">
-          <th style="text-align: center;" mat-header-cell *matHeaderCellDef>Actions</th>
-          <td style="display: flex; justify-content: center;" mat-cell *matCellDef="let element">
+          <th mat-header-cell *matHeaderCellDef style="text-align: center;">Actions</th>
+          <td mat-cell *matCellDef="let element">
             <div class="action-column">
-              <button mat-icon-button class="gray-icon-btn" matTooltip="Edit" (click)="editData(element)">
+              <button
+                mat-icon-button
+                class="gray-icon-btn"
+                matTooltip="Edit (only available for pending feedback)"
+                [disabled]="element.status !== 'PENDING'"
+                (click)="editData(element)">
                 <mat-icon>edit</mat-icon>
               </button>
             </div>
@@ -148,12 +164,12 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
       </table>
 
-      <ng-container *ngIf="dataSource && dataSource.data.length === 0">
-        <div class="no-data">No records found</div>
+      <ng-container *ngIf="dataSource.data.length === 0">
+        <div class="no-data">No feedback submitted yet</div>
       </ng-container>
     </div>
 
-    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users" class="pagination">
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page" class="pagination">
     </mat-paginator>
   </div>
 

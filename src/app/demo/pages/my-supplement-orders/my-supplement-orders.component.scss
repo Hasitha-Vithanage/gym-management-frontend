@@ -34,7 +34,7 @@
 }
 
 // ── States ────────────────────────────────────────────────────────────────────
-.loading-state, .empty-state {
+.loading-state {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -42,7 +42,73 @@
   font-size: 14px;
   padding: 32px 0;
   mat-icon { opacity: 0.5; }
-  p { margin: 0; }
+}
+
+.empty-state-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  background: $ff-bg-surface;
+  border: 1px solid $ff-border-default;
+  border-radius: $ff-radius-md;
+  padding: 36px 24px;
+  max-width: 480px;
+  margin: 24px auto 0;
+  text-align: center;
+  box-shadow: $ff-shadow-card;
+
+  .empty-icon-wrap {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: rgba($ff-accent-primary, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    mat-icon { font-size: 28px; width: 28px; height: 28px; color: $ff-accent-primary; }
+  }
+
+  .empty-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: $ff-text-primary;
+    margin: 0;
+    font-family: $ff-font;
+  }
+
+  .empty-desc {
+    font-size: 13px;
+    color: $ff-text-secondary;
+    margin: 0;
+    font-family: $ff-font;
+    line-height: 1.6;
+  }
+
+  .empty-browse-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+    height: 38px;
+    padding: 0 20px;
+    border-radius: $ff-radius-sm;
+    border: 1px solid rgba($ff-accent-primary, 0.35);
+    background: rgba($ff-accent-primary, 0.08);
+    color: $ff-accent-primary;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: $ff-font;
+    transition: all 0.2s;
+
+    mat-icon { font-size: 17px; width: 17px; height: 17px; }
+
+    &:hover {
+      background: rgba($ff-accent-primary, 0.15);
+      border-color: $ff-accent-primary;
+    }
+  }
 }
 
 // ── Orders List ───────────────────────────────────────────────────────────────

@@ -1,84 +1,140 @@
 <div class="container">
-  <!-- Table Section to the Right of Form -->
+
+  <!-- Analytics Summary Cards -->
+  <div class="analytics-grid" *ngIf="analytics">
+    <div class="stat-card">
+      <div class="stat-icon total-icon">
+        <mat-icon>forum</mat-icon>
+      </div>
+      <div class="stat-body">
+        <span class="stat-value">{{ analytics.total }}</span>
+        <span class="stat-label">Total Feedbacks</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon rating-icon">
+        <mat-icon>star</mat-icon>
+      </div>
+      <div class="stat-body">
+        <span class="stat-value">{{ analytics.averageRating }}</span>
+        <span class="stat-label">Average Rating</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon pending-icon">
+        <mat-icon>pending_actions</mat-icon>
+      </div>
+      <div class="stat-body">
+        <span class="stat-value">{{ analytics.pending }}</span>
+        <span class="stat-label">Pending Review</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon resolved-icon">
+        <mat-icon>check_circle</mat-icon>
+      </div>
+      <div class="stat-body">
+        <span class="stat-value">{{ analytics.resolved }}</span>
+        <span class="stat-label">Resolved</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Table Section -->
   <div class="table-section">
-    <!-- title of the-->
-    <h2 class="form-title"><img src="../../../../assets/images/icon/feedbacks-dark.png"
-        style="margin-right: 5px;">Feedback History</h2>
+    <h2 class="form-title">
+      <img src="../../../../assets/images/icon/feedbacks-dark.png"
+        style="margin-right: 5px; height: 20px; width: 20px; vertical-align: middle;">
+      Feedback History
+    </h2>
 
     <div class="toolbar">
-      <!-- add-new on the left -->
-      <div class="add-new">
-        <button type="reset" mat-raised-button class="new-button half-width" style="display: none;">
-          <img src="../../../../assets/images/icon/add-light-icon.png"
-            style="margin-right: 5px; height: 18px; width: 18px;">
-          Add New Employee
-        </button>
-      </div>
-
-      <!-- table filter-->
+      <div class="add-new"></div>
       <div class="table-filter">
-        <!-- Search bar -->
         <div class="search-bar">
-          <img src="../../../../assets/images/icon/search-icon.png"
+          <img src="../../../../assets/images/icon/search.png"
             style="margin-right: 5px; height: 18px; width: 18px;">
           <input type="text" placeholder="Search..." (keyup)="applyFilter($event)" />
         </div>
-
-        <!-- refresh button-->
-        <button mat-icon-button class="refresh-button" (click)="refreshData()">
-          <img src="../../../../assets/images/icon/refresh-icon.png"
-            style="margin-right: 5px; height: 18px; width: 18px;">
+        <button class="refresh-button" (click)="refreshData()">
+          <img src="../../../../assets/images/icon/refresh.png" style="height: 18px; width: 18px;">
         </button>
       </div>
     </div>
 
     <div class="table-wrapper">
       <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-        <!-- employeeId Column -->
+
         <ng-container matColumnDef="category">
           <th mat-header-cell *matHeaderCellDef>Category</th>
           <td mat-cell *matCellDef="let element">{{ element.category }}</td>
         </ng-container>
 
-        <!-- jobTitle Column -->
-        <ng-container matColumnDef="trainer">
+        <ng-container matColumnDef="targetName">
           <th mat-header-cell *matHeaderCellDef>Trainer</th>
-          <td mat-cell *matCellDef="let element">{{ element.trainer || 'N/A' }}</td>
+          <td mat-cell *matCellDef="let element">{{ element.targetName || '—' }}</td>
         </ng-container>
 
-        <!-- dateOfJoining Column -->
-        <!-- | date:'dd/MM/yyyy' -->
         <ng-container matColumnDef="rating">
           <th mat-header-cell *matHeaderCellDef>Rating</th>
-          <td mat-cell *matCellDef="let element">{{ element.rating }} Stars</td>
+          <td mat-cell *matCellDef="let element">
+            <div class="table-stars">
+              <mat-icon *ngFor="let s of stars; let i = index" [class.filled]="i < element.rating">
+                {{ i < element.rating ? 'star' : 'star_border' }}
+              </mat-icon>
+            </div>
+          </td>
         </ng-container>
 
-        <!-- firstName Column -->
         <ng-container matColumnDef="feedback">
           <th mat-header-cell *matHeaderCellDef>Feedback</th>
-          <td mat-cell *matCellDef="let element">{{ element.feedback }}</td>
+          <td mat-cell *matCellDef="let element" class="feedback-cell">{{ element.feedback }}</td>
         </ng-container>
 
-        <!-- lastName Column -->
-        <ng-container matColumnDef="submittedDate">
-          <th mat-header-cell *matHeaderCellDef>Submitted Date</th>
-          <td mat-cell *matCellDef="let element">{{ element.date | date: 'dd/MM/yyyy' }}</td>
+        <ng-container matColumnDef="submittedAt">
+          <th mat-header-cell *matHeaderCellDef>Date</th>
+          <td mat-cell *matCellDef="let element">{{ element.submittedAt | date: 'dd/MM/yyyy' }}</td>
         </ng-container>
 
-        <!-- nic Column -->
         <ng-container matColumnDef="submittedBy">
           <th mat-header-cell *matHeaderCellDef>Submitted By</th>
-          <td mat-cell *matCellDef="let element">{{ element.username }}</td>
+          <td mat-cell *matCellDef="let element">
+            {{ getDisplayName(element) }}
+            <span *ngIf="element.anonymous" class="anon-badge">anon</span>
+          </td>
         </ng-container>
 
-        <!-- action Column -->
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>Status</th>
+          <td mat-cell *matCellDef="let element">
+            <span class="status-badge" [ngClass]="getStatusClass(element.status)">{{ element.status }}</span>
+          </td>
+        </ng-container>
+
         <ng-container matColumnDef="actions">
-          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <th mat-header-cell *matHeaderCellDef style="text-align: center;">Actions</th>
           <td mat-cell *matCellDef="let element">
             <div class="action-column">
-              <button mat-icon-button class="gray-icon-btn" matTooltip="Delete" (click)="deleteData(element)">
-                <img src="../../../../assets/images/icon/delete-icon.png" style="margin-right: 5px; height: 18px; width: 18px;">
+              <button
+                *ngIf="element.status === 'PENDING'"
+                mat-icon-button
+                class="gray-icon-btn"
+                matTooltip="Mark as Reviewed"
+                (click)="updateStatus(element, 'REVIEWED')">
+                <mat-icon>rate_review</mat-icon>
               </button>
+              <button
+                *ngIf="element.status === 'REVIEWED'"
+                mat-icon-button
+                class="gray-icon-btn resolve-btn"
+                matTooltip="Mark as Resolved"
+                (click)="updateStatus(element, 'RESOLVED')">
+                <mat-icon>check_circle</mat-icon>
+              </button>
+              <span *ngIf="element.status === 'RESOLVED'" class="resolved-label">Done</span>
             </div>
           </td>
         </ng-container>
@@ -87,18 +143,13 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
       </table>
 
-      <!-- No data row -->
       <ng-container *ngIf="dataSource.data.length === 0">
-        <ng-container matColumnDef="noData" class="no-data">
-          <td mat-cell [attr.colspan]="displayedColumns.length" class="no-data">No records found</td>
-        </ng-container>
-
-        <tr mat-row *matRowDef="let row; columns: ['noData']"></tr>
+        <div class="no-data">No feedback records found</div>
       </ng-container>
     </div>
 
-    <!-- pagination-->
-    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users" class="pagination">
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page" class="pagination">
     </mat-paginator>
   </div>
+
 </div>

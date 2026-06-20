@@ -8,112 +8,44 @@ import { HttpService } from '../http.service';
 })
 export class RatingAndFeedbackServiceService {
 
-  constructor(private http: HttpClient,
-    private httpService: HttpService) { }
+  private readonly baseUrl = environment.baseUrl + '/feedback';
 
-  // Call the backend service to save the form data
-  serviceCall(form_details: any) {
-    console.log("In the service");
+  constructor(private http: HttpClient, private httpService: HttpService) {}
 
-    const requestUrl = environment.baseUrl + '/ratings&feedback'; // http://localhost:8080/form-demo
-
-    let headers = {};
-
-    if (this.httpService.getAuthToken() !== null) {
-      headers = {
-        Authorization: 'Bearer ' + this.httpService.getAuthToken()
-      };
-    }
-    return this.http.post(requestUrl, form_details, { headers: headers });
+  private getHeaders(): Record<string, string> {
+    const token = this.httpService.getAuthToken();
+    return token ? { Authorization: 'Bearer ' + token } : {};
   }
 
-  // Call the backend service to get the trainers
+  submitFeedback(payload: any) {
+    return this.http.post(this.baseUrl, payload, { headers: this.getHeaders() });
+  }
+
   getTrainers() {
-    console.log("In the service");
-
-    const requestUrl = environment.baseUrl + '/getTrainers'; // http://localhost:8080/form-demo
-
-    let headers = {};
-
-    if (this.httpService.getAuthToken() !== null) {
-      headers = {
-        Authorization: 'Bearer ' + this.httpService.getAuthToken()
-      };
-    }
-    return this.http.get(requestUrl, { headers: headers });
+    return this.http.get(environment.baseUrl + '/getTrainers', { headers: this.getHeaders() });
   }
 
-
-  getData() {
-
-    // creating requesting URL
-    const requestUrl = environment.baseUrl + '/ratings&feedback'; // http://localhost:8080/employee
-
-    let headers = {};
-
-    if (this.httpService.getAuthToken() !== null) {
-      headers = {
-        Authorization: 'Bearer ' + this.httpService.getAuthToken()
-      };
-    }
-
-    // sending GET request to the server
-    return this.http.get(requestUrl, { headers: headers });
+  getAllFeedbacks() {
+    return this.http.get<any[]>(this.baseUrl, { headers: this.getHeaders() });
   }
 
-  // getData function
-  getDataByUserName(userName: any) {
-
-    // creating requesting URL
-    const requestUrl = environment.baseUrl + '/ratings&feedback/' + userName; // http://localhost:8080/employee
-
-    let headers = {};
-
-    if (this.httpService.getAuthToken() !== null) {
-      headers = {
-        Authorization: 'Bearer ' + this.httpService.getAuthToken()
-      };
-    }
-
-    // sending GET request to the server
-    return this.http.get(requestUrl, { headers: headers });
+  getMyFeedbacks(submittedBy: string) {
+    return this.http.get<any[]>(`${this.baseUrl}/my/${submittedBy}`, { headers: this.getHeaders() });
   }
 
-  // editData function
-  editData(id: number, form_details: any) {
-    console.log("In editData!");
-
-    // creating requesting URL
-    const requestUrl = environment.baseUrl + '/ratings&feedback/' + id.toString(); // http://localhost:8080/employee
-
-    let headers = {};
-
-    if (this.httpService.getAuthToken() !== null) {
-      headers = {
-        Authorization: 'Bearer ' + this.httpService.getAuthToken()
-      };
-    }
-
-    // sending POST request to the server
-    return this.http.put(requestUrl, form_details, { headers: headers });
+  updateFeedback(id: number, payload: any) {
+    return this.http.put(`${this.baseUrl}/${id}`, payload, { headers: this.getHeaders() });
   }
 
-  // deleteData function
-  deleteData(id: number) {
-    console.log("In deleteData!");
+  updateStatus(id: number, status: string, adminRemarks: string = '') {
+    return this.http.patch(`${this.baseUrl}/${id}/status`, { status, adminRemarks }, { headers: this.getHeaders() });
+  }
 
-    // creating requesting URL
-    const requestUrl = environment.baseUrl + '/ratings&feedback/' + id.toString(); // http://localhost:8080/employee
+  deleteFeedback(id: number) {
+    return this.http.delete(`${this.baseUrl}/${id}`, { headers: this.getHeaders() });
+  }
 
-    let headers = {};
-
-    if (this.httpService.getAuthToken() !== null) {
-      headers = {
-        Authorization: 'Bearer ' + this.httpService.getAuthToken()
-      };
-    }
-
-    // sending POST request to the server
-    return this.http.delete(requestUrl, { headers: headers });
+  getAnalytics() {
+    return this.http.get<any>(`${this.baseUrl}/analytics`, { headers: this.getHeaders() });
   }
 }

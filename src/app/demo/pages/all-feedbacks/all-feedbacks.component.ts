@@ -1,17 +1,11 @@
 import { Component, inject, ViewChild } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { EmpolyeeServiceService } from 'src/app/services/employee-service/empolyee-service.service';
-import { HttpService } from 'src/app/services/http.service';
 import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
-import { NotificationService } from 'src/app/services/notification-service/notification.service';
-import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
-import { NewEmployeeDialogComponent } from '../new-employee-dialog/new-employee-dialog.component';
-import { QrCodeComponent } from '../qr-container/qr-code/qr-code.component';
 import { RatingAndFeedbackServiceService } from 'src/app/services/rating-and-feedback/rating-and-feedback-service.service';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-all-feedbacks',
@@ -22,115 +16,97 @@ import { RatingAndFeedbackServiceService } from 'src/app/services/rating-and-fee
 export class AllFeedbacksComponent {
 
   displayedColumns: string[] = [
-    'category',
-    'trainer',
-    'rating',
-    'feedback',
-    'submittedDate',
-    'submittedBy',
-    'actions'
+    'category', 'targetName', 'rating', 'feedback',
+    'submittedAt', 'submittedBy', 'status', 'actions'
   ];
-  dataSource: MatTableDataSource<any>;
+  dataSource = new MatTableDataSource<any>([]);
+  stars = Array(5).fill(0);
+  analytics: any = null;
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-    ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-  }
-
-  registerButtonLabel = 'Register';
-  mode = 'add';
-  selectedData;
-  isDisabled = false;
-  submitted = false;
-  userName;
-
-  /* calling constructor */
-  constructor(
-    private http: HttpService,
-    private feedbackService: RatingAndFeedbackServiceService,
-    private messageService: MessageServiceService,
-    // private dialog: MatDialog
-  ) {
-  }
-
-  // runs when load the page
-  ngOnInit(): void {
-    // get data request
-    // calling populate data function
-    this.populateData();
-  }
-
-  // table filter function
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    // pagination code
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
-  }
-
-  // Dialog Box
   readonly dialog = inject(MatDialog);
 
-  // implementation of populateData function
-  public populateData(): void {
+  constructor(
+    private feedbackService: RatingAndFeedbackServiceService,
+    private messageService: MessageServiceService
+  ) {}
 
-    try {
-      this.feedbackService.getData().subscribe({
-        next: (dataList: any[]) => {
-          if (dataList.length <= 0) {
-            return;
-          }
+  ngOnInit(): void {
+    this.loadData();
+    this.loadAnalytics();
+  }
 
-          this.dataSource = new MatTableDataSource(dataList);
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
 
-          // sorting and pagination
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
+  loadData(): void {
+    this.feedbackService.getAllFeedbacks().subscribe({
+      next: (data: any[]) => { this.dataSource.data = data.map(i => this.normalizeDate(i)); },
+      error: (err) => this.messageService.showError(err)
+    });
+  }
+
+  private normalizeDate(item: any): any {
+    const d = item.submittedAt;
+    return {
+      ...item,
+      submittedAt: Array.isArray(d)
+        ? new Date(d[0], d[1] - 1, d[2], d[3] ?? 0, d[4] ?? 0, d[5] ?? 0)
+        : new Date(d)
+    };
+  }
+
+  loadAnalytics(): void {
+    this.feedbackService.getAnalytics().subscribe({
+      next: (data: any) => { this.analytics = data; },
+      error: (err) => console.error('Analytics failed', err)
+    });
+  }
+
+  applyFilter(event: Event): void {
+    const value = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = value.trim().toLowerCase();
+    if (this.dataSource.paginator) this.dataSource.paginator.firstPage();
+  }
+
+  updateStatus(data: any, newStatus: string): void {
+    const label = newStatus === 'REVIEWED' ? 'Reviewed' : 'Resolved';
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '350px',
+      data: { message: `Mark this ${data.category} feedback as "${label}"? This action cannot be undone.` }
+    });
+
+    dialogRef.afterClosed().subscribe(confirmed => {
+      if (!confirmed) return;
+      this.feedbackService.updateStatus(data.id, newStatus).subscribe({
+        next: (response: any) => {
+          this.dataSource.data = this.dataSource.data.map(e => e.id === data.id ? this.normalizeDate(response) : e);
+          this.messageService.showSuccess(`Feedback marked as ${label}`);
+          this.loadAnalytics();
         },
-        // displaying error message
-        error: (error) => {
-          this.messageService.showError(error);
-        }
+        error: (err) => this.messageService.showError(err)
       });
-    } catch (error) {
-      this.messageService.showError(error);
+    });
+  }
+
+  refreshData(): void {
+    this.loadData();
+    this.loadAnalytics();
+  }
+
+  getStatusClass(status: string): string {
+    switch (status) {
+      case 'REVIEWED': return 'status-reviewed';
+      case 'RESOLVED': return 'status-resolved';
+      default: return 'status-pending';
     }
   }
 
-  public deleteData(data: any): void {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '350px',
-      data: {
-        message: `Are you sure you want to delete this ${data.category} feedback?`
-      }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        const id = data.id;
-        this.feedbackService.deleteData(id).subscribe({
-          next: () => {
-            const index = this.dataSource.data.findIndex(item => item.id === id);
-            if (index !== -1) {
-              this.dataSource.data.splice(index, 1);
-            }
-            this.dataSource = new MatTableDataSource(this.dataSource.data);
-            this.messageService.showSuccess('Record deleted successfully!');
-          },
-          error: (error) => {
-            this.messageService.showError(error);
-          }
-        });
-      }
-    });
-  }
-
-  //refresh button function
-  public refreshData(): void {
-    this.populateData();
+  getDisplayName(element: any): string {
+    return element.anonymous ? 'Anonymous' : element.submittedBy;
   }
 }
