@@ -1,117 +1,36 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpService } from '../http.service';
-import { environment } from 'src/app/environments/environment';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from 'src/app/environments/environment';
+import { HttpService } from '../http.service';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class NewSupplementServiceService {
+@Injectable({ providedIn: 'root' })
+export class SupplementProductService {
 
-  constructor(private http: HttpClient, private httpService: HttpService) { }
+  constructor(private http: HttpClient, private httpService: HttpService) {}
 
-
-  // Data saving backend call function
-  serviceCall(form_details: any) {
-    const requestUrl = environment.baseUrl + '/supplement';
-
-    let headers = {};
-    if (this.httpService.getAuthToken() !== null) {
-      headers = {
-        Authorization: 'Bearer ' + this.httpService.getAuthToken()
-      };
-    }
-    return this.http.post(requestUrl, form_details, { headers: headers });
+  private get headers(): { [key: string]: string } {
+    const token = this.httpService.getAuthToken();
+    return token ? { Authorization: 'Bearer ' + token } : {};
   }
 
-
-  // Data updating backend call function
-  editData(id: number, form_details: any) {
-    const requestUrl = environment.baseUrl + '/supplement/' + id.toString();
-
-    let headers = {};
-    if (this.httpService.getAuthToken() !== null) {
-      headers = {
-        Authorization: 'Bearer ' + this.httpService.getAuthToken()
-      };
-    }
-    return this.http.put(requestUrl, form_details, { headers: headers });
+  createProduct(data: any): Observable<any> {
+    return this.http.post(`${environment.baseUrl}/supplements`, data, { headers: this.headers });
   }
 
-
-  // Delete data backend call function
-  deleteData(id: number) {
-    const requestUrl = environment.baseUrl + '/supplement/' + id.toString();
-
-    let headers = {};
-    if (this.httpService.getAuthToken() !== null) {
-      headers = {
-        Authorization: 'Bearer ' + this.httpService.getAuthToken()
-      };
-    }
-    return this.http.delete(requestUrl, { headers: headers });
+  getProductsForMembers(): Observable<any[]> {
+    return this.http.get<any[]>(`${environment.baseUrl}/supplements`, { headers: this.headers });
   }
 
-
-  // Data retrieving backend call
-  getData(): Observable<any> {
-    const requestUrl = environment.baseUrl + '/supplement';
-
-    let headers = {};
-
-    if (this.httpService.getAuthToken() !== null) {
-      headers = {
-        Authorization: 'Bearer ' + this.httpService.getAuthToken()
-      };
-    }
-    return this.http.get(requestUrl, { headers: headers });
+  getProductsForStaff(): Observable<any[]> {
+    return this.http.get<any[]>(`${environment.baseUrl}/supplements/all`, { headers: this.headers });
   }
 
-  // Get supplement data by id
-  getSupplementById(id: number) {
-    const requestUrl = environment.baseUrl + '/supplement/' + id;
-
-    let headers = {};
-
-    if (this.httpService.getAuthToken() !== null) {
-      headers = {
-        Authorization: 'Bearer ' + this.httpService.getAuthToken()
-      };
-    }
-    return this.http.get(requestUrl, { headers: headers });
+  updateProduct(id: number, data: any): Observable<any> {
+    return this.http.put(`${environment.baseUrl}/supplements/${id}`, data, { headers: this.headers });
   }
 
-
-  // Service all for get suppliers
-  public getSuppliers() {
-    const requestUrl = environment.baseUrl + '/supplement/get-suppliers';
-
-    let headers = {};
-    if (this.httpService.getAuthToken() !== null) {
-      headers = {
-        Authorization: 'Bearer ' + this.httpService.getAuthToken()
-      };
-    }
-    return this.http.get(requestUrl, { headers: headers });
+  deleteProduct(id: number): Observable<any> {
+    return this.http.put(`${environment.baseUrl}/supplements/delete/${id}`, {}, { headers: this.headers });
   }
-
-  // Place order function
-  placeOrder(orderDto: any) {
-    console.log('Placing order with details Array:', orderDto);
-    
-    const requestUrl = environment.baseUrl + '/supplement/place-order';
-
-    let headers = {};
-    if (this.httpService.getAuthToken() !== null) {
-      headers = {
-        Authorization: 'Bearer ' + this.httpService.getAuthToken()
-      };
-    }
-    // Combine all data into a single request body
-    return this.http.post(requestUrl, orderDto, { headers: headers });
-  }
-
-
-
 }

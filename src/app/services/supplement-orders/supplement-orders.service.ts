@@ -1,124 +1,36 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { environment } from 'src/app/environments/environment';
 import { HttpService } from '../http.service';
 
+@Injectable({ providedIn: 'root' })
+export class SupplementOrderService {
 
-@Injectable({
-  providedIn: 'root'
-})
-export class SupplementOrdersService {
+  constructor(private http: HttpClient, private httpService: HttpService) {}
 
-  getOrdersOverLimit() {
-    const requestUrl = environment.baseUrl + '/get-orders-over-limit'; // http://localhost:8080/employee
-
-    let headers = {};
-
-    if (this.httpService.getAuthToken() !== null) {
-      headers = {
-        Authorization: 'Bearer ' + this.httpService.getAuthToken()
-      };
-    }
-
-    // sending GET request to the server
-    return this.http.get(requestUrl, { headers: headers });
-
+  private get headers(): { [key: string]: string } {
+    const token = this.httpService.getAuthToken();
+    return token ? { Authorization: 'Bearer ' + token } : {};
   }
 
-  constructor(private http: HttpClient, private httpService: HttpService) { }
-
-  getOrderDetails() {
-
-    // creating requesting URL
-    const requestUrl = environment.baseUrl + '/get-orders'; // http://localhost:8080/employee
-
-    let headers = {};
-
-    if (this.httpService.getAuthToken() !== null) {
-      headers = {
-        Authorization: 'Bearer ' + this.httpService.getAuthToken()
-      };
-    }
-
-    // sending GET request to the server
-    return this.http.get(requestUrl, { headers: headers });
+  placeOrder(data: any): Observable<any> {
+    return this.http.post(`${environment.baseUrl}/supplement-orders`, data, { headers: this.headers });
   }
 
-  // getOrderItemDetails() {
-
-  //   // creating requesting URL
-  //   const requestUrl = environment.baseUrl + '/get-order-items'; // http://localhost:8080/employee
-
-  //   let headers = {};
-
-  //   if (this.httpService.getAuthToken() !== null) {
-  //     headers = {
-  //       Authorization: 'Bearer ' + this.httpService.getAuthToken()
-  //     };
-  //   }
-
-  //   // sending GET request to the server
-  //   return this.http.get(requestUrl, { headers: headers });
-  // }
-
-  getOrderItemById(id: number) {
-    const requestUrl = environment.baseUrl + '/get-order-items/' + id.toString(); // http://localhost:8080/employee
-
-    let headers = {};
-
-    if (this.httpService.getAuthToken() !== null) {
-      headers = {
-        Authorization: 'Bearer ' + this.httpService.getAuthToken()
-      };
-    }
-
-    // sending GET request to the server
-    return this.http.get(requestUrl, { headers: headers });
+  getAllOrders(): Observable<any[]> {
+    return this.http.get<any[]>(`${environment.baseUrl}/supplement-orders`, { headers: this.headers });
   }
 
-  getOrderDetailsById(id: number) {
-    const requestUrl = environment.baseUrl + '/get-order-details/' + id.toString(); // http://localhost:8080/employee
-
-    let headers = {};
-
-    if (this.httpService.getAuthToken() !== null) {
-      headers = {
-        Authorization: 'Bearer ' + this.httpService.getAuthToken()
-      };
-    }
-
-    // sending GET request to the server
-    return this.http.get(requestUrl, { headers: headers });
+  getOrdersByMember(username: string): Observable<any[]> {
+    return this.http.get<any[]>(`${environment.baseUrl}/supplement-orders/member/${username}`, { headers: this.headers });
   }
 
-
-  markAsPaid(id: number) {
-    const requestUrl = environment.baseUrl + '/order-paid/' + id.toString(); // http://localhost:8080/employee
-
-    let headers = {};
-
-    if (this.httpService.getAuthToken() !== null) {
-      headers = {
-        Authorization: 'Bearer ' + this.httpService.getAuthToken()
-      };
-    }
-
-    // sending GET request to the server
-    return this.http.put(requestUrl, { headers: headers });
+  completeOrder(id: number): Observable<any> {
+    return this.http.put(`${environment.baseUrl}/supplement-orders/${id}/complete`, {}, { headers: this.headers });
   }
 
-  getBillingDetails(id: number) {
-    const requestUrl = environment.baseUrl + '/get-billing-details/' + id.toString(); // http://localhost:8080/employee
-
-    let headers = {};
-
-    if (this.httpService.getAuthToken() !== null) {
-      headers = {
-        Authorization: 'Bearer ' + this.httpService.getAuthToken()
-      };
-    }
-
-    // sending GET request to the server
-    return this.http.get(requestUrl, { headers: headers });
+  cancelOrder(id: number): Observable<any> {
+    return this.http.put(`${environment.baseUrl}/supplement-orders/${id}/cancel`, {}, { headers: this.headers });
   }
 }
