@@ -1,83 +1,109 @@
-import { Component, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  ViewChild,
+  inject
+} from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Route, Router } from '@angular/router';
-import { EmployeePrintServiceService } from 'src/app/services/employee-print-service/employee-print-service.service';
-import { EmpolyeeServiceService } from 'src/app/services/employee-service/empolyee-service.service';
+import { SupplementOrderService } from 'src/app/services/supplement-orders/supplement-orders.service';
 import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
-import { SupplementOrdersService } from 'src/app/services/supplement-orders/supplement-orders.service';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
-export interface OrderFlatRow {
-  orderedBy: string;
-  productName: string;
-  quantity: number;
-  totalPrice: number;
-  date: string;
-}
 @Component({
   selector: 'app-sales-and-requests',
   standalone: false,
   templateUrl: './sales-and-requests.component.html',
-  styleUrl: './sales-and-requests.component.scss'
+  styleUrl: './sales-and-requests.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SalesAndRequestsComponent {
-viewOrder(order: any) {
-  
- this.router.navigate(['/pages/order-details', order.id]);
-}
+export class SalesAndRequestsComponent implements OnInit {
 
-orderItemDisplayedColumns: string[] = ['orderedBy', 'productName', 'totalPrice', 'date', 'actions'];
+  displayedColumns: string[] = [
+    'memberUsername', 'orderDate', 'itemCount', 'totalAmount', 'status', 'actions'
+  ];
 
-  dataSource: MatTableDataSource<any>;
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
 
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-  }
-  
-  filteredEmployees: any[] = [];
+  @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  readonly dialog: MatDialog = inject(MatDialog);
 
   constructor(
-    private supplementOrdersService: SupplementOrdersService,
-    private router: Router
-  ) { }
+    private orderService: SupplementOrderService,
+    private messageService: MessageServiceService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.populateData();
   }
 
-public orders: OrderFlatRow[] = [];
-
-populateData(): void {
-  this.supplementOrdersService.getOrderDetails().subscribe({
-    next: (orders: any[]) => {
-      
-      this.orders = orders;
-      console.log("Order Details: ",orders);
-      
-    },
-    error: (err) => {
-      console.error('Failed to fetch orders', err);
-    }
-  });
-}
-
-
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    this.filteredEmployees = this.dataSource.filteredData;
-
-    // pagination code
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
-  public refreshData(): void {
+  applyFilter(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+    if (this.dataSource.paginator) this.dataSource.paginator.firstPage();
+  }
+
+  populateData(): void {
+    this.orderService.getAllOrders().subscribe({
+      next: (data: any[]) => {
+        this.dataSource = new MatTableDataSource(data);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+        this.cdr.markForCheck();
+      },
+      error: (error) => this.messageService.showError(error?.error?.message ?? error?.message ?? 'Failed to load orders.')
+    });
+  }
+
+  refreshData(): void {
     this.populateData();
+  }
+
+  completeOrder(order: any): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '350px',
+      data: { message: `Mark order #${order.id} from "${order.memberUsername}" as Completed?` }
+    });
+    dialogRef.afterClosed().subscribe((confirmed) => {
+      if (confirmed) {
+        this.orderService.completeOrder(order.id).subscribe({
+          next: () => {
+            this.messageService.showSuccess('Order marked as completed.');
+            this.populateData();
+          },
+          error: (e) => this.messageService.showError(e?.error?.message ?? e?.message ?? 'Action failed.')
+        });
+      }
+    });
+  }
+
+  cancelOrder(order: any): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '350px',
+      data: { message: `Cancel order #${order.id} from "${order.memberUsername}"? Stock will be restored.` }
+    });
+    dialogRef.afterClosed().subscribe((confirmed) => {
+      if (confirmed) {
+        this.orderService.cancelOrder(order.id).subscribe({
+          next: () => {
+            this.messageService.showSuccess('Order cancelled and stock restored.');
+            this.populateData();
+          },
+          error: (e) => this.messageService.showError(e?.error?.message ?? e?.message ?? 'Action failed.')
+        });
+      }
+    });
   }
 }

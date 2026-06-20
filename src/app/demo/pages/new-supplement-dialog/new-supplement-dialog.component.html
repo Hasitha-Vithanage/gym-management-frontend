@@ -1,122 +1,102 @@
-<div class="dialog-container">
+<div class="form-container">
 
-  <!-- Header -->
-  <div class="dialog-header">
-    <h3>{{ mode === 'edit' ? 'Edit Supplement' : 'Add New Supplement' }}</h3>
-    <button type="button" class="close-btn" (click)="closeDialog()">✕</button>
+  <div class="form-header">
+    <h2>{{ mode === 'add' ? 'Add New Supplement' : 'Edit Supplement' }}</h2>
+    <button class="close-btn" (click)="closeDialog()">
+      <img src="../../../../../assets/images/icon/close-light.png" style="height:18px;width:18px">
+    </button>
   </div>
 
-  <!-- Form -->
-  <form [formGroup]="supplementForm" (ngSubmit)="onSubmit()" class="dialog-body">
+  <form [formGroup]="supplementForm" (ngSubmit)="onSubmit()" class="form-body">
 
-    <!-- Row 1: Product Name + Brand -->
-    <div class="row">
-      <div class="field">
-        <label for="productName">Product Name <span class="required">*</span></label>
-        <input id="productName" type="text" placeholder="Enter Product Name" formControlName="productName" maxlength="100" />
-        <span class="error-msg" *ngIf="submitted && supplementForm.get('productName').hasError('required')">Product Name is required</span>
-        <span class="error-msg" *ngIf="submitted && supplementForm.get('productName').hasError('minlength')">Minimum 2 characters required</span>
-        <span class="error-msg" *ngIf="submitted && supplementForm.get('productName').hasError('maxlength')">Maximum 100 characters allowed</span>
-      </div>
-      <div class="field">
-        <label for="brand">Brand <span class="required">*</span></label>
-        <input id="brand" type="text" placeholder="Enter Brand" formControlName="brand" maxlength="100" />
-        <span class="error-msg" *ngIf="submitted && supplementForm.get('brand').hasError('required')">Brand is required</span>
-        <span class="error-msg" *ngIf="submitted && supplementForm.get('brand').hasError('minlength')">Minimum 2 characters required</span>
-        <span class="error-msg" *ngIf="submitted && supplementForm.get('brand').hasError('maxlength')">Maximum 50 characters allowed</span>
-      </div>
-    </div>
+    <!-- Product Info -->
+    <h3 class="section-title">Product Info</h3>
+    <hr>
 
-    <!-- Row 2: Category + Description -->
-    <div class="row">
+    <div class="grid">
+      <div class="field full">
+        <label>Product Name <span class="required">*</span></label>
+        <input type="text" placeholder="e.g. Whey Protein Gold Standard" formControlName="productName" />
+        <span class="error" *ngIf="submitted && supplementForm.get('productName')?.invalid">
+          Product name is required (min 2 characters).
+        </span>
+      </div>
+
       <div class="field">
-        <label for="category">Category <span class="required">*</span></label>
-        <select id="category" formControlName="category" class="select-input" (change)="onCategoryChange()">
-          <option value="" disabled>Select Category</option>
-          <option *ngFor="let category of supplementCategories" [value]="category">{{ category }}</option>
+        <label>Brand</label>
+        <input type="text" placeholder="e.g. Optimum Nutrition" formControlName="brand" />
+      </div>
+
+      <div class="field">
+        <label>Category <span class="required">*</span></label>
+        <select formControlName="category">
+          <option value="">Select Category</option>
+          <option value="Protein">Protein</option>
+          <option value="Creatine">Creatine</option>
+          <option value="Pre-Workout">Pre-Workout</option>
+          <option value="Vitamins & Minerals">Vitamins & Minerals</option>
+          <option value="BCAA">BCAA</option>
+          <option value="Weight Gainer">Weight Gainer</option>
+          <option value="Fat Burner">Fat Burner</option>
+          <option value="Amino Acids">Amino Acids</option>
+          <option value="Hydration & Electrolytes">Hydration & Electrolytes</option>
+          <option value="Other">Other</option>
         </select>
-        <span class="error-msg" *ngIf="submitted && supplementForm.get('category').hasError('required')">Category is required</span>
+        <span class="error" *ngIf="submitted && supplementForm.get('category')?.invalid">
+          Category is required.
+        </span>
       </div>
-      <div class="field">
-        <label for="description">Description</label>
-        <textarea id="description" placeholder="Enter Description" formControlName="description" maxlength="2000" rows="2"></textarea>
-        <span class="error-msg" *ngIf="submitted && supplementForm.get('description').hasError('maxlength')">Maximum 500 characters allowed</span>
+
+      <div class="field full">
+        <label>Description</label>
+        <input type="text" placeholder="e.g. 24g protein per serving, chocolate flavour" formControlName="description" />
       </div>
     </div>
 
-    <!-- Row 3: Quantity per unit + Unit -->
-    <div class="row">
+    <!-- Pricing & Stock -->
+    <h3 class="section-title">Pricing & Stock</h3>
+    <hr>
+
+    <div class="grid">
       <div class="field">
-        <label for="quantityPerUnit">Quantity (per unit) <span class="required">*</span></label>
-        <input id="quantityPerUnit" type="number" placeholder="Enter Quantity" formControlName="quantityPerUnit" />
-        <span class="error-msg" *ngIf="submitted && supplementForm.get('quantityPerUnit').hasError('required')">Quantity Per Unit is required</span>
-        <span class="error-msg" *ngIf="submitted && supplementForm.get('quantityPerUnit').hasError('pattern')">Enter a valid number (up to 2 decimal places)</span>
+        <label>Price (Rs.) <span class="required">*</span></label>
+        <input type="number" min="0" step="0.01" placeholder="e.g. 4500.00" formControlName="price" />
+        <span class="error" *ngIf="submitted && supplementForm.get('price')?.invalid">Required.</span>
       </div>
+
       <div class="field">
-        <label for="unit">Unit <span class="required">*</span></label>
-        <select id="unit" formControlName="unit" class="select-input">
-          <option value="" disabled>Select Unit</option>
-          <option *ngFor="let unit of unitList" [value]="unit">{{ unit }}</option>
-        </select>
-        <span class="error-msg" *ngIf="submitted && supplementForm.get('unit').hasError('required')">Unit is required</span>
+        <label>Stock Quantity <span class="required">*</span></label>
+        <input type="number" min="0" step="1" placeholder="e.g. 20" formControlName="stockQty" />
+        <span class="error" *ngIf="submitted && supplementForm.get('stockQty')?.invalid">Required.</span>
       </div>
     </div>
 
-    <!-- Row 4: Cost Price + Retail Price -->
-    <div class="row">
-      <div class="field">
-        <label for="costPrice">Cost Price (LKR) <span class="required">*</span></label>
-        <input id="costPrice" type="number" placeholder="Enter Cost Price" formControlName="costPrice" />
-        <span class="error-msg" *ngIf="submitted && supplementForm.get('costPrice').hasError('required')">Cost Price is required</span>
-        <span class="error-msg" *ngIf="submitted && supplementForm.get('costPrice').hasError('pattern')">Enter a valid number (up to 2 decimal places)</span>
+    <!-- Tags & Visibility -->
+    <h3 class="section-title">Tags & Visibility</h3>
+    <hr>
+
+    <div class="grid">
+      <div class="field full">
+        <label>Tags (comma-separated)</label>
+        <input type="text" placeholder="e.g. Vegan, Gluten-Free, Sugar-Free" formControlName="tagsRaw" />
+        <span class="hint">Helps members filter products in the store.</span>
       </div>
-      <div class="field">
-        <label for="retailPrice">Retail Price (LKR) <span class="required">*</span></label>
-        <input id="retailPrice" type="number" placeholder="Enter Retail Price" formControlName="retailPrice" />
-        <span class="error-msg" *ngIf="submitted && supplementForm.get('retailPrice').hasError('required')">Retail Price is required</span>
-        <span class="error-msg" *ngIf="submitted && supplementForm.get('retailPrice').hasError('pattern')">Enter a valid number (up to 2 decimal places)</span>
+
+      <div class="field full">
+        <label class="toggle-label">
+          <span>Visible in store</span>
+          <label class="switch">
+            <input type="checkbox" formControlName="isActive" />
+            <span class="slider"></span>
+          </label>
+        </label>
+        <span class="hint">Hidden products won't appear to members but remain in your inventory.</span>
       </div>
     </div>
 
-    <!-- Row 5: Quantity in Stock + Expiry Date -->
-    <div class="row">
-      <div class="field">
-        <label for="quantityInStock">Quantity In Stock <span class="required">*</span></label>
-        <input id="quantityInStock" type="number" placeholder="Enter Quantity In Stock" formControlName="quantityInStock" />
-        <span class="error-msg" *ngIf="submitted && supplementForm.get('quantityInStock').hasError('required')">Quantity In Stock is required</span>
-        <span class="error-msg" *ngIf="submitted && supplementForm.get('quantityInStock').hasError('pattern')">Enter a valid whole number</span>
-      </div>
-      <div class="field">
-        <label for="expiryDate">Expiry Date</label>
-        <input id="expiryDate" type="date" formControlName="expiryDate" [min]="todayStr" />
-        <span class="error-msg" *ngIf="submitted && supplementForm.get('expiryDate').hasError('invalidDate')">Expiry date must be a future date</span>
-      </div>
-    </div>
-
-    <!-- Row 6: Supplier + File Upload -->
-    <div class="row">
-      <div class="field">
-        <label for="supplier">Supplier <span class="required">*</span></label>
-        <select id="supplier" formControlName="supplier" class="select-input">
-          <option value="" disabled>Select Supplier</option>
-          <option *ngFor="let supplier of supplierList" [value]="supplier.supplierName">{{ supplier.supplierName }}</option>
-        </select>
-        <span class="error-msg" *ngIf="submitted && supplementForm.get('supplier').hasError('required')">Supplier is required</span>
-      </div>
-      <div class="field file-field">
-        <label for="productImage">Product Image</label>
-        <button id="productImage" type="button" class="btn file-btn" (click)="fileInput.click()">
-          Choose File
-        </button>
-        <input #fileInput type="file" hidden (change)="onFileSelected($event)" />
-        <span class="file-name" *ngIf="selectedFileName">{{ selectedFileName }}</span>
-      </div>
-    </div>
-
-    <!-- Actions -->
-    <div class="action">
-      <button type="button" class="btn secondary" (click)="closeDialog()">Close</button>
-      <button type="submit" class="btn primary">{{ saveButtonLabel }}</button>
+    <div class="action-buttons">
+      <button type="submit" class="register-button field">{{ saveButtonLabel }}</button>
+      <button type="button" class="reset-button field" (click)="resetForm()">Reset</button>
     </div>
 
   </form>
