@@ -1,15 +1,82 @@
-<div class="container">
-   <h2 class="form-title">Browse Supplements</h2>
+<div class="store-container">
 
-<div class="supplement-grid">
-  <div class="supplement-card" *ngFor="let supplement of supplements" (click)="viewDetails(supplement)">
-    <div class="image-container">
-      <img [src]="supplement.imageSrc" alt="{{ supplement.name }}" />
+  <!-- Header -->
+  <h2 class="page-title">
+    <img src="../../../../assets/images/icon/supplement-inventory-icon-dark.png"
+      style="height:20px;width:20px">
+    Supplement Store
+  </h2>
+
+  <!-- Search & Filter Bar -->
+  <div class="filter-bar">
+    <div class="search-wrap">
+      <img src="../../../../assets/images/icon/search.png" class="search-icon">
+      <input
+        type="text"
+        placeholder="Search by name, brand or category…"
+        class="search-input"
+        (input)="onSearch($any($event.target).value)"
+      />
     </div>
-    <div class="info">
-      <h3>{{ supplement.name }}</h3>
+    <button class="refresh-btn" (click)="loadProducts()">
+      <img src="../../../../assets/images/icon/refresh.png" style="height:16px;width:16px">
+    </button>
+  </div>
+
+  <!-- Category Chips -->
+  <div class="category-chips">
+    <button
+      *ngFor="let cat of categories"
+      class="chip"
+      [class.active]="activeCategory === cat"
+      (click)="selectCategory(cat)">
+      {{ cat }}
+    </button>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading-state" *ngIf="isLoading">
+    <mat-icon>hourglass_empty</mat-icon>
+    <span>Loading products…</span>
+  </div>
+
+  <!-- Empty -->
+  <div class="empty-state" *ngIf="!isLoading && filteredProducts.length === 0">
+    <mat-icon>search_off</mat-icon>
+    <p>No supplements found{{ activeCategory !== 'All' ? ' in ' + activeCategory : '' }}.</p>
+  </div>
+
+  <!-- Product Grid -->
+  <div class="product-grid" *ngIf="!isLoading && filteredProducts.length > 0">
+    <div class="product-card" *ngFor="let p of filteredProducts">
+
+      <div class="card-top">
+        <div class="card-category">{{ p.category }}</div>
+        <span class="stock-chip {{ stockClass(p.stockQty) }}">
+          {{ stockLabel(p.stockQty) }}
+        </span>
+      </div>
+
+      <div class="card-name">{{ p.productName }}</div>
+      <div class="card-brand" *ngIf="p.brand">{{ p.brand }}</div>
+
+      <div class="card-desc" *ngIf="p.description">{{ p.description }}</div>
+
+      <div class="tag-row" *ngIf="p.tags?.length > 0">
+        <span class="tag" *ngFor="let t of p.tags">{{ t }}</span>
+      </div>
+
+      <div class="card-footer">
+        <span class="price">Rs. {{ p.price | number:'1.2-2' }}</span>
+        <button
+          class="order-btn"
+          [disabled]="p.stockQty === 0"
+          (click)="openOrderDialog(p)">
+          {{ p.stockQty === 0 ? 'Out of Stock' : 'Order Now' }}
+        </button>
+      </div>
+
     </div>
   </div>
+
 </div>
-</div>
- 

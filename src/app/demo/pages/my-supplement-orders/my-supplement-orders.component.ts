@@ -1,64 +1,81 @@
-import { Component } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  inject
+} from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { SupplementOrderService } from 'src/app/services/supplement-orders/supplement-orders.service';
+import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
+import { HttpService } from 'src/app/services/http.service';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-my-supplement-orders',
   standalone: false,
   templateUrl: './my-supplement-orders.component.html',
-  styleUrl: './my-supplement-orders.component.scss'
+  styleUrl: './my-supplement-orders.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MySupplementOrdersComponent {
+export class MySupplementOrdersComponent implements OnInit {
 
-displayedColumns: string[] = ['image', 'product', 'quantity', 'price'];
+  orders: any[] = [];
+  isLoading = false;
+  memberUsername = '';
 
+  readonly dialog = inject(MatDialog);
 
-orders = [
-  {
-    orderNumber: 'INV-1001',
-    orderDate: new Date('2025-06-15'),
-    status: 'Delivered',
-    paymentMethod: 'Credit Card',
-    totalAmount: 8500,
-    items: [
-      {
-        productName: 'Whey Protein - 1kg',
-        quantity: 1,
-        price: 4500,
-        image: 'assets/images/supplements/Myprotein-Creatine-250g.jpg'
+  constructor(
+    private orderService: SupplementOrderService,
+    private messageService: MessageServiceService,
+    private httpService: HttpService,
+    private cdr: ChangeDetectorRef
+  ) {}
+
+  ngOnInit(): void {
+    this.memberUsername = this.httpService.getLoginNameFromCache() ?? '';
+    this.loadOrders();
+  }
+
+  loadOrders(): void {
+    if (!this.memberUsername) return;
+    this.isLoading = true;
+    this.orderService.getOrdersByMember(this.memberUsername).subscribe({
+      next: (data) => {
+        this.orders = data;
+        this.isLoading = false;
+        this.cdr.markForCheck();
       },
-      {
-        productName: 'Creatine Monohydrate - 300g',
-        quantity: 1,
-        price: 4000,
-        image: 'assets/images/supplements/Myprotein-Creatine-250g.jpg'
+      error: (e) => {
+        this.messageService.showError(e?.error?.message ?? 'Failed to load orders.');
+        this.isLoading = false;
+        this.cdr.markForCheck();
       }
-    ]
-  }
-];
-
-
-  recommendedItems = [
-    { name: 'BCAA Powder - 300g', price: 3500, image: 'assets/images/supplements/Myprotein-Creatine-250g.jpg' },
-    { name: 'Shaker Bottle', price: 800, image: 'assets/images/supplements/Kevin-Levrone-Gold-Creatine-300g-NEW2.jpg' },
-    { name: 'Pre Workout - 200g', price: 2900, image: 'assets/images/supplements/Muscletech-Platinum-Creatine.jpg' }
-  ];
-
-  getTotalSpent(): number {
-    return this.orders.reduce((sum, order) => sum + order.totalAmount, 0);
+    });
   }
 
-  viewInvoice(order: any) {
-    alert(`Viewing invoice for Order #${order.orderNumber}`);
+  cancelOrder(order: any): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '350px',
+      data: { message: `Cancel order #${order.id}? Stock will be restored.` }
+    });
+    dialogRef.afterClosed().subscribe((confirmed) => {
+      if (confirmed) {
+        this.orderService.cancelOrder(order.id).subscribe({
+          next: () => {
+            this.messageService.showSuccess('Order cancelled successfully.');
+            this.loadOrders();
+          },
+          error: (e) => this.messageService.showError(e?.error?.message ?? 'Cancel failed.')
+        });
+      }
+    });
   }
 
-  downloadInvoice(order: any) {
-    alert(`Downloading PDF for Order #${order.orderNumber}`);
-  }
-
-  reorder(order: any) {
-    alert(`Reordering items from Order #${order.orderNumber}`);
-  }
-
-  browseStore() {
-    alert('Redirecting to store...');
+  statusClass(status: string): string {
+    if (status === 'PENDING')   return 'pending';
+    if (status === 'COMPLETED') return 'completed';
+    return 'cancelled';
   }
 }

@@ -1,49 +1,115 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
-import { NewSupplementServiceService } from 'src/app/services/new-supplement/new-supplement-service.service';
-import { Router } from '@angular/router';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  inject
+} from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { SupplementProductService } from 'src/app/services/new-supplement/new-supplement-service.service';
+import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
+import { SupplementCheckoutComponent } from '../supplement-checkout/supplement-checkout.component';
 
 @Component({
   selector: 'app-browse-supplements',
   standalone: false,
   templateUrl: './browse-supplements.component.html',
-  styleUrl: './browse-supplements.component.scss'
+  styleUrl: './browse-supplements.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BrowseSupplementsComponent implements OnInit {
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  allProducts: any[] = [];
+  filteredProducts: any[] = [];
+  searchTerm = '';
+  activeCategory = 'All';
+  isLoading = false;
+
+  categories = [
+    'All', 'Protein', 'Creatine', 'Pre-Workout', 'Vitamins & Minerals',
+    'BCAA', 'Weight Gainer', 'Fat Burner', 'Amino Acids',
+    'Hydration & Electrolytes', 'Other'
+  ];
+
+  readonly dialog = inject(MatDialog);
 
   constructor(
-    private newSupplementService: NewSupplementServiceService,
-    private router: Router
-  ) { }
+    private supplementService: SupplementProductService,
+    private messageService: MessageServiceService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
-  dataSource = new MatTableDataSource<any>;
-
-  // OnInit function
   ngOnInit(): void {
-    this.populateData();
+    this.loadProducts();
   }
 
-  supplements: any[] = [];
-
-  populateData(): void {
-    this.newSupplementService.getData().subscribe((response: any[]) => {
-      this.supplements = response.map(item => ({
-        ...item,
-        imageSrc: `data:${item.imageType};base64,${item.image}`,
-        name: item.productName
-      }));
-      this.dataSource.data = this.supplements;
+  loadProducts(): void {
+    this.isLoading = true;
+    this.supplementService.getProductsForMembers().subscribe({
+      next: (data) => {
+        this.allProducts = data;
+        this.applyFilters();
+        this.isLoading = false;
+        this.cdr.markForCheck();
+      },
+      error: (e) => {
+        this.messageService.showError(e?.error?.message ?? 'Failed to load products.');
+        this.isLoading = false;
+        this.cdr.markForCheck();
+      }
     });
   }
 
-    viewDetails(supplement: any): void {
-    // Navigate to the supplement details page with the selected supplement's ID
-    console.log('Viewing supplement:', supplement);
-    this.router.navigate(['/pages/supplement-details', supplement.id]);
-
+  selectCategory(category: string): void {
+    this.activeCategory = category;
+    this.applyFilters();
+    this.cdr.markForCheck();
   }
 
+  onSearch(term: string): void {
+    this.searchTerm = term;
+    this.applyFilters();
+    this.cdr.markForCheck();
+  }
+
+  private applyFilters(): void {
+    let result = [...this.allProducts];
+
+    if (this.activeCategory !== 'All') {
+      result = result.filter(p => p.category === this.activeCategory);
+    }
+
+    if (this.searchTerm.trim()) {
+      const term = this.searchTerm.toLowerCase();
+      result = result.filter(p =>
+        p.productName?.toLowerCase().includes(term) ||
+        p.brand?.toLowerCase().includes(term) ||
+        p.category?.toLowerCase().includes(term)
+      );
+    }
+
+    this.filteredProducts = result;
+  }
+
+  openOrderDialog(product: any): void {
+    const dialogRef = this.dialog.open(SupplementCheckoutComponent, {
+      autoFocus: false,
+      data: { product }
+    });
+    dialogRef.afterClosed().subscribe((ordered) => {
+      if (ordered) this.loadProducts();
+    });
+  }
+
+  stockLabel(qty: number): string {
+    if (qty === 0) return 'Out of Stock';
+    if (qty <= 5)  return 'Low Stock';
+    return 'In Stock';
+  }
+
+  stockClass(qty: number): string {
+    if (qty === 0) return 'out';
+    if (qty <= 5)  return 'low';
+    return 'ok';
+  }
 }

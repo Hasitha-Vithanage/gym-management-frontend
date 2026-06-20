@@ -40,4 +40,5 @@ export enum authenticationEnum {
   Payments = 35,
   Ratings_And_Feedback = 36,
   Feedback_History = 37,
+  My_Supplement_Orders = 38,
 }

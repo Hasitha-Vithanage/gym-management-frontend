@@ -452,7 +452,7 @@ export const NavigationItems: NavigationItem[] = [
     title: 'Supplement Store',
     type: 'group',
     icon: '../../../../assets/images/icon/supplement-store-icon.png',
-    auth: [authenticationEnum.Inventory_Management, authenticationEnum.Sales_And_Requests, authenticationEnum.Browse_Suplements],
+    auth: [authenticationEnum.Inventory_Management, authenticationEnum.Sales_And_Requests, authenticationEnum.Browse_Suplements, authenticationEnum.My_Supplement_Orders],
     children: [
       {
         id: 'inventoryManagementDet',
@@ -484,16 +484,16 @@ export const NavigationItems: NavigationItem[] = [
         auth: [authenticationEnum.Browse_Suplements],
         breadcrumbs: false
       }
-      // {
-      //   id: 'myOrdersDet',
-      //   title: 'My Orders',
-      //   type: 'item',
-      //   classes: 'nav-item',
-      //   url: '/pages/my-supplement-orders',
-      //   icon: '',
-      //   auth: authenticationEnum.Home_Dashboard,
-      //   breadcrumbs: false
-      // }
+      {
+        id: 'myOrdersDet',
+        title: 'My Orders',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/pages/my-supplement-orders',
+        icon: '../../../../assets/images/icon/sales-and-request.png',
+        auth: [authenticationEnum.My_Supplement_Orders],
+        breadcrumbs: false
+      }
     ]
   },
   /* side navigation bar item for Workflow */

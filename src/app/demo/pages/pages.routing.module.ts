@@ -141,10 +141,6 @@ export const PagesRoutes: Routes = [
     component: SupplementDetailsComponent
   },
   {
-    path: 'supplement-details/:id/checkout',
-    component: SupplementCheckoutComponent
-  },
-  {
     path: 'reports/employees-report',
     component: EmployeeListComponent
   },
