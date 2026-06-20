@@ -34,8 +34,16 @@
         </ng-container>
 
         <ng-container matColumnDef="itemCount">
-          <th mat-header-cell *matHeaderCellDef>Items</th>
-          <td mat-cell *matCellDef="let o">{{ o.items?.length ?? 0 }}</td>
+          <th mat-header-cell *matHeaderCellDef>Products Ordered</th>
+          <td mat-cell *matCellDef="let o">
+            <div class="product-cell">
+              <span class="product-cell-line" *ngFor="let item of (o.items ?? [])">
+                {{ item.productName }}
+                <span class="qty-chip">×{{ item.quantity }}</span>
+              </span>
+              <span class="product-cell-empty" *ngIf="!o.items || o.items.length === 0">—</span>
+            </div>
+          </td>
         </ng-container>
 
         <ng-container matColumnDef="totalAmount">

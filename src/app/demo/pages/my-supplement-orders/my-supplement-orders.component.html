@@ -1,4 +1,4 @@
-<div class="orders-container">
+<div class="page-wrapper">
 
   <h2 class="page-title">
     <img src="../../../../assets/images/icon/supplement-inventory-icon-dark.png"
@@ -6,61 +6,106 @@
     My Supplement Orders
   </h2>
 
-  <!-- Loading -->
-  <div class="loading-state" *ngIf="isLoading">
-    <mat-icon>hourglass_empty</mat-icon>
-    <span>Loading orders…</span>
-  </div>
+<div class="page-layout">
 
-  <!-- Empty -->
-  <div class="empty-state" *ngIf="!isLoading && orders.length === 0">
-    <mat-icon>receipt_long</mat-icon>
-    <p>You haven't placed any orders yet.</p>
-  </div>
+  <!-- ── LEFT: Orders List ─────────────────────────────── -->
+  <div class="orders-panel">
 
-  <!-- Orders List -->
-  <div class="orders-list" *ngIf="!isLoading && orders.length > 0">
+    <div class="loading-state" *ngIf="isLoading">
+      <mat-icon>hourglass_empty</mat-icon>
+      <span>Loading orders…</span>
+    </div>
 
-    <div class="order-card" *ngFor="let o of orders">
+    <div class="empty-state" *ngIf="!isLoading && orders.length === 0">
+      <mat-icon>receipt_long</mat-icon>
+      <p>You haven't placed any orders yet.</p>
+    </div>
 
-      <div class="order-header">
-        <div class="order-meta">
-          <span class="order-id">Order #{{ o.id }}</span>
-          <span class="order-date">{{ o.orderDate | date:'dd MMM yyyy, h:mm a' }}</span>
-        </div>
-        <span class="status-badge {{ statusClass(o.status) }}">{{ o.status }}</span>
-      </div>
+    <div class="orders-list" *ngIf="!isLoading && orders.length > 0">
+      <div class="order-card" *ngFor="let o of orders">
 
-      <!-- Items -->
-      <div class="order-items">
-        <div class="order-item" *ngFor="let item of o.items">
-          <div class="item-info">
-            <span class="item-name">{{ item.productName }}</span>
-            <span class="item-qty">× {{ item.quantity }}</span>
+        <div class="order-header">
+          <div class="order-meta">
+            <span class="order-id">Order #{{ o.id }}</span>
+            <span class="order-date">{{ o.orderDate | date:'dd MMM yyyy, h:mm a' }}</span>
           </div>
-          <span class="item-price">Rs. {{ (item.priceAtOrder * item.quantity) | number:'1.2-2' }}</span>
+          <span class="status-badge {{ statusClass(o.status) }}">{{ o.status }}</span>
         </div>
-      </div>
 
-      <div class="order-footer">
-        <div class="order-notes" *ngIf="o.notes">
-          <mat-icon>note</mat-icon>
-          {{ o.notes }}
+        <div class="order-items">
+          <div class="no-items-hint" *ngIf="!o.items || o.items.length === 0">No items found.</div>
+          <div class="order-item" *ngFor="let item of (o.items ?? [])">
+            <div class="item-info">
+              <span class="item-name">{{ item.productName }}</span>
+              <span class="item-qty">× {{ item.quantity }}</span>
+            </div>
+            <span class="item-price">Rs. {{ (item.priceAtOrder * item.quantity) | number:'1.2-2' }}</span>
+          </div>
         </div>
-        <div class="order-total">
-          <span class="total-label">Total</span>
-          <span class="total-value">Rs. {{ o.totalAmount | number:'1.2-2' }}</span>
-        </div>
-        <button
-          class="cancel-btn"
-          *ngIf="o.status === 'PENDING'"
-          (click)="cancelOrder(o)">
-          Cancel Order
-        </button>
-      </div>
 
+        <div class="order-footer">
+          <div class="order-notes" *ngIf="o.notes">
+            <mat-icon>note</mat-icon>
+            {{ o.notes }}
+          </div>
+          <div class="order-total">
+            <span class="total-label">Total</span>
+            <span class="total-value">Rs. {{ o.totalAmount | number:'1.2-2' }}</span>
+          </div>
+          <button class="cancel-btn" *ngIf="o.status === 'PENDING'" (click)="cancelOrder(o)">
+            Cancel Order
+          </button>
+        </div>
+
+      </div>
     </div>
 
   </div>
+
+  <!-- ── RIGHT: Stats Sidebar ──────────────────────────── -->
+  <aside class="stats-sidebar" *ngIf="!isLoading">
+
+    <!-- Total Spent -->
+    <div class="sidebar-card total-spend-card">
+      <div class="sidebar-label">Total Spent</div>
+      <div class="sidebar-value accent">Rs. {{ totalSpend | number:'1.2-2' }}</div>
+      <div class="sidebar-sub">from {{ completedCount }} completed order{{ completedCount !== 1 ? 's' : '' }}</div>
+    </div>
+
+    <!-- Status Breakdown -->
+    <div class="sidebar-card">
+      <div class="sidebar-label">Order Status</div>
+      <div class="status-grid">
+        <div class="status-item pending">
+          <span class="status-count pending">{{ pendingCount }}</span>
+          <span class="status-name pending">Pending</span>
+        </div>
+        <div class="status-item completed">
+          <span class="status-count completed">{{ completedCount }}</span>
+          <span class="status-name completed">Completed</span>
+        </div>
+        <div class="status-item cancelled">
+          <span class="status-count cancelled">{{ cancelledCount }}</span>
+          <span class="status-name cancelled">Cancelled</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Top Product -->
+    <div class="sidebar-card" *ngIf="orders.length > 0 && mostOrderedProduct.name !== '-'">
+      <div class="sidebar-label">Top Product</div>
+      <div class="top-product-name">{{ mostOrderedProduct.name }}</div>
+      <div class="top-product-qty">{{ mostOrderedProduct.count }} unit{{ mostOrderedProduct.count !== 1 ? 's' : '' }} ordered</div>
+    </div>
+
+    <!-- Quick Action -->
+    <button class="browse-btn" (click)="browseSupplements()">
+      <mat-icon>storefront</mat-icon>
+      Browse Supplements
+    </button>
+
+  </aside>
+
+</div>
 
 </div>

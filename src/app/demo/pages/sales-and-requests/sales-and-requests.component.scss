@@ -137,6 +137,36 @@ table { width: 100%; border-collapse: collapse; background: $ff-bg-surface; }
 
 .pagination { margin-top: 12px; }
 
+.product-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 2px 0;
+}
+
+.product-cell-line {
+  font-size: 13px;
+  color: $ff-text-primary;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.qty-chip {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  color: $ff-accent-primary;
+  background: $ff-accent-soft;
+  border-radius: 4px;
+  padding: 1px 5px;
+  margin-left: 4px;
+}
+
+.product-cell-empty {
+  color: $ff-text-dim;
+  font-size: 13px;
+}
+
 .no-data {
   text-align: left;
   padding: 16px !important;

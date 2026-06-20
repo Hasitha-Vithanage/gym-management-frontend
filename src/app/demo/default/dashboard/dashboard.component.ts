@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
 import { Subject } from 'rxjs';
 import { forkJoin, takeUntil } from 'rxjs';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
@@ -12,7 +13,12 @@ import { IconService } from '@ant-design/icons-angular';
 import { FallOutline, GiftOutline, MessageOutline, RiseOutline, SettingOutline } from '@ant-design/icons-angular/icons';
 import { DashboardService } from 'src/app/services/dashboard/dashboard.service';
 import { SupplementProductService } from 'src/app/services/new-supplement/new-supplement-service.service';
+import { HttpService } from 'src/app/services/http.service';
 import { MatTableDataSource } from '@angular/material/table';
+import { AddClassService } from 'src/app/services/add-class/add-class.service';
+import { MemberServiceService } from 'src/app/services/member-service/member-service.service';
+import { SupplementOrderService } from 'src/app/services/supplement-orders/supplement-orders.service';
+import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
 
 interface MenuItem {
   title: string;
@@ -52,10 +58,22 @@ interface SupplementProduct {
   productName: string;
   brand: string;
   category: string;
-  unit: string;
-  quantityPerUnit: number;
-  quantityInStock: number;
-  retailPrice: number;
+  price: number;
+  stockQty: number;
+  isActive: boolean;
+}
+
+interface OrderItem {
+  productName: string;
+  quantity: number;
+}
+
+interface PendingOrder {
+  id: number;
+  memberUsername: string;
+  totalAmount: number;
+  status: string;
+  items: OrderItem[];
 }
 
 const ROUTES = {
@@ -72,6 +90,7 @@ const ROUTES = {
   imports: [
     CommonModule,
     SharedModule,
+    MatIconModule,
     MonthlyBarChartComponent,
     IncomeOverviewChartComponent,
     AnalyticsChartComponent,
@@ -89,19 +108,25 @@ export class DefaultComponent implements OnInit, OnDestroy {
     newMembersInThisMonth: null
   };
 
+  staffName = '';
+  greeting = '';
+  todayDate = '';
+
   isLoadingCounts = false;
   isLoadingSupplements = false;
   hasCountsError = false;
 
+  classes: any[] = [];
+  isLoading = true;
+  pendingOrders: PendingOrder[] = [];
+  isLoadingOrders = false;
+  recentMembers: any[] = [];
+  isLoadingMembers = false;
+
   supplementsDataSource = new MatTableDataSource<SupplementProduct>();
 
   readonly displayedColumns: string[] = [
-    'productName',
-    'brand',
-    'category',
-    'quantityPerUnit',
-    'quantityInStock',
-    'retailPrice'
+    'productName', 'brand', 'category', 'stockQty', 'price', 'status'
   ];
 
     readonly menuItems: MenuItem[] = [
@@ -221,6 +246,11 @@ export class DefaultComponent implements OnInit, OnDestroy {
     private readonly iconService: IconService,
     private readonly dashboardService: DashboardService,
     private readonly supplementService: SupplementProductService,
+    private readonly addClassService: AddClassService,
+    private readonly memberService: MemberServiceService,
+    private readonly supplementOrderService: SupplementOrderService,
+    private readonly messageService: MessageServiceService,
+    private readonly httpService: HttpService,
     private readonly router: Router
   ) {
     this.iconService.addIcon(
@@ -233,8 +263,70 @@ export class DefaultComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.staffName = this.httpService.getLoginNameFromCache() || 'Staff';
+    this.greeting  = this.buildGreeting();
+    this.todayDate = new Date().toLocaleDateString('en-US', {
+      weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+    });
     this.loadDashboardData();
     this.loadSupplements();
+    this.loadClasses();
+    this.loadPendingOrders();
+    this.loadRecentMembers();
+  }
+
+  private buildGreeting(): string {
+    const h = new Date().getHours();
+    if (h < 12) return 'Good Morning';
+    if (h < 17) return 'Good Afternoon';
+    return 'Good Evening';
+  }
+
+  loadClasses(): void {
+    this.isLoading = true;
+    this.addClassService.getData().subscribe({
+      next: (response: any[]) => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        this.classes = (response ?? []).filter(c => {
+          if (c.status !== 'Scheduled') return false;
+          const classDate = new Date(c.date);
+          classDate.setHours(0, 0, 0, 0);
+          return classDate >= today;
+        });
+        this.isLoading = false;
+      },
+      error: () => {
+        this.messageService.showError('Could not load classes. Please try again.');
+        this.isLoading = false;
+      }
+    });
+  }
+
+  private loadPendingOrders(): void {
+    this.isLoadingOrders = true;
+    this.supplementOrderService.getAllOrders().subscribe({
+      next: (orders: PendingOrder[]) => {
+        this.pendingOrders = orders
+          .filter(o => o.status === 'PENDING')
+          .slice(0, 8);
+        this.isLoadingOrders = false;
+      },
+      error: () => { this.isLoadingOrders = false; }
+    });
+  }
+
+  private loadRecentMembers(): void {
+    this.isLoadingMembers = true;
+    this.memberService.getData().subscribe({
+      next: (data: any) => {
+        this.recentMembers = (data as any[])
+          .sort((a, b) => b.id - a.id)
+          .slice(0, 7);
+        this.isLoadingMembers = false;
+      },
+      error: () => { this.isLoadingMembers = false; }
+    });
   }
 
   ngOnDestroy(): void {
@@ -282,6 +374,10 @@ export class DefaultComponent implements OnInit, OnDestroy {
           this.isLoadingSupplements = false;
         }
       });
+  }
+
+  get activeProductCount(): number {
+    return this.supplementsDataSource.data.filter(p => p.isActive).length;
   }
 
   navigateTo(route: string): void {

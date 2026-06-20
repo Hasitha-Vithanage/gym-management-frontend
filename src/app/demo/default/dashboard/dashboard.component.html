@@ -1,124 +1,282 @@
 <div class="row">
-  <h2 class="form-title"><img src="../../../../assets/images/icon/dashboard-light-icon.png" >Dashboard</h2>
-  <div class="col-md-6 col-xl-3">
-    <app-card [showHeader]="false" blockClass="dashboard-card">
-      <h6 class="mb-2 f-w-400 text-muted">Total Employees<img src="../../../../assets/images/icon/employee-light-icon.png"></h6>
-      <h4 class="mb-3">
-        {{ counts.employeeCount }}
-      </h4>
-    </app-card>
-  </div>
-  <div class="col-md-6 col-xl-3">
-    <app-card [showHeader]="false" blockClass="dashboard-card">
-      <h6 class="mb-2 f-w-400 text-muted">Total Members <img src="../../../../assets/images/icon/member-light-icon.png"></h6>
-      <h4 class="mb-3">
-        {{ counts.memberCount }}
-      </h4>
-    </app-card>
-  </div>
-  <div class="col-md-6 col-xl-3">
-    <app-card [showHeader]="false" blockClass="dashboard-card">
-      <h6 class="mb-2 f-w-400 text-muted">Total Suppliers <img src="../../../../assets/images/icon/supplier-icon.png"></h6>
-      <h4 class="mb-3">
-        {{ counts.supplierCount }}
-      </h4>
 
-    </app-card>
-  </div>
-  <div class="col-md-6 col-xl-3">
-    <app-card [showHeader]="false" blockClass="dashboard-card">
-      <h6 class="mb-2 f-w-400 text-muted">New Members This Month <img src="../../../../assets/images/icon/month-light.png"></h6>
-      <h4 class="mb-3">
-        {{ counts.newMembersInThisMonth }}
-      </h4>
-    </app-card>
-  </div>
+  <!-- PAGE TITLE -->
+  <h2 class="form-title">
+    <img src="../../../../assets/images/icon/dashboard-light-icon.png">Dashboard
+  </h2>
 
-  <div class="row g-3">
-    <div class="col-md-6 col-xl-3">
-      <app-card [showHeader]="false" blockClass="dashboard-card">
-        <h6 class="mb-2 text-muted">Today's Check-ins</h6>
-        <h4 class="mb-3">47</h4>
-      </app-card>
-    </div>
-
-    <div class="col-md-6 col-xl-9">
-      <div class="quick-actions card p-3 h-90">
-        <h5 class="mb-3">Quick Actions</h5>
-        <div class="qa-grid d-flex gap-2 flex-wrap">
-          <button class="btn btn-outline-dark btn-sm" (click)="navigateTo('/pages/member')">+ Member</button>
-          <button class="btn btn-outline-dark btn-sm" (click)="navigateTo('/pages/employee')">+ Employee</button>
-          <button class="btn btn-outline-dark btn-sm" (click)="navigateTo('/pages/mark-attendance')">Mark
-            Attendance</button>
-          <button class="btn btn-outline-dark btn-sm" (click)="navigateTo('/pages/supplement-inventory-management')">+
-            Add Product</button>
+  <!-- WELCOME BANNER -->
+  <div class="col-12 mb-3">
+    <div class="welcome-banner">
+      <div class="welcome-left">
+        <div class="avatar-circle">
+          <img src="../../../../assets/images/icon/person-orange.png" style="width:30px;height:30px;">
+        </div>
+        <div class="welcome-text">
+          <p class="greeting-label">{{ greeting }},</p>
+          <h3 class="staff-name">{{ staffName }}</h3>
+          <p class="welcome-sub">Here's a summary of what's happening at the gym today.</p>
+        </div>
+      </div>
+      <div class="welcome-right">
+        <div class="date-chip">
+          <mat-icon>calendar_today</mat-icon>
+          <span>{{ todayDate }}</span>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="col-md-6 col-xl-6">
-    <h5 class="mb-3">Supplement Store</h5>
+  <!-- KEY METRICS -->
+  <div class="col-md-6 col-xl-3 metric-col">
+    <div class="metric-card">
+      <div class="metric-icon" style="background: rgba(251,191,36,0.12); color: #f59e0b;">
+        <mat-icon>pending_actions</mat-icon>
+      </div>
+      <div class="metric-body">
+        <p class="metric-label">Pending Orders</p>
+        <h4 class="metric-value">{{ isLoadingOrders ? '…' : pendingOrders.length }}</h4>
+        <p class="metric-sub">Supplement orders awaiting action</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6 col-xl-3 metric-col">
+    <div class="metric-card">
+      <div class="metric-icon" style="background: rgba(59,130,246,0.12); color: #3b82f6;">
+        <mat-icon>fitness_center</mat-icon>
+      </div>
+      <div class="metric-body">
+        <p class="metric-label">Upcoming Classes</p>
+        <h4 class="metric-value">{{ isLoading ? '…' : classes.length }}</h4>
+        <p class="metric-sub">Scheduled from today onwards</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6 col-xl-3 metric-col">
+    <div class="metric-card">
+      <div class="metric-icon" style="background: rgba(34,197,94,0.12); color: #22c55e;">
+        <mat-icon>person_add</mat-icon>
+      </div>
+      <div class="metric-body">
+        <p class="metric-label">New Members</p>
+        <h4 class="metric-value">{{ isLoadingCounts ? '…' : (counts.newMembersInThisMonth ?? 0) }}</h4>
+        <p class="metric-sub">Joined this month</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6 col-xl-3 metric-col">
+    <div class="metric-card">
+      <div class="metric-icon" style="background: rgba(167,139,250,0.12); color: #a78bfa;">
+        <mat-icon>inventory_2</mat-icon>
+      </div>
+      <div class="metric-body">
+        <p class="metric-label">Active Products</p>
+        <h4 class="metric-value">{{ isLoadingSupplements ? '…' : activeProductCount }}</h4>
+        <p class="metric-sub">Visible in supplement store</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- STAT CARDS -->
+  <div class="col-md-6 col-xl-3 mt-3">
+    <div class="stat-card">
+      <div class="stat-top">
+        <span class="stat-label">Total Members</span>
+        <div class="stat-icon" style="background: rgba(14,165,233,0.12); color: #0ea5e9;">
+          <mat-icon>people</mat-icon>
+        </div>
+      </div>
+      <h3 class="stat-value">{{ isLoadingCounts ? '…' : (counts.memberCount ?? '—') }}</h3>
+      <p class="stat-desc">Registered gym members</p>
+    </div>
+  </div>
+
+  <div class="col-md-6 col-xl-3 mt-3">
+    <div class="stat-card">
+      <div class="stat-top">
+        <span class="stat-label">Total Employees</span>
+        <div class="stat-icon" style="background: rgba(124,58,237,0.12); color: #7c3aed;">
+          <mat-icon>badge</mat-icon>
+        </div>
+      </div>
+      <h3 class="stat-value">{{ isLoadingCounts ? '…' : (counts.employeeCount ?? '—') }}</h3>
+      <p class="stat-desc">Active staff members</p>
+    </div>
+  </div>
+
+  <div class="col-md-6 col-xl-3 mt-3">
+    <div class="stat-card">
+      <div class="stat-top">
+        <span class="stat-label">Total Suppliers</span>
+        <div class="stat-icon" style="background: rgba(244,63,94,0.12); color: #f43f5e;">
+          <mat-icon>local_shipping</mat-icon>
+        </div>
+      </div>
+      <h3 class="stat-value">{{ isLoadingCounts ? '…' : (counts.supplierCount ?? '—') }}</h3>
+      <p class="stat-desc">Registered suppliers</p>
+    </div>
+  </div>
+
+  <div class="col-md-6 col-xl-3 mt-3">
+    <div class="stat-card">
+      <div class="stat-top">
+        <span class="stat-label">Total Products</span>
+        <div class="stat-icon" style="background: rgba(13,148,136,0.12); color: #0d9488;">
+          <mat-icon>storefront</mat-icon>
+        </div>
+      </div>
+      <h3 class="stat-value">{{ isLoadingSupplements ? '…' : supplementsDataSource.data.length }}</h3>
+      <p class="stat-desc">Supplement products listed</p>
+    </div>
+  </div>
+
+  <!-- ACTIONABLE ROW: Pending Orders + Upcoming Classes -->
+  <div class="col-xl-5 col-12 mt-4">
+    <div class="section-heading">
+      <img src="../../../../assets/images/icon/supplement-inventory-icon-dark.png" class="sec-icon-img">
+      <div>
+        <h5 class="sec-title">Pending Orders</h5>
+        <p class="sec-sub">Supplement orders awaiting processing</p>
+      </div>
+    </div>
+    <div class="card tbl-card">
+
+      <div class="class-state" *ngIf="isLoadingOrders">
+        <mat-icon>hourglass_empty</mat-icon>
+        <span>Loading orders…</span>
+      </div>
+
+      <div class="class-state" *ngIf="!isLoadingOrders && pendingOrders.length === 0">
+        <mat-icon>check_circle</mat-icon>
+        <span>No pending orders.</span>
+      </div>
+
+      <div class="class-list" *ngIf="!isLoadingOrders && pendingOrders.length > 0">
+        <div class="class-item" *ngFor="let o of pendingOrders">
+          <div class="class-left">
+            <span class="class-type-badge">ORDER #{{ o.id }}</span>
+            <p class="class-name">{{ o.memberUsername }}</p>
+            <div class="order-product-list">
+              <span class="order-product-line" *ngFor="let item of (o.items ?? []) | slice:0:2">
+                {{ item.productName }} <span class="item-qty-sm">×{{ item.quantity }}</span>
+              </span>
+              <span class="order-product-more" *ngIf="(o.items?.length ?? 0) > 2">
+                +{{ (o.items?.length ?? 0) - 2 }} more
+              </span>
+            </div>
+          </div>
+          <div class="class-right">
+            <p class="td-price" style="font-size:13px; margin:0;">Rs. {{ o.totalAmount | number:'1.2-2' }}</p>
+            <span class="supp-badge status-pending">Pending</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="col-xl-7 col-12 mt-4">
+    <div class="section-heading">
+      <mat-icon class="sec-icon-mat">fitness_center</mat-icon>
+      <div>
+        <h5 class="sec-title">Upcoming Classes</h5>
+        <p class="sec-sub">Scheduled classes from today onwards</p>
+      </div>
+    </div>
+
+    <div class="card tbl-card">
+
+      <div class="class-state" *ngIf="isLoading">
+        <mat-icon>hourglass_empty</mat-icon>
+        <span>Loading classes…</span>
+      </div>
+
+      <div class="class-state" *ngIf="!isLoading && classes.length === 0">
+        <mat-icon>event_busy</mat-icon>
+        <span>No upcoming classes scheduled.</span>
+      </div>
+
+      <div class="class-list" *ngIf="!isLoading && classes.length > 0">
+        <div class="class-item" *ngFor="let cls of classes">
+
+          <div class="class-left">
+            <span class="class-type-badge">{{ cls.classType }}</span>
+            <p class="class-name">{{ cls.classTitle }}</p>
+            <p class="class-trainer">
+              <mat-icon>person</mat-icon>
+              {{ cls.conductorName }}
+            </p>
+          </div>
+
+          <div class="class-right">
+            <p class="class-date">{{ cls.date | date:'dd MMM, EEE' }}</p>
+            <p class="class-time">{{ cls.startTime }} – {{ cls.endTime }}</p>
+            <span class="slots-badge"
+              [class.slots-ok]="cls.remainingSlots > 0"
+              [class.slots-full]="cls.remainingSlots === 0">
+              {{ cls.remainingSlots === 0 ? 'Full' : cls.remainingSlots + ' slots left' }}
+            </span>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- INFORMATIONAL ROW: Supplement Inventory + Recently Registered Members -->
+  <div class="col-xl-8 col-12 mt-4">
+    <div class="section-heading">
+      <img src="../../../../assets/images/icon/supplement-inventory-icon-dark.png" class="sec-icon-img">
+      <div>
+        <h5 class="sec-title">Supplement Inventory</h5>
+        <p class="sec-sub">Current stock at a glance</p>
+      </div>
+    </div>
     <div class="card tbl-card">
       <div class="table-responsive">
         <table class="table table-hover mb-0">
           <thead>
             <tr>
               <th>PRODUCT NAME</th>
-              <th>BRAND</th>
-              <th class="text-end">QUANTITY PER UNIT</th>
-              <th class="text-end">QUANTITY IN STOCK</th>
-              <th class="text-end">PRICE</th>
+              <th>CATEGORY</th>
+              <th class="text-end">STOCK</th>
+              <th class="text-end">PRICE (LKR)</th>
+              <th class="text-center">STATUS</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let supplement of supplementsDataSource.data">
+            <tr *ngIf="isLoadingSupplements">
+              <td colspan="5" class="text-center text-muted py-3">Loading products…</td>
+            </tr>
+            <tr *ngIf="!isLoadingSupplements && supplementsDataSource.data.length === 0">
+              <td colspan="5" class="text-center text-muted py-3">No products found.</td>
+            </tr>
+            <tr *ngFor="let s of supplementsDataSource.data">
               <td>
-                <a href="javascript:" class="">{{ supplement.productName }}</a>
+                <span class="td-primary">{{ s.productName }}</span>
+                <span class="td-brand" *ngIf="s.brand">{{ s.brand }}</span>
               </td>
-              <td>{{ supplement.brand }}</td>
-              <td>
-                <span class="d-block text-end">
-                  <i class="bg-success f-10 m-r-5"></i>
-                  {{ supplement.quantityPerUnit }} {{ supplement.unit }}
+              <td>{{ s.category }}</td>
+              <td class="text-end">
+                <span class="supp-badge"
+                  [class.stock-ok]="s.stockQty > 5"
+                  [class.stock-low]="s.stockQty > 0 && s.stockQty <= 5"
+                  [class.stock-out]="s.stockQty === 0">
+                  {{ s.stockQty === 0 ? 'Out' : s.stockQty <= 5 ? s.stockQty + ' — Low' : s.stockQty }}
                 </span>
               </td>
-              <td class="text-end">{{ supplement.quantityInStock }}</td>
-              <td class="text-end">{{ supplement.retailPrice | currency: 'LKR' }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-6 col-xl-6">
-    <h5 class="mb-3">Supplement Store</h5>
-    <div class="card tbl-card">
-      <div class="table-responsive">
-        <table class="table table-hover mb-0">
-          <thead>
-            <tr>
-              <th>PRODUCT NAME</th>
-              <th>BRAND</th>
-              <th class="text-end">QUANTITY PER UNIT</th>
-              <th class="text-end">QUANTITY IN STOCK</th>
-              <th class="text-end">PRICE</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let supplement of supplementsDataSource.data">
-              <td>
-                <a href="javascript:" class="">{{ supplement.productName }}</a>
-              </td>
-              <td>{{ supplement.brand }}</td>
-              <td>
-                <span class="d-block text-end">
-                  <i class="bg-success f-10 m-r-5"></i>
-                  {{ supplement.quantityPerUnit }} {{ supplement.unit }}
+              <td class="text-end td-price">Rs. {{ s.price | number:'1.2-2' }}</td>
+              <td class="text-center">
+                <span class="supp-badge"
+                  [class.status-active]="s.isActive"
+                  [class.status-hidden]="!s.isActive">
+                  {{ s.isActive ? 'Active' : 'Hidden' }}
                 </span>
               </td>
-              <td class="text-end">{{ supplement.quantityInStock }}</td>
-              <td class="text-end">{{ supplement.retailPrice | currency: 'LKR' }}</td>
             </tr>
           </tbody>
         </table>
@@ -126,74 +284,47 @@
     </div>
   </div>
 
-  <!-- EXPIRING SOON -->
-  <div class="col-md-12 col-xl-6 mt-4">
-    <h5 class="mb-3">Expiring Soon</h5>
-    <div class="card tbl-card">
-      <div class="table-responsive">
-        <table class="table table-hover mb-0">
-          <thead>
-            <tr>
-              <th>NAME</th>
-              <th>PLAN</th>
-              <th class="text-end">EXPIRY</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Kasun Perera</td>
-              <td>Gold</td>
-              <td class="text-end">2025-02-02</td>
-            </tr>
-            <tr>
-              <td>Nimal Silva</td>
-              <td>Basic</td>
-              <td class="text-end">2025-02-05</td>
-            </tr>
-          </tbody>
-        </table>
+  <div class="col-xl-4 col-12 mt-4">
+    <div class="section-heading">
+      <img src="../../../../assets/images/icon/member-light-icon.png" class="sec-icon-img">
+      <div>
+        <h5 class="sec-title">Recently Registered</h5>
+        <p class="sec-sub">Latest members who joined the gym</p>
       </div>
+    </div>
+    <div class="card tbl-card">
+
+      <div class="class-state" *ngIf="isLoadingMembers">
+        <mat-icon>hourglass_empty</mat-icon>
+        <span>Loading members…</span>
+      </div>
+
+      <div class="class-state" *ngIf="!isLoadingMembers && recentMembers.length === 0">
+        <mat-icon>group</mat-icon>
+        <span>No members found.</span>
+      </div>
+
+      <div class="class-list" *ngIf="!isLoadingMembers && recentMembers.length > 0">
+        <div class="class-item" *ngFor="let m of recentMembers">
+          <div class="class-left">
+            <div class="member-name-cell">
+              <div class="member-avatar">
+                {{ m.firstName?.charAt(0) }}{{ m.lastName?.charAt(0) }}
+              </div>
+              <div>
+                <p class="class-name">{{ m.firstName }} {{ m.lastName }}</p>
+                <p class="class-trainer">{{ m.memberNo || '—' }}</p>
+              </div>
+            </div>
+          </div>
+          <div class="class-right">
+            <p class="class-date">{{ m.joinedDate | date:'dd MMM' }}</p>
+            <p class="class-time">{{ m.phoneNumber || '—' }}</p>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 
-
-  <!-- UPCOMING CLASSES -->
-  <div class="col-md-12 col-xl-6 mt-4">
-    <h5 class="mb-3">Upcoming Classes</h5>
-    <div class="card tbl-card">
-      <div class="list-group list-group-flush">
-        <div class="list-group-item">
-          <div class="d-flex justify-content-between">
-            <strong>Yoga</strong>
-            <span>6:00 PM</span>
-          </div>
-          <p class="mb-0 text-muted">Trainer: Shalini</p>
-        </div>
-
-        <div class="list-group-item">
-          <div class="d-flex justify-content-between">
-            <strong>HIIT</strong>
-            <span>7:00 PM</span>
-          </div>
-          <p class="mb-0 text-muted">Trainer: Dilshan</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Menu Cards Section -->
-  <section class="menu-section">
-    <div class="container">
-      <div class="cards-grid">
-        <div *ngFor="let item of menuItems" class="menu-card" (click)="navigateTo(item.route)">
-          <div class="card-icon">
-            <img [src]="item.icon" [alt]="item.title">
-          </div>
-          <h3 class="card-title">{{ item.title }}</h3>
-          <p class="card-description">{{ item.description }}</p>
-          <div class="card-arrow">→</div>
-        </div>
-      </div>
-    </div>
-  </section>
 </div>

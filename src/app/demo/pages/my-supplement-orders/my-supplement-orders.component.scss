@@ -1,13 +1,28 @@
 @import 'src/scss/settings/colors';
 
-.orders-container {
+// ── Layout ────────────────────────────────────────────────────────────────────
+.page-wrapper {
   padding: 16px;
   display: flex;
   flex-direction: column;
   gap: 16px;
-  max-width: 760px;
 }
 
+.page-layout {
+  display: grid;
+  grid-template-columns: 1fr 272px;
+  gap: 24px;
+  align-items: start;
+}
+
+.orders-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+// ── Page Title ────────────────────────────────────────────────────────────────
 .page-title {
   margin: 0;
   font-size: 22px;
@@ -18,6 +33,7 @@
   gap: 8px;
 }
 
+// ── States ────────────────────────────────────────────────────────────────────
 .loading-state, .empty-state {
   display: flex;
   align-items: center;
@@ -29,6 +45,7 @@
   p { margin: 0; }
 }
 
+// ── Orders List ───────────────────────────────────────────────────────────────
 .orders-list {
   display: flex;
   flex-direction: column;
@@ -85,6 +102,13 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+}
+
+.no-items-hint {
+  font-size: 12px;
+  color: $ff-text-dim;
+  font-style: italic;
+  padding: 4px 0;
 }
 
 .order-item {
@@ -176,4 +200,132 @@
   transition: all 0.2s;
 
   &:hover { background: rgba(239,68,68,0.16); }
+}
+
+// ── Stats Sidebar ─────────────────────────────────────────────────────────────
+.stats-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  position: sticky;
+  top: 16px;
+}
+
+.sidebar-card {
+  background: $ff-bg-elevated;
+  border: 1px solid $ff-border-default;
+  border-radius: $ff-radius-md;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  box-shadow: $ff-shadow-card;
+}
+
+.total-spend-card {
+  border-color: rgba(234, 131, 0, 0.35);
+  background: linear-gradient(135deg, $ff-bg-elevated 55%, rgba(234, 131, 0, 0.07));
+}
+
+.sidebar-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  color: $ff-text-dim;
+}
+
+.sidebar-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: $ff-text-primary;
+  line-height: 1.2;
+
+  &.accent { color: $ff-accent-primary; }
+}
+
+.sidebar-sub {
+  font-size: 12px;
+  color: $ff-text-dim;
+}
+
+// Status grid
+.status-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.status-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 4px;
+  border-radius: $ff-radius-sm;
+  gap: 4px;
+
+  &.pending   { background: rgba(234,179,8,0.08); }
+  &.completed { background: rgba(34,197,94,0.08); }
+  &.cancelled { background: rgba(156,163,175,0.08); }
+}
+
+.status-count {
+  font-size: 20px;
+  font-weight: 700;
+
+  &.pending   { color: #ca8a04; }
+  &.completed { color: #22c55e; }
+  &.cancelled { color: #9ca3af; }
+}
+
+.status-name {
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+
+  &.pending   { color: #ca8a04; }
+  &.completed { color: #22c55e; }
+  &.cancelled { color: #9ca3af; }
+}
+
+// Top product
+.top-product-name {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: $ff-text-primary;
+  line-height: 1.4;
+  margin-top: 2px;
+}
+
+.top-product-qty {
+  font-size: 12px;
+  color: $ff-text-dim;
+}
+
+// Browse button
+.browse-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  height: 40px;
+  border-radius: $ff-radius-sm;
+  border: 1px solid rgba(234, 131, 0, 0.4);
+  background: rgba(234, 131, 0, 0.08);
+  color: $ff-accent-primary;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: $ff-font;
+  transition: all 0.2s;
+
+  mat-icon { font-size: 18px; width: 18px; height: 18px; }
+
+  &:hover {
+    background: rgba(234, 131, 0, 0.16);
+    border-color: $ff-accent-primary;
+  }
 }

@@ -55,10 +55,17 @@ export class SalesAndRequestsComponent implements OnInit {
     if (this.dataSource.paginator) this.dataSource.paginator.firstPage();
   }
 
+  private parseDate(d: any): Date | null {
+    if (!d) return null;
+    if (Array.isArray(d)) return new Date(d[0], d[1] - 1, d[2], d[3] ?? 0, d[4] ?? 0, d[5] ?? 0);
+    return new Date(d);
+  }
+
   populateData(): void {
     this.orderService.getAllOrders().subscribe({
       next: (data: any[]) => {
-        this.dataSource = new MatTableDataSource(data);
+        const mapped = data.map(o => ({ ...o, orderDate: this.parseDate(o.orderDate) }));
+        this.dataSource = new MatTableDataSource(mapped);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
         this.cdr.markForCheck();
