@@ -616,25 +616,25 @@ export const NavigationItems: NavigationItem[] = [
       }
     ]
   },
-  {
-    id: 'payments',
-    title: 'Payments',
-    type: 'group',
-    icon: '../../../../assets/images/icon/payment-icon.png',
-    auth: [authenticationEnum.Payments],
-    children: [
-      {
-        id: 'payments',
-        title: 'Payments',
-        type: 'item',
-        classes: 'nav-item',
-        url: '/pages/payments',
-        icon: '../../../../assets/images/icon/make-payment-icon.png',
-        auth: [authenticationEnum.Payments],
-        breadcrumbs: false
-      } // add other reports to here
-    ]
-  },
+  // {
+  //   id: 'payments',
+  //   title: 'Payments',
+  //   type: 'group',
+  //   icon: '../../../../assets/images/icon/payment-icon.png',
+  //   auth: [authenticationEnum.Payments],
+  //   children: [
+  //     {
+  //       id: 'payments',
+  //       title: 'Payments',
+  //       type: 'item',
+  //       classes: 'nav-item',
+  //       url: '/pages/payments',
+  //       icon: '../../../../assets/images/icon/make-payment-icon.png',
+  //       auth: [authenticationEnum.Payments],
+  //       breadcrumbs: false
+  //     } // add other reports to here
+  //   ]
+  // },
   {
     id: 'ratings',
     title: 'Ratings & Feedback',
