@@ -8,7 +8,7 @@
 .form-section {
   width: 700px;
   max-height: 80vh;
-  background: $ff-bg-surface;
+  background: $ff-bg-elevated;
   border-radius: $ff-radius-md;
   display: flex;
   flex-direction: column;
@@ -17,41 +17,64 @@
   box-shadow: $ff-shadow-card;
 }
 
-.title {
+.dialog-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 16px 20px;
+  justify-content: space-between;
+  padding: 18px 24px;
   border-bottom: 1px solid $ff-border-default;
   flex-shrink: 0;
 }
 
+.header-title-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-icon {
+  font-size: 26px;
+  width: 26px;
+  height: 26px;
+  color: $ff-accent-primary;
+  flex-shrink: 0;
+}
+
 .form-title {
-  margin: 0;
-  font-size: 18px;
+  margin: 0 0 2px;
+  font-size: 17px;
   font-weight: 700;
   color: $ff-text-primary;
   letter-spacing: 0.2px;
 }
 
-.close-light {
+.dialog-sub {
+  margin: 0;
+  font-size: 12px;
+  color: $ff-text-secondary;
+}
+
+.close-btn {
   background: transparent;
   border: none;
-  color: $ff-text-secondary;
-  font-size: 18px;
+  color: $ff-text-dim;
   cursor: pointer;
-  padding: 4px 8px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: $ff-radius-sm;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
 
-  &:hover {
-    background: $ff-bg-hover;
-    color: $ff-text-primary;
-  }
+  &:hover { background: $ff-bg-input; color: $ff-text-primary; }
+
+  mat-icon { font-size: 18px; width: 18px; height: 18px; }
 }
 
 form {
-  padding: 20px;
+  padding: 20px 24px;
   overflow-y: auto;
 }
 

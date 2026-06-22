@@ -72,24 +72,28 @@ export class EquipmentRegistrationComponent {
 
   // Table function
   displayedColumns: string[] = [
-    'category',
-    'supplier',
-    'brandName',
-    'quantity',
-    'condition',
-    'purchaseDate',
-    'addedBy',
-    'machineName',
-    'muscleGroups',
-    'model',
-    'type',
-    'sizeStandard',
-    'barLength',
-    'weight',
-    'equipmentName',
-    'remarks',
-    'actions'
+    'machineName', 'category', 'brandName', 'supplier',
+    'muscleGroups', 'quantity', 'condition', 'purchaseDate', 'actions'
   ];
+
+  getCatClass(category: string): string {
+    switch (category) {
+      case 'Machines': return 'cat-machines';
+      case 'Freeweights': return 'cat-free';
+      case 'Other': return 'cat-other';
+      default: return '';
+    }
+  }
+
+  getConditionClass(condition: string): string {
+    switch (condition) {
+      case 'New': return 'cond-new';
+      case 'Good': return 'cond-good';
+      case 'Poor': return 'cond-poor';
+      case 'Out of Service': return 'cond-out';
+      default: return '';
+    }
+  }
 
   dataSource = new MatTableDataSource<any>;
 

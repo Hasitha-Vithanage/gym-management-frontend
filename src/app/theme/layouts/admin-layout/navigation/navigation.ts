@@ -535,6 +535,16 @@ export const NavigationItems: NavigationItem[] = [
         breadcrumbs: false
       },
       {
+        id: 'equipmentManagementDet',
+        title: 'Equipment Management',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/pages/equipment-management',
+        icon: '../../../../assets/images/icon/equipments-icon.png',
+        auth: [authenticationEnum.Equipments],
+        breadcrumbs: false
+      },
+      {
         id: 'supplierDet',
         title: 'Suppliers',
         type: 'item',

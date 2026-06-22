@@ -1,0 +1,106 @@
+<div class="dialog-container">
+
+  <!-- Header -->
+  <div class="dialog-header">
+    <div class="dialog-title-group">
+      <mat-icon class="header-icon">assignment</mat-icon>
+      <div>
+        <h2 class="dialog-title">Maintenance Log</h2>
+        <p class="dialog-sub">{{ equipmentName }}</p>
+      </div>
+    </div>
+    <button class="close-btn" (click)="close()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <!-- History section -->
+  <div class="history-section">
+    <div class="section-label">
+      <mat-icon>history</mat-icon> Past Records
+    </div>
+
+    <div class="log-loading" *ngIf="isLoadingLogs">
+      <mat-spinner diameter="24"></mat-spinner>
+    </div>
+
+    <div class="log-empty" *ngIf="!isLoadingLogs && logs.length === 0">
+      <mat-icon>inbox</mat-icon>
+      <span>No maintenance records yet</span>
+    </div>
+
+    <div class="log-list" *ngIf="!isLoadingLogs && logs.length > 0">
+      <div class="log-entry" *ngFor="let log of logs">
+        <div class="log-left">
+          <span class="type-chip" [ngClass]="getTypeClass(log.type)">{{ log.type }}</span>
+          <div class="log-meta">
+            <span class="log-date">{{ log.performedDate | date: 'MMM d, y' }}</span>
+            <span class="log-by">by {{ log.performedBy }}</span>
+          </div>
+        </div>
+        <div class="log-right">
+          <p class="log-desc">{{ log.description }}</p>
+          <span class="log-cost" *ngIf="log.cost">LKR {{ log.cost | number: '1.2-2' }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Add new log form -->
+  <div class="form-section">
+    <div class="section-label">
+      <mat-icon>add_circle_outline</mat-icon> Add New Log Entry
+    </div>
+
+    <form [formGroup]="logForm" (ngSubmit)="onSubmit()">
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="field-label">Type <span class="req">*</span></label>
+          <mat-select formControlName="type" class="field-select">
+            <mat-option *ngFor="let t of logTypes" [value]="t">{{ t }}</mat-option>
+          </mat-select>
+        </div>
+        <div class="form-group">
+          <label class="field-label">Performed Date <span class="req">*</span></label>
+          <input type="date" formControlName="performedDate" class="field-input"
+                 [max]="today | date: 'yyyy-MM-dd'" />
+          <span class="err" *ngIf="submitted && logForm.get('performedDate')?.invalid">Required</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="field-label">Performed By <span class="req">*</span></label>
+        <input type="text" formControlName="performedBy" class="field-input" placeholder="Technician / Staff name…" />
+        <span class="err" *ngIf="submitted && logForm.get('performedBy')?.invalid">Required</span>
+      </div>
+
+      <div class="form-group">
+        <label class="field-label">Description <span class="req">*</span></label>
+        <textarea formControlName="description" class="field-textarea" rows="3"
+                  placeholder="Describe what was done…"></textarea>
+        <span class="err" *ngIf="submitted && logForm.get('description')?.invalid">
+          <ng-container *ngIf="logForm.get('description')?.hasError('required')">Required</ng-container>
+          <ng-container *ngIf="logForm.get('description')?.hasError('minlength')">Min 5 characters</ng-container>
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label class="field-label">Cost (LKR) <span class="optional">optional</span></label>
+        <input type="number" formControlName="cost" class="field-input" placeholder="0.00" min="0" />
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-primary" [disabled]="isSubmitting">
+          <mat-icon>save</mat-icon>
+          {{ isSubmitting ? 'Saving…' : 'Save Log' }}
+        </button>
+        <button type="button" class="btn-ghost" (click)="close()">Cancel</button>
+      </div>
+
+    </form>
+  </div>
+
+</div>

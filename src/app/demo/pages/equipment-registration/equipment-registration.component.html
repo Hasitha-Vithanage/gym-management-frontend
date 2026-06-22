@@ -1,133 +1,147 @@
-<!--- Supplier-->
 <div class="table-section">
-  <!-- Title of the-->
-  <h2 class="form-title"><img src="../../../../assets/images/icon/equipments-icon-dark.png"
-      style="margin-right: 5px; height: 18px; width: 18px;">Equipment</h2>
 
-  <!-- Container for new button and filter -->
+  <h2 class="form-title">
+    <mat-icon class="title-icon">construction</mat-icon>
+    Equipment
+  </h2>
+
   <div class="toolbar">
-    <!-- add-new on the left -->
     <div class="add-new">
-      <button type="reset" mat-raised-button class="new-button half-width" (click)="openDialog()">
-        <img src="../../../../assets/images/icon/add-light-icon.png"
-          style="margin-right: 5px; height: 18px; width: 18px;">
-        New
+      <button mat-raised-button class="new-button" (click)="openDialog()">
+        <mat-icon>add</mat-icon>
+        Add New Equipment
       </button>
     </div>
 
-    <!-- table-filter on the right -->
     <div class="table-filter">
-      <!-- Search bar -->
       <div class="search-bar">
-        <img src="../../../../assets/images/icon/search-icon.png" style="margin-right: 5px; height: 18px; width: 18px;">
+        <mat-icon>search</mat-icon>
         <input type="text" placeholder="Search..." (keyup)="applyFilter($event)" />
       </div>
-      <!-- refresh button-->
-      <button mat-icon-button class="refresh-button" (click)="refreshData()">
-        <img src="../../../../assets/images/icon/refresh-icon.png"
-          style="margin-right: 5px; height: 18px; width: 18px;">
+      <button mat-icon-button class="refresh-button" (click)="refreshData()" matTooltip="Refresh">
+        <mat-icon>refresh</mat-icon>
       </button>
     </div>
   </div>
 
-  <!--- Table -->
   <div class="table-wrapper">
-    <table mat-table [dataSource]="dataSource">
-      <!-- Supplier Name Column -->
-      <ng-container matColumnDef="category">
-        <th mat-header-cell *matHeaderCellDef>Category</th>
-        <td mat-cell *matCellDef="let element">{{ element.category || '-' }}</td>
-      </ng-container>
+    <table mat-table [dataSource]="dataSource" class="equipment-master-table">
 
-      <ng-container matColumnDef="supplier">
-        <th mat-header-cell *matHeaderCellDef>Supplier</th>
-        <td mat-cell *matCellDef="let element">{{ getSupplierName(element.supplier) || 'N/A' }}</td>
-      </ng-container>
-
+      <!-- Equipment Name -->
       <ng-container matColumnDef="machineName">
-        <th mat-header-cell *matHeaderCellDef>Machine Name</th>
-        <td mat-cell *matCellDef="let element">{{ element.machineName || 'N/A' }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="muscleGroups">
-        <th mat-header-cell *matHeaderCellDef>Muscle Groups</th>
-        <td mat-cell *matCellDef="let element">
-          {{ element.muscleGroups && element.muscleGroups.length > 0 ? element.muscleGroups.join(', ') : 'N/A' }}
+        <th mat-header-cell *matHeaderCellDef>Equipment Name</th>
+        <td mat-cell *matCellDef="let e">
+          <div class="name-cell">
+            <span class="name-primary">{{ e.machineName || e.equipmentName || '—' }}</span>
+            <span class="name-sub" *ngIf="e.model">{{ e.model }}</span>
+          </div>
         </td>
       </ng-container>
 
+      <!-- Category -->
+      <ng-container matColumnDef="category">
+        <th mat-header-cell *matHeaderCellDef>Category</th>
+        <td mat-cell *matCellDef="let e">
+          <span class="cat-chip" [ngClass]="getCatClass(e.category)" *ngIf="e.category; else noCat">{{ e.category }}</span>
+          <ng-template #noCat><span class="dim-text">—</span></ng-template>
+        </td>
+      </ng-container>
+
+      <!-- Brand -->
       <ng-container matColumnDef="brandName">
-        <th mat-header-cell *matHeaderCellDef>Brand Name</th>
-        <td mat-cell *matCellDef="let element">{{ element.brandName || 'N/A' }}</td>
+        <th mat-header-cell *matHeaderCellDef>Brand</th>
+        <td mat-cell *matCellDef="let e">{{ e.brandName || '—' }}</td>
       </ng-container>
 
-      <ng-container matColumnDef="model">
-        <th mat-header-cell *matHeaderCellDef>Model</th>
-        <td mat-cell *matCellDef="let element">{{ element.model || 'N/A' }}</td>
+      <!-- Supplier -->
+      <ng-container matColumnDef="supplier">
+        <th mat-header-cell *matHeaderCellDef>Supplier</th>
+        <td mat-cell *matCellDef="let e">{{ getSupplierName(e.supplier) }}</td>
       </ng-container>
 
-      <ng-container matColumnDef="type">
-        <th mat-header-cell *matHeaderCellDef>Type</th>
-        <td mat-cell *matCellDef="let element">{{ element.type || 'N/A' }}</td>
+      <!-- Muscle Groups -->
+      <ng-container matColumnDef="muscleGroups">
+        <th mat-header-cell *matHeaderCellDef>Muscle Groups</th>
+        <td mat-cell *matCellDef="let e">
+          <div class="muscle-chips" *ngIf="e.muscleGroups && e.muscleGroups.length > 0; else noMuscle">
+            <span class="muscle-chip" *ngFor="let g of e.muscleGroups">{{ g }}</span>
+          </div>
+          <ng-template #noMuscle><span class="dim-text">—</span></ng-template>
+        </td>
       </ng-container>
 
-      <ng-container matColumnDef="sizeStandard">
-        <th mat-header-cell *matHeaderCellDef>Size Standard</th>
-        <td mat-cell *matCellDef="let element">{{ element.sizeStandard || 'N/A' }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="barLength">
-        <th mat-header-cell *matHeaderCellDef>Bar Length</th>
-        <td mat-cell *matCellDef="let element">{{ element.barLength || 'N/A' }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="weight">
-        <th mat-header-cell *matHeaderCellDef>Weight</th>
-        <td mat-cell *matCellDef="let element">{{ element.weight || 'N/A' }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="equipmentName">
-        <th mat-header-cell *matHeaderCellDef>Equipment Name</th>
-        <td mat-cell *matCellDef="let element">{{ element.equipmentName || 'N/A' }}</td>
-      </ng-container>
-
+      <!-- Quantity -->
       <ng-container matColumnDef="quantity">
-        <th mat-header-cell *matHeaderCellDef>Quantity</th>
-        <td mat-cell *matCellDef="let element">{{ element.quantity || 'N/A' }}</td>
+        <th mat-header-cell *matHeaderCellDef>Qty</th>
+        <td mat-cell *matCellDef="let e">
+          <span class="qty-badge" *ngIf="e.quantity; else noQty">{{ e.quantity }}</span>
+          <ng-template #noQty><span class="dim-text">—</span></ng-template>
+        </td>
       </ng-container>
 
+      <!-- Condition -->
       <ng-container matColumnDef="condition">
         <th mat-header-cell *matHeaderCellDef>Condition</th>
-        <td mat-cell *matCellDef="let element">{{ element.condition || 'N/A' }}</td>
+        <td mat-cell *matCellDef="let e">
+          <span class="condition-pill" [ngClass]="getConditionClass(e.condition)" *ngIf="e.condition; else noCond">
+            {{ e.condition }}
+          </span>
+          <ng-template #noCond><span class="dim-text">—</span></ng-template>
+        </td>
       </ng-container>
 
+      <!-- Purchase Date -->
       <ng-container matColumnDef="purchaseDate">
         <th mat-header-cell *matHeaderCellDef>Purchase Date</th>
-        <td mat-cell *matCellDef="let element">{{ element.purchaseDate | date: 'yyyy-MM-dd' }}</td>
+        <td mat-cell *matCellDef="let e">
+          {{ e.purchaseDate ? (e.purchaseDate | date: 'MMM d, y') : '—' }}
+        </td>
       </ng-container>
 
+      <!-- Remaining ng-containers kept for registration compatibility -->
+      <ng-container matColumnDef="model">
+        <th mat-header-cell *matHeaderCellDef>Model</th>
+        <td mat-cell *matCellDef="let e">{{ e.model || '—' }}</td>
+      </ng-container>
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef>Type</th>
+        <td mat-cell *matCellDef="let e">{{ e.type || '—' }}</td>
+      </ng-container>
+      <ng-container matColumnDef="sizeStandard">
+        <th mat-header-cell *matHeaderCellDef>Size Standard</th>
+        <td mat-cell *matCellDef="let e">{{ e.sizeStandard || '—' }}</td>
+      </ng-container>
+      <ng-container matColumnDef="barLength">
+        <th mat-header-cell *matHeaderCellDef>Bar Length</th>
+        <td mat-cell *matCellDef="let e">{{ e.barLength || '—' }}</td>
+      </ng-container>
+      <ng-container matColumnDef="weight">
+        <th mat-header-cell *matHeaderCellDef>Weight</th>
+        <td mat-cell *matCellDef="let e">{{ e.weight || '—' }}</td>
+      </ng-container>
+      <ng-container matColumnDef="equipmentName">
+        <th mat-header-cell *matHeaderCellDef>Equipment Name</th>
+        <td mat-cell *matCellDef="let e">{{ e.equipmentName || '—' }}</td>
+      </ng-container>
       <ng-container matColumnDef="addedBy">
         <th mat-header-cell *matHeaderCellDef>Added By</th>
-        <td mat-cell *matCellDef="let element">{{ element.addedBy || 'N/A' }}</td>
+        <td mat-cell *matCellDef="let e">{{ e.addedBy || '—' }}</td>
       </ng-container>
-
       <ng-container matColumnDef="remarks">
         <th mat-header-cell *matHeaderCellDef>Remarks</th>
-        <td mat-cell *matCellDef="let element">{{ element.remarks || 'N/A' }}</td>
+        <td mat-cell *matCellDef="let e">{{ e.remarks || '—' }}</td>
       </ng-container>
 
-      <!-- action Column -->
+      <!-- Actions -->
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef style="text-align: center">Actions</th>
-        <td style="display: flex; justify-content: center;" mat-cell *matCellDef="let element">
+        <td mat-cell *matCellDef="let e">
           <div class="action-column">
-            <button mat-icon-button class="gray-icon-btn" matTooltip="Edit" (click)="editData(element)">
-              <img src="../../../../assets/images/icon/edit-icon.png"
-                style="margin-right: 5px; height: 18px; width: 18px;">
+            <button mat-icon-button class="gray-icon-btn" matTooltip="Edit" (click)="editData(e)">
+              <mat-icon>edit</mat-icon>
             </button>
-            <button mat-icon-button class="gray-icon-btn" matTooltip="Delete" (click)="deleteData(element)">
-              <img src="../../../../assets/images/icon/delete-icon.png"
-                style="margin-right: 5px; height: 18px; width: 18px;">
+            <button mat-icon-button class="gray-icon-btn" matTooltip="Delete" (click)="deleteData(e)">
+              <mat-icon>delete_outline</mat-icon>
             </button>
           </div>
         </td>
@@ -135,19 +149,18 @@
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell no-data" [attr.colspan]="displayedColumns.length">
+          No equipment records found.
+        </td>
+      </tr>
+
     </table>
 
-    <!-- No data row -->
-    <ng-container *ngIf="dataSource.data.length === 0">
-      <ng-container matColumnDef="noData" class="no-data">
-        <td mat-cell [attr.colspan]="displayedColumns.length" class="no-data">No records found</td>
-      </ng-container>
-
-      <tr mat-row *matRowDef="let row; columns: ['noData']"></tr>
-    </ng-container>
-
-    <!-- pagination-->
-    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users" class="pagination">
+    <mat-paginator [pageSizeOptions]="[10, 25, 50]" class="pagination" aria-label="Select page">
     </mat-paginator>
+
   </div>
+
 </div>

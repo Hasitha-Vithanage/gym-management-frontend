@@ -77,6 +77,8 @@ import { FoodToTemplateComponent } from './food-to-template/food-to-template.com
 import { AssignMealPlanComponent } from './assign-meal-plan/assign-meal-plan.component';
 import { MyAttendanceComponent } from './my-attendance/my-attendance.component';
 import { AttendanceAnalyticsComponent } from './attendance-analytics/attendance-analytics.component';
+import { EquipmentManagementComponent } from './equipment-management/equipment-management.component';
+import { LogMaintenanceDialogComponent } from './log-maintenance-dialog/log-maintenance-dialog.component';
 // icons
 
 export const MY_DATE_FORMATS = {
@@ -160,7 +162,9 @@ export const MY_DATE_FORMATS = {
     FoodToTemplateComponent,
     AssignMealPlanComponent,
     MyAttendanceComponent,
-    AttendanceAnalyticsComponent
+    AttendanceAnalyticsComponent,
+    EquipmentManagementComponent,
+    LogMaintenanceDialogComponent
   ],
   imports: [
     CommonModule,
