@@ -497,25 +497,25 @@ export const NavigationItems: NavigationItem[] = [
     ]
   },
   /* side navigation bar item for Workflow */
-  {
-    id: 'workflow',
-    title: 'Workflow',
-    type: 'group',
-    icon: '../../../../assets/images/icon/workflow-icon.png',
-    auth: [authenticationEnum.For_Your_Approval],
-    children: [
-      {
-        id: 'forYourApprovalDet',
-        title: 'For Your Approval',
-        type: 'item',
-        classes: 'nav-item',
-        url: '/pages/for-your-approval',
-        icon: '../../../../assets/images/icon/for-your-approval-light-icon.png',
-        auth: [authenticationEnum.For_Your_Approval],
-        breadcrumbs: false
-      }
-    ]
-  },
+  // {
+  //   id: 'workflow',
+  //   title: 'Workflow',
+  //   type: 'group',
+  //   icon: '../../../../assets/images/icon/workflow-icon.png',
+  //   auth: [authenticationEnum.For_Your_Approval],
+  //   children: [
+  //     {
+  //       id: 'forYourApprovalDet',
+  //       title: 'For Your Approval',
+  //       type: 'item',
+  //       classes: 'nav-item',
+  //       url: '/pages/for-your-approval',
+  //       icon: '../../../../assets/images/icon/for-your-approval-light-icon.png',
+  //       auth: [authenticationEnum.For_Your_Approval],
+  //       breadcrumbs: false
+  //     }
+  //   ]
+  // },
   /* side navigation bar item for Masters */
   {
     id: 'masters',

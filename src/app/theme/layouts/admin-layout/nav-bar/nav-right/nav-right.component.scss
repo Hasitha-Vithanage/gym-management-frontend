@@ -34,12 +34,33 @@
 
   &:hover {
     color: $ff-text-primary;
-    background: $ff-bg-elevated !important;
+    background: $ff-bg-hover !important;
     border-color: $ff-border-default;
   }
 
+  // Override vendor theme's light-mode header vars (--pc-header-color,
+  // --pc-active-background) which leave the icon dark-on-dark until hover.
   nz-icon, i {
     font-size: 18px;
+    color: $ff-text-secondary !important;
+  }
+
+  &::before {
+    background: $ff-bg-hover !important;
+  }
+
+  &:hover,
+  &:focus,
+  &.show {
+    nz-icon, i {
+      color: $ff-text-primary !important;
+    }
+  }
+}
+
+.dropdown.show > .pc-head-link {
+  nz-icon, i {
+    color: $ff-text-primary !important;
   }
 }
 

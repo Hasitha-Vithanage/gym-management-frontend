@@ -1,7 +1,7 @@
 <!--- Supplier-->
 <div class="table-section">
   <!-- Title of the-->
-  <h2 class="form-title"><img src="../../../../assets/images/icon/supplier-icon-dark.png"
+  <h2 class="form-title"><img src="../../../../assets/images/icon/supplier-icon.png"
       style="margin-right: 5px;">Supplier</h2>
 
   <!-- Container for new button and filter -->
@@ -19,13 +19,13 @@
     <div class="table-filter">
       <!-- Search bar -->
       <div class="search-bar">
-        <img src="../../../../assets/images/icon/search-icon.png" style="margin-right: 5px; height: 18px; width: 18px;">
+        <img src="../../../../assets/images/icon/search.png" style="margin-right: 5px; height: 18px; width: 18px;">
         <input type="text" placeholder="Search..." (keyup)="applyFilter($event)" />
       </div>
 
       <!-- refresh button-->
       <button mat-icon-button class="refresh-button" (click)="refreshData()">
-        <img src="../../../../assets/images/icon/refresh-icon.png"
+        <img src="../../../../assets/images/icon/refresh.png"
           style="margin-right: 5px; height: 18px; width: 18px;">
       </button>
     </div>
@@ -86,7 +86,7 @@
         <td mat-cell *matCellDef="let element">
           <div class="action-column">
             <button mat-icon-button class="gray-icon-btn" matTooltip="Edit" (click)="editData(element)">
-              <img src="../../../../assets/images/icon/edit-icon.png"
+              <img src="../../../../assets/images/icon/edit-light.png"
                 style="margin-right: 5px; height: 18px; width: 18px;">
             </button>
             <!-- <button mat-icon-button class="gray-icon-btn" matTooltip="Delete" (click)="deleteData(element)">

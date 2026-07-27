@@ -2,7 +2,7 @@
   <!-- Table Section to the Right of Form -->
   <div class="table-section">
     <!-- title of the-->
-    <h2 class="form-title"><img src="../../../../assets/images/icon/member-report-icon-dark.png"
+    <h2 class="form-title"><img src="../../../../assets/images/icon/member-report-icon.png"
         style="margin-right: 5px;">Member Report</h2>
 
     <div class="toolbar">
@@ -19,24 +19,19 @@
       <div class="table-filter">
         <!-- Search bar -->
         <div class="search-bar">
-          <img src="../../../../assets/images/icon/search-icon.png" style="margin-right: 5px; height: 18px; width: 18px;">
+          <img src="../../../../assets/images/icon/search.png" style="margin-right: 5px; height: 18px; width: 18px;">
           <input type="text" placeholder="Search..." (keyup)="applyFilter($event)" />
         </div>
 
         <!-- refresh button-->
-        <div>
-          <button mat-icon-button (click)="refreshData()" class="refresh-button">
-            <img src="../../../../assets/images/icon/refresh-icon.png"
-              style="margin-right: 5px; height: 18px; width: 18px;">
-          </button>
-        </div>
+        <button mat-icon-button matTooltip="Refresh" class="refresh-button" (click)="refreshData()">
+          <img src="../../../../assets/images/icon/refresh.png"
+            style="margin-right: 5px; height: 18px; width: 18px;">
+        </button>
 
-        <div class="actions-bar">
-          <button class="refresh-button"(click)="printReport()">
-            <img src="../../../../assets/images/icon/download-icon-dark.png"
-              style="margin-right: 5px; height: 18px; width: 18px;">
-          </button>
-        </div>
+        <button mat-icon-button matTooltip="Download Report" class="refresh-button" (click)="printReport()">
+          <mat-icon>download</mat-icon>
+        </button>
       </div>
 
     </div>

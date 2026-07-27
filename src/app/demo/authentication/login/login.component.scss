@@ -8,7 +8,7 @@
 
 .auth-left {
   flex: 1;
-  background: url("../../../../assets/images/landing-page/login-11.jpg")
+  background: url("../../../../assets/images/landing-page/login-13.jpeg")
     center center/cover no-repeat;
   position: relative;
 }
@@ -18,7 +18,7 @@
   position: absolute;
   inset: 0;
   background: rgba(23, 28, 42, 0.25); // lighter overlay
-  backdrop-filter: blur(2px);
+  // backdrop-filter: blur(2px);
 }
 
 .auth-right {
