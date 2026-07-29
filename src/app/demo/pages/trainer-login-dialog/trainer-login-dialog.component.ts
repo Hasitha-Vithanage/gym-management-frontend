@@ -43,7 +43,7 @@ export class TrainerLoginDialogComponent implements OnInit {
       firstName: ['', Validators.required],
       lastName:  ['', Validators.required],
       userName:  ['', Validators.required],
-      password:  ['', Validators.required],
+      password:  ['', [Validators.required, Validators.minLength(6)]],
       role:      [''],
       userId:    [''],
       employee:  ['']
@@ -77,7 +77,8 @@ export class TrainerLoginDialogComponent implements OnInit {
   public getTrainers(): void {
     this.trainerLoginService.getTrainers().subscribe({
       next: (response: any[]) => {
-        this.trainerList = response;
+        const activeTrainers = response.filter(trainer => !trainer.isDeleted);
+        this.trainerList = activeTrainers;
       },
       error: (error) => {
         console.log('Error fetching trainers:', error);
@@ -105,7 +106,7 @@ export class TrainerLoginDialogComponent implements OnInit {
     this.submitted = true;
 
     if (this.trainerLoginForm.invalid) {
-      this.messageService.showError('Please fill in all required fields.');
+      this.messageService.showError(this.getValidationMessage());
       return;
     }
 
@@ -138,6 +139,23 @@ export class TrainerLoginDialogComponent implements OnInit {
     }
   }
 
+  private getValidationMessage(): string {
+    if (this.trainerLoginForm.get('trainerId')?.hasError('required')) {
+      return 'Please select an employee.';
+    }
+    if (this.trainerLoginForm.get('userName')?.hasError('required')) {
+      return 'Please enter a username.';
+    }
+    const passwordControl = this.trainerLoginForm.get('password');
+    if (passwordControl?.hasError('required')) {
+      return 'Please enter a password.';
+    }
+    if (passwordControl?.hasError('minlength')) {
+      return 'Password must be at least 6 characters long.';
+    }
+    return 'Please fill in all required fields.';
+  }
+
   onEdit(data: any): void {
     this.trainerLoginForm.patchValue({
       trainerId: data.id,
@@ -151,6 +169,14 @@ export class TrainerLoginDialogComponent implements OnInit {
     this.mode = 'edit';
     this.selectedData = data;
     this.submitDisabled = true;
+
+    // Password is never returned from the backend (by design - it isn't stored on
+    // the login record itself), so it's always blank here. Leaving it required would
+    // force a password reset just to edit an unrelated field like the username.
+    // The backend already leaves the password untouched when it receives an empty value,
+    // so only enforce a minimum length when the admin actually chooses to set a new one.
+    this.trainerLoginForm.get('password')?.setValidators([Validators.minLength(6)]);
+    this.trainerLoginForm.get('password')?.updateValueAndValidity();
 
     this.trainerLoginForm.valueChanges.subscribe(() => {
       this.submitDisabled = !this.trainerLoginForm.valid || this.trainerLoginForm.pristine;

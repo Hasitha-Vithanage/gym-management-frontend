@@ -455,6 +455,18 @@
   word-break: break-word;
 }
 
+// ─── LOGIN & SECURITY ACTIONS ─────────────────────────────────────────────────
+.login-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+
+  .btn-edit, .btn-save, .btn-cancel {
+    width: auto;
+    padding: 9px 18px;
+  }
+}
+
 // ─── EDIT INPUT ───────────────────────────────────────────────────────────────
 .edit-input {
   width: 100%;

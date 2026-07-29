@@ -85,6 +85,36 @@ export class EmpolyeeServiceService {
     return this.http.put(requestUrl, { isDelete: true }, { headers: headers });
   }
 
+  // getEmployeeProfile function - fetches the profile of the currently logged-in employee
+  getEmployeeProfile(userId: number) {
+    const requestUrl = environment.baseUrl + '/employee/profile/' + userId.toString();
+
+    let headers = {};
+
+    if (this.httpService.getAuthToken() !== null) {
+      headers = {
+        Authorization: 'Bearer ' + this.httpService.getAuthToken()
+      };
+    }
+
+    return this.http.get(requestUrl, { headers: headers });
+  }
+
+  // updateEmployeeProfile function - updates the profile of the currently logged-in employee
+  updateEmployeeProfile(userId: number, data: any) {
+    const requestUrl = environment.baseUrl + '/employee/profile/' + userId.toString();
+
+    let headers = {};
+
+    if (this.httpService.getAuthToken() !== null) {
+      headers = {
+        Authorization: 'Bearer ' + this.httpService.getAuthToken()
+      };
+    }
+
+    return this.http.put(requestUrl, data, { headers: headers });
+  }
+
 // markAttendance function
     markAttendance(attendanceData: any) {
       

@@ -130,6 +130,18 @@ export class HttpService {
     return this.http.put(requestUrl, data, { headers: headers }).toPromise();
   }
 
+  public changeLogin(userId: number, userName: string, password: string): Promise<any> {
+    const requestUrl = environment.baseUrl + '/user/change-login/' + userId;
+
+    let headers = {};
+
+    if (this.getAuthToken() !== null) {
+      headers = { Authorization: 'Bearer ' + this.getAuthToken() };
+    }
+
+    return this.http.put(requestUrl, { userName, password }, { headers: headers }).toPromise();
+  }
+
   public isTokenExpired() {
     const token = window.localStorage.getItem('auth_token');
 

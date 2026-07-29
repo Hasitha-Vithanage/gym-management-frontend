@@ -113,8 +113,10 @@ export class AssignTrainerDialogComponent {
   public getMembers(): void {
     this.assignTrainerService.getMembers().subscribe({
       next: (response: any[]) => {
-        this.memberList = response;
+        const activeMembers = response.filter(member => !member.deleted);
+        this.memberList = activeMembers;
         this.applyPreselectedMember();
+        this.applyEditValues();
       },
       error: (error) => {
         console.log('Error fetching members:', error);
@@ -141,13 +143,35 @@ export class AssignTrainerDialogComponent {
     //Call Service to get trainers
     this.assignTrainerService.getTrainers().subscribe({
       next: (response: any[]) => {
-        console.log('Trainers: ', response);
-        this.trainerList = response;
+        const activeTrainers = response.filter(trainer => !trainer.isDeleted);
+        this.trainerList = activeTrainers;
+        this.applyEditValues();
       },
       error: (error) => {
         console.log('Error fetching trainers:', error);
       }
     });
+  }
+
+  // Re-applies the edit-mode dropdown selections once memberList/trainerList have
+  // actually loaded (they are fetched asynchronously, separately from onEdit()).
+  private applyEditValues(): void {
+    if (this.mode !== 'edit' || !this.selectedData) return;
+
+    // Match by ID rather than the stored full-name string (AssignTrainerEntity.member/trainer
+    // store "First Last", but the <option> values below are firstName only).
+    if (this.memberList.length) {
+      const member = this.memberList.find((m: any) => m.id === this.selectedData.memberId);
+      if (member) {
+        this.assignTrainerForm.patchValue({ member: member.firstName });
+      }
+    }
+    if (this.trainerList.length) {
+      const trainer = this.trainerList.find((t: any) => t.id === this.selectedData.trainerId);
+      if (trainer) {
+        this.assignTrainerForm.patchValue({ trainer: trainer.firstName });
+      }
+    }
   }
 
   // reset button function
@@ -162,16 +186,19 @@ export class AssignTrainerDialogComponent {
   }
 
   onEdit(data: any): void {
-    this.assignTrainerForm.patchValue({
-      member: data.member,
-      trainer: data.trainer
-    });
+    this.selectedData = data;
+    this.mode = 'edit';
     this.selectedMember = data.memberId;
     this.selectedTrainer = data.trainerId;
     this.registerButtonLabel = 'Update';
-    this.mode = 'edit';
-    this.selectedData = data;
     this.submitDisabled = true;
+
+    // Editing an assignment only changes its trainer; the member stays fixed.
+    this.assignTrainerForm.get('member')?.disable();
+
+    // Populates the dropdowns immediately if memberList/trainerList already loaded;
+    // otherwise getMembers()/getTrainers() re-apply this once their data arrives.
+    this.applyEditValues();
 
     this.assignTrainerForm.valueChanges.subscribe(() => {
       this.submitDisabled = !this.assignTrainerForm.valid || this.assignTrainerForm.pristine;
@@ -199,8 +226,12 @@ export class AssignTrainerDialogComponent {
           );
         }
       },
-      error: () => {
-        this.messageService.showError('Error while sending notification to trainer');
+      error: (err: any) => {
+        if (typeof err === 'string' && err.includes('No login account found')) {
+          this.messageService.showWarning(`${trainerName} does not have a login account yet, so they could not be notified.`);
+        } else {
+          this.messageService.showError('Error while sending notification to trainer');
+        }
       }
     });
 
@@ -214,8 +245,12 @@ export class AssignTrainerDialogComponent {
           );
         }
       },
-      error: () => {
-        this.messageService.showError('Error while sending notification to member');
+      error: (err: any) => {
+        if (typeof err === 'string' && err.includes('No login account found')) {
+          this.messageService.showWarning(`${memberName} does not have a login account yet, so they could not be notified.`);
+        } else {
+          this.messageService.showError('Error while sending notification to member');
+        }
       }
     });
   }

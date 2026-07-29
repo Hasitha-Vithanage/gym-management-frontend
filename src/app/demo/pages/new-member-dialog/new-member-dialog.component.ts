@@ -194,7 +194,7 @@ export class NewMemberDialogComponent implements OnInit {
       emergencyContactNumber: data.emergencyContactNumber,
       bloodType: data.bloodType,
       joinedDate: data.joinedDate,
-      gender: data.gender,
+      gender: (data.gender || '').toLowerCase(),
       image: data.image,
       imageName: data.imageName,
       imageType: data.imageType

@@ -44,7 +44,7 @@ export class MemberLoginDialogComponent implements OnInit {
       firstName: [''],
       lastName: [''],
       userName: ['', Validators.required],
-      password: ['', Validators.required],
+      password: ['', [Validators.required, Validators.minLength(6)]],
       role: ['MEMBER'],
       userId: [''],
       member: ['']
@@ -67,7 +67,8 @@ export class MemberLoginDialogComponent implements OnInit {
   public getMembers(): void {
     this.memberLoginService.getMembers().subscribe({
       next: (response: any[]) => {
-        this.memberList = response;
+        const activeMembers = response.filter(member => !member.deleted)
+        this.memberList = activeMembers;
       },
       error: (error) => {
             console.log('Error fetching members:', error);
@@ -85,7 +86,7 @@ export class MemberLoginDialogComponent implements OnInit {
         this.memberLoginForm.patchValue({
           firstName: response.firstName,
           lastName: response.lastName,
-          userName: `${response.firstName}.${response.lastName}`.toLowerCase(),
+          userName: `${response.firstName}`.toLowerCase(),
           member: memberId
         });
       },
@@ -99,7 +100,7 @@ export class MemberLoginDialogComponent implements OnInit {
     this.submitted = true;
 
     if (this.memberLoginForm.invalid) {
-      this.messageService.showError('Please fill in all required fields.');
+      this.messageService.showError(this.getValidationMessage());
       return;
     }
 
@@ -132,6 +133,23 @@ export class MemberLoginDialogComponent implements OnInit {
     }
   }
 
+  private getValidationMessage(): string {
+    if (this.memberLoginForm.get('memberId')?.hasError('required')) {
+      return 'Please select a member.';
+    }
+    if (this.memberLoginForm.get('userName')?.hasError('required')) {
+      return 'Please enter a username.';
+    }
+    const passwordControl = this.memberLoginForm.get('password');
+    if (passwordControl?.hasError('required')) {
+      return 'Please enter a password.';
+    }
+    if (passwordControl?.hasError('minlength')) {
+      return 'Password must be at least 6 characters long.';
+    }
+    return 'Please fill in all required fields.';
+  }
+
   onEdit(data: any): void {
     this.mode = 'edit';
     this.selectedData = data;
@@ -144,6 +162,13 @@ export class MemberLoginDialogComponent implements OnInit {
       userId: data.userId
     });
     this.submitDisabled = true;
+
+    // Password is never returned from the backend (by design), so it's always blank
+    // here. Leaving it required would force a password reset just to edit an unrelated
+    // field. The backend already leaves the password untouched when it receives an empty
+    // value, so only enforce a minimum length when the admin actually sets a new one.
+    this.memberLoginForm.get('password')?.setValidators([Validators.minLength(6)]);
+    this.memberLoginForm.get('password')?.updateValueAndValidity();
 
     this.memberLoginForm.valueChanges.subscribe(() => {
       this.submitDisabled = !this.memberLoginForm.valid || this.memberLoginForm.pristine;

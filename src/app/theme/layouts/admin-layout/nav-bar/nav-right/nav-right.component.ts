@@ -126,8 +126,8 @@ export class NavRightComponent implements OnInit {
         this.userData = response;
         console.log("UserData", this.userData);
 
-        // Check if the user is a member and fetch member data
-        // If the user is a member, fetch member data
+        // Fetch the current user's own profile data (member or employee) so the
+        // avatar dropdown can show their name/photo either way.
         if (this.userData.role === 'MEMBER') {
           const memberId = this.userData.customerLoginId;
           this.memberService.getMemberById(memberId).subscribe({
@@ -144,6 +144,23 @@ export class NavRightComponent implements OnInit {
             },
             error: (error) => {
               console.error("Error fetching member data:", error);
+            }
+          });
+        } else {
+          this.employeeService.getEmployeeProfile(this.userId).subscribe({
+            next: (employeeResponse: any) => {
+              this.memberData = employeeResponse;
+              console.log("EmployeeData", this.memberData);
+
+              // Build imageSrc if image exists
+              if (this.memberData.image && this.memberData.imageType) {
+                this.memberData.imageSrc = `data:${this.memberData.imageType};base64,${this.memberData.image}`;
+              } else {
+                this.memberData.imageSrc = 'assets/images/user/avatar-2.jpg'; // fallback
+              }
+            },
+            error: (error) => {
+              console.error("Error fetching employee data:", error);
             }
           });
         }

@@ -16,7 +16,7 @@
         <select formControlName="memberId" class="select-input">
           <option [ngValue]="null" disabled>Select Member</option>
           <option *ngFor="let member of memberList" [ngValue]="member.id">
-            {{ member.firstName }} {{ member.lastName }}
+            {{ member.memberNo }} - {{ member.firstName }} {{ member.lastName }}
           </option>
         </select>
       </div>
@@ -45,7 +45,7 @@
     <!-- Password -->
     <div class="row">
       <div class="field">
-        <label>Password *</label>
+        <label>{{ mode === 'edit' ? 'New Password' : 'Password *' }}</label>
         <div class="input-wrapper">
           <input
             [type]="showPassword ? 'text' : 'password'"
@@ -66,6 +66,8 @@
             </svg>
           </button>
         </div>
+        <small class="password-hint" *ngIf="mode === 'edit'">Leave blank to keep the current password.</small>
+        <small class="password-hint" *ngIf="mode === 'add'">Minimum 6 characters.</small>
       </div>
     </div>
 

@@ -10,7 +10,7 @@
         <label for="member">Select Member <span class="required">*</span></label>
         <select id="member" formControlName="member" (change)="onMemberSelect($event)">
           <option value="" disabled>-- Select Member --</option>
-          <option *ngFor="let member of memberList" [value]="member.firstName">{{ member.firstName }}</option>
+          <option *ngFor="let member of memberList" [value]="member.firstName">{{ member.memberNo }} - {{ member.firstName }} {{ member.lastName }}</option>
         </select>
         <span class="required-message" *ngIf="submitted && assignTrainerForm.get('member').invalid">
           <ng-container *ngIf="assignTrainerForm.get('member').hasError('required')">Member is required</ng-container>
@@ -21,7 +21,7 @@
         <label for="trainer">Select Trainer <span class="required">*</span></label>
         <select id="trainer" formControlName="trainer" (change)="onTrainerSelect($event)">
           <option value="" disabled>-- Select Trainer --</option>
-          <option *ngFor="let trainer of trainerList" [value]="trainer.firstName">{{ trainer.firstName }}</option>
+          <option *ngFor="let trainer of trainerList" [value]="trainer.firstName">{{ trainer.employeeId }} - {{ trainer.firstName }} {{ trainer.lastName }}</option>
         </select>
         <span class="required-message" *ngIf="submitted && assignTrainerForm.get('trainer').invalid">
           <ng-container *ngIf="assignTrainerForm.get('trainer').hasError('required')">Trainer is required</ng-container>

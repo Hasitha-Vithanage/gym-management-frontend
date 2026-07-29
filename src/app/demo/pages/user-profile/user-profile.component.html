@@ -33,7 +33,8 @@
       </div>
 
       <h3 class="display-name">{{ getFullName() }}</h3>
-      <p class="display-member-no">Member # {{ memberData?.memberNo || '—' }}</p>
+      <p class="display-member-no" *ngIf="!isEmployee">Member # {{ profileData?.memberNo || '—' }}</p>
+      <p class="display-member-no" *ngIf="isEmployee">Employee ID: {{ profileData?.employeeId || '—' }}</p>
 
       <div class="divider"></div>
 
@@ -41,15 +42,23 @@
         <mat-icon>calendar_today</mat-icon>
         <div>
           <p class="meta-label">Joined</p>
-          <p class="meta-value">{{ memberData?.joinedDate || '—' }}</p>
+          <p class="meta-value">{{ (isEmployee ? profileData?.dateOfJoining : profileData?.joinedDate) || '—' }}</p>
         </div>
       </div>
 
-      <div class="left-meta-item">
+      <div class="left-meta-item" *ngIf="!isEmployee">
         <mat-icon>bloodtype</mat-icon>
         <div>
           <p class="meta-label">Blood Type</p>
-          <p class="meta-value">{{ memberData?.bloodType || '—' }}</p>
+          <p class="meta-value">{{ profileData?.bloodType || '—' }}</p>
+        </div>
+      </div>
+
+      <div class="left-meta-item" *ngIf="isEmployee">
+        <mat-icon>badge</mat-icon>
+        <div>
+          <p class="meta-label">Job Title</p>
+          <p class="meta-value">{{ profileData?.jobTitle || '—' }}</p>
         </div>
       </div>
 
@@ -91,37 +100,31 @@
 
           <div class="info-card" [class.editable]="isEditing">
             <p class="info-label">First Name <span *ngIf="isEditing" class="req-star">*</span></p>
-            <p *ngIf="!isEditing" class="info-value">{{ memberData?.firstName || '—' }}</p>
+            <p *ngIf="!isEditing" class="info-value">{{ profileData?.firstName || '—' }}</p>
             <input *ngIf="isEditing" class="edit-input" type="text"
                    [(ngModel)]="editForm.firstName" placeholder="First name" />
           </div>
 
           <div class="info-card" [class.editable]="isEditing">
             <p class="info-label">Last Name <span *ngIf="isEditing" class="req-star">*</span></p>
-            <p *ngIf="!isEditing" class="info-value">{{ memberData?.lastName || '—' }}</p>
+            <p *ngIf="!isEditing" class="info-value">{{ profileData?.lastName || '—' }}</p>
             <input *ngIf="isEditing" class="edit-input" type="text"
                    [(ngModel)]="editForm.lastName" placeholder="Last name" />
           </div>
 
           <div class="info-card">
             <p class="info-label">Date of Birth <span class="readonly-tag">read-only</span></p>
-            <p class="info-value">{{ memberData?.dateOfBirth || '—' }}</p>
+            <p class="info-value">{{ profileData?.dateOfBirth || '—' }}</p>
           </div>
 
-          <div class="info-card" [class.editable]="isEditing">
-            <p class="info-label">Gender</p>
-            <p *ngIf="!isEditing" class="info-value">{{ memberData?.gender || '—' }}</p>
-            <select *ngIf="isEditing" class="edit-input" [(ngModel)]="editForm.gender">
-              <option value="">Select gender</option>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-              <option value="Other">Other</option>
-            </select>
+          <div class="info-card">
+            <p class="info-label">Gender <span class="readonly-tag">read-only</span></p>
+            <p class="info-value">{{ profileData?.gender || '—' }}</p>
           </div>
 
           <div class="info-card">
             <p class="info-label">NIC <span class="readonly-tag">read-only</span></p>
-            <p class="info-value">{{ memberData?.nic || '—' }}</p>
+            <p class="info-value">{{ profileData?.nic || '—' }}</p>
           </div>
 
         </div>
@@ -137,28 +140,28 @@
 
           <div class="info-card" [class.editable]="isEditing">
             <p class="info-label">Email Address</p>
-            <p *ngIf="!isEditing" class="info-value">{{ memberData?.email || '—' }}</p>
+            <p *ngIf="!isEditing" class="info-value">{{ profileData?.email || '—' }}</p>
             <input *ngIf="isEditing" class="edit-input" type="email"
                    [(ngModel)]="editForm.email" placeholder="Email address" />
           </div>
 
           <div class="info-card" [class.editable]="isEditing">
             <p class="info-label">Phone Number</p>
-            <p *ngIf="!isEditing" class="info-value">{{ memberData?.phoneNumber || '—' }}</p>
+            <p *ngIf="!isEditing" class="info-value">{{ profileData?.phoneNumber || '—' }}</p>
             <input *ngIf="isEditing" class="edit-input" type="tel"
                    [(ngModel)]="editForm.phoneNumber" placeholder="Phone number" />
           </div>
 
           <div class="info-card wide-card" [class.editable]="isEditing">
             <p class="info-label">Address</p>
-            <p *ngIf="!isEditing" class="info-value">{{ memberData?.address || '—' }}</p>
+            <p *ngIf="!isEditing" class="info-value">{{ profileData?.address || '—' }}</p>
             <input *ngIf="isEditing" class="edit-input" type="text"
                    [(ngModel)]="editForm.address" placeholder="Address" />
           </div>
 
           <div class="info-card wide-card" [class.editable]="isEditing">
             <p class="info-label">Emergency Contact</p>
-            <p *ngIf="!isEditing" class="info-value">{{ memberData?.emergencyContactNumber || '—' }}</p>
+            <p *ngIf="!isEditing" class="info-value">{{ profileData?.emergencyContactNumber || '—' }}</p>
             <input *ngIf="isEditing" class="edit-input" type="tel"
                    [(ngModel)]="editForm.emergencyContactNumber" placeholder="Emergency contact number" />
           </div>
@@ -167,7 +170,7 @@
       </div>
 
       <!-- MEDICAL & MEMBERSHIP -->
-      <div class="info-section">
+      <div class="info-section" *ngIf="!isEmployee">
         <h5 class="section-heading">
           <mat-icon>medical_information</mat-icon>
           Medical &amp; Membership
@@ -176,9 +179,86 @@
 
           <div class="info-card">
             <p class="info-label">Blood Type <span class="readonly-tag">read-only</span></p>
-            <p class="info-value">{{ memberData?.bloodType || '—' }}</p>
+            <p class="info-value">{{ profileData?.bloodType || '—' }}</p>
           </div>
 
+        </div>
+      </div>
+
+      <!-- EMPLOYMENT DETAILS -->
+      <div class="info-section" *ngIf="isEmployee">
+        <h5 class="section-heading">
+          <mat-icon>work</mat-icon>
+          Employment Details
+        </h5>
+        <div class="info-grid">
+
+          <div class="info-card">
+            <p class="info-label">Employee ID <span class="readonly-tag">read-only</span></p>
+            <p class="info-value">{{ profileData?.employeeId || '—' }}</p>
+          </div>
+
+          <div class="info-card">
+            <p class="info-label">Job Title <span class="readonly-tag">read-only</span></p>
+            <p class="info-value">{{ profileData?.jobTitle || '—' }}</p>
+          </div>
+
+          <div class="info-card">
+            <p class="info-label">Date of Joining <span class="readonly-tag">read-only</span></p>
+            <p class="info-value">{{ profileData?.dateOfJoining || '—' }}</p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- LOGIN & SECURITY -->
+      <div class="info-section">
+        <h5 class="section-heading">
+          <mat-icon>lock</mat-icon>
+          Login &amp; Security
+        </h5>
+
+        <div *ngIf="!isEditingLogin" class="info-grid">
+          <div class="info-card">
+            <p class="info-label">Username</p>
+            <p class="info-value">{{ loginForm.userName || '—' }}</p>
+          </div>
+        </div>
+
+        <div *ngIf="isEditingLogin" class="info-grid">
+          <div class="info-card editable">
+            <p class="info-label">Username <span class="req-star">*</span></p>
+            <input class="edit-input" type="text" [(ngModel)]="loginForm.userName" placeholder="Username" />
+          </div>
+
+          <div class="info-card editable">
+            <p class="info-label">New Password</p>
+            <input class="edit-input" type="password" [(ngModel)]="loginForm.password"
+                   placeholder="Leave blank to keep current password" />
+          </div>
+
+          <div class="info-card editable">
+            <p class="info-label">Confirm New Password</p>
+            <input class="edit-input" type="password" [(ngModel)]="loginForm.confirmPassword"
+                   placeholder="Confirm new password" />
+          </div>
+        </div>
+
+        <div class="login-actions">
+          <button *ngIf="!isEditingLogin" class="btn-edit" (click)="startEditLogin()">
+            <mat-icon>edit</mat-icon>
+            Change Login
+          </button>
+          <ng-container *ngIf="isEditingLogin">
+            <button class="btn-save" (click)="saveLogin()" [disabled]="isSavingLogin">
+              <mat-icon>{{ isSavingLogin ? 'hourglass_empty' : 'save' }}</mat-icon>
+              {{ isSavingLogin ? 'Saving…' : 'Save Login' }}
+            </button>
+            <button class="btn-cancel" (click)="cancelEditLogin()" [disabled]="isSavingLogin">
+              <mat-icon>close</mat-icon>
+              Cancel
+            </button>
+          </ng-container>
         </div>
       </div>
 

@@ -94,9 +94,8 @@ export class MemberRegistrationComponent {
   // populateData function implementation
   public populateData(): void {
     this.memberService.getData().subscribe((response: any[]) => {
-      console.log("Get data response: ", response);
-
-      this.dataSource = new MatTableDataSource(response);
+      const activeMembers = response.filter(member => !member.deleted);
+      this.dataSource = new MatTableDataSource(activeMembers);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });
