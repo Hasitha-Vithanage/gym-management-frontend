@@ -23,17 +23,12 @@ export class ExerciseToTemplateComponent implements OnInit {
   assignmentForm!: FormGroup;
 
   templateData: any;
-
   exerciseList: any[] = [];
-
+  isSubmitted = false;
   assignedExercises: any[] = [];
-
   workoutDays: number[] = [1, 2, 3, 4, 5, 6, 7];
-
   searchQuery: string = '';
-
   selectedExercise: any = null;
-
   displayedColumns: string[] = [
     'workoutDay',
     'exerciseName',
@@ -102,9 +97,9 @@ export class ExerciseToTemplateComponent implements OnInit {
       workoutDay:    ['', Validators.required],
       sets:          [1,  [Validators.required, Validators.min(1)]],
       reps:          [1,  [Validators.required, Validators.min(1)]],
-      restSeconds:   [30],
-      exerciseOrder: [1],
-      notes:         ['']
+      restSeconds:   [30, [Validators.min(0)]],
+      exerciseOrder: [1,  [Validators.min(1)]],
+      notes:         ['', [Validators.maxLength(500)]]
     });
   }
 
@@ -140,6 +135,7 @@ export class ExerciseToTemplateComponent implements OnInit {
   }
 
   addExerciseToTemplate(): void {
+    this.isSubmitted = true;
     if (this.assignmentForm.invalid) {
       this.assignmentForm.markAllAsTouched();
       return;
@@ -205,6 +201,7 @@ export class ExerciseToTemplateComponent implements OnInit {
 
   resetForm(): void {
     this.selectedExercise = null;
+    this.isSubmitted = false;
     this.assignmentForm.reset({
       sets:          1,
       reps:          1,

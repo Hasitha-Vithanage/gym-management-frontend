@@ -106,6 +106,9 @@
                 <option value="">Select Day</option>
                 <option *ngFor="let d of workoutDays" [value]="d">Day {{ d }}</option>
               </select>
+              <span class="required-message" *ngIf="isSubmitted && assignmentForm.get('workoutDay')?.invalid">
+                Workout day is required
+              </span>
             </div>
 
             <div class="form-field">
@@ -114,26 +117,43 @@
                 <option value="">Select Exercise</option>
                 <option *ngFor="let ex of exerciseList" [value]="ex.id">{{ ex.exerciseName }}</option>
               </select>
+              <span class="required-message" *ngIf="isSubmitted && assignmentForm.get('exerciseId')?.invalid">
+                Exercise is required
+              </span>
             </div>
 
             <div class="form-field narrow">
               <label for="sets-input">Sets <span class="req">*</span></label>
               <input id="sets-input" type="number" formControlName="sets" min="1" placeholder="4" />
+              <span class="required-message" *ngIf="isSubmitted && assignmentForm.get('sets')?.invalid">
+                <ng-container *ngIf="assignmentForm.get('sets')?.hasError('required')">Sets is required</ng-container>
+                <ng-container *ngIf="assignmentForm.get('sets')?.hasError('min')">Sets must be at least 1</ng-container>
+              </span>
             </div>
 
             <div class="form-field narrow">
               <label for="reps-input">Reps <span class="req">*</span></label>
               <input id="reps-input" type="number" formControlName="reps" min="1" placeholder="12" />
+              <span class="required-message" *ngIf="isSubmitted && assignmentForm.get('reps')?.invalid">
+                <ng-container *ngIf="assignmentForm.get('reps')?.hasError('required')">Reps is required</ng-container>
+                <ng-container *ngIf="assignmentForm.get('reps')?.hasError('min')">Reps must be at least 1</ng-container>
+              </span>
             </div>
 
             <div class="form-field narrow">
               <label for="rest-input">Rest (s)</label>
               <input id="rest-input" type="number" formControlName="restSeconds" min="0" placeholder="60" />
+              <span class="required-message" *ngIf="isSubmitted && assignmentForm.get('restSeconds')?.hasError('min')">
+                Rest cannot be negative
+              </span>
             </div>
 
             <div class="form-field narrow">
               <label for="order-input">Order</label>
               <input id="order-input" type="number" formControlName="exerciseOrder" min="1" placeholder="1" />
+              <span class="required-message" *ngIf="isSubmitted && assignmentForm.get('exerciseOrder')?.hasError('min')">
+                Order must be at least 1
+              </span>
             </div>
 
           </div>
@@ -141,7 +161,10 @@
           <div class="form-row-bottom">
             <div class="form-field grow">
               <label for="notes-input">Notes</label>
-              <input id="notes-input" type="text" formControlName="notes" placeholder="Optional notes…" />
+              <input id="notes-input" type="text" formControlName="notes" maxlength="500" placeholder="Optional notes…" />
+              <span class="required-message" *ngIf="isSubmitted && assignmentForm.get('notes')?.hasError('maxlength')">
+                Notes must be 500 characters or fewer
+              </span>
             </div>
             <div class="form-actions">
               <button type="button" class="btn-add" (click)="addExerciseToTemplate()">

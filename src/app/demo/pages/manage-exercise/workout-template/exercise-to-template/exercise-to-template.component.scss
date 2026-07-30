@@ -85,6 +85,13 @@
   }
 }
 
+.required-message {
+  color: $ff-danger;
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
+}
+
 /* Back button — matches system pattern */
 .back-button {
   display: flex;

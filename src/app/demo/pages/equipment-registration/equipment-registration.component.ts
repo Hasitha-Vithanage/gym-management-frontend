@@ -17,7 +17,6 @@ const ELEMENT_DATA: any[] = [
     purchaseDate: '2023-10-01',
     addedBy: 'John Doe',
     machineName: 1.0079,
-    muscleGroups: 'H',
     model: 'Hydrogen',
     type: 1.0079,
     sizeStandard: 'H',
@@ -73,7 +72,7 @@ export class EquipmentRegistrationComponent {
   // Table function
   displayedColumns: string[] = [
     'machineName', 'category', 'brandName', 'supplier',
-    'muscleGroups', 'quantity', 'condition', 'purchaseDate', 'actions'
+    'quantity', 'condition', 'purchaseDate', 'actions'
   ];
 
   getCatClass(category: string): string {

@@ -43,14 +43,14 @@ export class NewEquipmentDialogComponent {
     this.equipmentForm = this.fb.group({
       category: new FormControl(this.data?.category || '', [Validators.required]),
       supplier: new FormControl(this.data?.supplier || '', [Validators.required]),
-      machineName: new FormControl(this.data?.machineName || '', [Validators.maxLength(20)]),
-      brandName: new FormControl(this.data?.brandName || '', [Validators.maxLength(20)]),
+      machineName: new FormControl(this.data?.machineName || '', [Validators.maxLength(50)]),
+      brandName: new FormControl(this.data?.brandName || '', [Validators.maxLength(50)]),
       model: new FormControl(this.data?.model || '', [Validators.maxLength(50)]),
       type: new FormControl(this.data?.type || ''),
       sizeStandard: new FormControl(this.data?.sizeStandard || ''),
       barLength: new FormControl(this.data?.barLength || ''),
       weight: new FormControl(this.data?.weight || ''),
-      equipmentName: new FormControl(this.data?.equipmentName || '', [Validators.maxLength(20)]),
+      equipmentName: new FormControl(this.data?.equipmentName || '', [Validators.maxLength(50)]),
       quantity: new FormControl(this.data?.quantity || '', [Validators.required, Validators.min(1)]),
       condition: new FormControl(this.data?.condition || '',  [Validators.required]),
       purchaseDate: new FormControl(this.data?.purchaseDate || today, [Validators.required]), // Set today's date
@@ -105,7 +105,7 @@ export class NewEquipmentDialogComponent {
 
     machineName?.setValidators(category === 'Machines' ? [Validators.required, Validators.maxLength(20)] : [Validators.maxLength(20)]);
     typeControl?.setValidators(category === 'Freeweights' ? [Validators.required] : []);
-    equipmentName?.setValidators(category === 'Other' ? [Validators.required, Validators.maxLength(20)] : [Validators.maxLength(20)]);
+    equipmentName?.setValidators(['Freeweights', 'Other'].includes(category) ? [Validators.required, Validators.maxLength(20)] : [Validators.maxLength(20)]);
     sizeStandard?.setValidators(type === 'Bars' ? [Validators.required] : []);
     barLength?.setValidators(type === 'Bars' ? [Validators.required] : []);
     weight?.setValidators(['Dumbbells', 'Plates', 'Kettlebells'].includes(type) ? [Validators.required, Validators.min(0.1)] : []);

@@ -192,27 +192,6 @@
   }
 }
 
-/* Muscle group chips */
-.muscle-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-  max-width: 240px;
-}
-
-.muscle-chip {
-  display: inline-flex;
-  align-items: center;
-  padding: 2px 7px;
-  background: rgba(59, 130, 246, 0.1);
-  color: #60A5FA;
-  border: 1px solid rgba(59, 130, 246, 0.25);
-  border-radius: 4px;
-  font-size: 10px;
-  font-weight: 600;
-  white-space: nowrap;
-}
-
 /* Quantity badge */
 .qty-badge {
   display: inline-flex;

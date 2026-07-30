@@ -45,10 +45,10 @@
     <div class="row" *ngIf="equipmentForm.get('category')?.value === 'Machines'">
       <div class="half-width">
         <label for="machineName">Machine Name <span class="required">*</span></label>
-        <input id="machineName" type="text" maxlength="20" placeholder="Enter Machine Name" formControlName="machineName" />
+        <input id="machineName" type="text" maxlength="50" placeholder="Enter Machine Name" formControlName="machineName" />
         <span class="required-message" *ngIf="submitted && equipmentForm.get('machineName')?.invalid">
           <ng-container *ngIf="equipmentForm.get('machineName')?.hasError('required')">Machine name is required</ng-container>
-          <ng-container *ngIf="equipmentForm.get('machineName')?.hasError('maxlength')">Machine name must be 20 characters or fewer</ng-container>
+          <ng-container *ngIf="equipmentForm.get('machineName')?.hasError('maxlength')">Machine name must be 50 characters or fewer</ng-container>
         </span>
       </div>
     </div>
@@ -56,9 +56,9 @@
     <div class="row">
       <div class="half-width">
         <label for="brandName">Brand Name</label>
-        <input id="brandName" type="text" maxlength="20" placeholder="Enter Brand Name" formControlName="brandName" />
+        <input id="brandName" type="text" maxlength="50" placeholder="Enter Brand Name" formControlName="brandName" />
         <span class="required-message" *ngIf="submitted && equipmentForm.get('brandName')?.hasError('maxlength')">
-          Brand name must be 20 characters or fewer
+          Brand name must be 50 characters or fewer
         </span>
       </div>
 
@@ -135,7 +135,7 @@
     </div>
 
     <div class="row">
-      <div class="half-width" *ngIf="equipmentForm.get('category')?.value === 'Other'">
+      <div class="half-width" *ngIf="['Freeweights','Other'].includes(equipmentForm.get('category')?.value)">
         <label for="equipmentName">Equipment Name <span class="required">*</span></label>
         <input id="equipmentName" type="text" maxlength="20" placeholder="Enter Equipment Name" formControlName="equipmentName" />
         <span class="required-message" *ngIf="submitted && equipmentForm.get('equipmentName')?.invalid">
