@@ -22,6 +22,7 @@ export class FoodToTemplateComponent implements OnInit {
   searchQuery = '';
   selectedFood: any = null;
   calculatedCalories: number | null = null;
+  isSubmitted = false;
 
   readonly weekDays = [1, 2, 3, 4, 5, 6, 7];
   readonly mealSlots = ['Breakfast', 'MidMorning', 'Lunch', 'EveningSnack', 'Dinner'];
@@ -59,8 +60,8 @@ export class FoodToTemplateComponent implements OnInit {
       mealSlot:         ['', Validators.required],
       portionGrams:     [100, [Validators.required, Validators.min(1)]],
       caloriesForPortion: [{ value: '', disabled: true }],
-      mealOrder:        [1],
-      notes:            ['']
+      mealOrder:        [1, [Validators.min(1)]],
+      notes:            ['', [Validators.maxLength(500)]]
     });
 
     this.mealItemForm.get('portionGrams')!.valueChanges.subscribe(() => this.recalcCalories());
@@ -110,6 +111,7 @@ export class FoodToTemplateComponent implements OnInit {
   }
 
   addItem(): void {
+    this.isSubmitted = true;
     if (this.mealItemForm.invalid) {
       this.mealItemForm.markAllAsTouched();
       return;
@@ -193,6 +195,7 @@ export class FoodToTemplateComponent implements OnInit {
   resetForm(): void {
     this.selectedFood = null;
     this.calculatedCalories = null;
+    this.isSubmitted = false;
     this.mealItemForm.reset({ portionGrams: 100, mealOrder: 1 });
   }
 

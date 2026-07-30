@@ -318,6 +318,13 @@
 .form-field.narrow { flex: 0 0 90px; min-width: 90px; }
 .form-field.grow { flex: 1; }
 
+.required-message {
+  color: $ff-danger;
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
+}
+
 .cal-display {
   height: 34px;
   display: flex;
