@@ -24,7 +24,10 @@
 
       <div class="field full">
         <label>Description</label>
-        <textarea placeholder="Brief overview of this meal plan..." formControlName="description"></textarea>
+        <textarea maxlength="500" placeholder="Brief overview of this meal plan..." formControlName="description"></textarea>
+        <span class="error" *ngIf="submitted && templateForm.get('description')?.hasError('maxlength')">
+          Description must be 500 characters or fewer.
+        </span>
       </div>
 
       <div class="field">
@@ -46,6 +49,7 @@
           <option>Active</option>
           <option>Inactive</option>
         </select>
+        <span class="error" *ngIf="submitted && templateForm.get('status')?.invalid">Status is required.</span>
       </div>
 
       <div class="field">

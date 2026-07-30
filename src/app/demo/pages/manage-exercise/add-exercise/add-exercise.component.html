@@ -18,16 +18,27 @@
       <div class="field full">
         <label>Exercise Name<span class="required">*</span></label>
         <input type="text" placeholder="Enter exercise name" formControlName="exerciseName" />
+        <span class="required-message" *ngIf="submitted && exerciseForm.get('exerciseName')?.invalid">
+          <ng-container *ngIf="exerciseForm.get('exerciseName')?.hasError('required')">Exercise name is required</ng-container>
+          <ng-container *ngIf="exerciseForm.get('exerciseName')?.hasError('minlength')">Exercise name must be at least 3 characters</ng-container>
+          <ng-container *ngIf="exerciseForm.get('exerciseName')?.hasError('maxlength')">Exercise name must be 100 characters or fewer</ng-container>
+        </span>
       </div>
 
       <div class="field full">
         <label>Description</label>
         <textarea placeholder="Enter exercise description" formControlName="description"></textarea>
+        <span class="required-message" *ngIf="submitted && exerciseForm.get('description')?.hasError('maxlength')">
+          Description must be 500 characters or fewer
+        </span>
       </div>
 
       <div class="field full">
         <label>Instructions</label>
         <textarea placeholder="Enter exercise instructions" formControlName="instructions"></textarea>
+        <span class="required-message" *ngIf="submitted && exerciseForm.get('instructions')?.hasError('maxlength')">
+          Instructions must be 2000 characters or fewer
+        </span>
       </div>
     </div>
     <hr>
@@ -47,6 +58,9 @@
           <option>Arms</option>
           <option>Core</option>
         </select>
+        <span class="required-message" *ngIf="submitted && exerciseForm.get('muscleGroup')?.invalid">
+          Primary muscle is required
+        </span>
       </div>
 
       <div class="field">
@@ -71,6 +85,9 @@
           <option>Mobility</option>
           <option>Flexibility</option>
         </select>
+        <span class="required-message" *ngIf="submitted && exerciseForm.get('exerciseType')?.invalid">
+          Exercise type is required
+        </span>
       </div>
 
       <div class="field">
@@ -83,6 +100,9 @@
           <option>Hinge</option>
           <option>Isolation</option>
         </select>
+        <span class="required-message" *ngIf="submitted && exerciseForm.get('movementType')?.invalid">
+          Movement is required
+        </span>
       </div>
     </div>
     <hr>
@@ -99,6 +119,9 @@
           <option>Intermediate</option>
           <option>Advanced</option>
         </select>
+        <span class="required-message" *ngIf="submitted && exerciseForm.get('difficultyLevel')?.invalid">
+          Difficulty is required
+        </span>
       </div>
 
       <div class="field">
@@ -109,6 +132,9 @@
           <option>Medium</option>
           <option>High</option>
         </select>
+        <span class="required-message" *ngIf="submitted && exerciseForm.get('intensityLevel')?.invalid">
+          Intensity is required
+        </span>
       </div>
 
       <div class="field">
@@ -121,6 +147,9 @@
           <option>Machine</option>
           <option>Resistance Band</option>
         </select>
+        <span class="required-message" *ngIf="submitted && exerciseForm.get('equipmentType')?.invalid">
+          Equipment is required
+        </span>
       </div>
 
       <div class="field">
@@ -130,6 +159,9 @@
           <option>Home</option>
           <option>Gym</option>
         </select>
+        <span class="required-message" *ngIf="submitted && exerciseForm.get('location')?.invalid">
+          Location is required
+        </span>
       </div>
     </div>
     <hr>
@@ -147,6 +179,9 @@
           <option>Strength</option>
           <option>Endurance</option>
         </select>
+        <span class="required-message" *ngIf="submitted && exerciseForm.get('goalType')?.invalid">
+          Goal is required
+        </span>
       </div>
 
       <div class="field">
@@ -157,6 +192,9 @@
           <option>Male</option>
           <option>Female</option>
         </select>
+        <span class="required-message" *ngIf="submitted && exerciseForm.get('suitableFor')?.invalid">
+          Suitable for is required
+        </span>
       </div>
     </div>
 

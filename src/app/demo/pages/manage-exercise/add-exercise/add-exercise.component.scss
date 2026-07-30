@@ -109,6 +109,13 @@ hr {
   grid-column: span 2;
 }
 
+.required-message {
+  color: $ff-danger;
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
+}
+
 /* Inputs */
 input,
 select,

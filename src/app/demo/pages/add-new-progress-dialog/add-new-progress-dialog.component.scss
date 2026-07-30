@@ -86,6 +86,13 @@ label {
   margin-left: 2px;
 }
 
+.required-message {
+  color: $ff-danger;
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
+}
+
 input[type="text"],
 input[type="number"],
 input[type="date"] {

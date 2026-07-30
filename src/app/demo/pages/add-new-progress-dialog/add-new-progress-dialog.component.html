@@ -9,11 +9,17 @@
       <div class="half-width">
         <label for="date">Date <span class="required">*</span></label>
         <input id="date" type="date" formControlName="date" />
+        <span class="required-message" *ngIf="submitted && progressForm.get('date')?.invalid">
+          Date is required
+        </span>
       </div>
 
       <div class="half-width">
         <label for="weight">Weight (Kg) <span class="required">*</span></label>
         <input id="weight" type="number" maxlength="20" placeholder="Enter Weight" formControlName="weight" />
+        <span class="required-message" *ngIf="submitted && progressForm.get('weight')?.invalid">
+          Weight is required
+        </span>
       </div>
     </div>
 
@@ -21,6 +27,9 @@
       <div class="half-width">
         <label for="height">Height (cm) <span class="required">*</span></label>
         <input id="height" type="number" maxlength="20" placeholder="Enter Height" formControlName="height" />
+        <span class="required-message" *ngIf="submitted && progressForm.get('height')?.invalid">
+          Height is required
+        </span>
       </div>
 
       <div class="half-width">
@@ -42,6 +51,9 @@
           <option value="Male">Male</option>
           <option value="Female">Female</option>
         </select>
+        <span class="required-message" *ngIf="submitted && progressForm.get('gender')?.invalid">
+          Gender is required
+        </span>
       </div>
     </div>
 
@@ -87,7 +99,7 @@
 
     <div class="row">
       <button type="button" class="close-button half-width" (click)="closeDialog()">Close</button>
-      <button type="submit" class="submit-button half-width" [disabled]="!progressForm.valid">{{ saveButtonLabel }}</button>
+      <button type="submit" class="submit-button half-width">{{ saveButtonLabel }}</button>
     </div>
   </form>
 </div>

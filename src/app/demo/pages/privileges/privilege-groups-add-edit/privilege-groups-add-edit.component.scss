@@ -1,5 +1,12 @@
 @import 'src/scss/settings/colors';
 
+.required-message {
+  color: $ff-danger;
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
+}
+
 .dialog-container {
   width: 400px;
   background: $ff-bg-surface;

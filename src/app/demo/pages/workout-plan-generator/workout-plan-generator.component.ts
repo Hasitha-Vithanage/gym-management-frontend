@@ -72,9 +72,9 @@ export class WorkoutPlanGeneratorComponent {
   ngOnInit(): void {
     this.bodyForm = this.fb.group({
       gender: ['', Validators.required],
-      age: ['', Validators.required, Validators.min(10), Validators.max(80)],
-      height: ['', Validators.required, Validators.min(120), Validators.max(220)],
-      weight: ['', Validators.required, Validators.min(30), Validators.max(200)]
+      age: ['', [Validators.required, Validators.min(10), Validators.max(80)]],
+      height: ['', [Validators.required, Validators.min(120), Validators.max(220)]],
+      weight: ['', [Validators.required, Validators.min(30), Validators.max(200)]]
     });
 
     this.goalForm = this.fb.group({

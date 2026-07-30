@@ -11,6 +11,9 @@ export class GoalBasedCalorieTargetComponent {
   currentStep = 1;
   calorieForm: FormGroup;
   result: any = null;
+  step1Submitted = false;
+  step2Submitted = false;
+  step3Submitted = false;
 
   // Activity factor mapping
   activityFactor: any = {
@@ -32,6 +35,17 @@ export class GoalBasedCalorieTargetComponent {
   }
 
   nextStep() {
+    if (this.currentStep === 1) {
+      this.step1Submitted = true;
+      const invalid = ['age', 'gender', 'height', 'weight'].some(
+        (field) => this.calorieForm.get(field)?.invalid
+      );
+      if (invalid) return;
+    } else if (this.currentStep === 2) {
+      this.step2Submitted = true;
+      if (this.calorieForm.get('activity')?.invalid) return;
+    }
+
     if (this.currentStep < 3) {
       this.currentStep++;
     }
@@ -43,16 +57,10 @@ export class GoalBasedCalorieTargetComponent {
     }
   }
 
-  isStep1Valid(): boolean {
-    return !!(
-      this.calorieForm.get('age') &&
-      this.calorieForm.get('gender') &&
-      this.calorieForm.get('height') &&
-      this.calorieForm.get('weight')
-    );
-  }
-
   calculate() {
+    this.step3Submitted = true;
+    if (this.calorieForm.get('goal')?.invalid) return;
+
     const { age, gender, height, weight, activity, goal } = this.calorieForm.value;
     let bmr;
 

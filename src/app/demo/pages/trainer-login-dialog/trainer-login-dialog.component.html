@@ -19,6 +19,9 @@
             {{ trainer.employeeId }} - {{ trainer.firstName }} {{ trainer.lastName }} - {{ trainer.jobTitle }}
           </option>
         </select>
+        <span class="required-message" *ngIf="submitted && trainerLoginForm.get('trainerId')?.invalid">
+          Please select an employee
+        </span>
       </div>
     </div>
 
@@ -39,6 +42,9 @@
       <div class="field">
         <label>Username *</label>
         <input type="text" placeholder="Enter Username" formControlName="userName" />
+        <span class="required-message" *ngIf="submitted && trainerLoginForm.get('userName')?.invalid">
+          Username is required
+        </span>
       </div>
     </div>
 
@@ -51,6 +57,10 @@
         </div>
         <small class="password-hint" *ngIf="mode === 'edit'">Leave blank to keep the current password.</small>
         <small class="password-hint" *ngIf="mode === 'add'">Minimum 6 characters.</small>
+        <span class="required-message" *ngIf="submitted && trainerLoginForm.get('password')?.invalid">
+          <ng-container *ngIf="trainerLoginForm.get('password')?.hasError('required')">Password is required</ng-container>
+          <ng-container *ngIf="trainerLoginForm.get('password')?.hasError('minlength')">Password must be at least 6 characters</ng-container>
+        </span>
       </div>
     </div>
 

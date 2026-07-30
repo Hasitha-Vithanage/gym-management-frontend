@@ -24,7 +24,10 @@
 
       <div class="field">
         <label>Brand</label>
-        <input type="text" placeholder="e.g. Optimum Nutrition" formControlName="brand" />
+        <input type="text" maxlength="100" placeholder="e.g. Optimum Nutrition" formControlName="brand" />
+        <span class="error" *ngIf="submitted && supplementForm.get('brand')?.hasError('maxlength')">
+          Brand must be 100 characters or fewer.
+        </span>
       </div>
 
       <div class="field">
@@ -49,7 +52,10 @@
 
       <div class="field full">
         <label>Description</label>
-        <input type="text" placeholder="e.g. 24g protein per serving, chocolate flavour" formControlName="description" />
+        <input type="text" maxlength="500" placeholder="e.g. 24g protein per serving, chocolate flavour" formControlName="description" />
+        <span class="error" *ngIf="submitted && supplementForm.get('description')?.hasError('maxlength')">
+          Description must be 500 characters or fewer.
+        </span>
       </div>
     </div>
 

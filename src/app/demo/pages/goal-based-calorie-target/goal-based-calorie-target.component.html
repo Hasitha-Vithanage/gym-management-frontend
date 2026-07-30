@@ -31,6 +31,11 @@
                     <div class="form-group">
                         <label>Age</label>
                         <input type="number" formControlName="age" />
+                        <span class="required-message" *ngIf="step1Submitted && calorieForm.get('age')?.invalid">
+                          <ng-container *ngIf="calorieForm.get('age')?.hasError('required')">Age is required</ng-container>
+                          <ng-container *ngIf="calorieForm.get('age')?.hasError('min')">Age must be at least 10</ng-container>
+                          <ng-container *ngIf="calorieForm.get('age')?.hasError('max')">Age must be 100 or fewer</ng-container>
+                        </span>
                     </div>
 
                     <div class="form-group">
@@ -40,21 +45,32 @@
                             <option value="male">Male</option>
                             <option value="female">Female</option>
                         </select>
+                        <span class="required-message" *ngIf="step1Submitted && calorieForm.get('gender')?.invalid">
+                          Gender is required
+                        </span>
                     </div>
 
                     <div class="form-group">
                         <label>Height (cm)</label>
                         <input type="number" formControlName="height" />
+                        <span class="required-message" *ngIf="step1Submitted && calorieForm.get('height')?.invalid">
+                          <ng-container *ngIf="calorieForm.get('height')?.hasError('required')">Height is required</ng-container>
+                          <ng-container *ngIf="calorieForm.get('height')?.hasError('min')">Height must be at least 100cm</ng-container>
+                        </span>
                     </div>
 
                     <div class="form-group">
                         <label>Weight (kg)</label>
                         <input type="number" formControlName="weight" />
+                        <span class="required-message" *ngIf="step1Submitted && calorieForm.get('weight')?.invalid">
+                          <ng-container *ngIf="calorieForm.get('weight')?.hasError('required')">Weight is required</ng-container>
+                          <ng-container *ngIf="calorieForm.get('weight')?.hasError('min')">Weight must be at least 30kg</ng-container>
+                        </span>
                     </div>
                 </div>
 
                 <div class="actions">
-                    <button class="primary-btn" type="button" (click)="nextStep()" [disabled]="!isStep1Valid()">
+                    <button class="primary-btn" type="button" (click)="nextStep()">
                         Continue
                     </button>
                 </div>
@@ -92,11 +108,13 @@
                         <span>Intense training or physical job</span>
                     </label>
                 </div>
+                <span class="required-message" *ngIf="step2Submitted && calorieForm.get('activity')?.invalid">
+                  Please select an activity level
+                </span>
 
                 <div class="actions">
                     <button class="secondary-btn" type="button" (click)="prevStep()">Back</button>
-                    <button class="primary-btn" type="button" (click)="nextStep()"
-                        [disabled]="calorieForm.get('activity')?.invalid">
+                    <button class="primary-btn" type="button" (click)="nextStep()">
                         Next
                     </button>
                 </div>
@@ -128,11 +146,13 @@
                         <p>Calorie surplus to support muscle growth</p>
                     </div>
                 </div>
+                <span class="required-message" *ngIf="step3Submitted && calorieForm.get('goal')?.invalid">
+                  Please select a goal
+                </span>
 
                 <div class="actions">
                     <button class="secondary-btn" type="button" (click)="prevStep()">Back</button>
-                    <button class="primary-btn" type="button" (click)="calculate()"
-                        [disabled]="calorieForm.get('goal')?.invalid">
+                    <button class="primary-btn" type="button" (click)="calculate()">
                         Calculate Calories
                     </button>
                 </div>

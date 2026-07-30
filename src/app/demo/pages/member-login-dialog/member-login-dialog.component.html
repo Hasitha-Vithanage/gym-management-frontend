@@ -19,6 +19,9 @@
             {{ member.memberNo }} - {{ member.firstName }} {{ member.lastName }}
           </option>
         </select>
+        <span class="required-message" *ngIf="submitted && memberLoginForm.get('memberId')?.invalid">
+          Please select a member
+        </span>
       </div>
     </div>
 
@@ -39,6 +42,9 @@
       <div class="field">
         <label>Username *</label>
         <input type="text" placeholder="Enter Username" formControlName="userName" />
+        <span class="required-message" *ngIf="submitted && memberLoginForm.get('userName')?.invalid">
+          Username is required
+        </span>
       </div>
     </div>
 
@@ -68,6 +74,10 @@
         </div>
         <small class="password-hint" *ngIf="mode === 'edit'">Leave blank to keep the current password.</small>
         <small class="password-hint" *ngIf="mode === 'add'">Minimum 6 characters.</small>
+        <span class="required-message" *ngIf="submitted && memberLoginForm.get('password')?.invalid">
+          <ng-container *ngIf="memberLoginForm.get('password')?.hasError('required')">Password is required</ng-container>
+          <ng-container *ngIf="memberLoginForm.get('password')?.hasError('minlength')">Password must be at least 6 characters</ng-container>
+        </span>
       </div>
     </div>
 

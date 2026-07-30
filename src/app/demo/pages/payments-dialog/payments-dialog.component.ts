@@ -58,7 +58,7 @@ export class PaymentsDialogComponent {
     const inputDate = new Date(control.value);
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    return inputDate < today ? { futureDate: true } : null;
+    return inputDate < today ? { pastDate: true } : null;
   }
 
   futureDateValidator(control: AbstractControl) {
