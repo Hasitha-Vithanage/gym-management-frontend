@@ -127,10 +127,11 @@ export class MarkAttendanceComponent implements OnInit, OnDestroy {
   private loadMembers(): void {
     this.memberService.getData().subscribe({
       next: (data: any) => {
-        this.memberList = data;
+        const activeMembers = data.filter((m: any) => !m.deleted);
+        this.memberList = activeMembers;
         this.memberMap = {};
         data.forEach((m: any) => { this.memberMap[m.memberNo] = m; });
-        this.filteredMembers = data.filter((m: any) => !m.isDeleted);
+        this.filteredMembers = activeMembers;
       },
       error: () => {}
     });

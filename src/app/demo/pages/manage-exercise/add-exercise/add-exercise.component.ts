@@ -76,8 +76,7 @@ export class AddExerciseComponent implements OnInit, OnDestroy {
           this.dialogRef.close({ action: 'add', data: response });
         },
         error: (error) => {
-          const errorMessage = error?.error?.message || error?.message || 'Something went wrong.';
-          this.messageService.showError(errorMessage);
+          this.messageService.showError(error);
         }
       });
 
@@ -89,8 +88,7 @@ export class AddExerciseComponent implements OnInit, OnDestroy {
           this.dialogRef.close({ action: 'edit', data: response });
         },
         error: (error) => {
-          const errorMessage = error?.error?.message || error?.message || 'Action failed.';
-          this.messageService.showError(errorMessage);
+          this.messageService.showError(error);
         }
       });
     }

@@ -64,7 +64,7 @@ export class AddFoodItemComponent implements OnInit, OnDestroy {
           this.messageService.showSuccess('Food item added successfully!');
           this.dialogRef.close({ action: 'add' });
         },
-        error: (error) => this.messageService.showError(error?.error?.message ?? error?.message ?? 'Something went wrong.')
+        error: (error) => this.messageService.showError(error)
       });
     } else {
       this.foodItemService.updateFoodItem(this.selectedData.id, payload).subscribe({
@@ -72,7 +72,7 @@ export class AddFoodItemComponent implements OnInit, OnDestroy {
           this.messageService.showSuccess('Food item updated successfully!');
           this.dialogRef.close({ action: 'edit' });
         },
-        error: (error) => this.messageService.showError(error?.error?.message ?? error?.message ?? 'Action failed.')
+        error: (error) => this.messageService.showError(error)
       });
     }
   }

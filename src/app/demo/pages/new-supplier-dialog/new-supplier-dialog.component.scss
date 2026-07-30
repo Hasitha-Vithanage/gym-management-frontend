@@ -1,5 +1,17 @@
 @import 'src/scss/settings/colors';
 
+.required {
+  color: $ff-danger;
+  margin-left: 2px;
+}
+
+.required-message {
+  color: $ff-danger;
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
+}
+
 ::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface {
   background: transparent !important;
   box-shadow: none !important;

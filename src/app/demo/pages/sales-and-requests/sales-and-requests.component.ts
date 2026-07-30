@@ -70,7 +70,7 @@ export class SalesAndRequestsComponent implements OnInit {
         this.dataSource.sort = this.sort;
         this.cdr.markForCheck();
       },
-      error: (error) => this.messageService.showError(error?.error?.message ?? error?.message ?? 'Failed to load orders.')
+      error: (error) => this.messageService.showError(error)
     });
   }
 
@@ -90,7 +90,7 @@ export class SalesAndRequestsComponent implements OnInit {
             this.messageService.showSuccess('Order marked as completed.');
             this.populateData();
           },
-          error: (e) => this.messageService.showError(e?.error?.message ?? e?.message ?? 'Action failed.')
+          error: (e) => this.messageService.showError(e)
         });
       }
     });
@@ -108,7 +108,7 @@ export class SalesAndRequestsComponent implements OnInit {
             this.messageService.showSuccess('Order cancelled and stock restored.');
             this.populateData();
           },
-          error: (e) => this.messageService.showError(e?.error?.message ?? e?.message ?? 'Action failed.')
+          error: (e) => this.messageService.showError(e)
         });
       }
     });

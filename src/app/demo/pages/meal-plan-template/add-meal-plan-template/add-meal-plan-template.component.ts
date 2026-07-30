@@ -102,7 +102,7 @@ export class AddMealPlanTemplateComponent implements OnInit, OnDestroy {
           this.messageService.showSuccess('Meal plan template created successfully!');
           this.dialogRef.close({ action: 'add' });
         },
-        error: (error) => this.messageService.showError(error?.error?.message ?? error?.message ?? 'Something went wrong.')
+        error: (error) => this.messageService.showError(error)
       });
     } else {
       this.templateService.updateTemplate(this.selectedData.id, payload).subscribe({
@@ -110,7 +110,7 @@ export class AddMealPlanTemplateComponent implements OnInit, OnDestroy {
           this.messageService.showSuccess('Template updated successfully!');
           this.dialogRef.close({ action: 'edit' });
         },
-        error: (error) => this.messageService.showError(error?.error?.message ?? error?.message ?? 'Action failed.')
+        error: (error) => this.messageService.showError(error)
       });
     }
   }

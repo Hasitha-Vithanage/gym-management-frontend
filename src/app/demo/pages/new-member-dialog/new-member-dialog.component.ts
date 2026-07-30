@@ -152,8 +152,7 @@ export class NewMemberDialogComponent implements OnInit {
             this.dialogRef.close({ action: 'add', data: response });
           },
           error: (error) => {
-            const errorMessage = error?.error?.message || error?.error || 'Something went wrong.';
-            this.messageService.showError(errorMessage);
+            this.messageService.showError(error);
           }
         });
       } catch (error) {
@@ -172,7 +171,7 @@ export class NewMemberDialogComponent implements OnInit {
             this.dataSource = new MatTableDataSource(this.dataSource.data);
           },
           error: (error) => {
-            this.messageService.showError('Action failed with error: ' + error);
+            this.messageService.showError(error);
           }
         });
       } catch (error) {

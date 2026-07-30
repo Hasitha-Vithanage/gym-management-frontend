@@ -1,38 +1,56 @@
 <div class="form-section">
   <div class="title">
-    <h2 class="form-title">Add New Supplier</h2>
+    <h2 class="form-title">{{ mode === 'edit' ? 'Edit Supplier' : 'Add New Supplier' }}</h2>
     <button class="close-light" (click)="closeDialog()">&#x2715;</button>
   </div>
 
   <form [formGroup]="supplierForm" (ngSubmit)="onSubmit()">
     <div class="row">
       <div class="half-width">
-        <label for="supplierName">Supplier Name</label>
-        <input id="supplierName" type="text" maxlength="20" placeholder="Enter Supplier Name" formControlName="supplierName" />
+        <label for="supplierName">Supplier Name <span class="required">*</span></label>
+        <input id="supplierName" type="text" maxlength="100" placeholder="Enter Supplier Name" formControlName="supplierName" />
+        <span class="required-message" *ngIf="submitted && supplierForm.get('supplierName')?.invalid">
+          <ng-container *ngIf="supplierForm.get('supplierName')?.hasError('required')">Supplier name is required</ng-container>
+          <ng-container *ngIf="supplierForm.get('supplierName')?.hasError('minlength')">Supplier name must be at least 2 characters</ng-container>
+          <ng-container *ngIf="supplierForm.get('supplierName')?.hasError('maxlength')">Supplier name must be 100 characters or fewer</ng-container>
+        </span>
       </div>
 
       <div class="half-width">
-        <label for="contactPerson">Contact Person</label>
-        <input id="contactPerson" type="text" maxlength="20" placeholder="Enter Contact Person" formControlName="contactPerson" />
+        <label for="contactPerson">Contact Person <span class="required">*</span></label>
+        <input id="contactPerson" type="text" maxlength="50" placeholder="Enter Contact Person" formControlName="contactPerson" />
+        <span class="required-message" *ngIf="submitted && supplierForm.get('contactPerson')?.invalid">
+          <ng-container *ngIf="supplierForm.get('contactPerson')?.hasError('required')">Contact person is required</ng-container>
+          <ng-container *ngIf="supplierForm.get('contactPerson')?.hasError('maxlength')">Contact person must be 50 characters or fewer</ng-container>
+        </span>
       </div>
     </div>
 
     <div class="row">
       <div class="half-width">
-        <label for="contactNo">Contact No</label>
+        <label for="contactNo">Contact No <span class="required">*</span></label>
         <input id="contactNo" type="text" maxlength="10" placeholder="Enter Contact No" formControlName="contactNo" />
+        <span class="required-message" *ngIf="submitted && supplierForm.get('contactNo')?.invalid">
+          <ng-container *ngIf="supplierForm.get('contactNo')?.hasError('required')">Contact number is required</ng-container>
+          <ng-container *ngIf="supplierForm.get('contactNo')?.hasError('pattern')">Contact number must be exactly 10 digits</ng-container>
+        </span>
       </div>
 
       <div class="half-width">
-        <label for="emailAddress">Email Address</label>
+        <label for="emailAddress">Email Address <span class="required">*</span></label>
         <input id="emailAddress" type="text" maxlength="50" placeholder="Enter Email Address" formControlName="emailAddress" />
+        <span class="required-message" *ngIf="submitted && supplierForm.get('emailAddress')?.invalid">
+          <ng-container *ngIf="supplierForm.get('emailAddress')?.hasError('required')">Email address is required</ng-container>
+          <ng-container *ngIf="supplierForm.get('emailAddress')?.hasError('email')">Enter a valid email address</ng-container>
+        </span>
       </div>
     </div>
 
     <div class="row">
       <div class="half-width">
-        <label for="officeAddress">Office Address</label>
+        <label for="officeAddress">Office Address <span class="required">*</span></label>
         <input id="officeAddress" type="text" maxlength="100" placeholder="Enter Office Address" formControlName="officeAddress" />
+        <span class="required-message" *ngIf="submitted && supplierForm.get('officeAddress')?.invalid">Office address is required</span>
       </div>
 
       <div class="half-width">
@@ -43,7 +61,7 @@
 
     <div class="row">
       <div class="half-width">
-        <p class="field-label">Supply Type</p>
+        <p class="field-label">Supply Type <span class="required">*</span></p>
         <div formGroupName="equipmentType" class="checkbox-group">
           <label class="checkbox-item">
             <input type="checkbox" formControlName="machines" /> Machines
@@ -54,22 +72,25 @@
           <label class="checkbox-item">
             <input type="checkbox" formControlName="other" /> Other
           </label>
-          <label class="checkbox-item">
-            <input type="checkbox" formControlName="supplements" /> Supplements
-          </label>
         </div>
+        <span class="required-message" *ngIf="submitted && supplierForm.get('equipmentType')?.hasError('atLeastOneRequired')">
+          Please select at least one supply type
+        </span>
       </div>
 
       <div class="half-width">
         <p class="field-label">Status</p>
         <div class="status-toggle-group">
-          <label class="toggle-option" [class.active]="supplierForm.get('status').value === true">
+          <label class="toggle-option" [class.active]="supplierForm.get('status')?.value === true">
             <input type="radio" formControlName="status" [value]="true" /> Active
           </label>
-          <label class="toggle-option" [class.active]="supplierForm.get('status').value === false">
+          <label class="toggle-option" [class.active]="supplierForm.get('status')?.value === false">
             <input type="radio" formControlName="status" [value]="false" /> Inactive
           </label>
         </div>
+        <span class="required-message" *ngIf="submitted && supplierForm.get('status')?.invalid">
+          Please select a status
+        </span>
       </div>
     </div>
 

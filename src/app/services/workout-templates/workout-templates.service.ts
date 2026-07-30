@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, map, catchError, throwError } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { environment } from 'src/app/environments/environment';
 
 export interface WorkoutTemplate {
@@ -54,30 +54,23 @@ export class WorkoutTemplatesService {
     /** GET all (filters soft-deleted locally as fallback) */
     getAllWorkoutTemplates(): Observable<WorkoutTemplate[]> {
       return this.http.get<WorkoutTemplate[]>(this.baseUrl).pipe(
-        map((data) => data.filter((e) => !e.isDeleted)),
-        catchError(this.handleError)
+        map((data) => data.filter((e) => !e.isDeleted))
       );
     }
-  
+
     /** GET single by ID */
     getWorkoutTemplateById(id: number): Observable<WorkoutTemplate> {
-      return this.http.get<WorkoutTemplate>(`${this.baseUrl}/${id}`).pipe(
-        catchError(this.handleError)
-      );
+      return this.http.get<WorkoutTemplate>(`${this.baseUrl}/${id}`);
     }
-  
+
     /** POST — multipart/form-data (image support) */
     createWorkoutTemplate(formData: FormData): Observable<WorkoutTemplate> {
-      return this.http.post<WorkoutTemplate>(this.baseUrl, formData).pipe(
-        catchError(this.handleError)
-      );
+      return this.http.post<WorkoutTemplate>(this.baseUrl, formData);
     }
-  
+
     /** PUT — update by ID */
     updateWorkoutTemplate(id: number, formData: FormData): Observable<WorkoutTemplate> {
-      return this.http.put<WorkoutTemplate>(`${this.baseUrl}/${id}`, formData).pipe(
-        catchError(this.handleError)
-      );
+      return this.http.put<WorkoutTemplate>(`${this.baseUrl}/${id}`, formData);
     }
   
     /** GET filtered by difficulty level and goal */
@@ -111,30 +104,22 @@ export class WorkoutTemplatesService {
 
     /** DELETE — soft delete by ID */
     deleteWorkoutTemplate(id: number): Observable<void> {
-      return this.http.put<void>(`${this.baseUrl}/delete/${id}`, {}).pipe(
-        catchError(this.handleError)
-      );
+      return this.http.put<void>(`${this.baseUrl}/delete/${id}`, {});
     }
 
     /** GET exercises assigned to a template */
     getTemplateExercises(templateId: number): Observable<any[]> {
-      return this.http.get<any[]>(`${this.baseUrl}/${templateId}/exercises`).pipe(
-        catchError(this.handleError)
-      );
+      return this.http.get<any[]>(`${this.baseUrl}/${templateId}/exercises`);
     }
 
     /** POST bulk-replace exercises for a template */
     saveTemplateExercises(templateId: number, exercises: any[]): Observable<any[]> {
-      return this.http.post<any[]>(`${this.baseUrl}/${templateId}/exercises`, exercises).pipe(
-        catchError(this.handleError)
-      );
+      return this.http.post<any[]>(`${this.baseUrl}/${templateId}/exercises`, exercises);
     }
 
     /** DELETE single exercise assignment */
     deleteTemplateExercise(templateId: number, id: number): Observable<void> {
-      return this.http.delete<void>(`${this.baseUrl}/${templateId}/exercises/${id}`).pipe(
-        catchError(this.handleError)
-      );
+      return this.http.delete<void>(`${this.baseUrl}/${templateId}/exercises/${id}`);
     }
   
     private normalizeGoal(goal: string): string {
@@ -163,13 +148,5 @@ export class WorkoutTemplatesService {
       }
 
       return score;
-    }
-
-    private handleError(error: any): Observable<never> {
-      const msg = error?.error?.message
-        || error?.message
-        || 'An unexpected error occurred.';
-      console.error('[AddExerciseService]', error);
-      return throwError(() => new Error(msg));
     }
 }

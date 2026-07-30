@@ -64,7 +64,7 @@ export class SupplementInventoryManagementComponent implements OnInit {
         this.dataSource.sort = this.sort;
         this.cdr.markForCheck();
       },
-      error: (error) => this.messageService.showError(error?.error?.message ?? error?.message ?? 'Failed to load products.')
+      error: (error) => this.messageService.showError(error)
     });
   }
 
@@ -99,7 +99,7 @@ export class SupplementInventoryManagementComponent implements OnInit {
             this.messageService.showSuccess('Supplement deleted successfully!');
             this.cdr.markForCheck();
           },
-          error: (error) => this.messageService.showError(error?.error?.message ?? error?.message ?? 'Delete failed.')
+          error: (error) => this.messageService.showError(error)
         });
       }
     });

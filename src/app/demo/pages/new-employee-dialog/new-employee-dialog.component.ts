@@ -133,8 +133,7 @@ export class NewEmployeeDialogComponent implements OnInit {
           this.dialogRef.close({ action: 'add', data: response });
         },
         error: (error) => {
-          const errorMessage = error?.error?.message || error?.error || 'Something went wrong.';
-          this.messageService.showError(errorMessage);
+          this.messageService.showError(error);
         }
       });
     } else if (this.mode === 'edit') {
@@ -144,7 +143,7 @@ export class NewEmployeeDialogComponent implements OnInit {
           this.dialogRef.close({ action: 'edit', data: response });
         },
         error: (error) => {
-          this.messageService.showError('Action failed with error: ' + error);
+          this.messageService.showError(error);
         }
       });
     }
