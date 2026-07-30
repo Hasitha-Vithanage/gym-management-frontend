@@ -34,8 +34,6 @@ export class ProgressTrackingComponent implements OnInit {
   bodyFatChartOptions: any = {};
   dataSource = new MatTableDataSource<any>();
   userName = this.http.getLoginNameFromCache();
-  latestImage: any;
-  previousImage: any;
 
   // Pre-fill data from last workout request (for new members with no measurements)
   prefillData: { weight: number; height: number; gender: string; bmi: number; bmiCategory: string; estimatedBodyFat: number | null } | null = null;
@@ -138,11 +136,6 @@ export class ProgressTrackingComponent implements OnInit {
       },
       error: () => {}
     });
-  }
-
-  createImageUrl(byteArray: any, mimeType: string): string {
-    const binary = new Uint8Array(byteArray).reduce((data, byte) => data + String.fromCharCode(byte), '');
-    return `data:${mimeType};base64,${btoa(binary)}`;
   }
 
   openDialog(usePrefill = false): void {

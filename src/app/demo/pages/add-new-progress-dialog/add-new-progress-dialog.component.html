@@ -64,39 +64,6 @@
       </div>
     </div>
 
-    <div class="row photo-upload-row">
-      <p class="field-label">Upload Photos</p>
-    </div>
-
-    <div class="row">
-      <div class="half-width photo-upload">
-        <p class="field-label">Front View</p>
-        <button type="button" class="choose-file-btn" (click)="frontFileInput.click()" [disabled]="submitted">Choose File</button>
-        <div class="preview-box">
-          <img [src]="frontImageUrl || 'assets/images/authentication/google.svg'" width="50" height="50" alt="Front view preview" />
-        </div>
-        <input hidden (change)="onFileSelected($event, 'front')" #frontFileInput type="file" />
-      </div>
-
-      <div class="half-width photo-upload">
-        <p class="field-label">Side View</p>
-        <button type="button" class="choose-file-btn" (click)="sideFileInput.click()" [disabled]="submitted">Choose File</button>
-        <div class="preview-box">
-          <img [src]="sideImageUrl || 'assets/images/authentication/google.svg'" width="50" height="50" alt="Side view preview" />
-        </div>
-        <input hidden (change)="onFileSelected($event, 'side')" #sideFileInput type="file" />
-      </div>
-
-      <div class="half-width photo-upload">
-        <p class="field-label">Back View</p>
-        <button type="button" class="choose-file-btn" (click)="backFileInput.click()" [disabled]="submitted">Choose File</button>
-        <div class="preview-box">
-          <img [src]="backImageUrl || 'assets/images/authentication/google.svg'" width="50" height="50" alt="Back view preview" />
-        </div>
-        <input hidden (change)="onFileSelected($event, 'back')" #backFileInput type="file" />
-      </div>
-    </div>
-
     <div class="row">
       <button type="button" class="close-button half-width" (click)="closeDialog()">Close</button>
       <button type="submit" class="submit-button half-width">{{ saveButtonLabel }}</button>

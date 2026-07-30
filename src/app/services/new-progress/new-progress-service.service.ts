@@ -97,16 +97,4 @@ export class NewProgressServiceService {
 
     return this.http.get<any[]>(requestUrl, { headers });
   }
-
-
-  // getProgressPhotos(userName: string) {
-  //   const requestUrl = environment.baseUrl + '/progress-photos/' + userName;
-
-  //   const token = this.httpService.getAuthToken();
-  //   const headers = token ? { Authorization: 'Bearer ' + token } : {};
-
-  //   return this.http.get<any[]>(requestUrl, { headers });
-  // }
-
-
 }

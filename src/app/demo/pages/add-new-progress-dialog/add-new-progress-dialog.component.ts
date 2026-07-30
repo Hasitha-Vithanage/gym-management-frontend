@@ -2,10 +2,8 @@ import { Component, Inject } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { HttpService } from 'src/app/services/http.service';
-import { DomSanitizer } from '@angular/platform-browser';
 import { NewProgressServiceService } from 'src/app/services/new-progress/new-progress-service.service';
 import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
-import { error } from 'console';
 
 @Component({
   selector: 'app-add-new-progress-dialog',
@@ -21,14 +19,8 @@ export class AddNewProgressDialogComponent {
   mode = "add";
   selectedData;
 
-
-  frontImageUrl: any;
-  sideImageUrl: any;
-  backImageUrl: any;
-
   constructor(
     private fb: FormBuilder,
-    private sanitizer: DomSanitizer,
     private progressService: NewProgressServiceService,
     private messageService: MessageServiceService,
     public dialogRef: MatDialogRef<AddNewProgressDialogComponent>,
@@ -46,18 +38,6 @@ export class AddNewProgressDialogComponent {
       bodyFat: new FormControl(''),
       gender:  new FormControl(this.data?.gender  ?? '', Validators.required),
       remarks: new FormControl(''),
-
-      frontImage: new FormControl(''),
-      frontImageName: new FormControl(''),
-      frontImageType: new FormControl(''),
-
-      sideImage: new FormControl(''),
-      sideImageName: new FormControl(''),
-      sideImageType: new FormControl(''),
-
-      backImage: new FormControl(''),
-      backImageName: new FormControl(''),
-      backImageType: new FormControl(''),
     });
 
     // this.progressForm.get('date')?.disable();
@@ -88,7 +68,7 @@ export class AddNewProgressDialogComponent {
     const userName = this.http.getLoginNameFromCache();
     if (this.progressForm.invalid) return;
 
-    this.progressService.serviceCall(this.prepareFormData(), userName).subscribe({
+    this.progressService.serviceCall(this.progressForm.value, userName).subscribe({
       next: (response) => {
         this.messageService.showSuccess("Progress data saved successfully!")
         this.closeDialog();
@@ -124,32 +104,6 @@ export class AddNewProgressDialogComponent {
     this.mode = "edit";
     this.selectedData = data;
 
-  }
-
-  prepareFormData(): FormData {
-    const formData = new FormData();
-    formData.append('progressForm', new Blob([JSON.stringify(this.progressForm.getRawValue())], { type: 'application/json' }));
-
-    ['front', 'side', 'back'].forEach(view => {
-      const file = this.progressForm.get(`${view}Image`)?.value;
-      if (file) {
-        formData.append(`${view}Image`, file, file.name);
-      }
-    });
-
-    return formData;
-  }
-
-  onFileSelected(event: any, view: 'front' | 'side' | 'back'): void {
-    if (event.target.files && event.target.files[0]) {
-      const file = event.target.files[0];
-      const url = this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(file));
-      this[`${view}ImageUrl`] = url;
-
-      this.progressForm.get(`${view}Image`).setValue(file);
-      this.progressForm.get(`${view}ImageName`).setValue(file.name);
-      this.progressForm.get(`${view}ImageType`).setValue(file.type);
-    }
   }
 
 }
