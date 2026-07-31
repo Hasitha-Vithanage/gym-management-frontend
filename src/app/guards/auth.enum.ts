@@ -41,4 +41,6 @@ export enum authenticationEnum {
   Ratings_And_Feedback = 36,
   Feedback_History = 37,
   My_Supplement_Orders = 38,
+  Pending_Nutrition_Requests = 39,
+  Pending_Trainer_Requests = 40,
 }

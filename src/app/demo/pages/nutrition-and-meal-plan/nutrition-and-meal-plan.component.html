@@ -354,8 +354,43 @@
       </div>
     </div>
 
+    <!-- No trainer assigned -->
+    <div class="no-trainer-container" *ngIf="hasTrainer === false && !hasExistingProfile">
+      <mat-icon>person_off</mat-icon>
+      <h3>No Trainer Assigned Yet</h3>
+      <p>You need a trainer assigned before you can submit a nutrition profile. Request one below — gym management will be notified and will assign someone shortly.</p>
+
+      <div class="no-trainer-request-fields">
+        <div class="nf-field">
+          <label class="nf-label" for="request-goal">Primary Fitness Goal <span class="nf-req">*</span></label>
+          <select id="request-goal" class="nf-select" [(ngModel)]="requestGoal" [disabled]="trainerRequested">
+            <option value="">Select a goal</option>
+            <option value="Fat Loss">Fat Loss</option>
+            <option value="Muscle Gain">Muscle Gain</option>
+            <option value="Strength">Strength</option>
+            <option value="Endurance">Endurance</option>
+            <option value="General Health">General Health</option>
+          </select>
+        </div>
+
+        <div class="nf-field">
+          <label class="nf-label" for="request-level">Fitness Experience Level <span class="nf-req">*</span></label>
+          <select id="request-level" class="nf-select" [(ngModel)]="requestLevel" [disabled]="trainerRequested">
+            <option value="">Select a level</option>
+            <option value="Beginner">Beginner</option>
+            <option value="Intermediate">Intermediate</option>
+            <option value="Advanced">Advanced</option>
+          </select>
+        </div>
+      </div>
+
+      <button (click)="requestTrainer()" [disabled]="trainerRequested || !requestGoal || !requestLevel">
+        {{ trainerRequested ? 'Request Sent' : 'Request a Trainer' }}
+      </button>
+    </div>
+
     <!-- Form -->
-    <ng-container *ngIf="!hasExistingProfile">
+    <ng-container *ngIf="!hasExistingProfile && hasTrainer">
 
       <div class="nf-header">
         <h2 class="nf-title">Submit Nutrition Profile</h2>

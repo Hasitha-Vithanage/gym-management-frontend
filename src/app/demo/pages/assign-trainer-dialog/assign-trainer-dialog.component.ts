@@ -6,6 +6,7 @@ import { AssignTrainerServiceService } from 'src/app/services/assign-trainer/ass
 import { HttpService } from 'src/app/services/http.service';
 import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
 import { NotificationService } from 'src/app/services/notification-service/notification.service';
+import { TrainerRequestService } from 'src/app/services/trainer-request/trainer-request.service';
 
 @Component({
   selector: 'app-assign-trainer-dialog',
@@ -35,6 +36,7 @@ export class AssignTrainerDialogComponent {
     private assignTrainerService: AssignTrainerServiceService,
     private messageService: MessageServiceService,
     private notificationService: NotificationService,
+    private trainerRequestService: TrainerRequestService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
@@ -78,6 +80,11 @@ export class AssignTrainerDialogComponent {
             this.messageService.showSuccess('Trainer Assigned successfully!');
 
             this.addNotification('add');
+
+            if (this.data?.pendingTrainerRequestMemberId) {
+              this.trainerRequestService.updateStatus(this.data.pendingTrainerRequestMemberId, 'ASSIGNED')
+                .subscribe({ error: () => {} });
+            }
           },
           // Displaying error message
           error: (error) => {
@@ -135,6 +142,10 @@ export class AssignTrainerDialogComponent {
     if (member) {
       this.assignTrainerForm.patchValue({ member: member.firstName });
       this.selectedMember = member.id;
+
+      if (this.data?.lockMember) {
+        this.assignTrainerForm.get('member')?.disable();
+      }
     }
   }
 

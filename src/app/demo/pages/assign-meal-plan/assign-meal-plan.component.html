@@ -294,76 +294,112 @@
     <span>No nutrition profile found for this member — showing all available templates.</span>
   </div>
 
-  <!-- Suggestions -->
+  <!-- Current active meal plan — shown so trainers/managers don't accidentally replace it -->
+  <div class="current-plan-notice" *ngIf="currentAssignment">
+    <mat-icon>restaurant_menu</mat-icon>
+    <span>
+      This member already has an active meal plan: <strong>{{ currentAssignment.template?.templateName }}</strong>.
+      Assigning a new plan below will replace it.
+    </span>
+  </div>
+
+  <!-- Shared card markup for both sections -->
+  <ng-template #templateCard let-s>
+    <div class="suggestion-card">
+
+      <div class="card-top">
+        <div class="card-name">{{ s.template.templateName }}</div>
+        <span class="match-badge {{ matchBadgeClass(s.matchRound) }}">{{ matchLabel(s.matchRound) }}</span>
+      </div>
+
+      <div class="card-goal">{{ s.template.goal }}</div>
+
+      <div class="macro-row">
+        <div class="macro-item">
+          <span class="m-label">Calories</span>
+          <span class="m-val cal">{{ s.template.dailyCalorieTarget }} kcal</span>
+        </div>
+        <div class="macro-item">
+          <span class="m-label">Protein</span>
+          <span class="m-val prot">{{ s.template.proteinTargetG }}g</span>
+        </div>
+        <div class="macro-item">
+          <span class="m-label">Carbs</span>
+          <span class="m-val carb">{{ s.template.carbsTargetG }}g</span>
+        </div>
+        <div class="macro-item">
+          <span class="m-label">Fat</span>
+          <span class="m-val fat">{{ s.template.fatTargetG }}g</span>
+        </div>
+      </div>
+
+      <div class="card-meta">
+        <span>{{ s.template.durationWeeks }} weeks</span>
+        <span>{{ s.template.foodItemCount ?? 0 }} food items</span>
+        <span *ngIf="s.matchScore > 0" class="score-chip">+{{ s.matchScore }} score</span>
+      </div>
+
+      <div class="tag-row" *ngIf="s.template.dietaryTags?.length > 0">
+        <span class="dtag" *ngFor="let t of s.template.dietaryTags">{{ t }}</span>
+      </div>
+
+      <!-- Confirm inline panel -->
+      <div class="confirm-panel" *ngIf="confirmingTemplate === s">
+        <div class="replace-warning" *ngIf="currentAssignment && currentAssignment.templateId !== s.template.id">
+          <mat-icon>warning_amber</mat-icon>
+          <span>This will replace their current active plan, "{{ currentAssignment.template?.templateName }}".</span>
+        </div>
+        <div class="confirm-row">
+          <label class="confirm-label">Duration (weeks)</label>
+          <input type="number" [(ngModel)]="durationWeeks" min="1" class="duration-input" />
+        </div>
+        <div class="confirm-actions">
+          <button class="btn-confirm" (click)="confirmAssign()">Confirm Assign</button>
+          <button class="btn-cancel" (click)="cancelConfirm()">Cancel</button>
+        </div>
+      </div>
+
+      <button class="assign-btn" *ngIf="confirmingTemplate !== s" (click)="openConfirm(s)">
+        Assign This Plan
+      </button>
+
+    </div>
+  </ng-template>
+
+  <!-- Suggested Templates -->
   <ng-container *ngIf="suggestions.length > 0">
 
     <div class="suggestions-header">
-      <span class="s-count">{{ suggestions.length }} template{{ suggestions.length !== 1 ? 's' : '' }} found</span>
+      <span class="s-count">{{ suggestions.length }} suggested template{{ suggestions.length !== 1 ? 's' : '' }}</span>
       <span class="s-reason" *ngIf="suggestions[0]">{{ suggestions[0].matchReason }}</span>
     </div>
 
     <div class="suggestions-grid">
-      <div class="suggestion-card" *ngFor="let s of suggestions">
+      <ng-container *ngFor="let s of suggestions">
+        <ng-container *ngTemplateOutlet="templateCard; context: { $implicit: s }"></ng-container>
+      </ng-container>
+    </div>
 
-        <div class="card-top">
-          <div class="card-name">{{ s.template.templateName }}</div>
-          <span class="match-badge {{ matchBadgeClass(s.matchRound) }}">{{ matchLabel(s.matchRound) }}</span>
-        </div>
+  </ng-container>
 
-        <div class="card-goal">{{ s.template.goal }}</div>
+  <!-- Other Templates -->
+  <ng-container *ngIf="otherTemplates.length > 0">
 
-        <div class="macro-row">
-          <div class="macro-item">
-            <span class="m-label">Calories</span>
-            <span class="m-val cal">{{ s.template.dailyCalorieTarget }} kcal</span>
-          </div>
-          <div class="macro-item">
-            <span class="m-label">Protein</span>
-            <span class="m-val prot">{{ s.template.proteinTargetG }}g</span>
-          </div>
-          <div class="macro-item">
-            <span class="m-label">Carbs</span>
-            <span class="m-val carb">{{ s.template.carbsTargetG }}g</span>
-          </div>
-          <div class="macro-item">
-            <span class="m-label">Fat</span>
-            <span class="m-val fat">{{ s.template.fatTargetG }}g</span>
-          </div>
-        </div>
+    <div class="suggestions-header">
+      <span class="s-count">{{ otherTemplates.length }} other template{{ otherTemplates.length !== 1 ? 's' : '' }} available</span>
+      <span class="s-reason">Not matched to this member's profile, but still assignable.</span>
+    </div>
 
-        <div class="card-meta">
-          <span>{{ s.template.durationWeeks }} weeks</span>
-          <span>{{ s.template.foodItemCount ?? 0 }} food items</span>
-          <span *ngIf="s.matchScore > 0" class="score-chip">+{{ s.matchScore }} score</span>
-        </div>
-
-        <div class="tag-row" *ngIf="s.template.dietaryTags?.length > 0">
-          <span class="dtag" *ngFor="let t of s.template.dietaryTags">{{ t }}</span>
-        </div>
-
-        <!-- Confirm inline panel -->
-        <div class="confirm-panel" *ngIf="confirmingTemplate === s">
-          <div class="confirm-row">
-            <label class="confirm-label">Duration (weeks)</label>
-            <input type="number" [(ngModel)]="durationWeeks" min="1" class="duration-input" />
-          </div>
-          <div class="confirm-actions">
-            <button class="btn-confirm" (click)="confirmAssign()">Confirm Assign</button>
-            <button class="btn-cancel" (click)="cancelConfirm()">Cancel</button>
-          </div>
-        </div>
-
-        <button class="assign-btn" *ngIf="confirmingTemplate !== s" (click)="openConfirm(s)">
-          Assign This Plan
-        </button>
-
-      </div>
+    <div class="suggestions-grid">
+      <ng-container *ngFor="let s of otherTemplates">
+        <ng-container *ngTemplateOutlet="templateCard; context: { $implicit: s }"></ng-container>
+      </ng-container>
     </div>
 
   </ng-container>
 
   <!-- Empty state after a search returns nothing -->
-  <div class="empty-state" *ngIf="!isLoading && hasSearched && suggestions.length === 0">
+  <div class="empty-state" *ngIf="!isLoading && hasSearched && suggestions.length === 0 && otherTemplates.length === 0">
     <mat-icon>search_off</mat-icon>
     <p>No templates found for this member. Check the username and try again.</p>
   </div>

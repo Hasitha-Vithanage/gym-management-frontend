@@ -37,6 +37,8 @@ import { TrainerLoginComponent } from './trainer-login/trainer-login/trainer-log
 import { MemberLoginComponent } from './member-login/member-login/member-login.component';
 import { GymChartsComponent } from './gym-charts/gym-charts.component';
 import { WorkoutPlanUploadComponent } from './workout-plan-upload/workout-plan-upload.component';
+import { PendingNutritionRequestsComponent } from './pending-nutrition-requests/pending-nutrition-requests.component';
+import { PendingTrainerRequestsComponent } from './pending-trainer-requests/pending-trainer-requests.component';
 import { UploadWorkoutPlanDialogComponent } from './upload-workout-plan-dialog/upload-workout-plan-dialog.component';
 import { MyWorkoutPlanComponent } from './my-workout-plan/my-workout-plan.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
@@ -126,6 +128,8 @@ export const MY_DATE_FORMATS = {
     MemberLoginComponent,
     GymChartsComponent,
     WorkoutPlanUploadComponent,
+    PendingNutritionRequestsComponent,
+    PendingTrainerRequestsComponent,
     UploadWorkoutPlanDialogComponent,
     MyWorkoutPlanComponent,
     UserProfileComponent,

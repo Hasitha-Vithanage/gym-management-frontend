@@ -8,7 +8,7 @@ export interface TrainerRequest {
   id?: number;
   memberId: number;
   memberName: string;
-  status: 'PENDING' | 'ASSIGNED';
+  status: 'PENDING' | 'ASSIGNED' | 'REJECTED';
   level?: string;
   goal?: string;
   bmiCategory?: string;
@@ -40,7 +40,7 @@ export class TrainerRequestService {
     );
   }
 
-  updateStatus(memberId: number, status: 'PENDING' | 'ASSIGNED'): Observable<TrainerRequest> {
+  updateStatus(memberId: number, status: 'PENDING' | 'ASSIGNED' | 'REJECTED'): Observable<TrainerRequest> {
     return this.http.put<TrainerRequest>(
       environment.baseUrl + '/trainer-request/member/' + memberId + '/status?status=' + status,
       null,

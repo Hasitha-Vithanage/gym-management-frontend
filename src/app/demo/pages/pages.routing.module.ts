@@ -46,6 +46,8 @@ import { ManageFoodItemsComponent } from './manage-food-items/manage-food-items.
 import { MealPlanTemplateComponent } from './meal-plan-template/meal-plan-template.component';
 import { FoodToTemplateComponent } from './food-to-template/food-to-template.component';
 import { AssignMealPlanComponent } from './assign-meal-plan/assign-meal-plan.component';
+import { PendingNutritionRequestsComponent } from './pending-nutrition-requests/pending-nutrition-requests.component';
+import { PendingTrainerRequestsComponent } from './pending-trainer-requests/pending-trainer-requests.component';
 import { MyAttendanceComponent } from './my-attendance/my-attendance.component';
 import { AttendanceAnalyticsComponent } from './attendance-analytics/attendance-analytics.component';
 import { EquipmentManagementComponent } from './equipment-management/equipment-management.component';
@@ -238,6 +240,14 @@ export const PagesRoutes: Routes = [
   {
     path: 'assign-meal-plan',
     component: AssignMealPlanComponent
+  },
+  {
+    path: 'pending-nutrition-requests',
+    component: PendingNutritionRequestsComponent
+  },
+  {
+    path: 'pending-trainer-requests',
+    component: PendingTrainerRequestsComponent
   },
   {
     path: 'my-attendance',

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { AssignTrainerServiceService } from 'src/app/services/assign-trainer/assign-trainer-service.service';
@@ -8,6 +9,8 @@ import { NotificationService } from 'src/app/services/notification-service/notif
 import { NutritionProfileService } from 'src/app/services/nutrition-and-meal-plans/nutrition-and-meal-plans-service.service';
 import { UserMealPlanAssignmentMealService } from 'src/app/services/user-meal-plan-assignment-meal/user-meal-plan-assignment-meal.service';
 import { MealPlanTemplateService } from 'src/app/services/meal-plan-template/meal-plan-template.service';
+import { TrainerRequestService } from 'src/app/services/trainer-request/trainer-request.service';
+import { UserProfileService } from 'src/app/services/user-profile/user-profile.service';
 
 @Component({
   selector: 'app-nutrition-and-meal-plan',
@@ -28,6 +31,12 @@ export class NutritionAndMealPlanComponent implements OnInit {
   dataSource: any;
   trainerid: any;
 
+  // ─── Trainer assignment gate ──────────────────────────────────────────
+  hasTrainer: boolean | null = null;
+  trainerRequested = false;
+  requestGoal = '';
+  requestLevel = '';
+
   // ─── Active meal plan ─────────────────────────────────────────────────
   isLoadingPlan = false;
   activeAssignment: any = null;
@@ -47,7 +56,10 @@ export class NutritionAndMealPlanComponent implements OnInit {
     private readonly assignTrainerService: AssignTrainerServiceService,
     private readonly notificationService: NotificationService,
     private readonly assignmentService: UserMealPlanAssignmentMealService,
-    private readonly templateService: MealPlanTemplateService
+    private readonly templateService: MealPlanTemplateService,
+    private readonly trainerRequestService: TrainerRequestService,
+    private readonly userProfileService: UserProfileService,
+    private readonly route: ActivatedRoute
   ) {
     const today = new Date().toISOString().split('T')[0];
     const name = this.http.getLoginNameFromCache();
@@ -63,8 +75,14 @@ export class NutritionAndMealPlanComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const requestedView = this.route.snapshot.queryParamMap.get('view');
+    if (requestedView === 'request' || requestedView === 'myPlans') {
+      this.activeView = requestedView;
+    }
+
     this.checkExistingProfile();
     this.loadActivePlan();
+    this.checkHasTrainer();
   }
 
   // ─── Profile form ─────────────────────────────────────────────────────
@@ -74,6 +92,61 @@ export class NutritionAndMealPlanComponent implements OnInit {
     this.nutritionProfileService.hasProfile(userId).subscribe({
       next: (exists: boolean) => { this.hasExistingProfile = exists; },
       error: () => { this.hasExistingProfile = false; }
+    });
+  }
+
+  checkHasTrainer(): void {
+    const userId = this.http.getUserId();
+    this.assignTrainerService.getTrainerByMemberId(userId).subscribe({
+      next: () => { this.hasTrainer = true; },
+      error: () => {
+        this.hasTrainer = false;
+        this.trainerRequestService.getByMemberId(Number(userId)).subscribe({
+          next: (req) => { this.trainerRequested = req?.status === 'PENDING'; },
+          error: () => { this.trainerRequested = false; }
+        });
+      }
+    });
+  }
+
+  requestTrainer(): void {
+    if (!this.requestGoal || !this.requestLevel) return;
+
+    const userId = Number(this.http.getUserId());
+    const payload = {
+      memberId: userId,
+      memberName: this.http.getFullNameFromCache() || this.http.getLoginNameFromCache() || '',
+      goal: this.requestGoal,
+      level: this.requestLevel
+    };
+
+    this.trainerRequestService.createRequest(payload).subscribe({
+      next: () => {
+        this.notifyManagers();
+        this.trainerRequested = true;
+        this.messageService.showSuccess('Request sent to gym management!');
+      },
+      error: (err) => {
+        if (err?.status === 409) {
+          this.trainerRequested = true;
+        } else {
+          this.messageService.showError('Failed to send request. Please try again.');
+        }
+      }
+    });
+  }
+
+  private notifyManagers(): void {
+    this.userProfileService.getAllUsers().subscribe({
+      next: (users: any) => {
+        const managers = (users as any[]).filter(u => u.role === 'Manager');
+        const name = this.http.getFullNameFromCache() || this.http.getLoginNameFromCache();
+        managers.forEach(m => this.notificationService.addNotification(
+          `${name} needs a trainer assigned before they can submit a nutrition profile.`,
+          'warning', m.id, name
+        ));
+      },
+      error: () => {}
     });
   }
 

@@ -111,7 +111,7 @@
     <div class="journey-grid">
       <div *ngFor="let step of journeySteps"
            class="journey-card"
-           (click)="navigateTo(step.route)">
+           (click)="onJourneyStepClick(step)">
 
         <div class="step-number" [style.background]="step.accentColor + '22'" [style.color]="step.accentColor">
           {{ step.step }}

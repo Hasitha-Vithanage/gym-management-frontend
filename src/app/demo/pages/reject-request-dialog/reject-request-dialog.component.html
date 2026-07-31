@@ -2,7 +2,7 @@
 
   <!-- Header -->
   <div class="title">
-    <h3 class="form-title">Reject Workout Request</h3>
+    <h3 class="form-title">Reject {{ data.requestType || 'Workout' }} Request</h3>
     <button class="close-light" (click)="onCancel()">&#x2715;</button>
   </div>
 
@@ -25,7 +25,7 @@
     <!-- Guidance note -->
     <p class="info-note">
       The member will be notified of this rejection along with your reason.
-      They will be able to resubmit a new workout request.
+      They will be able to resubmit a new request.
     </p>
 
     <!-- Reason field -->

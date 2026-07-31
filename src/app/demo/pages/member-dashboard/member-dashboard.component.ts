@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { HttpService } from 'src/app/services/http.service';
 import { MemberServiceService } from 'src/app/services/member-service/member-service.service';
 import { PaymentsService } from 'src/app/services/payments/payments.service';
+import { UserMealPlanAssignmentMealService } from 'src/app/services/user-meal-plan-assignment-meal/user-meal-plan-assignment-meal.service';
 import { QrCodeComponent } from '../qr-container/qr-code/qr-code.component';
 
 interface JourneyStep {
@@ -36,6 +37,7 @@ export class MemberDashboardComponent implements OnInit, OnDestroy {
   memberDetails: any = null;
   paymentDetails: any = null;
   isLoading = true;
+  hasMealPlan: boolean | null = null;
 
   readonly journeySteps: JourneyStep[] = [
     {
@@ -72,9 +74,9 @@ export class MemberDashboardComponent implements OnInit, OnDestroy {
     },
     {
       step: 5,
-      title: 'Set Your Calorie Goals',
-      description: 'Calculate your daily calorie target based on your fitness goals — lose weight, build muscle, or maintain.',
-      route: '/pages/goal-based-calorie-target',
+      title: 'View Your Nutrition Plan',
+      description: 'Check the meal plan your trainer assigned you, or submit your nutrition profile if you don\'t have one yet.',
+      route: '/pages/nutrition&meal-plan',
       emoji: '🥗',
       accentColor: '#FBBF24'
     },
@@ -104,6 +106,7 @@ export class MemberDashboardComponent implements OnInit, OnDestroy {
     private readonly httpService: HttpService,
     private readonly memberService: MemberServiceService,
     private readonly paymentsService: PaymentsService,
+    private readonly mealPlanAssignmentService: UserMealPlanAssignmentMealService,
     private readonly router: Router,
     private readonly dialog: MatDialog
   ) {}
@@ -112,6 +115,19 @@ export class MemberDashboardComponent implements OnInit, OnDestroy {
     this.greeting = this.buildGreeting();
     this.memberName = this.httpService.getFullNameFromCache() || 'Member';
     this.loadDashboardData();
+    this.checkMealPlan();
+  }
+
+  private checkMealPlan(): void {
+    const userId = this.httpService.getLoginNameFromCache();
+    if (!userId) { this.hasMealPlan = false; return; }
+
+    this.mealPlanAssignmentService.getActiveAssignment(userId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (assignment) => { this.hasMealPlan = !!assignment; },
+        error: () => { this.hasMealPlan = false; }
+      });
   }
 
   ngOnDestroy(): void {
@@ -173,6 +189,16 @@ export class MemberDashboardComponent implements OnInit, OnDestroy {
 
   navigateTo(route: string): void {
     this.router.navigate([route]);
+  }
+
+  onJourneyStepClick(step: JourneyStep): void {
+    if (step.title === 'View Your Nutrition Plan') {
+      this.router.navigate(['/pages/nutrition&meal-plan'], {
+        queryParams: { view: this.hasMealPlan ? 'myPlans' : 'request' }
+      });
+      return;
+    }
+    this.navigateTo(step.route);
   }
 
   showMyQrCode(): void {

@@ -30,4 +30,16 @@ export class NutritionProfileService {
   getProfileByUserId(userId: string) {
     return this.http.get(`${environment.baseUrl}/nutrition-profile/${userId}`, { headers: this.headers });
   }
+
+  getPendingRequestsForTrainer(trainerUserId: number) {
+    return this.http.get<any[]>(
+      `${environment.baseUrl}/nutrition-profile/pending-custom/trainer/${trainerUserId}`,
+      { headers: this.headers }
+    );
+  }
+
+  updateStatusByUserId(userId: string, status: string) {
+    const url = `${environment.baseUrl}/nutrition-profile/user/${encodeURIComponent(userId)}/status?status=${encodeURIComponent(status)}`;
+    return this.http.put(url, null, { headers: this.headers });
+  }
 }

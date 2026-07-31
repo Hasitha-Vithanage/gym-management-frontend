@@ -1,5 +1,78 @@
 @import 'src/scss/settings/colors';
 
+/* ── No trainer assigned ── */
+.no-trainer-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 56px 24px;
+  max-width: 560px;
+  margin: 0 auto;
+  gap: 16px;
+
+  mat-icon {
+    font-size: 40px;
+    width: 40px;
+    height: 40px;
+    color: $ff-danger;
+  }
+
+  h3 {
+    font-size: 20px;
+    font-weight: 700;
+    color: $ff-text-primary;
+    margin: 0;
+  }
+
+  p {
+    font-size: 14px;
+    color: $ff-text-secondary;
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 38px;
+    padding: 0 22px;
+    border-radius: $ff-radius-sm;
+    border: 1.5px solid $ff-accent-primary;
+    background: transparent;
+    color: $ff-accent-primary;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: $ff-font;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover:not(:disabled) {
+      background: rgba($ff-accent-primary, 0.08);
+      box-shadow: $ff-shadow-orange;
+    }
+
+    &:disabled {
+      border-color: $ff-border-default;
+      color: $ff-text-dim;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.no-trainer-request-fields {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+  max-width: 420px;
+
+  .nf-field {
+    flex: 1;
+    text-align: left;
+  }
+}
+
 /* ── Page Shell ── */
 .nm-page {
   padding: 16px;

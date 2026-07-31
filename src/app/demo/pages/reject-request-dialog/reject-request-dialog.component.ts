@@ -15,7 +15,7 @@ export class RejectRequestDialogComponent {
 
   constructor(
     public dialogRef: MatDialogRef<RejectRequestDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { memberName: string; goal: string; level: string }
+    @Inject(MAT_DIALOG_DATA) public data: { memberName: string; goal: string; level?: string; requestType?: string }
   ) {}
 
   onReject(): void {

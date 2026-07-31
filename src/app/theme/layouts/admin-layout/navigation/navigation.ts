@@ -138,7 +138,8 @@ export const NavigationItems: NavigationItem[] = [
       authenticationEnum.Employee_Registration,
       authenticationEnum.Member_Registration,
       authenticationEnum.Mark_Attendance,
-      authenticationEnum.Assign_Trainer
+      authenticationEnum.Assign_Trainer,
+      authenticationEnum.Pending_Trainer_Requests
     ],
     children: [
       {
@@ -179,6 +180,16 @@ export const NavigationItems: NavigationItem[] = [
         url: '/pages/assign-trainer',
         icon: '../../../../assets/images/icon/assign-trainer-icon.png',
         auth: [authenticationEnum.Assign_Trainer],
+        breadcrumbs: false
+      },
+      {
+        id: 'pendingTrainerRequestsDet',
+        title: 'Pending Trainer Requests',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/pages/pending-trainer-requests',
+        icon: '../../../../assets/images/icon/monthly-attendance-report-icon.png',
+        auth: [authenticationEnum.Pending_Trainer_Requests],
         breadcrumbs: false
       }
     ]
@@ -372,6 +383,7 @@ export const NavigationItems: NavigationItem[] = [
       authenticationEnum.Assign_Meal_Plan,
       authenticationEnum.Nutrition_And_Meal_Plan,
       authenticationEnum.Goal_Based_Calorie_Target,
+      authenticationEnum.Pending_Nutrition_Requests,
     ],
     children: [
       {
@@ -402,6 +414,16 @@ export const NavigationItems: NavigationItem[] = [
         url: '/pages/assign-meal-plan',
         icon: '../../../../assets/images/icon/assign-light.png',
         auth: [authenticationEnum.Assign_Meal_Plan],
+        breadcrumbs: false
+      },
+      {
+        id: 'pendingNutritionRequestsDet',
+        title: 'Pending Requests',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/pages/pending-nutrition-requests',
+        icon: '../../../../assets/images/icon/monthly-attendance-report-icon.png',
+        auth: [authenticationEnum.Pending_Nutrition_Requests],
         breadcrumbs: false
       },
       {
