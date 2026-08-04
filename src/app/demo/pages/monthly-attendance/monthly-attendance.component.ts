@@ -11,27 +11,15 @@ import { MessageServiceService } from 'src/app/services/message-service/message-
 })
 export class MonthlyAttendanceComponent {
   @ViewChild('chart') chart: ChartComponent;
-  employeeMonthlyAttendanceChartOptions: any = {};
   memberMonthlyAttendanceChartOptions: any = {};
 
   constructor(
     private commonDataService: CommonDataServiceService,
     private messageService: MessageServiceService
   ) {
-    this.getMonthlyEmployeePresentAttendance();
     this.getMonthlyMemberPresentAttendance();
   }
 
-  public getMonthlyEmployeePresentAttendance(): void {
-    this.commonDataService.getMonthlyEmployeeAttendance().subscribe({
-      next: (response: any) => {
-        this.updateMonthlyPresentEmployeeAttendance(response);
-      },
-      error: (error: any) => {
-        this.messageService.showError(error);
-      }
-    });
-  }
   public getMonthlyMemberPresentAttendance(): void {
     this.commonDataService.getMonthlyMemberAttendance().subscribe({
       next: (response: any) => {
@@ -41,66 +29,6 @@ export class MonthlyAttendanceComponent {
         this.messageService.showError(error);
       }
     });
-  }
-
-  public updateMonthlyPresentEmployeeAttendance(data: any): void {
-    const monthlyEmployeeAttendanceData = data.map((data: any) => {
-      return {
-        x: data.month,
-        y: data.present_days
-      };
-    });
-
-    this.employeeMonthlyAttendanceChartOptions = {
-      series: [{ name: 'Present Employee Count', data: monthlyEmployeeAttendanceData }],
-      chart: {
-        type: 'bar',
-        height: 350,
-        animations: {
-          enabled: true,
-          easing: 'easeinout',
-          speed: 800
-        }
-      },
-      xaxis: {
-        labels: {
-          style: {
-            colors: '#6b7280'
-          }
-        }
-      },
-      yaxis: {
-        title: {
-          text: 'Count',
-          style: {
-            color: '#6b7280'
-          }
-        },
-        labels: {
-          style: {
-            colors: '#6b7280'
-          }
-        }
-      },
-      colors: ['#f97316'],
-      plotOptions: {
-        bar: {
-          borderRadius: 4,
-          columnWidth: '60%'
-        }
-      },
-      grid: {
-        borderColor: '#e5e7eb'
-      },
-      title: {
-        text: 'Present employee count',
-        align: 'center',
-        style: {
-          color: '#1f2937',
-          fontSize: '16px'
-        }
-      }
-    };
   }
 
   public updateMonthlyPresentMemberAttendance(data: any): void {
@@ -116,16 +44,21 @@ export class MonthlyAttendanceComponent {
       chart: {
         type: 'bar',
         height: 350,
+        background: 'transparent',
         animations: {
           enabled: true,
           easing: 'easeinout',
           speed: 800
+        },
+        toolbar: {
+          show: false
         }
       },
       xaxis: {
         labels: {
           style: {
-            colors: '#6b7280'
+            colors: '#9BA3B8',
+            fontFamily: 'Plus Jakarta Sans, sans-serif'
           }
         }
       },
@@ -133,30 +66,33 @@ export class MonthlyAttendanceComponent {
         title: {
           text: 'Count',
           style: {
-            color: '#6b7280'
+            color: '#9BA3B8'
           }
         },
         labels: {
           style: {
-            colors: '#6b7280'
+            colors: '#9BA3B8'
           }
         }
       },
-      colors: ['#f97316'],
+      colors: ['#FF6B00'],
       plotOptions: {
         bar: {
-          borderRadius: 4,
-          columnWidth: '60%'
+          borderRadius: 6,
+          columnWidth: '55%'
         }
       },
       grid: {
-        borderColor: '#e5e7eb'
+        borderColor: 'rgba(255,255,255,0.06)'
+      },
+      tooltip: {
+        theme: 'dark'
       },
       title: {
         text: 'Present member count',
         align: 'center',
         style: {
-          color: '#1f2937',
+          color: '#E5E7EB',
           fontSize: '16px'
         }
       }

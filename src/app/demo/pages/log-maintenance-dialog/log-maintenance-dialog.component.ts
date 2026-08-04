@@ -70,9 +70,11 @@ export class LogMaintenanceDialogComponent implements OnInit {
     const payload = { ...this.logForm.value };
 
     this.equipmentService.addMaintenanceLog(this.data.equipment.id, payload).subscribe({
-      next: (updatedEquipment) => {
+      next: () => {
+        // The endpoint returns the new log entry, not the equipment record — close with
+        // the original equipment object so the table row keeps its correct field values.
         this.messageService.showSuccess('Maintenance log added');
-        this.dialogRef.close(updatedEquipment);
+        this.dialogRef.close(this.data.equipment);
       },
       error: (err) => {
         this.messageService.showError(err);

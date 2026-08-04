@@ -1,3 +1,5 @@
+@import 'src/scss/settings/colors';
+
 .progress-charts {
     max-width: 1200px;
     margin: 0 auto;
@@ -10,14 +12,14 @@
 }
 
 .header h2 {
-    color: #1f2937;
+    color: $ff-text-primary;
     margin-bottom: 8px;
     font-size: 32px;
     font-weight: 600;
 }
 
 .header p {
-    color: #6b7280;
+    color: $ff-text-secondary;
     font-size: 18px;
 }
 
@@ -28,23 +30,24 @@
 }
 
 .chart-card {
-    background: white;
-    border-radius: 16px;
+    background: $ff-bg-surface;
+    border-radius: $ff-radius-md;
     padding: 24px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    border: 1px solid #e5e7eb;
+    box-shadow: $ff-shadow-card;
+    border: 1px solid $ff-border-default;
     transition:
         transform 0.2s,
         box-shadow 0.2s;
-}
 
-.chart-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: $ff-shadow-hover;
+        border-color: $ff-border-accent;
+    }
 }
 
 .chart-card h3 {
-    color: #1f2937;
+    color: $ff-text-primary;
     margin-bottom: 16px;
     font-size: 20px;
     font-weight: 600;

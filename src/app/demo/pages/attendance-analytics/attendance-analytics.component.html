@@ -6,13 +6,15 @@
       Attendance Analytics
     </h2>
     <div class="header-actions">
-      <button mat-stroked-button class="dl-btn" (click)="printReport()"
-              [disabled]="isLoading && isPeakLoading && isAtRiskLoading">
+      <button mat-stroked-button class="dl-btn" (click)="downloadReport()"
+              [disabled]="isDownloading || (isLoading && isPeakLoading && isAtRiskLoading)">
         <mat-icon>picture_as_pdf</mat-icon>
-        Print / Save as PDF
+        {{ isDownloading ? 'Generating…' : 'Download Report' }}
       </button>
     </div>
   </div>
+
+  <div #pdfContent>
 
   <!-- ─── KPI CARDS ──────────────────────────────────────────────────── -->
   <div class="row g-3 mb-4">
@@ -208,6 +210,8 @@
       </div>
 
     </ng-container>
+
+  </div>
 
   </div>
 

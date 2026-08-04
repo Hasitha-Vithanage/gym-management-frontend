@@ -1,5 +1,10 @@
 @import 'src/scss/settings/colors';
 
+::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
 .dialog-container {
   background: $ff-bg-elevated;
   color: $ff-text-primary;

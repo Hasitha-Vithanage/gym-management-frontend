@@ -62,20 +62,20 @@
           <mat-select formControlName="type" class="field-select">
             <mat-option *ngFor="let t of logTypes" [value]="t">{{ t }}</mat-option>
           </mat-select>
-          <span class="err" *ngIf="submitted && logForm.get('type')?.invalid">Required</span>
+          <span class="err" *ngIf="submitted && logForm.get('type')?.invalid">Type is required</span>
         </div>
         <div class="form-group">
           <label class="field-label">Performed Date <span class="req">*</span></label>
           <input type="date" formControlName="performedDate" class="field-input"
                  [max]="today | date: 'yyyy-MM-dd'" />
-          <span class="err" *ngIf="submitted && logForm.get('performedDate')?.invalid">Required</span>
+          <span class="err" *ngIf="submitted && logForm.get('performedDate')?.invalid">Performed Date is required</span>
         </div>
       </div>
 
       <div class="form-group">
         <label class="field-label">Performed By <span class="req">*</span></label>
         <input type="text" formControlName="performedBy" class="field-input" placeholder="Technician / Staff name…" />
-        <span class="err" *ngIf="submitted && logForm.get('performedBy')?.invalid">Required</span>
+        <span class="err" *ngIf="submitted && logForm.get('performedBy')?.invalid">Performed By is required</span>
       </div>
 
       <div class="form-group">
@@ -83,8 +83,8 @@
         <textarea formControlName="description" class="field-textarea" rows="3"
                   placeholder="Describe what was done…"></textarea>
         <span class="err" *ngIf="submitted && logForm.get('description')?.invalid">
-          <ng-container *ngIf="logForm.get('description')?.hasError('required')">Required</ng-container>
-          <ng-container *ngIf="logForm.get('description')?.hasError('minlength')">Min 5 characters</ng-container>
+          <ng-container *ngIf="logForm.get('description')?.hasError('required')">Description is required</ng-container>
+          <ng-container *ngIf="logForm.get('description')?.hasError('minlength')">Description must be at least 5 characters</ng-container>
         </span>
       </div>
 

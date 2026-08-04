@@ -111,6 +111,15 @@ export class MyWorkoutPlanComponent implements OnInit {
           this.loadTrainerRequestStatus();
           this.notifyTrainerNoMatch();
           this.workoutService.updateStatusByUserId(this.memberName, 'Pending Custom').subscribe({ error: () => {} });
+
+          // A "Pending Custom" workout request only ever becomes visible to a trainer
+          // once that trainer already has this member in their roster (Pending Requests
+          // is scoped per-trainer). Without a trainer assigned yet, this request would
+          // otherwise sit invisible forever, so auto-escalate to management immediately
+          // instead of relying on the member noticing and clicking "Request a Trainer".
+          if (!this.hasTrainer) {
+            this.requestTrainer();
+          }
         }
       },
       error: () => {

@@ -11,6 +11,7 @@ import { UserMealPlanAssignmentMealService } from 'src/app/services/user-meal-pl
 import { MealPlanTemplateService } from 'src/app/services/meal-plan-template/meal-plan-template.service';
 import { TrainerRequestService } from 'src/app/services/trainer-request/trainer-request.service';
 import { UserProfileService } from 'src/app/services/user-profile/user-profile.service';
+import { WorkoutManagementService } from 'src/app/services/workout-management/workout-management.service';
 
 @Component({
   selector: 'app-nutrition-and-meal-plan',
@@ -59,6 +60,7 @@ export class NutritionAndMealPlanComponent implements OnInit {
     private readonly templateService: MealPlanTemplateService,
     private readonly trainerRequestService: TrainerRequestService,
     private readonly userProfileService: UserProfileService,
+    private readonly workoutService: WorkoutManagementService,
     private readonly route: ActivatedRoute
   ) {
     const today = new Date().toISOString().split('T')[0];
@@ -90,9 +92,72 @@ export class NutritionAndMealPlanComponent implements OnInit {
   checkExistingProfile(): void {
     const userId = this.http.getLoginNameFromCache();
     this.nutritionProfileService.hasProfile(userId).subscribe({
-      next: (exists: boolean) => { this.hasExistingProfile = exists; },
-      error: () => { this.hasExistingProfile = false; }
+      next: (exists: boolean) => {
+        this.hasExistingProfile = exists;
+        if (!exists) { this.prefillGoalFromPriorRequests(); }
+      },
+      error: () => {
+        this.hasExistingProfile = false;
+        this.prefillGoalFromPriorRequests();
+      }
     });
+  }
+
+  /**
+   * If the member already stated a fitness goal elsewhere (the workout-matching
+   * request, or a trainer request), reuse it here instead of asking them to pick
+   * it again from scratch. Workout-side goal values aren't always in the same
+   * casing/format as the nutrition dropdown, so everything is normalized first.
+   */
+  private prefillGoalFromPriorRequests(): void {
+    const memberName = this.http.getFullNameFromCache() || this.http.getLoginNameFromCache() || '';
+    const userId = Number(this.http.getUserId());
+
+    this.workoutService.getMyLastRequest(memberName).subscribe({
+      next: (req: any) => {
+        const goal = this.normalizeGoalForNutrition(req?.fitnessGoal);
+        if (goal) {
+          this.applyGoalPrefill(goal);
+        } else {
+          this.prefillGoalFromTrainerRequest(userId);
+        }
+      },
+      error: () => this.prefillGoalFromTrainerRequest(userId)
+    });
+  }
+
+  private prefillGoalFromTrainerRequest(userId: number): void {
+    if (!userId) return;
+    this.trainerRequestService.getByMemberId(userId).subscribe({
+      next: (req) => {
+        const goal = this.normalizeGoalForNutrition(req?.goal);
+        if (goal) { this.applyGoalPrefill(goal); }
+      },
+      error: () => {}
+    });
+  }
+
+  /** Never overwrite a goal the member may have already picked manually while these calls were in flight. */
+  private applyGoalPrefill(goal: string): void {
+    if (!this.nutritionProfileForm.get('fitnessGoal')?.value) {
+      this.nutritionProfileForm.patchValue({ fitnessGoal: goal });
+    }
+  }
+
+  private normalizeGoalForNutrition(raw: string | null | undefined): string {
+    if (!raw) return '';
+    const nutritionGoals = ['Fat Loss', 'Muscle Gain', 'Strength', 'Endurance', 'General Health'];
+    if (nutritionGoals.includes(raw)) return raw;
+
+    const map: Record<string, string> = {
+      fat_loss: 'Fat Loss',
+      muscle_gain: 'Muscle Gain',
+      strength: 'Strength',
+      endurance: 'Endurance',
+      general_fitness: 'General Health',
+      general_health: 'General Health'
+    };
+    return map[raw.trim().toLowerCase()] ?? '';
   }
 
   checkHasTrainer(): void {

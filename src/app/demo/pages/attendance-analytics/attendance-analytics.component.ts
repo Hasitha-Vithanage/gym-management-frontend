@@ -1,7 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, ElementRef, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { forkJoin, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 import { MemberServiceService } from 'src/app/services/member-service/member-service.service';
+import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
 
 interface AtRiskMember {
   memberNo: string;
@@ -18,9 +21,12 @@ interface AtRiskMember {
 })
 export class AttendanceAnalyticsComponent implements OnInit, OnDestroy {
 
+  @ViewChild('pdfContent', { static: false }) pdfContent!: ElementRef;
+
   isLoading = true;
   isPeakLoading = true;
   isAtRiskLoading = true;
+  isDownloading = false;
 
   displayYear: number;
   displayMonth: number;
@@ -48,7 +54,10 @@ export class AttendanceAnalyticsComponent implements OnInit, OnDestroy {
   private readonly destroy$ = new Subject<void>();
   private readonly today = new Date();
 
-  constructor(private readonly memberService: MemberServiceService) {
+  constructor(
+    private readonly memberService: MemberServiceService,
+    private readonly messageService: MessageServiceService
+  ) {
     this.displayYear = this.today.getFullYear();
     this.displayMonth = this.today.getMonth() + 1;
   }
@@ -238,15 +247,22 @@ export class AttendanceAnalyticsComponent implements OnInit, OnDestroy {
     const today = new Date();
     this.atRiskMembers = data.map(r => {
       const raw = r.last_visit;
-      let dateStr: string;
+      let lastDate: Date;
+
       if (Array.isArray(raw)) {
-        dateStr = `${raw[0]}-${String(raw[1]).padStart(2, '0')}-${String(raw[2]).padStart(2, '0')}`;
+        lastDate = new Date(raw[0], raw[1] - 1, raw[2]);
+      } else if (typeof raw === 'number') {
+        // Raw epoch-millis, as returned by this native-query result (unlike the
+        // [year, month, day] array shape used by other endpoints in this app).
+        lastDate = new Date(raw);
       } else {
-        dateStr = String(raw).split('T')[0];
+        const [y, m, d] = String(raw).split('T')[0].split('-').map(Number);
+        lastDate = new Date(y, m - 1, d);
       }
-      const [y, m, d] = dateStr.split('-').map(Number);
-      const lastDate = new Date(y, m - 1, d);
+
+      const dateStr = `${lastDate.getFullYear()}-${String(lastDate.getMonth() + 1).padStart(2, '0')}-${String(lastDate.getDate()).padStart(2, '0')}`;
       const daysInactive = Math.floor((today.getTime() - lastDate.getTime()) / 86400000);
+
       return {
         memberNo: String(r.member_no),
         memberName: r.member_name ? String(r.member_name).trim() : 'Unknown',
@@ -270,7 +286,43 @@ export class AttendanceAnalyticsComponent implements OnInit, OnDestroy {
     });
   }
 
-  printReport(): void {
-    window.print();
+  async downloadReport(): Promise<void> {
+    const element = this.pdfContent?.nativeElement;
+    if (!element || this.isDownloading) return;
+
+    this.isDownloading = true;
+    try {
+      const canvas = await html2canvas(element, { scale: 2, backgroundColor: '#0F1117' });
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const imgProps = pdf.getImageProperties(imgData);
+      const scaledHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+      let heightLeft = scaledHeight;
+      let position = 0;
+
+      pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, scaledHeight);
+      heightLeft -= pdfHeight;
+
+      // Paginate — a report this tall won't fit on a single A4 page.
+      while (heightLeft > 0) {
+        position = heightLeft - scaledHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, scaledHeight);
+        heightLeft -= pdfHeight;
+      }
+
+      const dateStamp = `${this.displayYear}-${String(this.displayMonth).padStart(2, '0')}`;
+      pdf.save(`attendance-analytics-${dateStamp}.pdf`);
+      this.messageService.showSuccess('Report downloaded successfully!');
+    } catch (error) {
+      this.messageService.showError('Failed to generate report PDF');
+      console.error(error);
+    } finally {
+      this.isDownloading = false;
+    }
   }
 }
