@@ -87,6 +87,14 @@ export class MemberDashboardComponent implements OnInit, OnDestroy {
       route: '/pages/browse-supplements',
       emoji: '🧃',
       accentColor: '#EF4444'
+    },
+    {
+      step: 7,
+      title: 'My Attendance',
+      description: 'View your attendance records and manage your attendance status.',
+      route: '/pages/my-attendance',
+      emoji: '📅',
+      accentColor: '#8B5CF6'
     }
   ];
 

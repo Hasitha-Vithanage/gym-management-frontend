@@ -164,7 +164,7 @@ export class MarkAttendanceComponent implements OnInit, OnDestroy {
 
   getMemberPhoto(memberNo: string): string | null {
     const m = this.memberMap[memberNo];
-    return m?.image ? `data:${m.imageType};base64,${m.image}` : null;
+    return m?.image ? `data:${m.imageType || 'image/jpeg'};base64,${m.image}` : null;
   }
 
   formatTime(dateTime: string): string {

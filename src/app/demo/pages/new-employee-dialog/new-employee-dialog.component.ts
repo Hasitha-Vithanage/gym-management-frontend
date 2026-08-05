@@ -139,7 +139,7 @@ export class NewEmployeeDialogComponent implements OnInit {
     } else if (this.mode === 'edit') {
       this.employeeService.editData(this.selectedData?.id, this.prepareFormData()).subscribe({
         next: (response) => {
-          this.messageService.showSuccess('Employee edited successfully!');
+          this.messageService.showSuccess('Employee updated successfully!');
           this.dialogRef.close({ action: 'edit', data: response });
         },
         error: (error) => {
@@ -208,11 +208,14 @@ export class NewEmployeeDialogComponent implements OnInit {
 
     if (this.isFileSelected) {
       employeeFormData.append('image', this.employeeForm.get('image').value, this.employeeForm.get('image').value.name);
-    } else {
+    } else if (this.employeeForm.get('image').value && this.employeeForm.get('imageType').value) {
       const imageBlob = this.base64ToBlob(this.employeeForm.get('image').value, this.employeeForm.get('imageType').value);
-      const file = new File([imageBlob], this.employeeForm.get('imageName').value, { type: this.employeeForm.get('imageType').value });
+      const file = new File([imageBlob], this.employeeForm.get('imageName').value || 'image', { type: this.employeeForm.get('imageType').value });
       employeeFormData.append('image', file, file.name);
     }
+    // else: no existing image and no new one selected — omit the part entirely
+    // rather than round-tripping null through atob(), which silently decodes
+    // the literal string "null" into 3 bytes of garbage binary data.
 
     return employeeFormData;
   }

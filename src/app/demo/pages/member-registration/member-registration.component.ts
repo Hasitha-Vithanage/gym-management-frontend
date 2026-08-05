@@ -201,7 +201,6 @@ export class MemberRegistrationComponent {
   }
 
   public viewId(data: any) {
-    console.log(data);
 
     this.dialog.open(QrCodeComponent, {
       data: { value: data }

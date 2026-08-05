@@ -19,7 +19,7 @@
           <div class="avatar">
             <img
               *ngIf="userData?.image"
-              [src]="'data:' + userData.imageType + ';base64,' + userData.image"
+              [src]="'data:' + (userData.imageType || 'image/jpeg') + ';base64,' + userData.image"
               alt="User Avatar"
               class="avatar-image"
             />

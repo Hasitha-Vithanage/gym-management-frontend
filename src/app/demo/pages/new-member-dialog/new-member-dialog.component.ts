@@ -37,10 +37,7 @@ export class NewMemberDialogComponent implements OnInit {
     private messageService: MessageServiceService
   ) {
     this.memberForm = this.fb.group({
-      memberNo: new FormControl({ value: '', disabled: true }, [
-        Validators.required,
-        Validators.pattern(/^M\d{3}$/)
-      ]),
+      memberNo: new FormControl({ value: '', disabled: true }, [Validators.required, Validators.pattern(/^M\d{3}$/)]),
       firstName: new FormControl('', [
         Validators.required,
         Validators.minLength(3),
@@ -206,7 +203,7 @@ export class NewMemberDialogComponent implements OnInit {
     // patching date values after formatting
     this.memberForm.patchValue({
       joinedDate: new Date(data.joinedDate).toISOString().split('T')[0],
-      dateOfBirth: new Date(data.dateOfBirth).toISOString().split('T')[0],
+      dateOfBirth: new Date(data.dateOfBirth).toISOString().split('T')[0]
     });
 
     this.memberForm.valueChanges.subscribe(() => {
@@ -232,11 +229,14 @@ export class NewMemberDialogComponent implements OnInit {
 
     if (this.isFileSelected) {
       memberFormData.append('image', this.memberForm.get('image').value, this.memberForm.get('image').value.name);
-    } else {
+    } else if (this.memberForm.get('image').value && this.memberForm.get('imageType').value) {
       const imageBlob = this.base64ToBlob(this.memberForm.get('image').value, this.memberForm.get('imageType').value);
-      const file = new File([imageBlob], this.memberForm.get('imageName').value, { type: this.memberForm.get('imageType').value });
+      const file = new File([imageBlob], this.memberForm.get('imageName').value || 'image', { type: this.memberForm.get('imageType').value });
       memberFormData.append('image', file, file.name);
     }
+    // else: no existing image and no new one selected — omit the part entirely
+    // rather than round-tripping null through atob(), which silently decodes
+    // the literal string "null" into 3 bytes of garbage binary data.
 
     return memberFormData;
   }

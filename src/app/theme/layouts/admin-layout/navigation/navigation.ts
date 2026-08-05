@@ -662,7 +662,7 @@ export const NavigationItems: NavigationItem[] = [
     title: 'Ratings & Feedback',
     type: 'group',
     icon: '../../../../assets/images/icon/rating-and-feedbacks-icon.png',
-    auth: [authenticationEnum.Ratings_And_Feedback, authenticationEnum.Feedback_History],
+    auth: [authenticationEnum.Ratings_And_Feedback, authenticationEnum.Feedback_History, authenticationEnum.My_Attendance],
     children: [
       {
         id: 'ratingsDet',
@@ -682,6 +682,16 @@ export const NavigationItems: NavigationItem[] = [
         url: '/pages/all-feedbacks',
         icon: '../../../../assets/images/icon/history-icon.png',
         auth: [authenticationEnum.Feedback_History],
+        breadcrumbs: false
+      },
+      {
+        id: 'myAttendanceDet',
+        title: 'My Attendance',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/pages/my-attendance',
+        icon: '../../../../assets/images/icon/mark-attendance-icon.png',
+        auth: [authenticationEnum.My_Attendance],
         breadcrumbs: false
       }
     ]

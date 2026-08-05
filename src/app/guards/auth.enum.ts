@@ -43,4 +43,5 @@ export enum authenticationEnum {
   My_Supplement_Orders = 38,
   Pending_Nutrition_Requests = 39,
   Pending_Trainer_Requests = 40,
+  My_Attendance = 41,
 }

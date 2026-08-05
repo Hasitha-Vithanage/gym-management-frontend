@@ -85,7 +85,7 @@
                 type="button"
                 (click)="markManual(member)">
           <div class="avatar">
-            <img *ngIf="member.image" [src]="'data:' + member.imageType + ';base64,' + member.image" [alt]="member.firstName" />
+            <img *ngIf="member.image" [src]="'data:' + (member.imageType || 'image/jpeg') + ';base64,' + member.image" [alt]="member.firstName" />
             <span *ngIf="!member.image" class="initials">{{ member.firstName[0] }}{{ member.lastName[0] }}</span>
           </div>
           <div class="member-info">
