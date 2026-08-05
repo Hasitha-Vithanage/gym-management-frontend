@@ -121,6 +121,7 @@
 // ─── QR BUTTON ──────────────────────────────────────────────────────────────
 .qr-btn {
   display: flex;
+  position: relative;
   align-items: center;
   gap: 8px;
   padding: 12px 22px;
@@ -135,10 +136,21 @@
   letter-spacing: 0.3px;
   white-space: nowrap;
 
-  mat-icon {
-    font-size: 20px;
+  .qr-icon {
     width: 20px;
     height: 20px;
+  }
+
+  .qr-hover {
+    display: none;
+  }
+
+  &:hover .qr-default {
+    display: none;
+  }
+
+  &:hover .qr-hover {
+    display: block;
   }
 
   &:hover:not(:disabled) {
@@ -148,7 +160,9 @@
     box-shadow: $ff-shadow-orange;
   }
 
-  &:active:not(:disabled) { transform: translateY(0); }
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
 
   &:disabled {
     opacity: 0.45;
@@ -429,9 +443,9 @@
 }
 
 .cta-arrow {
-  font-size: 16px;
   width: 16px;
   height: 16px;
+  object-fit: contain;
   transition: transform 0.22s ease;
 }
 

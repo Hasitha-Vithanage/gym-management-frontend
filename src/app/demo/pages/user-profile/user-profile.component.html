@@ -3,11 +3,11 @@
   <!-- TOP BAR -->
   <div class="page-top-bar">
     <button class="back-btn" (click)="goBack()">
-      <mat-icon>arrow_back</mat-icon>
+      <img src="../../../../assets/images/icon/icons8-arrow-back-20.png">
       <span>Back to Dashboard</span>
     </button>
     <h2 class="page-title">
-      <mat-icon class="title-icon">account_circle</mat-icon>
+      <img src="../../../../assets/images/icon/person-orange.png" style="margin-bottom: 15px;">
       My Profile
     </h2>
   </div>
@@ -39,7 +39,7 @@
       <div class="divider"></div>
 
       <div class="left-meta-item">
-        <mat-icon>calendar_today</mat-icon>
+        <img src="../../../../assets/images/icon/calendar_today.png" style="width:16;height:16;">
         <div>
           <p class="meta-label">Joined</p>
           <p class="meta-value">{{ (isEmployee ? profileData?.dateOfJoining : profileData?.joinedDate) || '—' }}</p>
@@ -47,7 +47,7 @@
       </div>
 
       <div class="left-meta-item" *ngIf="!isEmployee">
-        <mat-icon>bloodtype</mat-icon>
+        <img src="../../../../assets/images/icon/icons8-drop-of-blood-16.png" style="width:16;height:16;">
         <div>
           <p class="meta-label">Blood Type</p>
           <p class="meta-value">{{ profileData?.bloodType || '—' }}</p>
@@ -55,7 +55,7 @@
       </div>
 
       <div class="left-meta-item" *ngIf="isEmployee">
-        <mat-icon>badge</mat-icon>
+        <img src="../../../../assets/images/icon/icons8-id-card-16.png" style="width:16;height:16;">
         <div>
           <p class="meta-label">Job Title</p>
           <p class="meta-value">{{ profileData?.jobTitle || '—' }}</p>
@@ -65,16 +65,22 @@
       <!-- ACTION BUTTONS -->
       <div class="action-buttons">
         <button *ngIf="!isEditing" class="btn-edit" (click)="startEdit()">
-          <mat-icon>edit</mat-icon>
+          <img class="icon-default" src="../../../../assets/images/icon/icons8-edit-16.png" alt="">
+          <img class="icon-hover" src="../../../../assets/images/icon/icons8-edit-16-white.png" alt="">
           Edit Profile
         </button>
         <ng-container *ngIf="isEditing">
           <button class="btn-save" (click)="saveEdit()" [disabled]="isSaving">
-            <mat-icon>{{ isSaving ? 'hourglass_empty' : 'save' }}</mat-icon>
+            <mat-icon *ngIf="isSaving">hourglass_empty</mat-icon>
+            <ng-container *ngIf="!isSaving">
+              <img class="icon-default" src="../../../../assets/images/icon/icons8-save-16-green.png" alt="">
+              <img class="icon-hover" src="../../../../assets/images/icon/icons8-save-16-white.png" alt="">
+            </ng-container>
             {{ isSaving ? 'Saving…' : 'Save Changes' }}
           </button>
           <button class="btn-cancel" (click)="cancelEdit()" [disabled]="isSaving">
-            <mat-icon>close</mat-icon>
+            <img class="icon-default" src="../../../../assets/images/icon/icons8-close-16-white.png" alt="">
+            <img class="icon-hover" src="../../../../assets/images/icon/icons8-close-16-red.png" alt="">
             Cancel
           </button>
         </ng-container>
@@ -86,14 +92,14 @@
 
       <!-- EDIT MODE NOTICE -->
       <div *ngIf="isEditing" class="edit-notice">
-        <mat-icon>edit_note</mat-icon>
+        <img src="../../../../assets/images/icon/icons8-editing-16.png" style="width:16;height:16;">
         <span>You are editing your profile. Fields marked <span class="req-star">*</span> are required.</span>
       </div>
 
       <!-- PERSONAL DETAILS -->
       <div class="info-section">
         <h5 class="section-heading">
-          <mat-icon>person</mat-icon>
+          <img src="../../../../assets/images/icon/icons8-person-16.png" style="width:16;height:16;">
           Personal Details
         </h5>
         <div class="info-grid">
@@ -133,7 +139,7 @@
       <!-- CONTACT INFORMATION -->
       <div class="info-section">
         <h5 class="section-heading">
-          <mat-icon>contact_phone</mat-icon>
+          <img src="../../../../assets/images/icon/icons8-contact-card-16.png">
           Contact Information
         </h5>
         <div class="info-grid">
@@ -172,7 +178,7 @@
       <!-- MEDICAL & MEMBERSHIP -->
       <div class="info-section" *ngIf="!isEmployee">
         <h5 class="section-heading">
-          <mat-icon>medical_information</mat-icon>
+          <img src="../../../../assets/images/icon/icons8-medical-16.png">
           Medical &amp; Membership
         </h5>
         <div class="info-grid">
@@ -188,7 +194,7 @@
       <!-- EMPLOYMENT DETAILS -->
       <div class="info-section" *ngIf="isEmployee">
         <h5 class="section-heading">
-          <mat-icon>work</mat-icon>
+          <img src="../../../../assets/images/icon/icons8-work-16.png">
           Employment Details
         </h5>
         <div class="info-grid">
@@ -214,7 +220,7 @@
       <!-- LOGIN & SECURITY -->
       <div class="info-section">
         <h5 class="section-heading">
-          <mat-icon>lock</mat-icon>
+          <img src="../../../../assets/images/icon/icons8-lock-16.png">
           Login &amp; Security
         </h5>
 
@@ -246,16 +252,22 @@
 
         <div class="login-actions">
           <button *ngIf="!isEditingLogin" class="btn-edit" (click)="startEditLogin()">
-            <mat-icon>edit</mat-icon>
+            <img class="icon-default" src="../../../../assets/images/icon/icons8-edit-16.png" alt="">
+            <img class="icon-hover" src="../../../../assets/images/icon/icons8-edit-16-white.png" alt="">
             Change Login
           </button>
           <ng-container *ngIf="isEditingLogin">
             <button class="btn-save" (click)="saveLogin()" [disabled]="isSavingLogin">
-              <mat-icon>{{ isSavingLogin ? 'hourglass_empty' : 'save' }}</mat-icon>
+              <mat-icon *ngIf="isSavingLogin">hourglass_empty</mat-icon>
+              <ng-container *ngIf="!isSavingLogin">
+                <img class="icon-default" src="../../../../assets/images/icon/icons8-save-16-green.png" alt="">
+                <img class="icon-hover" src="../../../../assets/images/icon/icons8-save-16-white.png" alt="">
+              </ng-container>
               {{ isSavingLogin ? 'Saving…' : 'Save Login' }}
             </button>
             <button class="btn-cancel" (click)="cancelEditLogin()" [disabled]="isSavingLogin">
-              <mat-icon>close</mat-icon>
+              <img class="icon-default" src="../../../../assets/images/icon/icons8-close-16-white.png" alt="">
+              <img class="icon-hover" src="../../../../assets/images/icon/icons8-close-16-red.png" alt="">
               Cancel
             </button>
           </ng-container>

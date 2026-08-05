@@ -2,11 +2,12 @@
 
   <div class="page-header">
     <h2 class="page-title">
-      <mat-icon class="title-icon">event</mat-icon>
+        <img src="../../../../assets/images/icon/icons8-event-24.png" class="sec-icon-img">
       Book a Class
     </h2>
     <button class="my-bookings-btn" routerLink="/pages/my-bookings">
-      <mat-icon>event_note</mat-icon>
+      <img class="icon-default sec-icon-img" src="../../../../assets/images/icon/icons8-event-24.png" alt="">
+      <img class="icon-hover sec-icon-img" src="../../../../assets/images/icon/icons8-event-20 (1).png" alt="">
       My Bookings
     </button>
   </div>
@@ -46,15 +47,15 @@
       <!-- Details -->
       <div class="class-details">
         <div class="detail-row">
-          <mat-icon>calendar_today</mat-icon>
+          <img src="../../../../assets/images/icon/calendar_today.png" class="sec-icon-img">
           <span>{{ cls.date | date:'EEE, dd MMM yyyy' }}</span>
         </div>
         <div class="detail-row">
-          <mat-icon>schedule</mat-icon>
+          <img src="../../../../assets/images/icon/icons8-clock-16.png" class="sec-icon-img">
           <span>{{ formatTime(cls.startTime) }} – {{ formatTime(cls.endTime) }}</span>
         </div>
         <div class="detail-row">
-          <mat-icon>person</mat-icon>
+          <img src="../../../../assets/images/icon/icons8-person-16.png" class="sec-icon-img">
           <span>{{ cls.conductorName }} <span class="profession">· {{ cls.profession }}</span></span>
         </div>
       </div>
@@ -73,7 +74,9 @@
       <button class="book-btn"
               [disabled]="isFullyBooked(cls)"
               (click)="openConfirmation(cls)">
-        <mat-icon>{{ isFullyBooked(cls) ? 'block' : 'how_to_reg' }}</mat-icon>
+        <img class="book-btn-icon"
+             [src]="isFullyBooked(cls) ? 'assets/images/icon/icons8-block-13.png' : 'assets/images/icon/icons8-microsoft-to-do-app-13.png'"
+             alt="" />
         {{ isFullyBooked(cls) ? 'Fully Booked' : 'Book This Class' }}
       </button>
 

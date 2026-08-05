@@ -16,6 +16,7 @@ interface JourneyStep {
   route: string;
   emoji: string;
   accentColor: string;
+  arrowIcon: string;
 }
 
 interface QuickAction {
@@ -46,7 +47,8 @@ export class MemberDashboardComponent implements OnInit, OnDestroy {
       description: 'Add your personal details, contact info, and profile photo so your trainer knows you.',
       route: '/pages/user-profile',
       emoji: '👤',
-      accentColor: '#3B82F6'
+      accentColor: '#3B82F6',
+      arrowIcon: 'icons8-right-arrow-20-blue'
     },
     {
       step: 2,
@@ -54,7 +56,8 @@ export class MemberDashboardComponent implements OnInit, OnDestroy {
       description: 'Your trainer has prepared a personalized workout plan. Check what exercises are waiting for you.',
       route: '/pages/my-workout-plan',
       emoji: '💪',
-      accentColor: '#FF6B00'
+      accentColor: '#FF6B00',
+      arrowIcon: 'icons8-right-arrow-20-orange'
     },
     {
       step: 3,
@@ -62,7 +65,8 @@ export class MemberDashboardComponent implements OnInit, OnDestroy {
       description: 'Join group classes like Yoga, HIIT, or Zumba. Pick a time that suits your schedule.',
       route: '/pages/book-class',
       emoji: '🏋️',
-      accentColor: '#22C55E'
+      accentColor: '#22C55E',
+      arrowIcon: 'icons8-right-arrow-20-green'
     },
     {
       step: 4,
@@ -70,7 +74,8 @@ export class MemberDashboardComponent implements OnInit, OnDestroy {
       description: 'Log your weight, measurements, and body stats. See how far you have come over time.',
       route: '/pages/progress-tracking',
       emoji: '📈',
-      accentColor: '#A78BFA'
+      accentColor: '#A78BFA',
+      arrowIcon: 'icons8-right-arrow-20-purple'
     },
     {
       step: 5,
@@ -78,7 +83,8 @@ export class MemberDashboardComponent implements OnInit, OnDestroy {
       description: 'Check the meal plan your trainer assigned you, or submit your nutrition profile if you don\'t have one yet.',
       route: '/pages/nutrition&meal-plan',
       emoji: '🥗',
-      accentColor: '#FBBF24'
+      accentColor: '#FBBF24',
+      arrowIcon: 'icons8-right-arrow-20-yellow'
     },
     {
       step: 6,
@@ -86,7 +92,8 @@ export class MemberDashboardComponent implements OnInit, OnDestroy {
       description: 'Browse our in-house supplement store. Find proteins, vitamins, and more to support your journey.',
       route: '/pages/browse-supplements',
       emoji: '🧃',
-      accentColor: '#EF4444'
+      accentColor: '#EF4444',
+      arrowIcon: 'icons8-right-arrow-20-red'
     },
     {
       step: 7,
@@ -94,7 +101,8 @@ export class MemberDashboardComponent implements OnInit, OnDestroy {
       description: 'View your attendance records and manage your attendance status.',
       route: '/pages/my-attendance',
       emoji: '📅',
-      accentColor: '#8B5CF6'
+      accentColor: '#8B5CF6',
+      arrowIcon: 'icons8-right-arrow-20-violet'
     }
   ];
 

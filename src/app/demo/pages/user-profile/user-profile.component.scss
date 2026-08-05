@@ -285,6 +285,13 @@
 
   mat-icon { font-size: 17px; width: 17px; height: 17px; }
 
+  img.icon-default, img.icon-hover {
+    width: 16px;
+    height: 16px;
+  }
+
+  img.icon-hover { display: none; }
+
   &:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
 }
 
@@ -299,6 +306,9 @@
     color: #fff;
     transform: translateY(-2px);
     box-shadow: $ff-shadow-orange;
+
+    img.icon-default { display: none; }
+    img.icon-hover { display: inline-block; }
   }
 }
 
@@ -312,6 +322,9 @@
     background: $ff-success;
     color: #fff;
     transform: translateY(-2px);
+
+    img.icon-default { display: none; }
+    img.icon-hover { display: inline-block; }
   }
 }
 
@@ -326,6 +339,9 @@
     border-color: rgba(239,68,68,0.3);
     color: $ff-danger;
     transform: translateY(-2px);
+
+    img.icon-default { display: none; }
+    img.icon-hover { display: inline-block; }
   }
 }
 

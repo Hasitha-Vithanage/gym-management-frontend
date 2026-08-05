@@ -73,6 +73,10 @@ export class WorkoutSessionService {
     return this.http.put<WorkoutSession>(`${this.baseUrl}/${sessionId}/complete`, exercises, { headers: this.headers });
   }
 
+  cancelSession(sessionId: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${sessionId}`, { headers: this.headers });
+  }
+
   getMemberSummary(memberId: number, assignmentId: number): Observable<WorkoutSessionSummary> {
     return this.http.get<WorkoutSessionSummary>(
       `${this.baseUrl}/member/${memberId}/summary?assignmentId=${assignmentId}`,

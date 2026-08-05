@@ -11,7 +11,7 @@
   <!-- No query params -->
   <ng-container *ngIf="!isLoading && !hasParams">
     <div class="state-container">
-      <mat-icon class="state-icon">fitness_center</mat-icon>
+      <img src="../../../../assets/images/icon/icons8-workout-48.png">
       <h3 class="state-title">No Plan Selected</h3>
       <p class="state-text">Fill out your fitness profile to get your workout plan.</p>
       <button class="primary-btn" (click)="goToWorkoutForm()">Go to Workout Form</button>
@@ -28,8 +28,9 @@
           Best match for <strong>{{ level }}</strong> · <strong>{{ formatGoal(goal!) }}</strong>
         </p>
       </div>
-      <button class="outline-btn" (click)="goToProgress()">
-        <mat-icon>bar_chart</mat-icon>
+      <button class="outline-btn my-progress" (click)="goToProgress()">
+        <img class="icon-default" src="../../../../assets/images/icon/icons8-bar-chart-16.png">
+        <img class="icon-hover" src="../../../../assets/images/icon/icons8-bar-chart-16-orange.png">
         My Progress
       </button>
     </div>
@@ -90,7 +91,7 @@
       <!-- Trainer is assigned: they will create a custom plan -->
       <div class="no-match-container" *ngIf="hasTrainer">
         <div class="no-match-icon-wrap">
-          <mat-icon>schedule</mat-icon>
+          <img src="../../../../assets/images/icon/icons8-clock-24.png">
         </div>
         <h3 class="no-match-title">Your Plan Is Being Prepared</h3>
         <p class="no-match-text">
@@ -108,7 +109,7 @@
       <!-- No trainer assigned: dead end — let member escalate to management -->
       <div class="no-match-container" *ngIf="!hasTrainer">
         <div class="no-match-icon-wrap no-match-icon-alert">
-          <mat-icon>person_off</mat-icon>
+          <img src="../../../../assets/images/icon/icons8-user-not-found-24.png">
         </div>
         <h3 class="no-match-title">No Plan Available Yet</h3>
         <p class="no-match-text">
@@ -122,7 +123,8 @@
         </div>
         <div class="no-match-actions">
           <button class="no-match-request-btn" (click)="requestTrainer()" [disabled]="trainerRequested">
-            <mat-icon>{{ trainerRequested ? 'check_circle' : 'person_add' }}</mat-icon>
+            <img *ngIf="trainerRequested" src="../../../../assets/images/icon/icons8-instagram-check-mark-20.png" class="btn-icon-img" alt="Request sent">
+            <img *ngIf="!trainerRequested" src="../../../../assets/images/icon/icons8-add-user-male-20.png" class="btn-icon-img" alt="Request a trainer">
             {{ trainerRequested ? 'Request Sent' : 'Request a Trainer' }}
           </button>
           <p class="no-match-sent-note" *ngIf="trainerRequested">
@@ -137,7 +139,7 @@
     <ng-container *ngIf="matchedTemplate">
 
       <div class="match-badge">
-        <mat-icon>verified</mat-icon>
+        <img src="../../../../assets/images/icon/icons8-instagram-check-mark-20.png">
         Best match for your profile
       </div>
 
@@ -154,27 +156,27 @@
 
         <div class="template-stats">
           <div class="stat">
-            <mat-icon>flag</mat-icon>
+            <img src="../../../../assets/images/icon/icons8-flag-13.png">
             <span>{{ formatGoal(matchedTemplate.goal) }}</span>
           </div>
           <div class="stat">
-            <mat-icon>schedule</mat-icon>
+            <img src="../../../../assets/images/icon/icons8-clock-13.png">
             <span>{{ matchedTemplate.durationMinutes }} min/session</span>
           </div>
           <div class="stat">
-            <mat-icon>event_repeat</mat-icon>
+            <img src="../../../../assets/images/icon/icons8-event-15.png">
             <span>{{ matchedTemplate.daysPerWeek }} days/week</span>
           </div>
           <div class="stat" *ngIf="matchedTemplate.programLengthWeeks">
-            <mat-icon>date_range</mat-icon>
+            <img src="../../../../assets/images/icon/icons8-event-15-1.png">
             <span>{{ matchedTemplate.programLengthWeeks }} weeks</span>
           </div>
           <div class="stat">
-            <mat-icon>location_on</mat-icon>
+            <img src="../../../../assets/images/icon/icons8-location-15.png">
             <span>{{ matchedTemplate.location }}</span>
           </div>
           <div class="stat">
-            <mat-icon>bolt</mat-icon>
+            <img src="../../../../assets/images/icon/icons8-bolt-15.png">
             <span>{{ matchedTemplate.intensityLevel }} intensity</span>
           </div>
         </div>
@@ -189,10 +191,10 @@
       <div class="exercises-section">
 
         <div class="exercises-section-title">
-          <mat-icon>fitness_center</mat-icon>
+          <img src="../../../../assets/images/icon/workout-orange.png">
           <span>Weekly Schedule</span>
           <span class="session-mode-badge" *ngIf="sessionActive">
-            <mat-icon>radio_button_checked</mat-icon>
+            <img src="../../../../assets/images/icon/icons8-unchecked-radio-button-16.png">
             Session Active — Day {{ activeSessionDay }}
           </span>
         </div>
@@ -214,7 +216,7 @@
           <!-- Next workout prompt -->
           <div class="next-workout-banner" *ngIf="!sessionActive && activeAssignment && nextWorkoutDay !== null">
             <div class="next-workout-info">
-              <mat-icon>play_circle</mat-icon>
+              <img src="../../../../assets/images/icon/icons8-circled-play-button-16.png">
               <span>Next up: <strong>Day {{ nextWorkoutDay }}</strong>
                 <span *ngIf="summary?.lastWorkoutDay"> · Last session was Day {{ summary?.lastWorkoutDay }}</span>
               </span>
@@ -239,7 +241,7 @@
               <span class="day-pill-next" *ngIf="day === nextWorkoutDay && !sessionActive">Next</span>
               <span class="day-pill-count" *ngIf="day !== nextWorkoutDay && !isDayCompleted(day)">{{ exercisesForDay(day).length }} ex</span>
               <span class="day-pill-done" *ngIf="isDayCompleted(day) && day !== nextWorkoutDay">
-                <mat-icon>check_circle</mat-icon>
+                <img src="../../../../assets/images/icon/icons8-check-16-12.png">
               </span>
             </button>
           </div>
@@ -257,13 +259,13 @@
                       <div class="exercise-name">{{ ex.exerciseName }}</div>
                       <div class="exercise-chips">
                         <span class="chip chip-sets">
-                          <mat-icon>repeat</mat-icon>{{ ex.sets }} sets
+                          <img src="../../../../assets/images/icon/icons8-repeat-13.png">{{ ex.sets }} sets
                         </span>
                         <span class="chip chip-reps">
-                          <mat-icon>fitness_center</mat-icon>{{ ex.reps }} reps
+                          <img src="../../../../assets/images/icon/icons8-workout-13.png">{{ ex.reps }} reps
                         </span>
                         <span class="chip chip-rest" *ngIf="ex.restSeconds">
-                          <mat-icon>timer</mat-icon>{{ ex.restSeconds }}s rest
+                          <img src="../../../../assets/images/icon/icons8-timer-13.png">{{ ex.restSeconds }}s rest
                         </span>
                       </div>
                     </div>
@@ -307,14 +309,14 @@
                       *ngFor="let s of setArray(ex.sets); let si = index"
                       [class.done]="isSetDone(ex.id, si)"
                       (click)="toggleSet(ex.id, si)">
-                      <mat-icon *ngIf="isSetDone(ex.id, si)">check</mat-icon>
+                      <img *ngIf="isSetDone(ex.id, si)" src="../../../../assets/images/icon/icons8-check-20.png">
                       <span *ngIf="!isSetDone(ex.id, si)">{{ si + 1 }}</span>
                     </button>
                   </div>
 
                   <!-- Optional weight input -->
                   <div class="weight-input-row" *ngIf="!isBodyweightEquipment(ex.equipmentType)">
-                    <mat-icon>monitor_weight</mat-icon>
+                    <img src="../../../../assets/images/icon/icons8-weight-kg-16.png">
                     <input
                       type="number"
                       class="weight-input"
@@ -335,7 +337,7 @@
                 </button>
                 <button class="complete-session-btn" (click)="confirmCompleteSession()" [disabled]="savingSession">
                   <mat-spinner *ngIf="savingSession" diameter="18"></mat-spinner>
-                  <mat-icon *ngIf="!savingSession">check_circle</mat-icon>
+                  <img *ngIf="!savingSession" src="../../../../assets/images/icon/verify-icon-light.png">
                   {{ savingSession ? 'Saving...' : 'Complete Session' }}
                 </button>
               </div>

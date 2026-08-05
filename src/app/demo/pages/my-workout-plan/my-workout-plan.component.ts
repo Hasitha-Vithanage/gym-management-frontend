@@ -387,11 +387,19 @@ export class MyWorkoutPlanComponent implements OnInit {
   }
 
   cancelSession(): void {
+    const sessionId = this.currentSessionId;
+
     this.sessionActive    = false;
     this.activeSessionDay = null;
     this.currentSessionId = null;
     this.setTrack         = {};
     this.weightTrack      = {};
+
+    // Remove the in-progress session row created when the workout was started,
+    // so an abandoned session never counts toward completed days/session stats.
+    if (sessionId) {
+      this.sessionService.cancelSession(sessionId).subscribe({ error: () => {} });
+    }
   }
 
   // ── Helpers ──────────────────────────────────────────────────────────────────

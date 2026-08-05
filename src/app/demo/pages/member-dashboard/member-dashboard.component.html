@@ -2,7 +2,7 @@
 
   <!-- PAGE TITLE -->
   <h2 class="form-title">
-    <mat-icon class="title-icon">dashboard</mat-icon>
+    <img src="../../../../assets/images/icon/icons8-dashboard-24.png" class="sec-icon-img">
     Member Dashboard
   </h2>
 
@@ -20,7 +20,10 @@
     </div>
     <div class="welcome-right">
       <button class="qr-btn" (click)="showMyQrCode()" [disabled]="isLoading || !memberDetails">
-        <mat-icon>qr_code_2</mat-icon>
+        <img src="../../../../assets/images/icon/icons8-qr-20.png" class="qr-icon qr-default">
+
+        <img src="../../../../assets/images/icon/icons8-qr-20-white.png" class="qr-icon qr-hover">
+
         <span>My ID Card</span>
       </button>
     </div>
@@ -89,9 +92,7 @@
       </div>
     </div>
     <div class="quick-actions-grid">
-      <button *ngFor="let action of quickActions"
-              class="qa-btn"
-              (click)="navigateTo(action.route)">
+      <button *ngFor="let action of quickActions" class="qa-btn" (click)="navigateTo(action.route)">
         <!-- <img src="../../../../assets/images/icon/{{ action.icon }}.png" class="qa-icon"> -->
         <span>{{ action.label }}</span>
       </button>
@@ -104,14 +105,13 @@
       <img src="../../../../assets/images/icon/explore.png" class="section-icon">
       <div>
         <h5 class="section-title">Your Fitness Journey</h5>
-        <p class="section-sub">Follow these steps to get the most out of your membership — start anywhere, go at your own pace</p>
+        <p class="section-sub">Follow these steps to get the most out of your membership — start anywhere, go at your
+          own pace</p>
       </div>
     </div>
 
     <div class="journey-grid">
-      <div *ngFor="let step of journeySteps"
-           class="journey-card"
-           (click)="onJourneyStepClick(step)">
+      <div *ngFor="let step of journeySteps" class="journey-card" (click)="onJourneyStepClick(step)">
 
         <div class="step-number" [style.background]="step.accentColor + '22'" [style.color]="step.accentColor">
           {{ step.step }}
@@ -124,7 +124,7 @@
 
         <div class="step-footer">
           <span class="step-cta" [style.color]="step.accentColor">
-            Get Started <mat-icon class="cta-arrow">arrow_forward</mat-icon>
+            Get Started <img class="cta-arrow" src="../../../../assets/images/icon/{{ step.arrowIcon }}.png" alt="">
           </span>
         </div>
       </div>

@@ -2,7 +2,7 @@
 
   <!-- PAGE TITLE -->
   <h2 class="form-title">
-    <img src="../../../../assets/images/icon/dashboard-light-icon.png">Dashboard
+    <img src="../../../../assets/images/icon/icons8-pie-chart-24.png">Dashboard
   </h2>
 
   <!-- WELCOME BANNER -->
@@ -10,7 +10,7 @@
     <div class="welcome-banner">
       <div class="welcome-left">
         <div class="avatar-circle">
-          <img src="../../../../assets/images/icon/person-orange.png" style="width:30px;height:30px;">
+          <img src="../../../../assets/images/icon/person-orange.png" style="margin-bottom: 15px;">
         </div>
         <div class="welcome-text">
           <p class="greeting-label">{{ greeting }},</p>
@@ -20,7 +20,7 @@
       </div>
       <div class="welcome-right">
         <div class="date-chip">
-          <mat-icon>calendar_today</mat-icon>
+          <img src="../../../../assets/images/icon/calendar_today.png" style="width:18;height:18px;">
           <span>{{ todayDate }}</span>
         </div>
       </div>
@@ -31,7 +31,7 @@
   <div class="col-md-6 col-xl-3 metric-col">
     <div class="metric-card">
       <div class="metric-icon" style="background: rgba(251,191,36,0.12); color: #f59e0b;">
-        <mat-icon>pending_actions</mat-icon>
+        <img src="../../../../assets/images/icon/icons8-get-cash-24.png" style="width:24;height:24px;">
       </div>
       <div class="metric-body">
         <p class="metric-label">Pending Orders</p>
@@ -44,7 +44,7 @@
   <div class="col-md-6 col-xl-3 metric-col">
     <div class="metric-card">
       <div class="metric-icon" style="background: rgba(59,130,246,0.12); color: #3b82f6;">
-        <mat-icon>fitness_center</mat-icon>
+        <img src="../../../../assets/images/icon/icons8-ez-curl-bar-24.png" style="width:24;height:24px;">
       </div>
       <div class="metric-body">
         <p class="metric-label">Upcoming Classes</p>
@@ -57,7 +57,7 @@
   <div class="col-md-6 col-xl-3 metric-col">
     <div class="metric-card">
       <div class="metric-icon" style="background: rgba(34,197,94,0.12); color: #22c55e;">
-        <mat-icon>person_add</mat-icon>
+        <img src="../../../../assets/images/icon/icons8-add-user-24.png" style="width:24;height:24px;">
       </div>
       <div class="metric-body">
         <p class="metric-label">New Members</p>
@@ -70,7 +70,7 @@
   <div class="col-md-6 col-xl-3 metric-col">
     <div class="metric-card">
       <div class="metric-icon" style="background: rgba(167,139,250,0.12); color: #a78bfa;">
-        <mat-icon>inventory_2</mat-icon>
+        <img src="../../../../assets/images/icon/icons8-store-24.png" style="width:24;height:24px;">
       </div>
       <div class="metric-body">
         <p class="metric-label">Active Products</p>
@@ -86,7 +86,7 @@
       <div class="stat-top">
         <span class="stat-label">Total Members</span>
         <div class="stat-icon" style="background: rgba(14,165,233,0.12); color: #0ea5e9;">
-          <mat-icon>people</mat-icon>
+          <img src="../../../../assets/images/icon/icons8-people-18.png" style="width:18;height:18;">
         </div>
       </div>
       <h3 class="stat-value">{{ isLoadingCounts ? '…' : (counts.memberCount ?? '—') }}</h3>
@@ -99,7 +99,7 @@
       <div class="stat-top">
         <span class="stat-label">Total Employees</span>
         <div class="stat-icon" style="background: rgba(124,58,237,0.12); color: #7c3aed;">
-          <mat-icon>badge</mat-icon>
+          <img src="../../../../assets/images/icon/icons8-group-18.png" style="width:18;height:18;">
         </div>
       </div>
       <h3 class="stat-value">{{ isLoadingCounts ? '…' : (counts.employeeCount ?? '—') }}</h3>
@@ -112,7 +112,7 @@
       <div class="stat-top">
         <span class="stat-label">Total Suppliers</span>
         <div class="stat-icon" style="background: rgba(244,63,94,0.12); color: #f43f5e;">
-          <mat-icon>local_shipping</mat-icon>
+          <img src="../../../../assets/images/icon/icons8-truck-18.png" style="width:18;height:18;">
         </div>
       </div>
       <h3 class="stat-value">{{ isLoadingCounts ? '…' : (counts.supplierCount ?? '—') }}</h3>
@@ -125,7 +125,7 @@
       <div class="stat-top">
         <span class="stat-label">Total Products</span>
         <div class="stat-icon" style="background: rgba(13,148,136,0.12); color: #0d9488;">
-          <mat-icon>storefront</mat-icon>
+          <img src="../../../../assets/images/icon/icons8-store-front-18.png" style="width:18;height:18;">
         </div>
       </div>
       <h3 class="stat-value">{{ isLoadingSupplements ? '…' : supplementsDataSource.data.length }}</h3>
@@ -136,7 +136,7 @@
   <!-- ACTIONABLE ROW: Pending Orders + Upcoming Classes -->
   <div class="col-xl-5 col-12 mt-4">
     <div class="section-heading">
-      <img src="../../../../assets/images/icon/supplement-inventory-icon-dark.png" class="sec-icon-img">
+      <img src="../../../../assets/images/icon/icons8-get-cash-24.png" style="width:20;height:20;" class="sec-icon-img">
       <div>
         <h5 class="sec-title">Pending Orders</h5>
         <p class="sec-sub">Supplement orders awaiting processing</p>
@@ -180,7 +180,7 @@
 
   <div class="col-xl-7 col-12 mt-4">
     <div class="section-heading">
-      <mat-icon class="sec-icon-mat">fitness_center</mat-icon>
+      <img src="../../../../assets/images/icon/workout-orange.png" style="width:22;height:22;" class="sec-icon-img">
       <div>
         <h5 class="sec-title">Upcoming Classes</h5>
         <p class="sec-sub">Scheduled classes from today onwards</p>
@@ -206,7 +206,7 @@
             <span class="class-type-badge">{{ cls.classType }}</span>
             <p class="class-name">{{ cls.classTitle }}</p>
             <p class="class-trainer">
-              <mat-icon>person</mat-icon>
+              <img src="../../../../assets/images/icon/icons8-person-10.png">
               {{ cls.conductorName }}
             </p>
           </div>
@@ -230,7 +230,7 @@
   <!-- INFORMATIONAL ROW: Supplement Inventory + Recently Registered Members -->
   <div class="col-xl-8 col-12 mt-4">
     <div class="section-heading">
-      <img src="../../../../assets/images/icon/supplement-inventory-icon-dark.png" class="sec-icon-img">
+      <img src="../../../../assets/images/icon/icons8-capsule-22.png" class="sec-icon-img">
       <div>
         <h5 class="sec-title">Supplement Inventory</h5>
         <p class="sec-sub">Current stock at a glance</p>
@@ -286,7 +286,7 @@
 
   <div class="col-xl-4 col-12 mt-4">
     <div class="section-heading">
-      <img src="../../../../assets/images/icon/member-light-icon.png" class="sec-icon-img">
+      <img src="../../../../assets/images/icon/icons8-people-22.png" class="sec-icon-img">
       <div>
         <h5 class="sec-title">Recently Registered</h5>
         <p class="sec-sub">Latest members who joined the gym</p>

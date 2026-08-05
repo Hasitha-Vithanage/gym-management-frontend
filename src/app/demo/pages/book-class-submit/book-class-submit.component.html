@@ -3,11 +3,11 @@
   <!-- TOP BAR -->
   <div class="top-bar">
     <button class="back-btn" (click)="goBack()">
-      <mat-icon>arrow_back</mat-icon>
+      <img src="../../../../assets/images/icon/icons8-arrow-back-20.png" class="sec-icon-img">
       <span>Back to Classes</span>
     </button>
     <h2 class="page-title">
-      <mat-icon class="title-icon">how_to_reg</mat-icon>
+      <img src="../../../../assets/images/icon/icons8-microsoft-to-do-app-20.png" class="sec-icon-img">
       Confirm Booking
     </h2>
   </div>
@@ -42,7 +42,7 @@
     <!-- LEFT: Class Details -->
     <div class="info-panel">
       <h5 class="panel-heading">
-        <mat-icon>event</mat-icon>
+        <img src="../../../../assets/images/icon/calendar_today.png" class="sec-icon-img">
         Class Details
       </h5>
 
@@ -83,13 +83,13 @@
     <!-- RIGHT: Member Details + Confirm -->
     <div class="confirm-panel">
       <h5 class="panel-heading">
-        <mat-icon>person</mat-icon>
+        <img src="../../../../assets/images/icon/icons8-person-16.png" class="sec-icon-img">
         Your Details
       </h5>
 
       <div class="member-info-card">
         <p class="member-info-hint">
-          <mat-icon>info</mat-icon>
+          <img src="../../../../assets/images/icon/icons8-info-16 (1).png" class="sec-icon-img">
           Your details are pre-filled from your profile
         </p>
         <div class="detail-block">
@@ -110,7 +110,7 @@
 
       <!-- Fully Booked notice -->
       <div *ngIf="isFullyBooked" class="full-notice">
-        <mat-icon>block</mat-icon>
+        <img src="../../../../assets/images/icon/icons8-block-13.png" class="sec-icon-img">
         <span>This class is fully booked. Please choose another class.</span>
       </div>
 
@@ -119,7 +119,8 @@
               class="confirm-btn"
               (click)="confirmBooking()"
               [disabled]="isConfirming">
-        <mat-icon>{{ isConfirming ? 'hourglass_empty' : 'check_circle' }}</mat-icon>
+        <mat-icon *ngIf="isConfirming">hourglass_empty</mat-icon>
+        <img *ngIf="!isConfirming" src="../../../../assets/images/icon/verify-icon-light.png" class="confirm-btn-icon" alt="Confirm">
         {{ isConfirming ? 'Confirming…' : 'Confirm Booking' }}
       </button>
 

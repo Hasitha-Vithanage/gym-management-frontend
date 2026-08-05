@@ -3,11 +3,11 @@
   <!-- Header -->
   <div class="page-header">
     <div class="page-header-info">
-      <h2 class="page-title">Progress Tracking</h2>
+      <h2 class="page-title">  Progress Tracking</h2>
       <p class="page-subtitle">Visual insights into your fitness journey</p>
     </div>
     <button class="primary-btn" (click)="openDialog()">
-      <mat-icon>add</mat-icon>
+      <img src="../../../../assets/images/icon/add-16.png">
       Add Measurement
     </button>
   </div>
@@ -15,20 +15,20 @@
   <!-- ── Awareness Card ──────────────────────────────────────────────────────── -->
   <div class="tracking-guide-card">
     <div class="guide-header">
-      <mat-icon>info_outline</mat-icon>
+      <img src="../../../../assets/images/icon/icons8-info-16.png">
       <strong>How Progress Tracking Works</strong>
     </div>
     <ul class="guide-tips">
-      <li><mat-icon>schedule</mat-icon> Log your measurements <strong>once a week or every 2 weeks</strong> for meaningful trends.</li>
-      <li><mat-icon>straighten</mat-icon> Each entry records your <strong>weight, waist, hip and neck</strong> measurements.</li>
-      <li><mat-icon>calculate</mat-icon> <strong>BMI and body fat %</strong> are calculated automatically from what you enter.</li>
-      <li><mat-icon>access_time</mat-icon> Measure at the <strong>same time of day</strong> (e.g. morning before eating) for consistent comparisons.</li>
+      <li><img src="../../../../assets/images/icon/icons8-schedule-16.png"> Log your measurements <strong>once a week or every 2 weeks</strong> for meaningful trends.</li>
+      <li><img src="../../../../assets/images/icon/icons8-length-16.png"> Each entry records your <strong>weight, waist, hip and neck</strong> measurements.</li>
+      <li><img src="../../../../assets/images/icon/icons8-calculate-16.png"> <strong>BMI and body fat %</strong> are calculated automatically from what you enter.</li>
+      <li><img src="../../../../assets/images/icon/icons8-schedule-16.png"> Measure at the <strong>same time of day</strong> (e.g. morning before eating) for consistent comparisons.</li>
     </ul>
   </div>
 
   <!-- ── Section: Body Measurements ─────────────────────────────────────────── -->
   <div class="section-label">
-    <mat-icon>monitor_weight</mat-icon>
+    <img src="../../../../assets/images/icon/icons8-scale-16.png">
     Body Measurements
   </div>
 
@@ -36,7 +36,7 @@
   <ng-container *ngIf="!measurementsLoading && bodyMeasurements.length === 0">
     <div class="empty-measurements-card">
       <div class="empty-icon-wrap">
-        <mat-icon>monitor_weight</mat-icon>
+        <img src="../../../../assets/images/icon/icons8-scale-24.png">
       </div>
       <h3 class="empty-title">No measurements logged yet</h3>
       <p class="empty-desc">Start tracking today to build your progress charts over time.</p>
@@ -44,7 +44,7 @@
       <!-- Baseline summary from workout request -->
       <ng-container *ngIf="prefillData">
         <div class="baseline-banner">
-          <mat-icon>auto_awesome</mat-icon>
+          <img src="../../../../assets/images/icon/icons8-ai-20.png">
           <span>We found data from your workout request — use it as your starting baseline:</span>
         </div>
         <div class="baseline-stats">
@@ -66,14 +66,14 @@
           </div>
         </div>
         <button class="primary-btn baseline-btn" (click)="openDialog(true)">
-          <mat-icon>add</mat-icon>
+          <img src="../../../../assets/images/icon/add-16.png">
           Log Starting Values
         </button>
         <p class="baseline-note">You can still adjust all values in the form before saving.</p>
       </ng-container>
 
       <button *ngIf="!prefillData" class="primary-btn" (click)="openDialog()">
-        <mat-icon>add</mat-icon>
+        <img src="../../../../assets/images/icon/add-16.png">
         Add First Measurement
       </button>
     </div>
@@ -139,13 +139,13 @@
 
   <!-- ── Section: Workout Performance ───────────────────────────────────────── -->
   <div class="section-label" style="margin-top: 36px;">
-    <mat-icon>fitness_center</mat-icon>
+    <img src="../../../../assets/images/icon/workout-orange.png">
     Workout Performance
   </div>
 
   <!-- No workout plan state -->
   <div class="no-data-card" *ngIf="noWorkoutData && !workoutDataLoading">
-    <mat-icon>event_busy</mat-icon>
+    <img src="../../../../assets/images/icon/icons8-close-window-20.png">
     <p>No active workout plan found. Complete the workout form to get started.</p>
   </div>
 
@@ -185,7 +185,7 @@
 
       <!-- Exercise selector -->
       <div class="exercise-selector" *ngIf="templateExercises.length > 0">
-        <mat-icon>search</mat-icon>
+        <img src="../../../../assets/images/icon/icons8-search-16.png">
         <select class="exercise-select" (change)="onExerciseSelect(+$any($event.target).value)">
           <option *ngFor="let ex of templateExercises" [value]="ex.exerciseId">
             {{ ex.exerciseName }}
@@ -211,7 +211,7 @@
 
   <!-- ── Section: Nutrition Today ───────────────────────────────────────────── -->
   <div class="section-label" style="margin-top: 36px;">
-    <mat-icon>restaurant_menu</mat-icon>
+    <img src="../../../../assets/images/icon/icons8-restaurant-20.png">
     Nutrition Today
   </div>
 
@@ -223,7 +223,7 @@
 
   <!-- No active meal plan -->
   <div class="no-data-card" *ngIf="!mealPlanLoading && !activeMealAssignment">
-    <mat-icon>no_meals</mat-icon>
+    <img src="../../../../assets/images/icon/icons8-no-eating-20.png">
     <p>No active meal plan. Ask your trainer to assign one after submitting your nutrition profile.</p>
   </div>
 
@@ -243,28 +243,28 @@
     <div class="nutrition-macros-grid">
 
       <div class="nutrition-macro-card nmc-target-card cal">
-        <mat-icon class="nmc-target-icon">local_fire_department</mat-icon>
+        <img src="../../../../assets/images/icon/icons8-fire-24.png">
         <div class="nmc-target-value">{{ activeMealAssignment.template?.dailyCalorieTarget }} kcal</div>
         <div class="nmc-target-label">Daily Calorie Target</div>
         <div class="nmc-target-note">Fuel your body for the day ahead</div>
       </div>
 
       <div class="nutrition-macro-card nmc-target-card prot">
-        <mat-icon class="nmc-target-icon">egg_alt</mat-icon>
+        <img src="../../../../assets/images/icon/icons8-sunny-side-up-eggs-24.png">
         <div class="nmc-target-value">{{ activeMealAssignment.template?.proteinTargetG }}g</div>
         <div class="nmc-target-label">Daily Protein Target</div>
         <div class="nmc-target-note">Supports muscle repair &amp; growth</div>
       </div>
 
       <div class="nutrition-macro-card nmc-target-card carb">
-        <mat-icon class="nmc-target-icon">grain</mat-icon>
+        <img src="../../../../assets/images/icon/icons8-grain-24.png">
         <div class="nmc-target-value">{{ activeMealAssignment.template?.carbsTargetG }}g</div>
         <div class="nmc-target-label">Daily Carbs Target</div>
         <div class="nmc-target-note">Your primary energy source</div>
       </div>
 
       <div class="nutrition-macro-card nmc-target-card fat">
-        <mat-icon class="nmc-target-icon">opacity</mat-icon>
+        <img src="../../../../assets/images/icon/icons8-high-opacity-24.png">
         <div class="nmc-target-value">{{ activeMealAssignment.template?.fatTargetG }}g</div>
         <div class="nmc-target-label">Daily Fat Target</div>
         <div class="nmc-target-note">Essential for hormones &amp; joints</div>
@@ -273,7 +273,7 @@
     </div>
 
     <div class="nutrition-footer-note">
-      <mat-icon>info_outline</mat-icon>
+      <img src="../../../../assets/images/icon/icons8-info-13.png">
       Values reflect the meals assigned to Day {{ currentPlanDay }} of your plan template.
     </div>
 

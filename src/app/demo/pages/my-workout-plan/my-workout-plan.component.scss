@@ -43,6 +43,33 @@
   &:hover { background: $ff-accent-hover; box-shadow: $ff-shadow-orange; }
 }
 
+.my-progress{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 16px;
+  border-radius: $ff-radius-sm;
+  border: 1px solid $ff-border-default;
+  background: transparent;
+  color: $ff-text-secondary;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: $ff-font;
+  cursor: pointer;
+  transition: all 0.18s ease;
+
+  img.icon-default { width:16px; height:16px; }
+  img.icon-hover { width:16px; height:16px; display:none; }
+
+  &:hover {
+    border-color: $ff-border-accent; color: $ff-accent-primary;
+
+    img.icon-default { display:none; }
+    img.icon-hover { display:inline-block; }
+  }
+}
+
 .outline-btn {
   display: inline-flex;
   align-items: center;
@@ -251,6 +278,8 @@
   transition: all 0.2s ease;
 
   mat-icon { font-size: 18px; width: 18px; height: 18px; }
+
+  .btn-icon-img { width: 18px; height: 18px; }
 
   &:hover:not(:disabled) {
     background: rgba($ff-accent-primary, 0.08);

@@ -282,6 +282,8 @@
 
   mat-icon { font-size: 20px; width: 20px; height: 20px; }
 
+  .confirm-btn-icon { width: 20px; height: 20px; }
+
   &:hover:not(:disabled) {
     background: $ff-accent-hover;
     transform: translateY(-1px);
