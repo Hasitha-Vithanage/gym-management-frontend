@@ -63,8 +63,8 @@ export class MonthlyAttendanceComponent {
       y: d.present_days
     }));
 
-    const textColor  = light ? '#6b7280' : '#9BA3B8';
-    const gridColor  = light ? '#e5e7eb' : 'rgba(255,255,255,0.06)';
+    const textColor = light ? '#6b7280' : '#9BA3B8';
+    const gridColor = light ? '#e5e7eb' : 'rgba(255,255,255,0.06)';
     const titleColor = light ? '#1f2937' : '#E5E7EB';
 
     return {
@@ -83,6 +83,12 @@ export class MonthlyAttendanceComponent {
         }
       },
       xaxis: {
+        title: {
+          text: 'Month',
+          style: {
+            color: textColor
+          }
+        },
         labels: {
           style: {
             colors: textColor,
@@ -117,7 +123,7 @@ export class MonthlyAttendanceComponent {
         theme: light ? 'light' : 'dark'
       },
       title: {
-        text: 'Present member count',
+        text: '',
         align: 'center',
         style: {
           color: titleColor,
@@ -126,5 +132,4 @@ export class MonthlyAttendanceComponent {
       }
     };
   }
-
 }
