@@ -3,11 +3,11 @@
   <!-- Header -->
   <div class="page-header">
     <div class="header-left">
-      <img src="../../../../assets/images/icon/mark-attendance-icon.png" alt="attendance" />
+      <img src="../../../../assets/images/icon/icons8-attendance-24.png" alt="attendance" />
       <h2>Member Check-In</h2>
     </div>
     <div class="count-badge">
-      <mat-icon>people</mat-icon>
+      <img src="../../../../assets/images/icon/icons8-people-22.png"/>
       <span>{{ checkInCount }} check-in{{ checkInCount !== 1 ? 's' : '' }} today</span>
     </div>
   </div>
@@ -18,14 +18,14 @@
     <!-- QR Scanner panel -->
     <div class="panel scanner-panel">
       <div class="panel-title">
-        <mat-icon>qr_code_scanner</mat-icon>
+        <img src="../../../../assets/images/icon/icons8-qr-code-20.png"/>
         <span>Scan Member QR</span>
         <button class="camera-toggle-btn"
                 [class.active]="scannerEnabled"
                 type="button"
                 (click)="scannerEnabled = !scannerEnabled"
                 [title]="scannerEnabled ? 'Turn off camera' : 'Turn on camera'">
-          <mat-icon>{{ scannerEnabled ? 'videocam' : 'videocam_off' }}</mat-icon>
+          <img [src]="scannerEnabled ? '../../../../assets/images/icon/icons8-videocam-13.png' : '../../../../assets/images/icon/icons8-no-video-13.png'" alt="camera toggle" />
           <span>{{ scannerEnabled ? 'Camera On' : 'Camera Off' }}</span>
         </button>
       </div>
@@ -42,13 +42,13 @@
         </zxing-scanner>
 
         <div class="camera-blocked" *ngIf="hasPermission === false">
-          <mat-icon>videocam_off</mat-icon>
+          <img src="../../../../assets/images/icon/icons8-no-video-13.png"/>
           <p>Camera access denied</p>
           <small>Allow camera permission in your browser and refresh</small>
         </div>
 
         <div class="camera-blocked" *ngIf="hasPermission !== false && hasCamera === false">
-          <mat-icon>no_photography</mat-icon>
+          <img src="../../../../assets/images/icon/icons8-no-video-13.png"/>
           <p>No camera found</p>
           <small>Use the manual check-in panel instead</small>
         </div>
@@ -59,7 +59,9 @@
            *ngIf="scanFeedback"
            [class.fb-success]="scanFeedback.success"
            [class.fb-error]="!scanFeedback.success">
-        <mat-icon>{{ scanFeedback.success ? 'check_circle' : 'error' }}</mat-icon>
+        <img class="feedback-icon"
+             [src]="scanFeedback.success ? '../../../../assets/images/icon/icons8-instagram-check-mark-20.png' : '../../../../assets/images/icon/icons8-warning-20.png'"
+             [alt]="scanFeedback.success ? 'Success' : 'Error'"/>
         <span>{{ scanFeedback.message }}</span>
       </div>
     </div>
@@ -67,12 +69,12 @@
     <!-- Manual check-in panel -->
     <div class="panel manual-panel">
       <div class="panel-title">
-        <mat-icon>person_search</mat-icon>
+        <img src="../../../../assets/images/icon/icons8-find-user-male-13.png"/>
         <span>Manual Check-In</span>
       </div>
 
       <div class="search-box">
-        <mat-icon class="search-icon">search</mat-icon>
+        <img src="../../../../assets/images/icon/icons8-search-16.png"/>
         <input
           type="text"
           placeholder="Search by name or member no..."
@@ -93,7 +95,7 @@
             <span class="member-no">{{ member.memberNo }}</span>
           </div>
           <button class="checkin-btn" [disabled]="isMarkingAttendance" title="Mark present">
-            <mat-icon>how_to_reg</mat-icon>
+            <img src="../../../../assets/images/icon/icons8-verified-account-13.png"/>
           </button>
         </button>
 
@@ -109,7 +111,7 @@
   <!-- Today's check-ins list -->
   <div class="panel checkins-panel">
     <div class="panel-title">
-      <mat-icon>event_available</mat-icon>
+      <img src="../../../../assets/images/icon/icons8-event-15-1.png"/>
       <span>Today's Check-ins</span>
       <span class="refresh-note">auto-refreshes every 30s</span>
     </div>

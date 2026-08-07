@@ -27,7 +27,7 @@
 
   <!-- Pending request assignment banner -->
   <div class="pending-assign-banner" *ngIf="pendingRequestId">
-    <mat-icon>assignment_ind</mat-icon>
+    <img src="../../../../assets/images/icon/icons8-audit-20.png">
     <span>
       When you click <strong>Save Assignments</strong>, this template will be automatically assigned to
       <strong>{{ pendingMemberName }}</strong>.
@@ -200,14 +200,14 @@
                   <div class="pill-name">{{ e.exerciseName }}</div>
                   <div class="pill-stats">
                     <span class="stat">
-                      <mat-icon>repeat</mat-icon>{{ e.sets }} × {{ e.reps }}
+                      <img src="../../../../assets/images/icon/icons8-repeat-10.png">{{ e.sets }} × {{ e.reps }}
                     </span>
                     <span class="stat">
-                      <mat-icon>timer</mat-icon>{{ e.restSeconds }}s
+                      <img src="../../../../assets/images/icon/icons8-timer-10.png">{{ e.restSeconds }}s
                     </span>
                   </div>
                   <button class="pill-remove" (click)="removeExercise(e)" matTooltip="Remove">
-                    <mat-icon>close</mat-icon>
+                    <img src="../../../../assets/images/icon/icons8-close-13.png">
                   </button>
                 </div>
               </div>
@@ -217,7 +217,7 @@
 
         <ng-template #emptyAssigned>
           <div class="empty-split">
-            <mat-icon>calendar_view_week</mat-icon>
+            <img src="../../../../assets/images/icon/icons8-week-view-40.png">
             <h4>No exercises assigned yet</h4>
             <p>Browse exercises on the left, configure sets/reps above, then click <strong>Add</strong>.</p>
           </div>

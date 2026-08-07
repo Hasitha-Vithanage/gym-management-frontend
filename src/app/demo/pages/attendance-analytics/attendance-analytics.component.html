@@ -2,13 +2,16 @@
 
   <div class="page-header">
     <h2 class="form-title">
-      <mat-icon class="title-icon">analytics</mat-icon>
+      <img src="../../../../assets/images/icon/icons8-analytics-24.png" class="sec-icon-img">
       Attendance Analytics
     </h2>
     <div class="header-actions">
       <button mat-stroked-button class="dl-btn" (click)="downloadReport()"
               [disabled]="isDownloading || (isLoading && isPeakLoading && isAtRiskLoading)">
-        <mat-icon>picture_as_pdf</mat-icon>
+        <span class="pdf-icon-wrap">
+          <img src="../../../../assets/images/icon/icons8-pdf-16%20(1).png" class="pdf-icon pdf-icon-default" alt="PDF">
+          <img src="../../../../assets/images/icon/icons8-pdf-16.png" class="pdf-icon pdf-icon-hover" alt="PDF">
+        </span>
         {{ isDownloading ? 'Generating…' : 'Download Report' }}
       </button>
     </div>
@@ -22,7 +25,7 @@
     <div class="col-xl-3 col-md-6">
       <div class="stat-card">
         <div class="stat-icon green">
-          <mat-icon>today</mat-icon>
+          <img src="../../../../assets/images/icon/icons8-today-20.png">
         </div>
         <div class="stat-body">
           <p class="stat-label">Today's Check-ins</p>
@@ -35,7 +38,7 @@
     <div class="col-xl-3 col-md-6">
       <div class="stat-card">
         <div class="stat-icon orange">
-          <mat-icon>calendar_month</mat-icon>
+          <img src="../../../../assets/images/icon/icons8-event-20.png">
         </div>
         <div class="stat-body">
           <p class="stat-label">{{ monthNames[displayMonth - 1] }} Total</p>
@@ -48,7 +51,7 @@
     <div class="col-xl-3 col-md-6">
       <div class="stat-card">
         <div class="stat-icon blue">
-          <mat-icon>history</mat-icon>
+          <img src="../../../../assets/images/icon/icons8-history-19.png">
         </div>
         <div class="stat-body">
           <p class="stat-label">Last Month Total</p>
@@ -61,7 +64,7 @@
     <div class="col-xl-3 col-md-6">
       <div class="stat-card">
         <div class="stat-icon red">
-          <mat-icon>warning</mat-icon>
+          <img src="../../../../assets/images/icon/icons8-warning-20.png">
         </div>
         <div class="stat-body">
           <p class="stat-label">At-Risk Members</p>
@@ -79,7 +82,7 @@
   <div class="section-card mb-4">
 
     <div class="section-header">
-      <mat-icon class="section-icon">bar_chart</mat-icon>
+      <img src="../../../../assets/images/icon/icons8-bar-chart-16-orange.png" class="section-icon">
       <div>
         <h5 class="section-title">Daily Check-ins</h5>
         <p class="section-sub">Number of members who checked in each day</p>
@@ -88,11 +91,11 @@
 
     <div class="month-nav">
       <button class="nav-btn" (click)="prevMonth()" [disabled]="isLoading">
-        <mat-icon>chevron_left</mat-icon>
+        <img src="../../../../assets/images/icon/icons8-chevron-left-13.png">
       </button>
       <h5 class="month-title">{{ monthNames[displayMonth - 1] }} {{ displayYear }}</h5>
       <button class="nav-btn" (click)="nextMonth()" [disabled]="isCurrentMonth || isLoading">
-        <mat-icon>chevron_right</mat-icon>
+        <img src="../../../../assets/images/icon/icons8-chevron-right-13.png">
       </button>
     </div>
 
@@ -114,13 +117,13 @@
 
     <div class="chip-row" *ngIf="!isLoading">
       <span class="chip orange">
-        <mat-icon>local_fire_department</mat-icon> Busiest Day: {{ peakDayLabel }}
+        <img src="../../../../assets/images/icon/icons8-fire-13.png"> Busiest Day: {{ peakDayLabel }}
       </span>
       <span class="chip blue">
-        <mat-icon>trending_up</mat-icon> Daily Avg: {{ avgDaily }}
+        <img src="../../../../assets/images/icon/icons8-chart-arrow-rise-13.png"> Daily Avg: {{ avgDaily }}
       </span>
       <span class="chip green">
-        <mat-icon>event_available</mat-icon> Active Days: {{ activeDays }}
+        <img src="../../../../assets/images/icon/icons8-today-13.png"> Active Days: {{ activeDays }}
       </span>
     </div>
 
@@ -130,14 +133,14 @@
   <div class="section-card mb-4">
 
     <div class="section-header">
-      <mat-icon class="section-icon">schedule</mat-icon>
+      <img src="../../../../assets/images/icon/icons8-clock-24 (1).png">
       <div>
         <h5 class="section-title">Peak Check-in Hours</h5>
         <p class="section-sub">All-time distribution of when members arrive</p>
       </div>
       <div class="ms-auto" *ngIf="!isPeakLoading && peakHourLabel !== '—'">
         <span class="chip orange">
-          <mat-icon>local_fire_department</mat-icon> Peak Hour: {{ peakHourLabel }}
+          <img src="../../../../assets/images/icon/icons8-fire-13.png"> Peak Hour: {{ peakHourLabel }}
         </span>
       </div>
     </div>
@@ -164,7 +167,7 @@
   <div class="section-card">
 
     <div class="section-header">
-      <mat-icon class="section-icon risk-icon">person_off</mat-icon>
+      <img src="../../../../assets/images/icon/icons8-layoff-24.png">
       <div>
         <h5 class="section-title">At-Risk Members</h5>
         <p class="section-sub">Members who haven't checked in for {{ atRiskDays }}+ days</p>

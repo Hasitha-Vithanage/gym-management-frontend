@@ -5,7 +5,7 @@
 
     <!-- Active-plan notice -->
     <div class="active-plan-notice" *ngIf="activeAssignment">
-      <mat-icon class="notice-icon">event_available</mat-icon>
+      <img src="../../../../assets/images/icon/icons8-event-24.png">
       <div class="notice-body">
         <strong>You have an active workout plan</strong>
         <span>{{ activeAssignment.template?.templateName }} &mdash; active until {{ activePlanEndLabel }}.</span>
@@ -23,16 +23,16 @@
 
       <!-- Auto-fill awareness notice -->
       <div class="prefill-notice" *ngIf="prefillSources.length > 0">
-        <mat-icon class="prefill-icon">auto_awesome</mat-icon>
+        <img src="../../../../assets/images/icon/icons8-ai-24.png">
         <div class="prefill-body">
           <strong>Some fields were pre-filled for you</strong>
           <ul class="prefill-list">
             <li *ngIf="prefillSources.includes('profile')">
-              <mat-icon>person</mat-icon>
+              <img src="../../../../assets/images/icon/icons8-person-13dd.png">
               <strong>Age</strong> and <strong>Gender</strong> were filled from your member profile.
             </li>
             <li *ngIf="prefillSources.includes('previous')">
-              <mat-icon>history</mat-icon>
+              <img src="../../../../assets/images/icon/icons8-history-13ff.png">
               <strong>Weight</strong> and <strong>Height</strong> were filled from your previous submission.
             </li>
           </ul>
@@ -216,7 +216,7 @@
 
       <div class="confirm-header">
         <button class="back-btn" (click)="backToForm()">
-          <mat-icon>arrow_back</mat-icon>
+          <img src="../../../../assets/images/icon/back-arrow.png">
           Back
         </button>
         <h2 class="confirm-title">Confirm Your Profile</h2>
@@ -227,7 +227,7 @@
         <!-- User Info -->
         <div class="info-card">
           <div class="info-card-header">
-            <mat-icon class="info-header-icon">person</mat-icon>
+            <img src="../../../../assets/images/icon/icons8-person-16.png">
             <h3 class="info-card-title">Your Information</h3>
           </div>
           <div class="info-card-body">
@@ -267,7 +267,7 @@
         <!-- Trainer Info -->
         <div class="info-card">
           <div class="info-card-header">
-            <mat-icon class="info-header-icon">fitness_center</mat-icon>
+            <img src="../../../../assets/images/icon/icons8-workout-16asd.png">
             <h3 class="info-card-title">Assigned Trainer</h3>
           </div>
           <div class="info-card-body">
@@ -287,10 +287,10 @@
             </ng-container>
             <ng-template #noTrainer>
               <div class="no-trainer-msg">
-                <mat-icon>person_off</mat-icon>
+                <img src="../../../../assets/images/icon/icons8-user-not-found-50gg.png">
                 <p>No trainer assigned yet.</p>
                 <button class="request-trainer-btn" (click)="requestTrainer()" [disabled]="trainerRequested">
-                  <mat-icon>{{ trainerRequested ? 'check_circle' : 'person_add' }}</mat-icon>
+                  <img [src]="trainerRequested ? '../../../../assets/images/icon/icons8-instagram-check-mark-20.png' : '../../../../assets/images/icon/icons8-add-user-male-20.png'" class="request-trainer-icon" alt="">
                   {{ trainerRequested ? 'Request Sent' : 'Request a Trainer' }}
                 </button>
                 <small class="request-sent-note" *ngIf="trainerRequested">
@@ -305,7 +305,7 @@
 
       <!-- Contextual note -->
       <div class="plan-note" [class.intermediate]="!trainer">
-        <mat-icon>{{ trainer ? 'info_outline' : 'warning_amber' }}</mat-icon>
+        <img [src]="trainer ? '../../../../assets/images/icon/icons8-info-20.png' : '../../../../assets/images/icon/icons8-warning-16.png'" class="plan-note-icon" alt="">
         <p *ngIf="trainer">
           We will match you with the best available workout template based on your profile.
           Your trainer will also be notified and can set up a personalised plan if needed.

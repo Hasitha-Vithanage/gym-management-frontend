@@ -1,7 +1,7 @@
 <div class="attendance-page">
 
   <h2 class="form-title">
-    <mat-icon class="title-icon">calendar_month</mat-icon>
+    <img src="../../../../assets/images/icon/icons8-event-24.png"/>
     My Attendance
   </h2>
 
@@ -11,7 +11,7 @@
     <div class="col-md-4">
       <div class="stat-card">
         <div class="stat-icon green">
-          <mat-icon>check_circle</mat-icon>
+          <img src="../../../../assets/images/icon/icons8-instagram-check-mark-24.png"/>
         </div>
         <div class="stat-body">
           <p class="stat-label">Visits This Month</p>
@@ -24,7 +24,7 @@
     <div class="col-md-4">
       <div class="stat-card">
         <div class="stat-icon orange">
-          <mat-icon>event_available</mat-icon>
+          <img src="../../../../assets/images/icon/icons8-event-24.png"/>
         </div>
         <div class="stat-body">
           <p class="stat-label">Last Check-In</p>
@@ -37,7 +37,7 @@
     <div class="col-md-4">
       <div class="stat-card">
         <div class="stat-icon blue">
-          <mat-icon>date_range</mat-icon>
+          <img src="../../../../assets/images/icon/icons8-pay-date-24.png"/>
         </div>
         <div class="stat-body">
           <p class="stat-label">Viewing Month</p>
@@ -54,11 +54,11 @@
 
     <div class="month-nav">
       <button class="nav-btn" (click)="prevMonth()" [disabled]="isLoading">
-        <mat-icon>chevron_left</mat-icon>
+        <img src="../../../../assets/images/icon/icons8-chevron-left-13.png"/>
       </button>
       <h5 class="month-title">{{ monthNames[displayMonth - 1] }} {{ displayYear }}</h5>
       <button class="nav-btn" (click)="nextMonth()" [disabled]="isCurrentMonth || isLoading">
-        <mat-icon>chevron_right</mat-icon>
+        <img src="../../../../assets/images/icon/icons8-chevron-right-13.png"/>
       </button>
     </div>
 
@@ -107,7 +107,7 @@
   <!-- WEEKLY BAR CHART -->
   <div class="section-card mt-4" *ngIf="!isLoading && chartOptions">
     <div class="section-header">
-      <mat-icon class="section-icon">bar_chart</mat-icon>
+      <img src="../../../../assets/images/icon/icons8-bar-chart-16-orange.png"/>
       <div>
         <h5 class="section-title">Visits by Week</h5>
         <p class="section-sub">Breakdown of how many times you came in each week</p>

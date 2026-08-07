@@ -94,6 +94,7 @@
   border-bottom: 1px solid $ff-border-default;
 
   mat-icon { font-size: 20px; width: 20px; height: 20px; color: $ff-accent-primary; }
+  .heading-icon { width: 20px; height: 20px; flex-shrink: 0; }
 }
 
 // ─── FORM GROUPS ─────────────────────────────────────────────────────────────
@@ -198,14 +199,10 @@ select {
 }
 
 .star {
-  font-size: 36px;
-  width: 36px;
-  height: 36px;
+  width: 30px;
+  height: 30px;
   cursor: pointer;
-  color: $ff-border-default;
-  transition: color 0.12s ease, transform 0.1s ease;
-
-  &.on { color: $ff-warning; }
+  transition: transform 0.1s ease;
 
   &:hover { transform: scale(1.18); }
 }
@@ -301,6 +298,7 @@ textarea {
   transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
 
   mat-icon { font-size: 19px; width: 19px; height: 19px; }
+  .btn-icon { width: 19px; height: 19px; }
 
   &:hover:not(:disabled) {
     background: $ff-accent-hover;
@@ -444,6 +442,7 @@ textarea {
   white-space: nowrap;
 
   mat-icon { font-size: 13px; width: 13px; height: 13px; }
+  .cat-icon { width: 13px; height: 13px; flex-shrink: 0; }
 
   &.gym     { background: rgba(59, 130, 246, 0.12); color: #3B82F6; }
   &.trainer { background: rgba(168, 85, 247, 0.12); color: #A855F7; }
@@ -455,13 +454,12 @@ textarea {
   align-items: center;
   gap: 1px;
 
-  mat-icon {
-    font-size: 15px;
+  .mini-star {
     width: 15px;
     height: 15px;
-    color: $ff-text-dim;
+    opacity: 0.45;
 
-    &.on { color: $ff-warning; }
+    &.on { opacity: 1; }
   }
 
   .rating-num {

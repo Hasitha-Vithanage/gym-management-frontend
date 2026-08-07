@@ -2,7 +2,7 @@
 
   <!-- ─── PAGE HEADER ──────────────────────────────────────────────────────── -->
   <div class="page-header">
-    <mat-icon class="title-icon">forum</mat-icon>
+    <img src="../../../../assets/images/icon/icons8-chat-24.png" class="sec-icon-img">
     <div>
       <h2 class="page-title">Feedback History</h2>
       <p class="page-sub">Review and manage all member feedback submissions</p>
@@ -13,7 +13,7 @@
   <div class="analytics-row">
 
     <div class="stat-card">
-      <div class="stat-icon total-icon"><mat-icon>bar_chart</mat-icon></div>
+      <div class="stat-icon total-icon"><img src="../../../../assets/images/icon/icons8-progress-24.png" class="sec-icon-img"></div>
       <div class="stat-body">
         <span class="stat-value">{{ analytics?.total || 0 }}</span>
         <span class="stat-label">Total Feedbacks</span>
@@ -21,20 +21,20 @@
     </div>
 
     <div class="stat-card">
-      <div class="stat-icon rating-icon"><mat-icon>star</mat-icon></div>
+      <div class="stat-icon rating-icon"><img src="../../../../assets/images/icon/icons8-star-24.png" class="sec-icon-img"></div>
       <div class="stat-body">
         <span class="stat-value">{{ (analytics?.averageRating || 0) | number: '1.1-1' }}</span>
         <span class="stat-label">Average Rating</span>
         <div class="avg-stars">
-          <mat-icon *ngFor="let s of stars; let i = index" [class.on]="i < (analytics?.averageRating || 0)">
-            {{ i < (analytics?.averageRating || 0) ? 'star' : 'star_border' }}
-          </mat-icon>
+          <img *ngFor="let s of stars; let i = index"
+               [src]="i < (analytics?.averageRating || 0) ? '../../../../assets/images/icon/icons8-star-24.png' : '../../../../assets/images/icon/icons8-star-24-border.png'"
+               class="star-icon" alt="star">
         </div>
       </div>
     </div>
 
     <div class="stat-card">
-      <div class="stat-icon pending-icon"><mat-icon>pending_actions</mat-icon></div>
+      <div class="stat-icon pending-icon"><img src="../../../../assets/images/icon/icons8-data-pending-24.png" class="sec-icon-img"></div>
       <div class="stat-body">
         <span class="stat-value" [class.pending-val]="(analytics?.pending || 0) > 0">
           {{ analytics?.pending || 0 }}
@@ -45,7 +45,7 @@
     </div>
 
     <div class="stat-card">
-      <div class="stat-icon resolved-icon"><mat-icon>check_circle</mat-icon></div>
+      <div class="stat-icon resolved-icon"><img src="../../../../assets/images/icon/icons8-instagram-check-mark-24.png" class="sec-icon-img"></div>
       <div class="stat-body">
         <span class="stat-value">{{ analytics?.resolved || 0 }}</span>
         <span class="stat-label">Resolved</span>
@@ -59,17 +59,17 @@
 
     <div class="table-card-header">
       <div class="card-title">
-        <mat-icon>rate_review</mat-icon>
+        <img src="../../../../assets/images/icon/icons8-very-popular-topic-24.png" class="sec-icon-img">
         All Submissions
         <span class="count-badge" *ngIf="dataSource.data.length > 0">{{ dataSource.data.length }}</span>
       </div>
       <div class="card-toolbar">
         <div class="search-bar">
-          <mat-icon>search</mat-icon>
+          <img src="../../../../assets/images/icon/icons8-search-16.png" class="sec-icon-img">
           <input type="text" placeholder="Search feedback…" (keyup)="applyFilter($event)" />
         </div>
         <button class="icon-btn" (click)="refreshData()" matTooltip="Refresh">
-          <mat-icon>refresh</mat-icon>
+          <img src="../../../../assets/images/icon/icons8-refresh-24.png" class="sec-icon-img">
         </button>
       </div>
     </div>
@@ -101,7 +101,7 @@
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Category</th>
           <td mat-cell *matCellDef="let e">
             <span class="cat-chip" [class.gym]="e.category === 'Gym'" [class.trainer]="e.category === 'Trainer'">
-              <mat-icon>{{ e.category === 'Gym' ? 'fitness_center' : 'person' }}</mat-icon>
+              <img class="cat-icon" [src]="e.category === 'Gym' ? 'assets/images/icon/icons8-barbell-13.png' : 'assets/images/icon/icons8-person-13.png'" alt="" />
               {{ e.category }}
             </span>
           </td>
@@ -118,9 +118,9 @@
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Rating</th>
           <td mat-cell *matCellDef="let e">
             <div class="mini-stars">
-              <mat-icon *ngFor="let s of stars; let i = index" [class.on]="i < e.rating">
-                {{ i < e.rating ? 'star' : 'star_border' }}
-              </mat-icon>
+              <img *ngFor="let s of stars; let i = index"
+                   [src]="i < e.rating ? '../../../../assets/images/icon/icons8-star-24.png' : '../../../../assets/images/icon/icons8-star-24-border.png'"
+                   class="star-icon" alt="star">
               <span class="rating-num">{{ e.rating }}/5</span>
             </div>
           </td>
@@ -147,9 +147,12 @@
           <th mat-header-cell *matHeaderCellDef>Submitted By</th>
           <td mat-cell *matCellDef="let e">
             <div class="submitter-cell">
-              <mat-icon class="submitter-icon" [class.anon-icon]="e.anonymous">
-                {{ e.anonymous ? 'person_off' : 'person' }}
-              </mat-icon>
+              <img
+                src="assets/images/icon/icons8-person-13-gray.png"
+                class="submitter-icon"
+                [class.anon-icon]="e.anonymous"
+                alt=""
+              />
               <span>{{ getDisplayName(e) }}</span>
               <span class="anon-tag" *ngIf="e.anonymous">ANON</span>
             </div>
@@ -171,15 +174,15 @@
             <button class="action-pill review" *ngIf="e.status === 'PENDING'"
                     (click)="updateStatus(e, 'REVIEWED')"
                     matTooltip="Mark this feedback as Reviewed">
-              <mat-icon>rate_review</mat-icon> Review
+              <img src="../../../../assets/images/icon/icons8-very-popular-topic-16.png" class="sec-icon-img"> Review
             </button>
             <button class="action-pill resolve" *ngIf="e.status === 'REVIEWED'"
                     (click)="updateStatus(e, 'RESOLVED')"
                     matTooltip="Mark this feedback as Resolved">
-              <mat-icon>task_alt</mat-icon> Resolve
+              <img src="../../../../assets/images/icon/icons8-check-16.png" class="sec-icon-img"> Resolve
             </button>
             <span class="done-chip" *ngIf="e.status === 'RESOLVED'">
-              <mat-icon>check_circle</mat-icon> Done
+              <img src="../../../../assets/images/icon/icons8-check-16-12.png" class="sec-icon-img"> Done
             </span>
           </td>
         </ng-container>
@@ -190,7 +193,7 @@
         <tr class="mat-row" *matNoDataRow>
           <td class="mat-cell no-data-cell" [attr.colspan]="displayedColumns.length">
             <div class="empty-state">
-              <mat-icon>rate_review</mat-icon>
+              <img src="../../../../assets/images/icon/icons8-very-popular-topic-24.png" class="sec-icon-img">
               <p *ngIf="statusFilter">No {{ statusFilter | lowercase }} feedback found</p>
               <p *ngIf="!statusFilter">No feedback submissions yet</p>
             </div>

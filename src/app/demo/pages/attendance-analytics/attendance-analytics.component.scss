@@ -51,9 +51,21 @@
 
   mat-icon { font-size: 18px; width: 18px; height: 18px; }
 
+  .pdf-icon-wrap {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .pdf-icon { width: 16px; height: 16px; }
+
+  .pdf-icon-hover { display: none; }
+
   &:hover:not([disabled]) {
     border-color: $ff-accent-primary !important;
     color: $ff-accent-primary !important;
+
+    .pdf-icon-default { display: none; }
+    .pdf-icon-hover { display: inline-block; }
   }
 }
 

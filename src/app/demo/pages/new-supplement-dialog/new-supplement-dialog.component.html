@@ -68,7 +68,7 @@
         <div class="image-upload-area" (click)="fileInput.click()">
           <img *ngIf="selectedImageUrl" [src]="selectedImageUrl" class="image-preview" alt="Product preview">
           <div *ngIf="!selectedImageUrl" class="upload-placeholder">
-            <mat-icon>add_photo_alternate</mat-icon>
+            <img src="../../../../assets/images/icon/icons8-add-image-50.png">
             <span>Click to upload product image</span>
             <small>JPG, PNG or WEBP</small>
           </div>

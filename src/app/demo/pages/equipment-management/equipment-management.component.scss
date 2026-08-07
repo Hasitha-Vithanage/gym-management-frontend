@@ -495,11 +495,20 @@
         margin-right: 10px;
       }
 
+      .status-menu-icon {
+        width: 14px;
+        height: 14px;
+        margin-right: 10px;
+        opacity: 0.75;
+      }
+
       &:hover:not([disabled]) {
         background: $ff-bg-input !important;
         color: $ff-text-primary !important;
 
         .mat-icon { color: $ff-text-secondary !important; }
+
+        .status-menu-icon { opacity: 1; }
       }
 
       &[disabled] { opacity: 0.35 !important; }

@@ -3,21 +3,21 @@
   <!-- Header -->
   <div class="dialog-header">
     <div class="dialog-title-group">
-      <mat-icon class="header-icon">assignment</mat-icon>
+      <img src="../../../../assets/images/icon/icons8-assignment-24.png">
       <div>
         <h2 class="dialog-title">Maintenance Log</h2>
         <p class="dialog-sub">{{ equipmentName }}</p>
       </div>
     </div>
     <button class="close-btn" (click)="close()">
-      <mat-icon>close</mat-icon>
+      <img src="../../../../assets/images/icon/close-light.png">
     </button>
   </div>
 
   <!-- History section -->
   <div class="history-section">
     <div class="section-label">
-      <mat-icon>history</mat-icon> Past Records
+      <img src="../../../../assets/images/icon/icons8-history-13.png"> Past Records
     </div>
 
     <div class="log-loading" *ngIf="isLoadingLogs">
@@ -25,7 +25,7 @@
     </div>
 
     <div class="log-empty" *ngIf="!isLoadingLogs && logs.length === 0">
-      <mat-icon>inbox</mat-icon>
+      <img src="../../../../assets/images/icon/icons8-inbox-16.png">
       <span>No maintenance records yet</span>
     </div>
 
@@ -51,7 +51,7 @@
   <!-- Add new log form -->
   <div class="form-section">
     <div class="section-label">
-      <mat-icon>add_circle_outline</mat-icon> Add New Log Entry
+      <img src="../../../../assets/images/icon/icons8-add-13.png"> Add New Log Entry
     </div>
 
     <form [formGroup]="logForm" (ngSubmit)="onSubmit()">
@@ -95,7 +95,7 @@
 
       <div class="form-actions">
         <button type="submit" class="btn-primary" [disabled]="isSubmitting">
-          <mat-icon>save</mat-icon>
+          <img src="../../../../assets/images/icon/icons8-save-16.png">
           {{ isSubmitting ? 'Saving…' : 'Save Log' }}
         </button>
         <button type="button" class="btn-ghost" (click)="close()">Cancel</button>

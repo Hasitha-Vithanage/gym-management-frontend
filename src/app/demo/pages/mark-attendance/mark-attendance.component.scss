@@ -108,6 +108,7 @@
   transition: all 0.2s ease;
 
   mat-icon { font-size: 16px; width: 16px; height: 16px; }
+  img { width: 16px; height: 16px; }
 
   &:hover {
     background: $ff-bg-hover;
@@ -194,20 +195,18 @@
   font-size: 13.5px;
   font-weight: 500;
 
-  mat-icon { font-size: 18px; width: 18px; height: 18px; }
+  .feedback-icon { width: 20px; height: 20px; flex-shrink: 0; }
 
   &.fb-success {
     background: rgba(34, 197, 94, 0.1);
     color: $ff-success;
     border: 1px solid rgba(34, 197, 94, 0.25);
-    mat-icon { color: $ff-success; }
   }
 
   &.fb-error {
     background: rgba(239, 68, 68, 0.1);
     color: $ff-danger;
     border: 1px solid rgba(239, 68, 68, 0.25);
-    mat-icon { color: $ff-danger; }
   }
 }
 

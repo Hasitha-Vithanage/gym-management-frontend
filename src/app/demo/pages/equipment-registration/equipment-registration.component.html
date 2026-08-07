@@ -1,25 +1,25 @@
 <div class="table-section">
 
   <h2 class="form-title">
-    <mat-icon class="title-icon">construction</mat-icon>
+    <img src="../../../../assets/images/icon/icons8-tools-24.png">
     Equipment
   </h2>
 
   <div class="toolbar">
     <div class="add-new">
       <button mat-raised-button class="new-button" (click)="openDialog()">
-        <mat-icon>add</mat-icon>
+        <img src="../../../../assets/images/icon/add-16.png">
         Add New Equipment
       </button>
     </div>
 
     <div class="table-filter">
       <div class="search-bar">
-        <mat-icon>search</mat-icon>
+        <img src="../../../../assets/images/icon/icons8-search-16.png">
         <input type="text" placeholder="Search..." (keyup)="applyFilter($event)" />
       </div>
       <button mat-icon-button class="refresh-button" (click)="refreshData()" matTooltip="Refresh">
-        <mat-icon>refresh</mat-icon>
+        <img src="../../../../assets/images/icon/icons8-reboot-10.png">
       </button>
     </div>
   </div>
@@ -127,10 +127,10 @@
         <td mat-cell *matCellDef="let e">
           <div class="action-column">
             <button mat-icon-button class="gray-icon-btn" matTooltip="Edit" (click)="editData(e)">
-              <mat-icon>edit</mat-icon>
+              <img src="../../../../assets/images/icon/edit-light.png">
             </button>
             <button mat-icon-button class="gray-icon-btn" matTooltip="Delete" (click)="deleteData(e)">
-              <mat-icon>delete_outline</mat-icon>
+              <img src="../../../../assets/images/icon/delete-light.png">
             </button>
           </div>
         </td>

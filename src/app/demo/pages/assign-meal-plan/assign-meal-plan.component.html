@@ -2,7 +2,7 @@
 
   <!-- Page Title -->
   <h2 class="page-title">
-    <img src="../../../../assets/images/icon/nutrition-and-meal-plans.png" style="height:20px;width:20px">
+    <img src="../../../../assets/images/icon/icons8-meal-24.png" style="height:20px;width:20px">
     Assign Meal Plan
   </h2>
 
@@ -27,7 +27,7 @@
   <!-- ── How it works guide ── shown before any search ── -->
   <div class="how-it-works" *ngIf="!hasSearched">
     <div class="hiw-title">
-      <mat-icon>info_outline</mat-icon>
+      <img src="../../../../assets/images/icon/icons8-info-20.png" class="sec-icon-img">
       How to assign a meal plan
     </div>
     <div class="hiw-steps">
@@ -61,7 +61,7 @@
   <ng-container *ngIf="!hasSearched">
     <div class="macro-guide-header">
       <span class="macro-guide-title">
-        <mat-icon>bar_chart</mat-icon>
+        <img src="../../../../assets/images/icon/icons8-bar-chart-16-orange.png" class="sec-icon-img">
         Macro Guide by Fitness Goal
       </span>
       <span class="macro-guide-sub">Reference for selecting the right template</span>
@@ -72,11 +72,11 @@
       <!-- Weight Loss -->
       <div class="goal-card goal-loss">
         <div class="goal-card-header">
-          <mat-icon>trending_down</mat-icon>
+          <img src="../../../../assets/images/icon/icons8-chart-arrow-descent-20.png" class="sec-icon-img">
           <span>Weight Loss</span>
         </div>
         <div class="goal-strategy">
-          <mat-icon>bolt</mat-icon>
+          <img src="../../../../assets/images/icon/icons8-bolt-15.png" class="sec-icon-img">
           300–500 kcal calorie deficit per day
         </div>
         <div class="goal-macros">
@@ -103,11 +103,11 @@
       <!-- Muscle Gain -->
       <div class="goal-card goal-gain">
         <div class="goal-card-header">
-          <mat-icon>fitness_center</mat-icon>
+          <img src="../../../../assets/images/icon/icons8-ez-curl-bar-24.png" class="sec-icon-img">
           <span>Muscle Gain</span>
         </div>
         <div class="goal-strategy">
-          <mat-icon>bolt</mat-icon>
+          <img src="../../../../assets/images/icon/icons8-bolt-15.png" class="sec-icon-img">
           200–400 kcal calorie surplus per day
         </div>
         <div class="goal-macros">
@@ -134,11 +134,11 @@
       <!-- Maintenance -->
       <div class="goal-card goal-maintain">
         <div class="goal-card-header">
-          <mat-icon>balance</mat-icon>
+          <img src="../../../../assets/images/icon/icons8-balance-22.png" class="sec-icon-img">
           <span>Maintenance</span>
         </div>
         <div class="goal-strategy">
-          <mat-icon>bolt</mat-icon>
+          <img src="../../../../assets/images/icon/icons8-bolt-15.png" class="sec-icon-img">
           Match daily TDEE — no surplus or deficit
         </div>
         <div class="goal-macros">
@@ -165,11 +165,11 @@
       <!-- Body Recomposition -->
       <div class="goal-card goal-recomp">
         <div class="goal-card-header">
-          <mat-icon>autorenew</mat-icon>
+          <img src="../../../../assets/images/icon/icons8-available-updates-20.png" class="sec-icon-img">
           <span>Body Recomposition</span>
         </div>
         <div class="goal-strategy">
-          <mat-icon>bolt</mat-icon>
+          <img src="../../../../assets/images/icon/icons8-bolt-15.png" class="sec-icon-img">
           Slight deficit (~10% below TDEE)
         </div>
         <div class="goal-macros">
@@ -196,11 +196,11 @@
       <!-- Endurance / Performance -->
       <div class="goal-card goal-endurance">
         <div class="goal-card-header">
-          <mat-icon>directions_run</mat-icon>
+          <img src="../../../../assets/images/icon/icons8-girl-running-22.png" class="sec-icon-img">
           <span>Endurance / Performance</span>
         </div>
         <div class="goal-strategy">
-          <mat-icon>bolt</mat-icon>
+          <img src="../../../../assets/images/icon/icons8-bolt-15.png" class="sec-icon-img">
           Match or slightly exceed TDEE
         </div>
         <div class="goal-macros">
@@ -229,7 +229,7 @@
     <!-- Quick Nutrition Reference Strip -->
     <div class="qref-section">
       <div class="qref-title">
-        <mat-icon>lightbulb_outline</mat-icon>
+        <img src="../../../../assets/images/icon/icons8-idea-20.png" class="sec-icon-img">
         Quick Nutrition Reference
       </div>
       <div class="qref-grid">
@@ -290,13 +290,13 @@
   </div>
 
   <div class="no-profile-notice" *ngIf="suggestions.length > 0 && !memberProfile">
-    <mat-icon>info_outline</mat-icon>
+    <img src="../../../../assets/images/icon/icons8-info-20.png" class="sec-icon-img">
     <span>No nutrition profile found for this member — showing all available templates.</span>
   </div>
 
   <!-- Current active meal plan — shown so trainers/managers don't accidentally replace it -->
   <div class="current-plan-notice" *ngIf="currentAssignment">
-    <mat-icon>restaurant_menu</mat-icon>
+    <img src="../../../../assets/images/icon/icons8-restaurant-16.png" class="sec-icon-img">
     <span>
       This member already has an active meal plan: <strong>{{ currentAssignment.template?.templateName }}</strong>.
       Assigning a new plan below will replace it.
@@ -346,7 +346,7 @@
       <!-- Confirm inline panel -->
       <div class="confirm-panel" *ngIf="confirmingTemplate === s">
         <div class="replace-warning" *ngIf="currentAssignment && currentAssignment.templateId !== s.template.id">
-          <mat-icon>warning_amber</mat-icon>
+          <img src="../../../../assets/images/icon/icons8-warning-16.png" class="sec-icon-img">
           <span>This will replace their current active plan, "{{ currentAssignment.template?.templateName }}".</span>
         </div>
         <div class="confirm-row">
@@ -400,7 +400,7 @@
 
   <!-- Empty state after a search returns nothing -->
   <div class="empty-state" *ngIf="!isLoading && hasSearched && suggestions.length === 0 && otherTemplates.length === 0">
-    <mat-icon>search_off</mat-icon>
+    <img src="../../../../assets/images/icon/icons8-block-16.png" class="sec-icon-img">
     <p>No templates found for this member. Check the username and try again.</p>
   </div>
 

@@ -20,7 +20,7 @@
     </div>
 
     <div class="stock-notice" *ngIf="product.stockQty <= 5 && product.stockQty > 0">
-      <mat-icon>warning_amber</mat-icon>
+      <img src="../../../../assets/images/icon/icons8-warning-16.png">
       Only {{ product.stockQty }} unit{{ product.stockQty !== 1 ? 's' : '' }} left in stock.
     </div>
 
@@ -53,7 +53,7 @@
 
     <!-- Pickup Notice -->
     <div class="pickup-notice">
-      <mat-icon>store</mat-icon>
+      <img src="../../../../assets/images/icon/icons8-store-13.png">
       <span>Your order will be ready for pickup at the gym counter. Payment is collected in person.</span>
     </div>
 

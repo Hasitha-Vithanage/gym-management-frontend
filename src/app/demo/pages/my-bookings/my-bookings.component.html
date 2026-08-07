@@ -3,11 +3,11 @@
   <!-- Header -->
   <div class="page-header">
     <h2 class="page-title">
-      <mat-icon class="title-icon">event_note</mat-icon>
+      <img src="../../../../assets/images/icon/icons8-event-24.png"/>
       My Bookings
     </h2>
     <button class="action-btn" (click)="goToBookClass()">
-      <mat-icon>add_circle_outline</mat-icon>
+      <img src="../../../../assets/images/icon/add-circle-15.png"/>
       Book a Class
     </button>
   </div>
@@ -33,7 +33,7 @@
   <ng-container *ngIf="!isLoading && activeTab === 'upcoming'">
 
     <div *ngIf="upcomingBookings.length === 0" class="empty-state">
-      <mat-icon>event_available</mat-icon>
+      <img src="../../../../assets/images/icon/icons8-today-50.png"/>
       <p>No upcoming bookings. Browse available classes and secure your spot!</p>
       <button class="empty-action-btn" (click)="goToBookClass()">Browse Classes</button>
     </div>
@@ -52,15 +52,15 @@
 
         <div class="class-details">
           <div class="detail-row">
-            <mat-icon>calendar_today</mat-icon>
+            <img src="../../../../assets/images/icon/icons8-event-15-1.png"/>
             <span>{{ formatDate(b.classDate) }}</span>
           </div>
           <div class="detail-row">
-            <mat-icon>schedule</mat-icon>
+            <img src="../../../../assets/images/icon/icons8-clock-16.png"/>
             <span>{{ formatTime(b.startTime) }} – {{ formatTime(b.endTime) }}</span>
           </div>
           <div class="detail-row">
-            <mat-icon>person</mat-icon>
+            <img src="../../../../assets/images/icon/icons8-person-16.png"/>
             <span>{{ b.conductorName }}</span>
           </div>
         </div>
@@ -68,7 +68,7 @@
         <div class="card-footer">
           <span class="booked-on">Booked on {{ formatDate(b.bookedDate) }}</span>
           <button class="cancel-btn" *ngIf="canCancel(b)" (click)="onCancelBooking(b)">
-            <mat-icon>cancel</mat-icon>
+            <img src="../../../../assets/images/icon/icons8-cancel-20.png"/>
             Cancel Booking
           </button>
         </div>
@@ -82,7 +82,7 @@
   <ng-container *ngIf="!isLoading && activeTab === 'past'">
 
     <div *ngIf="pastBookings.length === 0" class="empty-state">
-      <mat-icon>history</mat-icon>
+      <img src="../../../../assets/images/icon/icons8-history-50.png"/>
       <p>No past bookings found.</p>
     </div>
 
@@ -106,15 +106,15 @@
 
         <div class="class-details">
           <div class="detail-row">
-            <mat-icon>calendar_today</mat-icon>
+            <img src="../../../../assets/images/icon/icons8-event-15-1.png"/>
             <span>{{ formatDate(b.classDate) }}</span>
           </div>
           <div class="detail-row">
-            <mat-icon>schedule</mat-icon>
+            <img src="../../../../assets/images/icon/icons8-clock-16.png"/>
             <span>{{ formatTime(b.startTime) }} – {{ formatTime(b.endTime) }}</span>
           </div>
           <div class="detail-row">
-            <mat-icon>person</mat-icon>
+            <img src="../../../../assets/images/icon/icons8-person-16.png"/>
             <span>{{ b.conductorName }}</span>
           </div>
         </div>
