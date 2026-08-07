@@ -17,7 +17,7 @@
     </div>
   </div>
 
-  <div #pdfContent>
+  <ng-template #reportContent let-daily="daily" let-peak="peak">
 
   <!-- ─── KPI CARDS ──────────────────────────────────────────────────── -->
   <div class="row g-3 mb-4">
@@ -103,16 +103,16 @@
       <mat-spinner diameter="36" color="accent"></mat-spinner>
     </div>
 
-    <apx-chart *ngIf="!isLoading && dailyChartOptions"
-      [series]="dailyChartOptions.series"
-      [chart]="dailyChartOptions.chart"
-      [plotOptions]="dailyChartOptions.plotOptions"
-      [colors]="dailyChartOptions.colors"
-      [dataLabels]="dailyChartOptions.dataLabels"
-      [xaxis]="dailyChartOptions.xaxis"
-      [yaxis]="dailyChartOptions.yaxis"
-      [grid]="dailyChartOptions.grid"
-      [tooltip]="dailyChartOptions.tooltip">
+    <apx-chart *ngIf="!isLoading && daily"
+      [series]="daily.series"
+      [chart]="daily.chart"
+      [plotOptions]="daily.plotOptions"
+      [colors]="daily.colors"
+      [dataLabels]="daily.dataLabels"
+      [xaxis]="daily.xaxis"
+      [yaxis]="daily.yaxis"
+      [grid]="daily.grid"
+      [tooltip]="daily.tooltip">
     </apx-chart>
 
     <div class="chip-row" *ngIf="!isLoading">
@@ -149,16 +149,16 @@
       <mat-spinner diameter="36" color="accent"></mat-spinner>
     </div>
 
-    <apx-chart *ngIf="!isPeakLoading && peakChartOptions"
-      [series]="peakChartOptions.series"
-      [chart]="peakChartOptions.chart"
-      [plotOptions]="peakChartOptions.plotOptions"
-      [colors]="peakChartOptions.colors"
-      [dataLabels]="peakChartOptions.dataLabels"
-      [xaxis]="peakChartOptions.xaxis"
-      [yaxis]="peakChartOptions.yaxis"
-      [grid]="peakChartOptions.grid"
-      [tooltip]="peakChartOptions.tooltip">
+    <apx-chart *ngIf="!isPeakLoading && peak"
+      [series]="peak.series"
+      [chart]="peak.chart"
+      [plotOptions]="peak.plotOptions"
+      [colors]="peak.colors"
+      [dataLabels]="peak.dataLabels"
+      [xaxis]="peak.xaxis"
+      [yaxis]="peak.yaxis"
+      [grid]="peak.grid"
+      [tooltip]="peak.tooltip">
     </apx-chart>
 
   </div>
@@ -216,6 +216,16 @@
 
   </div>
 
+  </ng-template>
+
+  <div>
+    <ng-container *ngTemplateOutlet="reportContent; context: { daily: dailyChartOptions, peak: peakChartOptions }"></ng-container>
+  </div>
+
+  <!-- Off-screen light-themed clone, captured for the PDF instead of the live
+       (dark) content above, so the visible page never flashes during download. -->
+  <div #pdfContent class="pdf-export-light pdf-hidden-capture">
+    <ng-container *ngTemplateOutlet="reportContent; context: { daily: dailyChartOptionsLight, peak: peakChartOptionsLight }"></ng-container>
   </div>
 
 </div>

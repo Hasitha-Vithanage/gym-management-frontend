@@ -1,10 +1,9 @@
 import { Component, ElementRef, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { forkJoin, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
 import { MemberServiceService } from 'src/app/services/member-service/member-service.service';
 import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
+import { PdfExportService } from 'src/app/services/pdf-export/pdf-export.service';
 
 interface AtRiskMember {
   memberNo: string;
@@ -41,6 +40,8 @@ export class AttendanceAnalyticsComponent implements OnInit, OnDestroy {
 
   dailyChartOptions: any = null;
   peakChartOptions: any = null;
+  dailyChartOptionsLight: any = null;
+  peakChartOptionsLight: any = null;
 
   atRiskMembers: AtRiskMember[] = [];
   readonly atRiskDays = 14;
@@ -56,7 +57,8 @@ export class AttendanceAnalyticsComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly memberService: MemberServiceService,
-    private readonly messageService: MessageServiceService
+    private readonly messageService: MessageServiceService,
+    private readonly pdfExportService: PdfExportService
   ) {
     this.displayYear = this.today.getFullYear();
     this.displayMonth = this.today.getMonth() + 1;
@@ -164,32 +166,41 @@ export class AttendanceAnalyticsComponent implements OnInit, OnDestroy {
     this.avgDaily = elapsed > 0 ? Math.round(this.thisMonthTotal / elapsed) : 0;
     this.activeDays = activeDays;
     this.peakDayLabel = peakDay > 0 ? `${this.monthNames[this.displayMonth - 1].slice(0, 3)} ${peakDay}` : '—';
-    this.dailyChartOptions = {
+
+    this.dailyChartOptions = this.buildDailyChartOptions(days, counts, false);
+    this.dailyChartOptionsLight = this.buildDailyChartOptions(days, counts, true);
+  }
+
+  private buildDailyChartOptions(days: number[], counts: number[], light: boolean): any {
+    const textColor = light ? '#6b7280' : '#9CA3AF';
+    const lineColor = light ? '#e5e7eb' : '#374151';
+
+    return {
       series: [{ name: 'Check-ins', data: counts }],
       chart: {
         type: 'bar',
         height: 290,
         toolbar: { show: false },
-        background: 'transparent',
-        foreColor: '#9CA3AF'
+        background: light ? '#ffffff' : 'transparent',
+        foreColor: textColor
       },
       plotOptions: { bar: { borderRadius: 4, columnWidth: '70%' } },
       colors: ['#FF6B00'],
       dataLabels: { enabled: false },
       xaxis: {
         categories: days,
-        labels: { style: { colors: '#9CA3AF', fontSize: '11px' } },
-        axisBorder: { color: '#374151' },
-        axisTicks: { color: '#374151' }
+        labels: { style: { colors: textColor, fontSize: '11px' } },
+        axisBorder: { color: lineColor },
+        axisTicks: { color: lineColor }
       },
       yaxis: {
         min: 0,
         forceNiceScale: true,
-        labels: { style: { colors: '#9CA3AF', fontSize: '12px' } }
+        labels: { style: { colors: textColor, fontSize: '12px' } }
       },
-      grid: { borderColor: '#374151', strokeDashArray: 4 },
+      grid: { borderColor: lineColor, strokeDashArray: 4 },
       tooltip: {
-        theme: 'dark',
+        theme: light ? 'light' : 'dark',
         y: { formatter: (val: number) => `${val} check-in${val !== 1 ? 's' : ''}` }
       }
     };
@@ -212,32 +223,41 @@ export class AttendanceAnalyticsComponent implements OnInit, OnDestroy {
     }
 
     this.peakHourLabel = peakHour >= 0 && maxCount > 0 ? this.formatHour(peakHour) : '—';
-    this.peakChartOptions = {
+
+    this.peakChartOptions = this.buildPeakChartOptions(labels, counts, false);
+    this.peakChartOptionsLight = this.buildPeakChartOptions(labels, counts, true);
+  }
+
+  private buildPeakChartOptions(labels: string[], counts: number[], light: boolean): any {
+    const textColor = light ? '#6b7280' : '#9CA3AF';
+    const lineColor = light ? '#e5e7eb' : '#374151';
+
+    return {
       series: [{ name: 'Check-ins', data: counts }],
       chart: {
         type: 'bar',
         height: 260,
         toolbar: { show: false },
-        background: 'transparent',
-        foreColor: '#9CA3AF'
+        background: light ? '#ffffff' : 'transparent',
+        foreColor: textColor
       },
       plotOptions: { bar: { borderRadius: 4, columnWidth: '60%' } },
       colors: ['#3B82F6'],
       dataLabels: { enabled: false },
       xaxis: {
         categories: labels,
-        labels: { style: { colors: '#9CA3AF', fontSize: '10px' }, rotate: -45 },
-        axisBorder: { color: '#374151' },
-        axisTicks: { color: '#374151' }
+        labels: { style: { colors: textColor, fontSize: '10px' }, rotate: -45 },
+        axisBorder: { color: lineColor },
+        axisTicks: { color: lineColor }
       },
       yaxis: {
         min: 0,
         forceNiceScale: true,
-        labels: { style: { colors: '#9CA3AF', fontSize: '12px' } }
+        labels: { style: { colors: textColor, fontSize: '12px' } }
       },
-      grid: { borderColor: '#374151', strokeDashArray: 4 },
+      grid: { borderColor: lineColor, strokeDashArray: 4 },
       tooltip: {
-        theme: 'dark',
+        theme: light ? 'light' : 'dark',
         y: { formatter: (val: number) => `${val} check-in${val !== 1 ? 's' : ''}` }
       }
     };
@@ -292,31 +312,8 @@ export class AttendanceAnalyticsComponent implements OnInit, OnDestroy {
 
     this.isDownloading = true;
     try {
-      const canvas = await html2canvas(element, { scale: 2, backgroundColor: '#0F1117' });
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF('p', 'mm', 'a4');
-
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = pdf.internal.pageSize.getHeight();
-      const imgProps = pdf.getImageProperties(imgData);
-      const scaledHeight = (imgProps.height * pdfWidth) / imgProps.width;
-
-      let heightLeft = scaledHeight;
-      let position = 0;
-
-      pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, scaledHeight);
-      heightLeft -= pdfHeight;
-
-      // Paginate — a report this tall won't fit on a single A4 page.
-      while (heightLeft > 0) {
-        position = heightLeft - scaledHeight;
-        pdf.addPage();
-        pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, scaledHeight);
-        heightLeft -= pdfHeight;
-      }
-
       const dateStamp = `${this.displayYear}-${String(this.displayMonth).padStart(2, '0')}`;
-      pdf.save(`attendance-analytics-${dateStamp}.pdf`);
+      await this.pdfExportService.downloadElementAsPdf(element, `attendance-analytics-${dateStamp}.pdf`, '#ffffff');
       this.messageService.showSuccess('Report downloaded successfully!');
     } catch (error) {
       this.messageService.showError('Failed to generate report PDF');

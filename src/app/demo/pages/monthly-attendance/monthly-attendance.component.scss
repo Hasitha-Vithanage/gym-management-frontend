@@ -23,6 +23,45 @@
     font-size: 18px;
 }
 
+.toolbar-row {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 16px;
+}
+
+.dl-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    height: 38px;
+    padding: 0 14px;
+    border-radius: $ff-radius-sm;
+    border-color: $ff-border-default !important;
+    color: $ff-text-primary !important;
+    background: $ff-bg-surface !important;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: border-color 0.2s, color 0.2s;
+
+    .pdf-icon-wrap {
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .pdf-icon { width: 16px; height: 16px; }
+
+    .pdf-icon-hover { display: none; }
+
+    &:hover:not([disabled]) {
+        border-color: $ff-accent-primary !important;
+        color: $ff-accent-primary !important;
+
+        .pdf-icon-default { display: none; }
+        .pdf-icon-hover { display: inline-block; }
+    }
+}
+
 .charts-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
@@ -52,6 +91,32 @@
     font-size: 20px;
     font-weight: 600;
     text-align: center;
+}
+
+// ─── LIGHT MODE FOR PDF EXPORT ──────────────────────────────────────────────
+// A permanently light-themed clone of the chart, kept off-screen and captured
+// for the PDF instead of the live (dark) chart, so the visible page never
+// changes appearance during download.
+.charts-grid.pdf-export-light {
+    background: #ffffff;
+
+    .chart-card {
+        background: #ffffff !important;
+        border-color: #e5e7eb !important;
+        box-shadow: none !important;
+    }
+
+    .chart-card h3 {
+        color: #1f2937 !important;
+    }
+}
+
+.pdf-hidden-capture {
+    position: fixed;
+    top: 0;
+    left: -10000px;
+    width: 1100px;
+    pointer-events: none;
 }
 
 @media (max-width: 1024px) {

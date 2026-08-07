@@ -1,30 +1,50 @@
 <div class="progress-charts">
-  <div class="charts-grid">
+  <div class="toolbar-row">
+    <button mat-stroked-button class="dl-btn" (click)="downloadReport()" [disabled]="isDownloading">
+      <span class="pdf-icon-wrap">
+        <img src="../../../../assets/images/icon/icons8-pdf-16%20(1).png" class="pdf-icon pdf-icon-default" alt="PDF">
+        <img src="../../../../assets/images/icon/icons8-pdf-16.png" class="pdf-icon pdf-icon-hover" alt="PDF">
+      </span>
+      {{ isDownloading ? 'Generating…' : 'Download Report' }}
+    </button>
+  </div>
+
+  <ng-template #chartsTemplate let-countOpts="countOpts" let-incomeOpts="incomeOpts">
     <div class="chart-card">
       <h3>Monthly Sales Count</h3>
       <apx-chart
-        [series]="monthlySalesCountOptions.series"
-        [chart]="monthlySalesCountOptions.chart"
-        [xaxis]="monthlySalesCountOptions.xaxis"
-        [yaxis]="monthlySalesCountOptions.yaxis"
-        [colors]="monthlySalesCountOptions.colors"
-        [plotOptions]="monthlySalesCountOptions.plotOptions"
-        [grid]="monthlySalesCountOptions.grid"
-        [title]="monthlySalesCountOptions.title"
+        [series]="countOpts.series"
+        [chart]="countOpts.chart"
+        [xaxis]="countOpts.xaxis"
+        [yaxis]="countOpts.yaxis"
+        [colors]="countOpts.colors"
+        [plotOptions]="countOpts.plotOptions"
+        [grid]="countOpts.grid"
+        [title]="countOpts.title"
       ></apx-chart>
     </div>
     <div class="chart-card">
       <h3>Monthly Sales Income</h3>
       <apx-chart
-        [series]="monthlySalesIncomeOptions.series"
-        [chart]="monthlySalesIncomeOptions.chart"
-        [xaxis]="monthlySalesIncomeOptions.xaxis"
-        [yaxis]="monthlySalesIncomeOptions.yaxis"
-        [colors]="monthlySalesIncomeOptions.colors"
-        [plotOptions]="monthlySalesIncomeOptions.plotOptions"
-        [grid]="monthlySalesIncomeOptions.grid"
-        [title]="monthlySalesIncomeOptions.title"
+        [series]="incomeOpts.series"
+        [chart]="incomeOpts.chart"
+        [xaxis]="incomeOpts.xaxis"
+        [yaxis]="incomeOpts.yaxis"
+        [colors]="incomeOpts.colors"
+        [plotOptions]="incomeOpts.plotOptions"
+        [grid]="incomeOpts.grid"
+        [title]="incomeOpts.title"
       ></apx-chart>
     </div>
+  </ng-template>
+
+  <div class="charts-grid">
+    <ng-container *ngTemplateOutlet="chartsTemplate; context: { countOpts: monthlySalesCountOptions, incomeOpts: monthlySalesIncomeOptions }"></ng-container>
+  </div>
+
+  <!-- Off-screen light-themed clone, captured for the PDF instead of the live
+       (dark) charts above, so the visible page never flashes during download. -->
+  <div #pdfContent class="charts-grid pdf-export-light pdf-hidden-capture">
+    <ng-container *ngTemplateOutlet="chartsTemplate; context: { countOpts: monthlySalesCountOptionsLight, incomeOpts: monthlySalesIncomeOptionsLight }"></ng-container>
   </div>
 </div>

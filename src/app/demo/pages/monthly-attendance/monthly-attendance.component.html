@@ -1,4 +1,14 @@
 <div class="progress-charts">
+  <div class="toolbar-row">
+    <button mat-stroked-button class="dl-btn" (click)="downloadReport()" [disabled]="isDownloading">
+      <span class="pdf-icon-wrap">
+        <img src="../../../../assets/images/icon/icons8-pdf-16%20(1).png" class="pdf-icon pdf-icon-default" alt="PDF">
+        <img src="../../../../assets/images/icon/icons8-pdf-16.png" class="pdf-icon pdf-icon-hover" alt="PDF">
+      </span>
+      {{ isDownloading ? 'Generating…' : 'Download Report' }}
+    </button>
+  </div>
+
   <div class="charts-grid">
     <div class="chart-card">
       <h3>Monthly Present Member Count</h3>
@@ -11,6 +21,24 @@
         [plotOptions]="memberMonthlyAttendanceChartOptions.plotOptions"
         [grid]="memberMonthlyAttendanceChartOptions.grid"
         [title]="memberMonthlyAttendanceChartOptions.title"
+      ></apx-chart>
+    </div>
+  </div>
+
+  <!-- Off-screen light-themed clone, captured for the PDF instead of the live
+       (dark) chart above, so the visible page never flashes during download. -->
+  <div #pdfContent class="charts-grid pdf-export-light pdf-hidden-capture">
+    <div class="chart-card">
+      <h3>Monthly Present Member Count</h3>
+      <apx-chart
+        [series]="memberMonthlyAttendanceChartOptionsLight.series"
+        [chart]="memberMonthlyAttendanceChartOptionsLight.chart"
+        [xaxis]="memberMonthlyAttendanceChartOptionsLight.xaxis"
+        [yaxis]="memberMonthlyAttendanceChartOptionsLight.yaxis"
+        [colors]="memberMonthlyAttendanceChartOptionsLight.colors"
+        [plotOptions]="memberMonthlyAttendanceChartOptionsLight.plotOptions"
+        [grid]="memberMonthlyAttendanceChartOptionsLight.grid"
+        [title]="memberMonthlyAttendanceChartOptionsLight.title"
       ></apx-chart>
     </div>
   </div>

@@ -1,7 +1,8 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ChartComponent } from 'ng-apexcharts';
 import { CommonDataServiceService } from 'src/app/services/common-data-service/common-data-service.service';
 import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
+import { PdfExportService } from 'src/app/services/pdf-export/pdf-export.service';
 
 @Component({
   selector: 'app-monthly-sales',
@@ -11,15 +12,36 @@ import { MessageServiceService } from 'src/app/services/message-service/message-
 })
 export class MonthlySalesComponent {
   @ViewChild('chart') chart: ChartComponent;
+  @ViewChild('pdfContent') pdfContent: ElementRef;
   monthlySalesCountOptions: any = {};
   monthlySalesIncomeOptions: any = {};
+  monthlySalesCountOptionsLight: any = {};
+  monthlySalesIncomeOptionsLight: any = {};
+  isDownloading = false;
 
   constructor(
     private commonDataService: CommonDataServiceService,
-    private messageService: MessageServiceService
+    private messageService: MessageServiceService,
+    private pdfExportService: PdfExportService
   ) {
     this.getMonthlySalesCount();
     this.getMonthlySalesIncome();
+  }
+
+  async downloadReport(): Promise<void> {
+    const element = this.pdfContent?.nativeElement;
+    if (!element || this.isDownloading) return;
+
+    this.isDownloading = true;
+    try {
+      await this.pdfExportService.downloadElementAsPdf(element, 'monthly-sales-report.pdf', '#ffffff');
+      this.messageService.showSuccess('Report downloaded successfully!');
+    } catch (error) {
+      this.messageService.showError('Failed to generate report PDF');
+      console.error(error);
+    } finally {
+      this.isDownloading = false;
+    }
   }
 
   public getMonthlySalesCount(): void {
@@ -44,87 +66,41 @@ export class MonthlySalesComponent {
   }
 
   public updateMonthlySalesCount(data: any): void {
-    const monthlySuppliementDataCount = data.map((data: any) => {
-      return {
-        x: data.month,
-        y: data.cnt
-      };
-    });
-
-    this.monthlySalesCountOptions = {
-      series: [{ name: 'Supplement Sales Count', data: monthlySuppliementDataCount }],
-      chart: {
-        type: 'bar',
-        height: 350,
-        animations: {
-          enabled: true,
-          easing: 'easeinout',
-          speed: 800
-        }
-      },
-      xaxis: {
-        labels: {
-          style: {
-            colors: '#6b7280'
-          }
-        }
-      },
-      yaxis: {
-        title: {
-          text: 'Count',
-          style: {
-            color: '#6b7280'
-          }
-        },
-        labels: {
-          style: {
-            colors: '#6b7280'
-          }
-        }
-      },
-      colors: ['#f97316'],
-      plotOptions: {
-        bar: {
-          borderRadius: 4,
-          columnWidth: '60%'
-        }
-      },
-      grid: {
-        borderColor: '#e5e7eb'
-      },
-      title: {
-        text: 'Supplement Sales count',
-        align: 'center',
-        style: {
-          color: '#1f2937',
-          fontSize: '16px'
-        }
-      }
-    };
+    this.monthlySalesCountOptions = this.buildChartOptions(data, 'Supplement Sales Count', 'Supplement Sales count', false);
+    this.monthlySalesCountOptionsLight = this.buildChartOptions(data, 'Supplement Sales Count', 'Supplement Sales count', true);
   }
-  public updateMonthlySalesIncome(data: any): void {
-    const monthlySuppliementDataIncome = data.map((data: any) => {
-      return {
-        x: data.month,
-        y: data.cnt
-      };
-    });
 
-    this.monthlySalesIncomeOptions = {
-      series: [{ name: 'Supplement Sales Income', data: monthlySuppliementDataIncome }],
+  public updateMonthlySalesIncome(data: any): void {
+    this.monthlySalesIncomeOptions = this.buildChartOptions(data, 'Supplement Sales Income', 'Supplement Sales Income', false);
+    this.monthlySalesIncomeOptionsLight = this.buildChartOptions(data, 'Supplement Sales Income', 'Supplement Sales Income', true);
+  }
+
+  private buildChartOptions(data: any[], seriesName: string, titleText: string, light: boolean): any {
+    const chartData = data.map((d: any) => ({ x: d.month, y: d.cnt }));
+
+    const textColor  = light ? '#6b7280' : '#9BA3B8';
+    const gridColor  = light ? '#e5e7eb' : 'rgba(255,255,255,0.06)';
+    const titleColor = light ? '#1f2937' : '#E5E7EB';
+
+    return {
+      series: [{ name: seriesName, data: chartData }],
       chart: {
         type: 'bar',
         height: 350,
+        background: light ? '#ffffff' : 'transparent',
         animations: {
           enabled: true,
           easing: 'easeinout',
           speed: 800
+        },
+        toolbar: {
+          show: false
         }
       },
       xaxis: {
         labels: {
           style: {
-            colors: '#6b7280'
+            colors: textColor
           }
         }
       },
@@ -132,16 +108,16 @@ export class MonthlySalesComponent {
         title: {
           text: 'Count',
           style: {
-            color: '#6b7280'
+            color: textColor
           }
         },
         labels: {
           style: {
-            colors: '#6b7280'
+            colors: textColor
           }
         }
       },
-      colors: ['#f97316'],
+      colors: ['#FF6B00'],
       plotOptions: {
         bar: {
           borderRadius: 4,
@@ -149,13 +125,16 @@ export class MonthlySalesComponent {
         }
       },
       grid: {
-        borderColor: '#e5e7eb'
+        borderColor: gridColor
+      },
+      tooltip: {
+        theme: light ? 'light' : 'dark'
       },
       title: {
-        text: 'Supplement Sales Income',
+        text: titleText,
         align: 'center',
         style: {
-          color: '#1f2937',
+          color: titleColor,
           fontSize: '16px'
         }
       }
