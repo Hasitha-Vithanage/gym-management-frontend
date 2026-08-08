@@ -100,6 +100,19 @@ export class CommonDataServiceService implements OnInit {
     return this.http.get(requestUrl, { headers: headers });
   }
 
+    public getMonthlyMemberAttendanceAvg() {
+    const requestUrl = environment.baseUrl + '/common-data-service/member-monthly-attendance-avg';
+
+    let headers = {};
+    if (this.httpService.getAuthToken() !== null) {
+      headers = {
+        Authorization: 'Bearer ' + this.httpService.getAuthToken()
+      };
+    }
+
+    return this.http.get(requestUrl, { headers: headers });
+  }
+
   public getMonthlySalesCount() {
     const requestUrl = environment.baseUrl + '/common-data-service/suppliment-orders-count-per-month';
 
