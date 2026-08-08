@@ -97,6 +97,7 @@ export class AttendanceAnalyticsComponent implements OnInit, OnDestroy {
           this.lastMonthTotal = results.lastMonth.reduce((s: number, r: any) => s + Number(r.visits), 0);
           this.processPeakHours(results.peakHours);
           this.processAtRisk(results.atRisk);
+          // thisWeek: this.memberService.getThisWeekCheckIns() 
           this.isLoading = false;
           this.isPeakLoading = false;
           this.isAtRiskLoading = false;
