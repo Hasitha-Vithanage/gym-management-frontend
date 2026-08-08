@@ -1,0 +1,132 @@
+@import 'src/scss/settings/colors';
+
+.required-message {
+  color: $ff-danger;
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
+}
+
+.dialog-container {
+  width: 400px;
+  background: $ff-bg-surface;
+  border-radius: $ff-radius-md;
+  display: flex;
+  flex-direction: column;
+  font-family: $ff-font;
+}
+
+/* Header */
+.dialog-header {
+  padding: 16px 20px 0;
+
+  h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: $ff-text-primary;
+  }
+}
+
+/* Body */
+.dialog-body {
+  padding: 16px 20px 20px;
+}
+
+/* Row */
+.row {
+  display: flex;
+  gap: 16px;
+}
+
+/* Field */
+.field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+
+  label {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: $ff-text-secondary;
+  }
+
+  input {
+    height: 38px;
+    padding: 0 10px;
+    border-radius: $ff-radius-sm;
+    border: 1px solid $ff-border-default;
+    background: $ff-bg-input;
+    font-size: 14px;
+    color: $ff-text-primary;
+    transition: border-color 0.2s ease, background 0.2s ease;
+
+    &::placeholder {
+      color: $ff-text-dim;
+    }
+
+    &:focus {
+      border-color: $ff-border-accent;
+      background: $ff-bg-elevated;
+      outline: none;
+    }
+  }
+}
+
+/* Actions */
+.action {
+  margin-top: 20px;
+  display: flex;
+  gap: 12px;
+}
+
+/* Buttons */
+.btn {
+  flex: 1;
+  height: 38px;
+  border-radius: $ff-radius-sm;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+
+  &.primary {
+    background: $ff-accent-primary;
+    color: #fff;
+
+    &:hover {
+      background: $ff-accent-hover;
+      box-shadow: $ff-shadow-orange;
+      transform: translateY(-1px);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+
+  &.secondary {
+    background: $ff-bg-elevated;
+    border: 1px solid $ff-border-default;
+    color: $ff-text-secondary;
+
+    &:hover {
+      background: $ff-bg-hover;
+      border-color: $ff-border-accent;
+      color: $ff-text-primary;
+    }
+  }
+}
+
+::ng-deep .mat-mdc-dialog-container {
+  --mdc-dialog-container-color: #{$ff-bg-surface};
+  border-radius: $ff-radius-md !important;
+
+  .mdc-dialog__surface {
+    background: $ff-bg-surface !important;
+    border-radius: $ff-radius-md !important;
+    overflow: hidden;
+  }
+}

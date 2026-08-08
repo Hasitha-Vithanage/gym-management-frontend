@@ -1,0 +1,474 @@
+<div class="nm-page">
+
+  <!-- ── Page Header ── -->
+  <div class="nm-header">
+    <h2 class="nm-title">
+      <img src="../../../../assets/images/icon/icons8-meal-24.png" style="height:22px;width:22px">
+      Nutrition &amp; Meal Plans
+    </h2>
+    <div class="nm-tabs">
+      <button class="nm-tab" [class.active]="activeView === 'myPlans'" (click)="activeView = 'myPlans'">
+        My Meal Plan
+      </button>
+      <button class="nm-tab" [class.active]="activeView === 'request'" (click)="activeView = 'request'">
+        Nutrition Profile
+      </button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!--  MY MEAL PLAN                              -->
+  <!-- ══════════════════════════════════════════ -->
+  <div *ngIf="activeView === 'myPlans'" class="nm-content">
+
+    <!-- Loading spinner -->
+    <div class="nm-loading" *ngIf="isLoadingPlan">
+      <mat-spinner [diameter]="40"></mat-spinner>
+      <p>Loading your meal plan…</p>
+    </div>
+
+    <!-- No active plan -->
+    <div class="no-plan" *ngIf="!isLoadingPlan && !activeAssignment">
+      <img src="../../../../assets/images/icon/icons8-restaurant-30.png">
+      <h3>No Active Meal Plan</h3>
+      <p>Your trainer will assign a personalised meal plan once they review your nutrition profile.</p>
+      <button class="go-profile-btn" (click)="activeView = 'request'"
+              *ngIf="!hasExistingProfile">
+        Submit Nutrition Profile
+      </button>
+      <p *ngIf="hasExistingProfile" class="profile-submitted-note">
+        Your nutrition profile is submitted. Your trainer will assign a plan soon.
+      </p>
+    </div>
+
+    <!-- Active plan view -->
+    <ng-container *ngIf="!isLoadingPlan && activeAssignment">
+
+      <!-- Plan Summary Card -->
+      <div class="plan-header-card">
+        <div class="plan-header-left">
+          <div class="plan-name">{{ activeAssignment.template?.templateName }}</div>
+          <div class="plan-meta-row">
+            <span class="plan-meta-chip">Goal: {{ activeAssignment.template?.goal }}</span>
+            <span class="plan-meta-chip">{{ activeAssignment.template?.durationWeeks }} weeks</span>
+            <span class="plan-meta-chip">
+              {{ activeAssignment.template?.dailyCalorieTarget }} kcal/day target
+            </span>
+            <span class="plan-meta-chip">
+              Assigned by {{ activeAssignment.assignedBy }}
+            </span>
+          </div>
+        </div>
+        <div class="current-day-badge">
+          Day {{ currentPlanDay }}
+          <span class="of-plan">of plan</span>
+        </div>
+      </div>
+
+      <!-- Plan Tabs -->
+      <div class="plan-tabs">
+        <button class="plan-tab" [class.active]="planTab === 'today'" (click)="planTab = 'today'">
+          Today's Plan
+        </button>
+        <button class="plan-tab" [class.active]="planTab === 'week'" (click)="planTab = 'week'">
+          My Week
+        </button>
+        <button class="plan-tab" [class.active]="planTab === 'summary'" (click)="planTab = 'summary'">
+          Nutrition Summary
+        </button>
+      </div>
+
+      <!-- ── TODAY'S PLAN ── -->
+      <div *ngIf="planTab === 'today'" class="tab-content">
+
+        <div class="today-day-label">Day {{ currentPlanDay }}</div>
+
+        <div *ngIf="todayItems.length === 0" class="empty-day">
+          <mat-icon>no_meals</mat-icon>
+          <p>No meals assigned for today's day in your plan.</p>
+        </div>
+
+        <ng-container *ngFor="let slot of mealSlots">
+          <div class="slot-block" *ngIf="slotHasItems(currentPlanDay, slot)">
+            <div class="slot-header">{{ slotLabel(slot) }}</div>
+            <div class="food-rows">
+              <div class="food-row" *ngFor="let item of itemsForSlot(currentPlanDay, slot)">
+                <div class="food-name">{{ item.foodItemName }}</div>
+                <div class="food-stats">
+                  <span class="stat-chip portion">{{ item.portionGrams }}g</span>
+                  <span class="stat-chip cal">{{ item.caloriesForPortion | number:'1.0-0' }} kcal</span>
+                  <span class="stat-chip prot" *ngIf="item.proteinG">P {{ item.proteinG }}g</span>
+                  <span class="stat-chip carb" *ngIf="item.carbsG">C {{ item.carbsG }}g</span>
+                  <span class="stat-chip fat" *ngIf="item.fatG">F {{ item.fatG }}g</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+        <!-- Today's Totals -->
+        <div class="today-totals" *ngIf="todayItems.length > 0">
+          <div class="totals-label">Today's Totals</div>
+          <div class="totals-row">
+            <div class="total-chip cal-total">{{ todayCalories }} kcal</div>
+            <span class="totals-divider">·</span>
+            <span class="total-text">Target: {{ activeAssignment.template?.dailyCalorieTarget }} kcal</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ── MY WEEK ── -->
+      <div *ngIf="planTab === 'week'" class="tab-content">
+
+        <div *ngIf="mealItems.length === 0" class="empty-day">
+          <mat-icon>calendar_today</mat-icon>
+          <p>No food items have been assigned to this plan yet.</p>
+        </div>
+
+        <div class="week-columns" *ngIf="mealItems.length > 0">
+          <div class="week-day" *ngFor="let day of usedDays" [class.today]="day === currentPlanDay">
+
+            <div class="week-day-header">
+              <span class="wday-label">Day {{ day }}</span>
+              <span class="wday-today-tag" *ngIf="day === currentPlanDay">Today</span>
+              <span class="wday-cal">{{ dayCalories(day) | number:'1.0-0' }} kcal</span>
+            </div>
+
+            <div *ngFor="let slot of mealSlots">
+              <ng-container *ngIf="slotHasItems(day, slot)">
+                <div class="week-slot-label">{{ slotLabel(slot) }}</div>
+                <div class="week-food-item" *ngFor="let item of itemsForSlot(day, slot)">
+                  <div class="wfi-name">{{ item.foodItemName }}</div>
+                  <div class="wfi-stats">{{ item.portionGrams }}g · {{ item.caloriesForPortion | number:'1.0-0' }} kcal</div>
+                </div>
+              </ng-container>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ── NUTRITION SUMMARY ── -->
+      <div *ngIf="planTab === 'summary'" class="tab-content">
+
+        <div class="summary-grid">
+
+          <!-- Nutrition Tips -->
+          <div class="summary-card tips-card">
+            <div class="summary-card-title">Nutrition Tips</div>
+
+            <div class="tip-item">
+              <img src="../../../../assets/images/icon/icons8-water-drop-24.png">
+              <div class="tip-text">
+                <span class="tip-headline">Stay Hydrated</span>
+                <span class="tip-body">Drink at least 2L of water daily — hydration keeps your metabolism running and aids muscle recovery.</span>
+              </div>
+            </div>
+
+            <div class="tip-item">
+              <img src="../../../../assets/images/icon/icons8-clock-24.png">
+              <div class="tip-text">
+                <span class="tip-headline">Eat Consistently</span>
+                <span class="tip-body">Eat every 3–4 hours to keep energy levels stable and avoid overeating at main meals.</span>
+              </div>
+            </div>
+
+            <div class="tip-item">
+              <img src="../../../../assets/images/icon/icons8-restaurant-24.png">
+              <div class="tip-text">
+                <span class="tip-headline">Follow Your Plan</span>
+                <span class="tip-body">Stick to your assigned meals — consistency over weeks delivers far better results than occasional perfection.</span>
+              </div>
+            </div>
+
+            <div class="tip-item">
+              <img src="../../../../assets/images/icon/icons8-ez-curl-bar-24.png">
+              <div class="tip-text">
+                <span class="tip-headline">Prioritise Protein</span>
+                <span class="tip-body">Include a protein source at every meal to support muscle repair, especially after training sessions.</span>
+              </div>
+            </div>
+
+            <div class="tip-item">
+              <img src="../../../../assets/images/icon/icons8-relaxing-music-24.png">
+              <div class="tip-text">
+                <span class="tip-headline">Rest &amp; Recover</span>
+                <span class="tip-body">Aim for 7–8 hours of sleep — your body rebuilds and resets hormones while you rest.</span>
+              </div>
+            </div>
+
+                    <!-- Motivational Quote Banner -->
+        <div class="quote-banner">
+          <img src="../../../../assets/images/icon/icons8-get-quote-24.png">
+          <div class="quote-content">
+            <p class="quote-text">Take care of your body. It's the only place you have to live.</p>
+            <span class="quote-author">— Jim Rohn</span>
+          </div>
+        </div>
+
+          </div>
+
+          <!-- Plan Details -->
+          <div class="summary-card">
+            <div class="summary-card-title">Plan Details</div>
+
+            <div class="detail-row">
+              <span class="dr-label">Template</span>
+              <span class="dr-value">{{ activeAssignment.template?.templateName }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="dr-label">Primary Goal</span>
+              <span class="dr-value">{{ activeAssignment.template?.goal }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="dr-label">Duration</span>
+              <span class="dr-value">{{ activeAssignment.template?.durationWeeks }} weeks</span>
+            </div>
+            <div class="detail-row">
+              <span class="dr-label">Start Date</span>
+              <span class="dr-value">{{ activeAssignment.startDate | date: 'mediumDate' }}</span>
+            </div>
+            <div class="detail-row" *ngIf="activeAssignment.endDate">
+              <span class="dr-label">End Date</span>
+              <span class="dr-value">{{ activeAssignment.endDate | date: 'mediumDate' }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="dr-label">Current Plan Day</span>
+              <span class="dr-value">Day {{ currentPlanDay }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="dr-label">Status</span>
+              <span class="dr-value status-active">{{ activeAssignment.status }}</span>
+            </div>
+
+            <div class="daily-targets-title">Daily Targets</div>
+            <div class="targets-row">
+              <div class="target-chip cal-target">
+                <span class="tc-val">{{ activeAssignment.template?.dailyCalorieTarget }}</span>
+                <span class="tc-label">kcal</span>
+              </div>
+              <div class="target-chip prot-target">
+                <span class="tc-val">{{ activeAssignment.template?.proteinTargetG }}g</span>
+                <span class="tc-label">Protein</span>
+              </div>
+              <div class="target-chip carb-target">
+                <span class="tc-val">{{ activeAssignment.template?.carbsTargetG }}g</span>
+                <span class="tc-label">Carbs</span>
+              </div>
+              <div class="target-chip fat-target">
+                <span class="tc-val">{{ activeAssignment.template?.fatTargetG }}g</span>
+                <span class="tc-label">Fat</span>
+              </div>
+            </div>
+
+            <div class="detail-row" *ngIf="activeAssignment.template?.dietaryTags?.length > 0">
+              <span class="dr-label">Dietary Tags</span>
+              <span class="dr-value">
+                <span class="dtag" *ngFor="let t of activeAssignment.template.dietaryTags">{{ t }}</span>
+              </span>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- Did You Know? -->
+        <div class="did-you-know-card">
+          <div class="dyk-header">
+            <img src="../../../../assets/images/icon/icons8-idea-20.png">
+            <span class="dyk-title">Did You Know?</span>
+          </div>
+          <div class="dyk-grid">
+
+            <div class="dyk-item">
+              <img src="../../../../assets/images/icon/icons8-bolt-24.png">
+              <div class="dyk-text">
+                <span class="dyk-headline">Muscle Burns More</span>
+                <span class="dyk-body">Muscle burns approximately 3× more calories than fat at rest — building strength boosts your metabolism around the clock.</span>
+              </div>
+            </div>
+
+            <div class="dyk-item">
+              <img src="../../../../assets/images/icon/icons8-sunny-side-up-eggs-24.png">
+              <div class="dyk-text">
+                <span class="dyk-headline">Protein Keeps You Fuller</span>
+                <span class="dyk-body">Your body digests protein more slowly than carbs, keeping you satisfied for longer and stabilising energy levels.</span>
+              </div>
+            </div>
+
+            <div class="dyk-item">
+              <img src="../../../../assets/images/icon/icons8-water-drop-242.png">
+              <div class="dyk-text">
+                <span class="dyk-headline">Water Before Meals</span>
+                <span class="dyk-body">Drinking a glass of water before meals can reduce calorie intake — hydration is an effortless part of your plan.</span>
+              </div>
+            </div>
+
+            <div class="dyk-item">
+              <img src="../../../../assets/images/icon/icons8-timer-24.png">
+              <div class="dyk-text">
+                <span class="dyk-headline">Eat Slowly</span>
+                <span class="dyk-body">It takes around 20 minutes for your brain to register fullness — slowing down naturally prevents overeating.</span>
+              </div>
+            </div>
+
+            <div class="dyk-item">
+              <img src="../../../../assets/images/icon/icons8-relaxing-music-24.png">
+              <div class="dyk-text">
+                <span class="dyk-headline">Sleep Affects Hunger</span>
+                <span class="dyk-body">Poor sleep increases hunger hormones by up to 28%, making cravings much harder to resist the next day.</span>
+              </div>
+            </div>
+
+            <div class="dyk-item">
+              <img src="../../../../assets/images/icon/icons8-repeat-24.png">
+              <div class="dyk-text">
+                <span class="dyk-headline">Consistency Wins</span>
+                <span class="dyk-body">A consistent, balanced diet over months outperforms any short-term perfect diet every single time.</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </ng-container>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!--  NUTRITION PROFILE FORM                    -->
+  <!-- ══════════════════════════════════════════ -->
+  <div *ngIf="activeView === 'request'" class="nm-content">
+
+    <!-- Already submitted -->
+    <div *ngIf="hasExistingProfile" class="nf-submitted-card">
+      <div class="nf-submitted-icon">
+        <img src="../../../../assets/images/icon/icons8-instagram-check-mark-24.png">
+      </div>
+      <div class="nf-submitted-body">
+        <strong>Nutrition Profile Submitted</strong>
+        <p>Your profile is on record. Your trainer will review it and assign a suitable meal plan.</p>
+      </div>
+    </div>
+
+    <!-- No trainer assigned -->
+    <div class="no-trainer-container" *ngIf="hasTrainer === false && !hasExistingProfile">
+      <img src="../../../../assets/images/icon/icons8-user-not-found-50.png">
+      <h3>No Trainer Assigned Yet</h3>
+      <p>You need a trainer assigned before you can submit a nutrition profile. Request one below — gym management will be notified and will assign someone shortly.</p>
+
+      <div class="no-trainer-request-fields">
+        <div class="nf-field">
+          <label class="nf-label" for="request-goal">Primary Fitness Goal <span class="nf-req">*</span></label>
+          <select id="request-goal" class="nf-select" [(ngModel)]="requestGoal" [disabled]="trainerRequested">
+            <option value="">Select a goal</option>
+            <option value="Fat Loss">Fat Loss</option>
+            <option value="Muscle Gain">Muscle Gain</option>
+            <option value="Strength">Strength</option>
+            <option value="Endurance">Endurance</option>
+            <option value="General Health">General Health</option>
+          </select>
+        </div>
+
+        <div class="nf-field">
+          <label class="nf-label" for="request-level">Fitness Experience Level <span class="nf-req">*</span></label>
+          <select id="request-level" class="nf-select" [(ngModel)]="requestLevel" [disabled]="trainerRequested">
+            <option value="">Select a level</option>
+            <option value="Beginner">Beginner</option>
+            <option value="Intermediate">Intermediate</option>
+            <option value="Advanced">Advanced</option>
+          </select>
+        </div>
+      </div>
+
+      <button (click)="requestTrainer()" [disabled]="trainerRequested || !requestGoal || !requestLevel">
+        {{ trainerRequested ? 'Request Sent' : 'Request a Trainer' }}
+      </button>
+    </div>
+
+    <!-- Form -->
+    <ng-container *ngIf="!hasExistingProfile && hasTrainer">
+
+      <div class="nf-header">
+        <h2 class="nf-title">Submit Nutrition Profile</h2>
+        <p class="nf-subtitle">Tell us about your dietary goals so your trainer can assign the best meal plan for you.</p>
+      </div>
+
+      <form [formGroup]="nutritionProfileForm" (ngSubmit)="onSubmit()">
+
+        <div class="nf-grid">
+
+          <div class="nf-field">
+            <label class="nf-label" for="nf-userId">Username</label>
+            <input id="nf-userId" type="text" class="nf-input" formControlName="userId" readonly />
+          </div>
+
+          <div class="nf-field">
+            <label class="nf-label" for="nf-date">Date</label>
+            <input id="nf-date" type="date" class="nf-input" formControlName="submittedDate" readonly />
+          </div>
+
+          <div class="nf-field nf-full">
+            <label class="nf-label" for="nf-goal">Primary Fitness Goal <span class="nf-req">*</span></label>
+            <select id="nf-goal" class="nf-select" formControlName="fitnessGoal">
+              <option value="">Select a goal</option>
+              <option value="Fat Loss">Fat Loss</option>
+              <option value="Muscle Gain">Muscle Gain</option>
+              <option value="Strength">Strength</option>
+              <option value="Endurance">Endurance</option>
+              <option value="General Health">General Health</option>
+            </select>
+            <span class="nf-error" *ngIf="submitted && nutritionProfileForm.get('fitnessGoal')?.hasError('required')">
+              Fitness goal is required
+            </span>
+          </div>
+
+          <div class="nf-field nf-full">
+            <span class="nf-label">Dietary Preferences</span>
+            <div class="nf-check-grid">
+              <label class="nf-check-item" *ngFor="let pref of allDietaryPrefs">
+                <input type="checkbox"
+                       [checked]="isDietaryPrefSelected(pref)"
+                       (change)="toggleDietaryPref(pref)" />
+                <span>{{ pref }}</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="nf-field nf-full">
+            <label class="nf-label" for="nf-allergies">Allergies / Food Restrictions</label>
+            <input id="nf-allergies" type="text" class="nf-input" formControlName="allergies"
+                   placeholder="e.g. nuts, gluten, dairy — leave blank if none" />
+          </div>
+
+          <div class="nf-field nf-full">
+            <label class="nf-label" for="nf-notes">Additional Notes</label>
+            <textarea id="nf-notes" class="nf-textarea" formControlName="additionalNotes" rows="4"
+                      placeholder="Any other information for your trainer…"></textarea>
+          </div>
+
+        </div>
+
+        <div class="nf-actions">
+          <button type="submit" class="nf-submit-btn"
+                  [disabled]="nutritionProfileForm.invalid || isDisabled">
+            Submit Profile
+          </button>
+          <button type="button" class="nf-reset-btn" (click)="onReset()">Reset</button>
+        </div>
+
+      </form>
+    </ng-container>
+
+  </div>
+
+  <!-- Landing (no tab selected) -->
+  <div *ngIf="!activeView" class="nm-landing">
+    <img src="assets/images/logo-dark.png" alt="Nutrition" class="landing-img" />
+    <p class="landing-text">Select a tab above to view your meal plan or submit your nutrition profile.</p>
+  </div>
+
+</div>

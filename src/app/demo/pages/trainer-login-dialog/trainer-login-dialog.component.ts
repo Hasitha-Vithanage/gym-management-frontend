@@ -1,0 +1,189 @@
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
+import { TrainerLoginServiceService } from 'src/app/services/trainer-login/trainer-login-service.service';
+
+@Component({
+  selector: 'app-trainer-login-dialog',
+  standalone: false,
+  templateUrl: './trainer-login-dialog.component.html',
+  styleUrl: './trainer-login-dialog.component.scss'
+})
+export class TrainerLoginDialogComponent implements OnInit {
+  trainerLoginForm: FormGroup;
+  trainerList: any[] = [];
+  dataSource: MatTableDataSource<any>;
+  showPassword = false;
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+
+  registerButtonLabel = 'Register';
+  mode = 'add';
+  selectedData: any;
+  isButtonDisabled = false;
+  submitted = false;
+  submitDisabled = false;
+  isDisabled = false;
+
+  constructor(
+    private readonly fb: FormBuilder,
+    private readonly trainerLoginService: TrainerLoginServiceService,
+    public dialogRef: MatDialogRef<TrainerLoginDialogComponent>,
+    private readonly messageService: MessageServiceService
+  ) {}
+
+  ngOnInit(): void {
+    this.trainerLoginForm = this.fb.group({
+      trainerId: [null, Validators.required],
+      firstName: ['', Validators.required],
+      lastName:  ['', Validators.required],
+      userName:  ['', Validators.required],
+      password:  ['', [Validators.required, Validators.minLength(6)]],
+      role:      [''],
+      userId:    [''],
+      employee:  ['']
+    });
+
+    this.getTrainers();
+    this.populateData();
+
+    // Auto-fill fields when employee is selected
+    this.trainerLoginForm.get('trainerId')?.valueChanges.subscribe((selectedId) => {
+      const selected = this.trainerList.find((t) => t.id === selectedId);
+      if (selected) {
+        this.trainerLoginForm.patchValue({
+          firstName: selected.firstName || '',
+          lastName:  selected.lastName  || '',
+          userName:  selected.firstName || '',
+          role:      selected.jobTitle  || '',
+          employee:  selectedId
+        });
+      } else {
+        this.trainerLoginForm.patchValue({ firstName: '', lastName: '', userName: '', role: '' });
+      }
+    });
+  }
+
+  getTrainerName(id: number): string {
+    const selected = this.trainerList.find((trainer) => trainer.id === id);
+    return selected ? `${selected.firstName} ${selected.lastName}` : '';
+  }
+
+  public getTrainers(): void {
+    this.trainerLoginService.getTrainers().subscribe({
+      next: (response: any[]) => {
+        const activeTrainers = response.filter(trainer => !trainer.isDeleted);
+        this.trainerList = activeTrainers;
+      },
+      error: (error) => {
+        console.log('Error fetching trainers:', error);
+      }
+    });
+
+    this.trainerLoginForm.get('firstName')?.disable();
+    this.trainerLoginForm.get('lastName')?.disable();
+  }
+
+  public populateData(): void {
+    this.trainerLoginService.getData().subscribe({
+      next: (response: any) => {
+        this.dataSource = new MatTableDataSource(response);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      },
+      error: () => {
+        this.messageService.showError('Error occurred while getting data!');
+      }
+    });
+  }
+
+  onSubmit(): void {
+    this.submitted = true;
+
+    if (this.trainerLoginForm.invalid) {
+      this.messageService.showError(this.getValidationMessage());
+      return;
+    }
+
+    try {
+      if (this.mode === 'add') {
+        this.trainerLoginService.serviceCall(this.trainerLoginForm.getRawValue()).subscribe({
+          next: (response: any) => {
+            this.messageService.showSuccess('Employee login created successfully!');
+            this.dialogRef.close({ action: 'add', data: response });
+          },
+          error: (error) => {
+            this.messageService.showError(error);
+          }
+        });
+      } else if (this.mode === 'edit') {
+        this.trainerLoginService
+          .editData(this.selectedData?.id, this.trainerLoginForm.getRawValue())
+          .subscribe({
+            next: (response: any) => {
+              this.messageService.showSuccess('Record updated successfully!');
+              this.dialogRef.close({ action: 'edit', data: response });
+            },
+            error: (error) => {
+              this.messageService.showError(error);
+            }
+          });
+      }
+    } catch (error) {
+      this.messageService.showError(error);
+    }
+  }
+
+  private getValidationMessage(): string {
+    if (this.trainerLoginForm.get('trainerId')?.hasError('required')) {
+      return 'Please select an employee.';
+    }
+    if (this.trainerLoginForm.get('userName')?.hasError('required')) {
+      return 'Please enter a username.';
+    }
+    const passwordControl = this.trainerLoginForm.get('password');
+    if (passwordControl?.hasError('required')) {
+      return 'Please enter a password.';
+    }
+    if (passwordControl?.hasError('minlength')) {
+      return 'Password must be at least 6 characters long.';
+    }
+    return 'Please fill in all required fields.';
+  }
+
+  onEdit(data: any): void {
+    this.trainerLoginForm.patchValue({
+      trainerId: data.id,
+      firstName: data.firstName,
+      lastName:  data.lastName,
+      userName:  data.userName,
+      password:  data.password,
+      userId:    data.userId
+    });
+    this.registerButtonLabel = 'Update';
+    this.mode = 'edit';
+    this.selectedData = data;
+    this.submitDisabled = true;
+
+    // Password is never returned from the backend (by design - it isn't stored on
+    // the login record itself), so it's always blank here. Leaving it required would
+    // force a password reset just to edit an unrelated field like the username.
+    // The backend already leaves the password untouched when it receives an empty value,
+    // so only enforce a minimum length when the admin actually chooses to set a new one.
+    this.trainerLoginForm.get('password')?.setValidators([Validators.minLength(6)]);
+    this.trainerLoginForm.get('password')?.updateValueAndValidity();
+
+    this.trainerLoginForm.valueChanges.subscribe(() => {
+      this.submitDisabled = !this.trainerLoginForm.valid || this.trainerLoginForm.pristine;
+    });
+  }
+
+  closeDialog(): void {
+    this.dialogRef.close();
+  }
+}

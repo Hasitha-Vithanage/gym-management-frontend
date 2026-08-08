@@ -1,0 +1,194 @@
+<div class="container">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-left">
+      <button mat-button class="back-button" (click)="goBack()">
+        <img src="../../../../assets/images/icon/back-arrow.png"> Back
+      </button>
+      <div class="header-info">
+        <h2 class="page-title">Assign Foods to Template</h2>
+        <span class="template-badge" *ngIf="templateData">
+          <img src="../../../../assets/images/icon/nutrition-and-meal-plans.png" class="badge-icon">
+          {{ templateData.templateName }}
+        </span>
+      </div>
+    </div>
+    <button mat-raised-button class="save-button" (click)="saveAssignments()" [disabled]="assignedItems.length === 0">
+      Save Assignments
+    </button>
+  </div>
+
+  <!-- Two-column Body -->
+  <div class="body-grid">
+
+    <!-- LEFT: Browse Food Items -->
+    <div class="browse-panel">
+      <div class="panel-title">Browse Food Library</div>
+
+      <div class="search-wrap">
+        <img src="../../../../assets/images/icon/search.png" class="s-icon">
+        <input type="text" [(ngModel)]="searchQuery" placeholder="Search by name or category…" class="search-input" />
+      </div>
+
+      <div class="browse-list">
+        <ng-container *ngIf="filteredFoods().length > 0; else noFoods">
+          <div class="browse-card" *ngFor="let f of filteredFoods()" [class.selected]="selectedFood?.id === f.id">
+            <div class="bc-top">
+              <span class="bc-name">{{ f.foodName }}</span>
+              <span class="bc-cal">{{ f.caloriesPer100g }} kcal/100g</span>
+            </div>
+            <div class="bc-macros">
+              <span class="macro-chip p">P {{ f.proteinG }}g</span>
+              <span class="macro-chip c">C {{ f.carbsG }}g</span>
+              <span class="macro-chip f">F {{ f.fatG }}g</span>
+              <span class="category-chip">{{ f.category }}</span>
+            </div>
+            <button class="add-btn" (click)="quickAdd(f); $event.stopPropagation()">
+              <img src="../../../../assets/images/icon/add-16.png"> Add
+            </button>
+          </div>
+        </ng-container>
+        <ng-template #noFoods>
+          <div class="empty-browse"><p>No food items found</p></div>
+        </ng-template>
+      </div>
+    </div>
+
+    <!-- RIGHT: Config + Schedule -->
+    <div class="right-panel">
+
+      <!-- Config Form -->
+      <div class="config-card">
+        <div class="panel-title">
+          <img src="../../../../assets/images/icon/tune-16.png">
+          Meal Configuration
+          <span class="selected-food-label" *ngIf="selectedFood"> — {{ selectedFood.foodName }}</span>
+        </div>
+
+        <form [formGroup]="mealItemForm" class="config-form">
+          <div class="form-row">
+
+            <div class="form-field">
+              <label>Meal Slot <span class="req">*</span></label>
+              <select formControlName="mealSlot">
+                <option value="">Select Slot</option>
+                <option *ngFor="let s of mealSlots" [value]="s">{{ slotLabel(s) }}</option>
+              </select>
+              <span class="required-message" *ngIf="isSubmitted && mealItemForm.get('mealSlot')?.invalid">
+                Meal slot is required
+              </span>
+            </div>
+
+            <div class="form-field">
+              <label>Day of Week <span class="req">*</span></label>
+              <select formControlName="dayOfWeek">
+                <option value="">Select Day</option>
+                <option *ngFor="let d of weekDays" [value]="d">Day {{ d }}</option>
+              </select>
+              <span class="required-message" *ngIf="isSubmitted && mealItemForm.get('dayOfWeek')?.invalid">
+                Day of week is required
+              </span>
+            </div>
+
+            <div class="form-field">
+              <label>Food Item <span class="req">*</span></label>
+              <select formControlName="foodItemId" (change)="onFoodDropdownChange($event)">
+                <option value="">Select Food</option>
+                <option *ngFor="let f of foodList" [value]="f.id">{{ f.foodName }}</option>
+              </select>
+              <span class="required-message" *ngIf="isSubmitted && mealItemForm.get('foodItemId')?.invalid">
+                Food item is required
+              </span>
+            </div>
+
+            <div class="form-field narrow">
+              <label>Portion (g) <span class="req">*</span></label>
+              <input type="number" formControlName="portionGrams" min="1" placeholder="100" />
+              <span class="required-message" *ngIf="isSubmitted && mealItemForm.get('portionGrams')?.invalid">
+                <ng-container *ngIf="mealItemForm.get('portionGrams')?.hasError('required')">Portion is required</ng-container>
+                <ng-container *ngIf="mealItemForm.get('portionGrams')?.hasError('min')">Portion must be at least 1</ng-container>
+              </span>
+            </div>
+
+            <div class="form-field narrow">
+              <label>Calories</label>
+              <div class="cal-display">{{ calculatedCalories != null ? (calculatedCalories + ' kcal') : '—' }}</div>
+            </div>
+
+            <div class="form-field narrow">
+              <label>Order</label>
+              <input type="number" formControlName="mealOrder" min="1" placeholder="1" />
+              <span class="required-message" *ngIf="isSubmitted && mealItemForm.get('mealOrder')?.hasError('min')">
+                Order must be at least 1
+              </span>
+            </div>
+
+          </div>
+
+          <div class="form-row-bottom">
+            <div class="form-field grow">
+              <label>Notes</label>
+              <input type="text" formControlName="notes" maxlength="500" placeholder="Optional notes…" />
+              <span class="required-message" *ngIf="isSubmitted && mealItemForm.get('notes')?.hasError('maxlength')">
+                Notes must be 500 characters or fewer
+              </span>
+            </div>
+            <div class="form-actions">
+              <button type="button" class="btn-add" (click)="addItem()">Add</button>
+              <button type="button" class="btn-reset" (click)="resetForm()">Reset</button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- Meal Schedule -->
+      <div class="split-card">
+        <div class="panel-title">
+          <img src="../../../../assets/images/icon/calendar_view_week.png" style="margin-right:5px">
+          Weekly Meal Schedule
+          <span class="count-badge" *ngIf="assignedItems.length > 0">
+            {{ assignedItems.length }} item{{ assignedItems.length !== 1 ? 's' : '' }}
+          </span>
+        </div>
+
+        <ng-container *ngIf="assignedItems.length > 0; else emptySchedule">
+          <div class="day-columns">
+            <div class="day-column" *ngFor="let day of usedDays">
+              <div class="day-header">
+                <span class="day-label">Day {{ day }}</span>
+                <span class="day-cal">{{ totalCaloriesForDay(day) | number:'1.0-0' }} kcal</span>
+              </div>
+
+              <div *ngFor="let slot of slotsForDay(day)" class="slot-group">
+                <div class="slot-label">{{ slotLabel(slot) }}</div>
+                <div class="food-pill" *ngFor="let item of itemsForDaySlot(day, slot)">
+                  <div class="pill-name">{{ item.foodItemName }}</div>
+                  <div class="pill-stats">
+                    <span class="stat">{{ item.portionGrams }}g</span>
+                    <span class="stat">{{ item.caloriesForPortion }} kcal</span>
+                  </div>
+                  <button class="pill-remove" (click)="removeItem(item)" matTooltip="Remove">
+                    <img src="../../../../assets/images/icon/icons8-close-13.png">
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </ng-container>
+
+        <ng-template #emptySchedule>
+          <div class="empty-split">
+            <img src="../../../../assets/images/icon/icons8-restaurant-30.png">
+            <h4>No meals assigned yet</h4>
+            <p>Browse foods on the left, configure the meal slot and portion, then click <strong>Add</strong>.</p>
+          </div>
+        </ng-template>
+
+      </div>
+
+    </div>
+  </div>
+
+</div>

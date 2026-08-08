@@ -1,0 +1,315 @@
+@import 'src/scss/settings/colors';
+
+:host {
+  display: block;
+  min-height: 100vh;
+  background: $ff-bg-base;
+  font-family: $ff-font;
+  color: $ff-text-primary;
+}
+
+.page-wrapper {
+  padding: 24px 28px;
+}
+
+// ─── PAGE HEADER ─────────────────────────────────────────────────────────────
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+// ─── PAGE TITLE ──────────────────────────────────────────────────────────────
+.page-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: $ff-text-primary;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+
+  .title-icon {
+    font-size: 24px;
+    color: $ff-accent-primary;
+  }
+}
+
+.my-bookings-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 18px;
+  border-radius: $ff-radius-sm;
+  border: 1px solid $ff-border-accent;
+  background: transparent;
+  color: $ff-accent-primary;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: $ff-font;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+
+  mat-icon { font-size: 18px; width: 18px; height: 18px; }
+
+  img.icon-default { width: 18px; height: 18px; }
+  img.icon-hover { width: 18px; height: 18px; display: none; }
+
+  &:hover {
+    background: $ff-accent-primary;
+    color: #fff;
+
+    img.icon-default { display: none; }
+    img.icon-hover { display: inline-block; }
+  }
+}
+
+// ─── SKELETON ────────────────────────────────────────────────────────────────
+@keyframes shimmer {
+  0%   { background-position: -600px 0; }
+  100% { background-position:  600px 0; }
+}
+
+.skeleton-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.skeleton-card {
+  height: 280px;
+  border-radius: $ff-radius-lg;
+  background: linear-gradient(90deg, $ff-bg-elevated 25%, $ff-bg-hover 50%, $ff-bg-elevated 75%);
+  background-size: 1200px 100%;
+  animation: shimmer 1.4s infinite linear;
+}
+
+// ─── EMPTY STATE ─────────────────────────────────────────────────────────────
+.empty-state {
+  text-align: center;
+  padding: 80px 20px;
+  color: $ff-text-dim;
+
+  mat-icon {
+    font-size: 64px;
+    width: 64px;
+    height: 64px;
+    margin-bottom: 16px;
+    opacity: 0.4;
+  }
+
+  p {
+    font-size: 15px;
+    margin: 0;
+  }
+}
+
+// ─── CLASS GRID ──────────────────────────────────────────────────────────────
+.class-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+// ─── CLASS CARD ──────────────────────────────────────────────────────────────
+.class-card {
+  background: $ff-bg-surface;
+  border: 1px solid $ff-border-default;
+  border-radius: $ff-radius-lg;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: $ff-shadow-card;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, $ff-accent-primary, $ff-accent-hover);
+  }
+
+  &:hover:not(.fully-booked) {
+    transform: translateY(-4px);
+    border-color: $ff-border-accent;
+    box-shadow: $ff-shadow-hover;
+  }
+
+  &.fully-booked {
+    opacity: 0.6;
+    &::before { background: $ff-text-dim; }
+  }
+}
+
+// ─── CARD HEADER ─────────────────────────────────────────────────────────────
+.class-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+// ─── TYPE BADGES ─────────────────────────────────────────────────────────────
+.type-badge {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+
+  &.hiit    { background: rgba(239,68,68,0.12);   color: $ff-danger;   border: 1px solid rgba(239,68,68,0.25); }
+  &.zumba   { background: rgba(167,139,250,0.12); color: $ff-platinum; border: 1px solid rgba(167,139,250,0.25); }
+  &.yoga    { background: rgba(34,197,94,0.12);   color: $ff-success;  border: 1px solid rgba(34,197,94,0.25); }
+  &.cycling { background: rgba(251,191,36,0.12);  color: $ff-warning;  border: 1px solid rgba(251,191,36,0.25); }
+  &.default { background: rgba(59,130,246,0.12);  color: $ff-info;     border: 1px solid rgba(59,130,246,0.25); }
+}
+
+// ─── SLOTS BADGE ─────────────────────────────────────────────────────────────
+.slots-badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+
+  &.ok     { background: rgba(34,197,94,0.1);  color: $ff-success; border: 1px solid rgba(34,197,94,0.2); }
+  &.medium { background: rgba(251,191,36,0.1); color: $ff-warning; border: 1px solid rgba(251,191,36,0.2); }
+  &.low    { background: rgba(239,68,68,0.1);  color: $ff-danger;  border: 1px solid rgba(239,68,68,0.2); }
+  &.full   { background: rgba(93,100,120,0.1); color: $ff-text-dim; border: 1px solid $ff-border-default; }
+}
+
+// ─── CLASS INFO ──────────────────────────────────────────────────────────────
+.class-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: $ff-text-primary;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.class-description {
+  font-size: 13px;
+  color: $ff-text-secondary;
+  margin: 0;
+  line-height: 1.55;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+// ─── DETAILS ─────────────────────────────────────────────────────────────────
+.class-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.detail-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: $ff-text-secondary;
+
+  mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    color: $ff-accent-primary;
+    flex-shrink: 0;
+  }
+
+  .profession { color: $ff-text-dim; }
+}
+
+// ─── SLOTS BAR ───────────────────────────────────────────────────────────────
+.slots-bar-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.slots-bar-track {
+  flex: 1;
+  height: 5px;
+  background: $ff-bg-elevated;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.slots-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.4s ease;
+
+  &.ok     { background: $ff-success; }
+  &.medium { background: $ff-warning; }
+  &.low    { background: $ff-danger; }
+  &.full   { background: $ff-text-dim; width: 0 !important; }
+}
+
+.slots-count {
+  font-size: 11px;
+  font-weight: 600;
+  color: $ff-text-dim;
+  white-space: nowrap;
+}
+
+// ─── BOOK BUTTON ─────────────────────────────────────────────────────────────
+.book-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 11px 16px;
+  border-radius: $ff-radius-sm;
+  border: none;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: $ff-font;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  background: $ff-accent-primary;
+  color: #fff;
+
+  .book-btn-icon {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+  }
+
+  &:disabled .book-btn-icon {
+    filter: grayscale(1) opacity(0.7);
+  }
+
+  &:hover:not(:disabled) {
+    background: $ff-accent-hover;
+    transform: translateY(-1px);
+    box-shadow: $ff-shadow-orange;
+  }
+
+  &:disabled {
+    background: $ff-bg-elevated;
+    color: $ff-text-dim;
+    cursor: not-allowed;
+    border: 1px solid $ff-border-default;
+  }
+}
+
+// ─── RESPONSIVE ──────────────────────────────────────────────────────────────
+@media (max-width: 768px) {
+  .page-wrapper { padding: 14px 12px; }
+  .class-grid   { grid-template-columns: 1fr; }
+}

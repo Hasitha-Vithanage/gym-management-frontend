@@ -1,0 +1,407 @@
+<div class="assign-container">
+
+  <!-- Page Title -->
+  <h2 class="page-title">
+    <img src="../../../../assets/images/icon/icons8-meal-24.png" style="height:20px;width:20px">
+    Assign Meal Plan
+  </h2>
+
+  <!-- Search Bar -->
+  <div class="search-section">
+    <div class="search-wrap">
+      <img src="../../../../assets/images/icon/member-light-icon.png" class="search-icon">
+      <input
+        type="text"
+        [(ngModel)]="memberUsername"
+        placeholder="Enter member username…"
+        class="member-input"
+        (keyup.enter)="loadSuggestions()"
+        (ngModelChange)="onUsernameChange($event)"
+      />
+    </div>
+    <button class="load-btn" (click)="loadSuggestions()" [disabled]="isLoading">
+      {{ isLoading ? 'Loading…' : 'Load Suggestions' }}
+    </button>
+  </div>
+
+  <!-- ── How it works guide ── shown before any search ── -->
+  <div class="how-it-works" *ngIf="!hasSearched">
+    <div class="hiw-title">
+      <img src="../../../../assets/images/icon/icons8-info-20.png" class="sec-icon-img">
+      How to assign a meal plan
+    </div>
+    <div class="hiw-steps">
+      <div class="hiw-step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-label">Search a member</div>
+          <div class="step-desc">Enter the member's username and click <strong>Load Suggestions</strong>.</div>
+        </div>
+      </div>
+      <div class="hiw-divider"></div>
+      <div class="hiw-step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-label">Review suggestions</div>
+          <div class="step-desc">The system matches templates to the member's fitness goal and BMI category.</div>
+        </div>
+      </div>
+      <div class="hiw-divider"></div>
+      <div class="hiw-step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-label">Assign the plan</div>
+          <div class="step-desc">Pick the best-fit template, set the duration, and confirm the assignment.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Macro Guide by Fitness Goal ── shown before any search ── -->
+  <ng-container *ngIf="!hasSearched">
+    <div class="macro-guide-header">
+      <span class="macro-guide-title">
+        <img src="../../../../assets/images/icon/icons8-bar-chart-16-orange.png" class="sec-icon-img">
+        Macro Guide by Fitness Goal
+      </span>
+      <span class="macro-guide-sub">Reference for selecting the right template</span>
+    </div>
+
+    <div class="macro-guide-grid">
+
+      <!-- Weight Loss -->
+      <div class="goal-card goal-loss">
+        <div class="goal-card-header">
+          <img src="../../../../assets/images/icon/icons8-chart-arrow-descent-20.png" class="sec-icon-img">
+          <span>Weight Loss</span>
+        </div>
+        <div class="goal-strategy">
+          <img src="../../../../assets/images/icon/icons8-bolt-15.png" class="sec-icon-img">
+          300–500 kcal calorie deficit per day
+        </div>
+        <div class="goal-macros">
+          <div class="gm-item">
+            <span class="gm-pct prot">35%</span>
+            <span class="gm-label">Protein</span>
+          </div>
+          <div class="gm-item">
+            <span class="gm-pct carb">35%</span>
+            <span class="gm-label">Carbs</span>
+          </div>
+          <div class="gm-item">
+            <span class="gm-pct fat">30%</span>
+            <span class="gm-label">Fat</span>
+          </div>
+        </div>
+        <ul class="goal-tips">
+          <li>Prioritise lean proteins to preserve muscle mass</li>
+          <li>Limit refined carbs and added sugars</li>
+          <li>Keep healthy fats for hormone balance</li>
+        </ul>
+      </div>
+
+      <!-- Muscle Gain -->
+      <div class="goal-card goal-gain">
+        <div class="goal-card-header">
+          <img src="../../../../assets/images/icon/icons8-ez-curl-bar-24.png" class="sec-icon-img">
+          <span>Muscle Gain</span>
+        </div>
+        <div class="goal-strategy">
+          <img src="../../../../assets/images/icon/icons8-bolt-15.png" class="sec-icon-img">
+          200–400 kcal calorie surplus per day
+        </div>
+        <div class="goal-macros">
+          <div class="gm-item">
+            <span class="gm-pct prot">30%</span>
+            <span class="gm-label">Protein</span>
+          </div>
+          <div class="gm-item">
+            <span class="gm-pct carb">45%</span>
+            <span class="gm-label">Carbs</span>
+          </div>
+          <div class="gm-item">
+            <span class="gm-pct fat">25%</span>
+            <span class="gm-label">Fat</span>
+          </div>
+        </div>
+        <ul class="goal-tips">
+          <li>1.6–2.2g protein per kg of bodyweight</li>
+          <li>Complex carbs fuel training and recovery</li>
+          <li>Time carbs around workouts for best results</li>
+        </ul>
+      </div>
+
+      <!-- Maintenance -->
+      <div class="goal-card goal-maintain">
+        <div class="goal-card-header">
+          <img src="../../../../assets/images/icon/icons8-balance-22.png" class="sec-icon-img">
+          <span>Maintenance</span>
+        </div>
+        <div class="goal-strategy">
+          <img src="../../../../assets/images/icon/icons8-bolt-15.png" class="sec-icon-img">
+          Match daily TDEE — no surplus or deficit
+        </div>
+        <div class="goal-macros">
+          <div class="gm-item">
+            <span class="gm-pct prot">25%</span>
+            <span class="gm-label">Protein</span>
+          </div>
+          <div class="gm-item">
+            <span class="gm-pct carb">45%</span>
+            <span class="gm-label">Carbs</span>
+          </div>
+          <div class="gm-item">
+            <span class="gm-pct fat">30%</span>
+            <span class="gm-label">Fat</span>
+          </div>
+        </div>
+        <ul class="goal-tips">
+          <li>Focus on whole foods and nutrient density</li>
+          <li>Adjust calories if weight trends up or down</li>
+          <li>Balanced macros support energy and recovery</li>
+        </ul>
+      </div>
+
+      <!-- Body Recomposition -->
+      <div class="goal-card goal-recomp">
+        <div class="goal-card-header">
+          <img src="../../../../assets/images/icon/icons8-available-updates-20.png" class="sec-icon-img">
+          <span>Body Recomposition</span>
+        </div>
+        <div class="goal-strategy">
+          <img src="../../../../assets/images/icon/icons8-bolt-15.png" class="sec-icon-img">
+          Slight deficit (~10% below TDEE)
+        </div>
+        <div class="goal-macros">
+          <div class="gm-item">
+            <span class="gm-pct prot">40%</span>
+            <span class="gm-label">Protein</span>
+          </div>
+          <div class="gm-item">
+            <span class="gm-pct carb">35%</span>
+            <span class="gm-label">Carbs</span>
+          </div>
+          <div class="gm-item">
+            <span class="gm-pct fat">25%</span>
+            <span class="gm-label">Fat</span>
+          </div>
+        </div>
+        <ul class="goal-tips">
+          <li>Highest protein ratio — protects existing muscle</li>
+          <li>Resistance training is essential alongside diet</li>
+          <li>Progress is slower but results are sustainable</li>
+        </ul>
+      </div>
+
+      <!-- Endurance / Performance -->
+      <div class="goal-card goal-endurance">
+        <div class="goal-card-header">
+          <img src="../../../../assets/images/icon/icons8-girl-running-22.png" class="sec-icon-img">
+          <span>Endurance / Performance</span>
+        </div>
+        <div class="goal-strategy">
+          <img src="../../../../assets/images/icon/icons8-bolt-15.png" class="sec-icon-img">
+          Match or slightly exceed TDEE
+        </div>
+        <div class="goal-macros">
+          <div class="gm-item">
+            <span class="gm-pct prot">20%</span>
+            <span class="gm-label">Protein</span>
+          </div>
+          <div class="gm-item">
+            <span class="gm-pct carb">55%</span>
+            <span class="gm-label">Carbs</span>
+          </div>
+          <div class="gm-item">
+            <span class="gm-pct fat">25%</span>
+            <span class="gm-label">Fat</span>
+          </div>
+        </div>
+        <ul class="goal-tips">
+          <li>High carbs are the primary fuel for endurance</li>
+          <li>Carb-load 24–48 hrs before long training sessions</li>
+          <li>Electrolyte intake is critical for performance</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Quick Nutrition Reference Strip -->
+    <div class="qref-section">
+      <div class="qref-title">
+        <img src="../../../../assets/images/icon/icons8-idea-20.png" class="sec-icon-img">
+        Quick Nutrition Reference
+      </div>
+      <div class="qref-grid">
+        <div class="qref-card">
+          <span class="qref-val prot">4 kcal</span>
+          <span class="qref-label">per gram of Protein</span>
+        </div>
+        <div class="qref-card">
+          <span class="qref-val carb">4 kcal</span>
+          <span class="qref-label">per gram of Carbohydrate</span>
+        </div>
+        <div class="qref-card">
+          <span class="qref-val fat">9 kcal</span>
+          <span class="qref-label">per gram of Fat</span>
+        </div>
+        <div class="qref-card">
+          <span class="qref-val water">2–3 L</span>
+          <span class="qref-label">daily water intake recommended</span>
+        </div>
+        <div class="qref-card">
+          <span class="qref-val prot">1.6–2.2g</span>
+          <span class="qref-label">protein/kg body weight for muscle</span>
+        </div>
+        <div class="qref-card">
+          <span class="qref-val carb">300–500 kcal</span>
+          <span class="qref-label">deficit for healthy weight loss</span>
+        </div>
+      </div>
+    </div>
+
+  </ng-container>
+
+  <!-- Member Profile Card -->
+  <div class="profile-card" *ngIf="memberProfile">
+    <div class="profile-header">
+      <span class="profile-title">Member Profile</span>
+      <span class="profile-user">{{ memberUsername }}</span>
+    </div>
+    <div class="profile-body">
+      <div class="profile-field">
+        <span class="pf-label">Fitness Goal</span>
+        <span class="pf-value">{{ memberProfile.fitnessGoal || '—' }}</span>
+      </div>
+      <div class="profile-field">
+        <span class="pf-label">Dietary Preferences</span>
+        <span class="pf-value">
+          <ng-container *ngIf="memberProfile.dietaryPreferences?.length > 0; else noPref">
+            <span class="tag" *ngFor="let p of memberProfile.dietaryPreferences">{{ p }}</span>
+          </ng-container>
+          <ng-template #noPref>None specified</ng-template>
+        </span>
+      </div>
+      <div class="profile-field" *ngIf="memberProfile.allergies">
+        <span class="pf-label">Allergies</span>
+        <span class="pf-value">{{ memberProfile.allergies }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="no-profile-notice" *ngIf="suggestions.length > 0 && !memberProfile">
+    <img src="../../../../assets/images/icon/icons8-info-20.png" class="sec-icon-img">
+    <span>No nutrition profile found for this member — showing all available templates.</span>
+  </div>
+
+  <!-- Current active meal plan — shown so trainers/managers don't accidentally replace it -->
+  <div class="current-plan-notice" *ngIf="currentAssignment">
+    <img src="../../../../assets/images/icon/icons8-restaurant-16.png" class="sec-icon-img">
+    <span>
+      This member already has an active meal plan: <strong>{{ currentAssignment.template?.templateName }}</strong>.
+      Assigning a new plan below will replace it.
+    </span>
+  </div>
+
+  <!-- Shared card markup for both sections -->
+  <ng-template #templateCard let-s>
+    <div class="suggestion-card">
+
+      <div class="card-top">
+        <div class="card-name">{{ s.template.templateName }}</div>
+        <span class="match-badge {{ matchBadgeClass(s.matchRound) }}">{{ matchLabel(s.matchRound) }}</span>
+      </div>
+
+      <div class="card-goal">{{ s.template.goal }}</div>
+
+      <div class="macro-row">
+        <div class="macro-item">
+          <span class="m-label">Calories</span>
+          <span class="m-val cal">{{ s.template.dailyCalorieTarget }} kcal</span>
+        </div>
+        <div class="macro-item">
+          <span class="m-label">Protein</span>
+          <span class="m-val prot">{{ s.template.proteinTargetG }}g</span>
+        </div>
+        <div class="macro-item">
+          <span class="m-label">Carbs</span>
+          <span class="m-val carb">{{ s.template.carbsTargetG }}g</span>
+        </div>
+        <div class="macro-item">
+          <span class="m-label">Fat</span>
+          <span class="m-val fat">{{ s.template.fatTargetG }}g</span>
+        </div>
+      </div>
+
+      <div class="card-meta">
+        <span>{{ s.template.durationWeeks }} weeks</span>
+        <span>{{ s.template.foodItemCount ?? 0 }} food items</span>
+        <span *ngIf="s.matchScore > 0" class="score-chip">+{{ s.matchScore }} score</span>
+      </div>
+
+      <div class="tag-row" *ngIf="s.template.dietaryTags?.length > 0">
+        <span class="dtag" *ngFor="let t of s.template.dietaryTags">{{ t }}</span>
+      </div>
+
+      <!-- Confirm inline panel -->
+      <div class="confirm-panel" *ngIf="confirmingTemplate === s">
+        <div class="replace-warning" *ngIf="currentAssignment && currentAssignment.templateId !== s.template.id">
+          <img src="../../../../assets/images/icon/icons8-warning-16.png" class="sec-icon-img">
+          <span>This will replace their current active plan, "{{ currentAssignment.template?.templateName }}".</span>
+        </div>
+        <div class="confirm-row">
+          <label class="confirm-label">Duration (weeks)</label>
+          <input type="number" [(ngModel)]="durationWeeks" min="1" class="duration-input" />
+        </div>
+        <div class="confirm-actions">
+          <button class="btn-confirm" (click)="confirmAssign()">Confirm Assign</button>
+          <button class="btn-cancel" (click)="cancelConfirm()">Cancel</button>
+        </div>
+      </div>
+
+      <button class="assign-btn" *ngIf="confirmingTemplate !== s" (click)="openConfirm(s)">
+        Assign This Plan
+      </button>
+
+    </div>
+  </ng-template>
+
+  <!-- Suggested Templates -->
+  <ng-container *ngIf="suggestions.length > 0">
+
+    <div class="suggestions-header">
+      <span class="s-count">{{ suggestions.length }} suggested template{{ suggestions.length !== 1 ? 's' : '' }}</span>
+      <span class="s-reason" *ngIf="suggestions[0]">{{ suggestions[0].matchReason }}</span>
+    </div>
+
+    <div class="suggestions-grid">
+      <ng-container *ngFor="let s of suggestions">
+        <ng-container *ngTemplateOutlet="templateCard; context: { $implicit: s }"></ng-container>
+      </ng-container>
+    </div>
+
+  </ng-container>
+
+  <!-- Other Templates -->
+  <ng-container *ngIf="otherTemplates.length > 0">
+
+    <div class="suggestions-header">
+      <span class="s-count">{{ otherTemplates.length }} other template{{ otherTemplates.length !== 1 ? 's' : '' }} available</span>
+      <span class="s-reason">Not matched to this member's profile, but still assignable.</span>
+    </div>
+
+    <div class="suggestions-grid">
+      <ng-container *ngFor="let s of otherTemplates">
+        <ng-container *ngTemplateOutlet="templateCard; context: { $implicit: s }"></ng-container>
+      </ng-container>
+    </div>
+
+  </ng-container>
+
+  <!-- Empty state after a search returns nothing -->
+  <div class="empty-state" *ngIf="!isLoading && hasSearched && suggestions.length === 0 && otherTemplates.length === 0">
+    <img src="../../../../assets/images/icon/icons8-block-16.png" class="sec-icon-img">
+    <p>No templates found for this member. Check the username and try again.</p>
+  </div>
+
+</div>

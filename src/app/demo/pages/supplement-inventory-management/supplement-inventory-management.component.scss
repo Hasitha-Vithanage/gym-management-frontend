@@ -1,0 +1,231 @@
+@import 'src/scss/settings/colors';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 16px;
+}
+
+.form-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: $ff-text-primary;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  letter-spacing: 0.2px;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.add-new .new-button {
+  background: $ff-bg-elevated;
+  color: $ff-text-primary;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid $ff-border-default;
+  border-radius: $ff-radius-sm;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: $ff-accent-primary;
+    border-color: $ff-accent-primary;
+    box-shadow: $ff-shadow-orange;
+  }
+}
+
+.table-filter {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: $ff-bg-input;
+  border: 1px solid $ff-border-default;
+  border-radius: $ff-radius-sm;
+  padding: 0 12px;
+  height: 38px;
+  width: 220px;
+  transition: border-color 0.2s ease;
+
+  &:focus-within { border-color: $ff-border-accent; }
+
+  input {
+    border: none;
+    outline: none;
+    flex: 1;
+    font-size: 14px;
+    color: $ff-text-primary;
+    background: transparent;
+    &::placeholder { color: $ff-text-dim; }
+  }
+}
+
+.refresh-button {
+  height: 38px !important;
+  width: 38px !important;
+  border-radius: $ff-radius-sm !important;
+  border: 1px solid $ff-border-default !important;
+  background: $ff-bg-elevated !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  padding: 0 !important;
+  transition: all 0.2s ease !important;
+
+  &:hover {
+    background: $ff-bg-hover !important;
+    border-color: $ff-border-accent !important;
+  }
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  border-radius: $ff-radius-md;
+  border: 1px solid $ff-border-default;
+  box-shadow: $ff-shadow-card;
+}
+
+table { width: 100%; border-collapse: collapse; background: $ff-bg-surface; }
+
+.action-column { display: flex; }
+
+.gray-icon-btn {
+  color: $ff-text-secondary !important;
+  transition: background 0.18s ease !important;
+
+  &:hover {
+    background: $ff-bg-hover !important;
+    border-radius: $ff-radius-sm !important;
+    color: $ff-text-primary !important;
+  }
+}
+
+.stock-badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 99px;
+  font-size: 12px;
+  font-weight: 600;
+
+  &.ok   { background: rgba(34,197,94,0.12); color: #22c55e; }
+  &.low  { background: rgba(234,179,8,0.12);  color: #ca8a04; }
+  &.out  { background: rgba(239,68,68,0.12);  color: #ef4444; }
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 99px;
+  font-size: 12px;
+  font-weight: 600;
+
+  &.active   { background: rgba(34,197,94,0.12); color: #22c55e; }
+  &.inactive { background: rgba(156,163,175,0.12); color: #9ca3af; }
+}
+
+.pagination { margin-top: 12px; }
+
+.no-data {
+  text-align: left;
+  padding: 16px !important;
+  font-style: italic;
+  color: $ff-text-dim !important;
+  background: $ff-bg-surface !important;
+  font-size: 13.5px !important;
+}
+
+::ng-deep {
+  .mat-mdc-table {
+    background: $ff-bg-surface !important;
+    width: 100%;
+
+    .mat-mdc-header-row { background: $ff-bg-elevated !important; }
+
+    th.mat-mdc-header-cell {
+      background: $ff-bg-elevated !important;
+      color: $ff-text-primary !important;
+      font-size: 11px !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.6px !important;
+      text-transform: uppercase !important;
+      border-bottom: 1px solid $ff-border-default !important;
+      padding: 12px 16px !important;
+    }
+
+    .mat-mdc-row {
+      background: $ff-bg-surface !important;
+      border-bottom: 1px solid $ff-border-default !important;
+      transition: background 0.18s ease;
+
+      &:hover { background: $ff-bg-hover !important; }
+      &:last-child td { border-bottom: none !important; }
+    }
+
+    .mdc-data-table__row:last-child .mdc-data-table__cell { border-bottom: none !important; }
+
+    td.mat-mdc-cell {
+      color: $ff-text-secondary !important;
+      border-bottom: 1px solid $ff-border-default !important;
+      padding: 12px 16px !important;
+      font-size: 13.5px !important;
+      background: transparent !important;
+    }
+  }
+
+  .mat-mdc-paginator {
+    background: $ff-bg-elevated !important;
+    color: $ff-text-secondary !important;
+    border-top: 1px solid $ff-border-default !important;
+    font-size: 12px !important;
+
+    .mat-mdc-icon-button {
+      color: $ff-text-secondary !important;
+      svg { fill: $ff-text-secondary !important; }
+      &:hover { background: $ff-bg-hover !important; svg { fill: $ff-text-primary !important; } }
+    }
+
+    .mat-mdc-paginator-range-label,
+    .mat-mdc-paginator-page-size-label { color: $ff-text-secondary !important; }
+
+    .mat-mdc-select {
+      background: $ff-bg-input !important;
+      border: 1px solid $ff-border-default !important;
+      border-radius: $ff-radius-sm !important;
+      padding: 2px 6px !important;
+
+      .mat-mdc-select-value,
+      .mat-mdc-select-arrow { color: $ff-text-primary !important; }
+      .mat-mdc-select-arrow svg { fill: $ff-text-secondary !important; }
+    }
+
+    .mat-mdc-form-field-subscript-wrapper, .mdc-line-ripple,
+    .mat-mdc-form-field-focus-overlay, .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch, .mdc-notched-outline__trailing,
+    .mdc-notched-outline, .mat-mdc-form-field-bottom-align {
+      display: none !important;
+      border: none !important;
+    }
+
+    .mat-mdc-form-field { border: none !important; box-shadow: none !important; background: transparent !important; }
+    .mat-mdc-text-field-wrapper {
+      border: none !important;
+      box-shadow: none !important;
+      background: transparent !important;
+      padding: 5px 10px 5px 5px !important;
+    }
+  }
+}

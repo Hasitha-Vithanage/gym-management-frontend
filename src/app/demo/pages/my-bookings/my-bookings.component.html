@@ -1,0 +1,131 @@
+<div class="page-wrapper">
+
+  <!-- Header -->
+  <div class="page-header">
+    <h2 class="page-title">
+      <img src="../../../../assets/images/icon/icons8-event-24.png"/>
+      My Bookings
+    </h2>
+    <button class="action-btn" (click)="goToBookClass()">
+      <img src="../../../../assets/images/icon/add-circle-15.png"/>
+      Book a Class
+    </button>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs-row">
+    <button class="tab-btn" [class.active]="activeTab === 'upcoming'" (click)="activeTab = 'upcoming'">
+      Upcoming
+      <span class="tab-count">{{ upcomingBookings.length }}</span>
+    </button>
+    <button class="tab-btn" [class.active]="activeTab === 'past'" (click)="activeTab = 'past'">
+      Past
+      <span class="tab-count">{{ pastBookings.length }}</span>
+    </button>
+  </div>
+
+  <!-- Skeleton -->
+  <div *ngIf="isLoading" class="skeleton-list">
+    <div class="skeleton-card" *ngFor="let i of [1,2,3]"></div>
+  </div>
+
+  <!-- ── UPCOMING TAB ─────────────────────────────────────────────────────── -->
+  <ng-container *ngIf="!isLoading && activeTab === 'upcoming'">
+
+    <div *ngIf="upcomingBookings.length === 0" class="empty-state">
+      <img src="../../../../assets/images/icon/icons8-today-50.png"/>
+      <p>No upcoming bookings. Browse available classes and secure your spot!</p>
+      <button class="empty-action-btn" (click)="goToBookClass()">Browse Classes</button>
+    </div>
+
+    <div class="bookings-list" *ngIf="upcomingBookings.length > 0">
+      <div class="booking-card" *ngFor="let b of upcomingBookings">
+
+        <div class="card-top">
+          <span class="type-badge {{ getTypeClass(b.classType) }}">{{ b.classType }}</span>
+          <span class="booking-status-badge {{ getBookingStatusClass(b.bookingStatus) }}">
+            ● {{ b.bookingStatus | titlecase }}
+          </span>
+        </div>
+
+        <h3 class="class-title">{{ b.classTitle }}</h3>
+
+        <div class="class-details">
+          <div class="detail-row">
+            <img src="../../../../assets/images/icon/icons8-event-15-1.png"/>
+            <span>{{ formatDate(b.classDate) }}</span>
+          </div>
+          <div class="detail-row">
+            <img src="../../../../assets/images/icon/icons8-clock-16.png"/>
+            <span>{{ formatTime(b.startTime) }} – {{ formatTime(b.endTime) }}</span>
+          </div>
+          <div class="detail-row">
+            <img src="../../../../assets/images/icon/icons8-person-16.png"/>
+            <span>{{ b.conductorName }}</span>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <span class="booked-on">Booked on {{ formatDate(b.bookedDate) }}</span>
+          <button class="cancel-btn" *ngIf="canCancel(b)" (click)="onCancelBooking(b)">
+            <img src="../../../../assets/images/icon/icons8-cancel-20.png"/>
+            Cancel Booking
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+  </ng-container>
+
+  <!-- ── PAST TAB ─────────────────────────────────────────────────────────── -->
+  <ng-container *ngIf="!isLoading && activeTab === 'past'">
+
+    <div *ngIf="pastBookings.length === 0" class="empty-state">
+      <img src="../../../../assets/images/icon/icons8-history-50.png"/>
+      <p>No past bookings found.</p>
+    </div>
+
+    <div class="bookings-list" *ngIf="pastBookings.length > 0">
+      <div class="booking-card past" *ngFor="let b of pastBookings">
+
+        <div class="card-top">
+          <span class="type-badge {{ getTypeClass(b.classType) }}">{{ b.classType }}</span>
+          <div class="badge-group">
+            <span class="booking-status-badge {{ getBookingStatusClass(b.bookingStatus) }}">
+              ● {{ b.bookingStatus | titlecase }}
+            </span>
+            <span class="class-status-badge {{ getClassStatusClass(b.classStatus) }}"
+                  *ngIf="b.classStatus !== 'Scheduled'">
+              {{ b.classStatus }}
+            </span>
+          </div>
+        </div>
+
+        <h3 class="class-title">{{ b.classTitle }}</h3>
+
+        <div class="class-details">
+          <div class="detail-row">
+            <img src="../../../../assets/images/icon/icons8-event-15-1.png"/>
+            <span>{{ formatDate(b.classDate) }}</span>
+          </div>
+          <div class="detail-row">
+            <img src="../../../../assets/images/icon/icons8-clock-16.png"/>
+            <span>{{ formatTime(b.startTime) }} – {{ formatTime(b.endTime) }}</span>
+          </div>
+          <div class="detail-row">
+            <img src="../../../../assets/images/icon/icons8-person-16.png"/>
+            <span>{{ b.conductorName }}</span>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <span class="booked-on">Booked on {{ formatDate(b.bookedDate) }}</span>
+        </div>
+
+      </div>
+    </div>
+
+  </ng-container>
+
+</div>

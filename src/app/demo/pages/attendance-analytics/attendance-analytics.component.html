@@ -1,0 +1,231 @@
+<div class="analytics-page">
+
+  <div class="page-header">
+    <h2 class="form-title">
+      <img src="../../../../assets/images/icon/icons8-analytics-24.png" class="sec-icon-img">
+      Attendance Analytics
+    </h2>
+    <div class="header-actions">
+      <button mat-stroked-button class="dl-btn" (click)="downloadReport()"
+              [disabled]="isDownloading || (isLoading && isPeakLoading && isAtRiskLoading)">
+        <span class="pdf-icon-wrap">
+          <img src="../../../../assets/images/icon/icons8-pdf-16%20(1).png" class="pdf-icon pdf-icon-default" alt="PDF">
+          <img src="../../../../assets/images/icon/icons8-pdf-16.png" class="pdf-icon pdf-icon-hover" alt="PDF">
+        </span>
+        {{ isDownloading ? 'Generating…' : 'Download Report' }}
+      </button>
+    </div>
+  </div>
+
+  <ng-template #reportContent let-daily="daily" let-peak="peak">
+
+  <!-- ─── KPI CARDS ──────────────────────────────────────────────────── -->
+  <div class="row g-3 mb-4">
+
+    <div class="col-xl-3 col-md-6">
+      <div class="stat-card">
+        <div class="stat-icon green">
+          <img src="../../../../assets/images/icon/icons8-today-20.png">
+        </div>
+        <div class="stat-body">
+          <p class="stat-label">Today's Check-ins</p>
+          <h4 class="stat-value" *ngIf="!isLoading">{{ todayCount }}</h4>
+          <div class="skeleton-line" *ngIf="isLoading"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+      <div class="stat-card">
+        <div class="stat-icon orange">
+          <img src="../../../../assets/images/icon/icons8-event-20.png">
+        </div>
+        <div class="stat-body">
+          <p class="stat-label">{{ monthNames[displayMonth - 1] }} Total</p>
+          <h4 class="stat-value" *ngIf="!isLoading">{{ thisMonthTotal }}</h4>
+          <div class="skeleton-line" *ngIf="isLoading"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+      <div class="stat-card">
+        <div class="stat-icon blue">
+          <img src="../../../../assets/images/icon/icons8-history-19.png">
+        </div>
+        <div class="stat-body">
+          <p class="stat-label">Last Month Total</p>
+          <h4 class="stat-value" *ngIf="!isLoading">{{ lastMonthTotal }}</h4>
+          <div class="skeleton-line" *ngIf="isLoading"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+      <div class="stat-card">
+        <div class="stat-icon red">
+          <img src="../../../../assets/images/icon/icons8-warning-20.png">
+        </div>
+        <div class="stat-body">
+          <p class="stat-label">At-Risk Members</p>
+          <h4 class="stat-value" [class.red-value]="atRiskMembers.length > 0" *ngIf="!isAtRiskLoading">
+            {{ atRiskMembers.length }}
+          </h4>
+          <div class="skeleton-line" *ngIf="isAtRiskLoading"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ─── DAILY CHECK-INS CHART ─────────────────────────────────────── -->
+  <div class="section-card mb-4">
+
+    <div class="section-header">
+      <img src="../../../../assets/images/icon/icons8-bar-chart-16-orange.png" class="section-icon">
+      <div>
+        <h5 class="section-title">Daily Check-ins</h5>
+        <p class="section-sub">Number of members who checked in each day</p>
+      </div>
+    </div>
+
+    <div class="month-nav">
+      <button class="nav-btn" (click)="prevMonth()" [disabled]="isLoading">
+        <img src="../../../../assets/images/icon/icons8-chevron-left-13.png">
+      </button>
+      <h5 class="month-title">{{ monthNames[displayMonth - 1] }} {{ displayYear }}</h5>
+      <button class="nav-btn" (click)="nextMonth()" [disabled]="isCurrentMonth || isLoading">
+        <img src="../../../../assets/images/icon/icons8-chevron-right-13.png">
+      </button>
+    </div>
+
+    <div class="chart-loading" *ngIf="isLoading">
+      <mat-spinner diameter="36" color="accent"></mat-spinner>
+    </div>
+
+    <apx-chart *ngIf="!isLoading && daily"
+      [series]="daily.series"
+      [chart]="daily.chart"
+      [plotOptions]="daily.plotOptions"
+      [colors]="daily.colors"
+      [dataLabels]="daily.dataLabels"
+      [xaxis]="daily.xaxis"
+      [yaxis]="daily.yaxis"
+      [grid]="daily.grid"
+      [tooltip]="daily.tooltip">
+    </apx-chart>
+
+    <div class="chip-row" *ngIf="!isLoading">
+      <span class="chip orange">
+        <img src="../../../../assets/images/icon/icons8-fire-13.png"> Busiest Day: {{ peakDayLabel }}
+      </span>
+      <span class="chip blue">
+        <img src="../../../../assets/images/icon/icons8-chart-arrow-rise-13.png"> Daily Avg: {{ avgDaily }}
+      </span>
+      <span class="chip green">
+        <img src="../../../../assets/images/icon/icons8-today-13.png"> Active Days: {{ activeDays }}
+      </span>
+    </div>
+
+  </div>
+
+  <!-- ─── PEAK HOURS CHART ───────────────────────────────────────────── -->
+  <div class="section-card mb-4">
+
+    <div class="section-header">
+      <img src="../../../../assets/images/icon/icons8-clock-24 (1).png">
+      <div>
+        <h5 class="section-title">Peak Check-in Hours</h5>
+        <p class="section-sub">All-time distribution of when members arrive</p>
+      </div>
+      <div class="ms-auto" *ngIf="!isPeakLoading && peakHourLabel !== '—'">
+        <span class="chip orange">
+          <img src="../../../../assets/images/icon/icons8-fire-13.png"> Peak Hour: {{ peakHourLabel }}
+        </span>
+      </div>
+    </div>
+
+    <div class="chart-loading" *ngIf="isPeakLoading">
+      <mat-spinner diameter="36" color="accent"></mat-spinner>
+    </div>
+
+    <apx-chart *ngIf="!isPeakLoading && peak"
+      [series]="peak.series"
+      [chart]="peak.chart"
+      [plotOptions]="peak.plotOptions"
+      [colors]="peak.colors"
+      [dataLabels]="peak.dataLabels"
+      [xaxis]="peak.xaxis"
+      [yaxis]="peak.yaxis"
+      [grid]="peak.grid"
+      [tooltip]="peak.tooltip">
+    </apx-chart>
+
+  </div>
+
+  <!-- ─── AT-RISK MEMBERS TABLE ─────────────────────────────────────── -->
+  <div class="section-card">
+
+    <div class="section-header">
+      <img src="../../../../assets/images/icon/icons8-layoff-24.png">
+      <div>
+        <h5 class="section-title">At-Risk Members</h5>
+        <p class="section-sub">Members who haven't checked in for {{ atRiskDays }}+ days</p>
+      </div>
+    </div>
+
+    <div class="chart-loading" *ngIf="isAtRiskLoading">
+      <mat-spinner diameter="36" color="accent"></mat-spinner>
+    </div>
+
+    <ng-container *ngIf="!isAtRiskLoading">
+
+      <div class="empty-state" *ngIf="atRiskMembers.length === 0">
+        <mat-icon class="empty-icon">check_circle</mat-icon>
+        <p>All members are active — no one is at risk!</p>
+      </div>
+
+      <div class="table-wrapper" *ngIf="atRiskMembers.length > 0">
+        <table class="risk-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Member ID</th>
+              <th>Name</th>
+              <th>Last Visit</th>
+              <th>Days Inactive</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let m of atRiskMembers; let i = index">
+              <td class="index-cell">{{ i + 1 }}</td>
+              <td class="member-no-cell">{{ m.memberNo }}</td>
+              <td class="name-cell">{{ m.memberName }}</td>
+              <td class="date-cell">{{ formatDate(m.lastVisit) }}</td>
+              <td class="days-cell">
+                <span class="days-badge" [class.danger]="m.daysInactive > 20">
+                  {{ m.daysInactive }} days
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </ng-container>
+
+  </div>
+
+  </ng-template>
+
+  <div>
+    <ng-container *ngTemplateOutlet="reportContent; context: { daily: dailyChartOptions, peak: peakChartOptions }"></ng-container>
+  </div>
+
+  <!-- Off-screen light-themed clone, captured for the PDF instead of the live
+       (dark) content above, so the visible page never flashes during download. -->
+  <div #pdfContent class="pdf-export-light pdf-hidden-capture">
+    <ng-container *ngTemplateOutlet="reportContent; context: { daily: dailyChartOptionsLight, peak: peakChartOptionsLight }"></ng-container>
+  </div>
+
+</div>

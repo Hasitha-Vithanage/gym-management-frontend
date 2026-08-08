@@ -1,0 +1,305 @@
+@import 'src/scss/settings/colors';
+
+:host {
+  display: block;
+  font-family: $ff-font;
+  background: $ff-bg-base;
+  color: $ff-text-primary;
+  min-height: 100vh;
+}
+
+.attendance-page {
+  padding: 24px 28px;
+}
+
+// ─── PAGE TITLE ─────────────────────────────────────────────────────────────
+.form-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  color: $ff-text-primary;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  .title-icon {
+    font-size: 24px;
+    color: $ff-accent-primary;
+  }
+}
+
+// ─── STAT CARDS ─────────────────────────────────────────────────────────────
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: $ff-bg-surface;
+  border: 1px solid $ff-border-default;
+  border-radius: $ff-radius-md;
+  padding: 20px 22px;
+  box-shadow: $ff-shadow-card;
+}
+
+.stat-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: $ff-radius-sm;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  mat-icon { font-size: 22px; width: 22px; height: 22px; }
+
+  &.green { background: rgba(34, 197, 94, 0.12); color: #22C55E; }
+  &.orange { background: rgba(255, 107, 0, 0.12); color: $ff-accent-primary; }
+  &.blue  { background: rgba(59, 130, 246, 0.12); color: #3B82F6; }
+}
+
+.stat-body {
+  min-width: 0;
+
+  .stat-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: $ff-text-secondary;
+    margin: 0 0 6px;
+  }
+
+  .stat-value {
+    font-size: 22px;
+    font-weight: 800;
+    color: $ff-text-primary;
+    margin: 0;
+    line-height: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    &.small { font-size: 14px; font-weight: 600; white-space: normal; line-height: 1.3; }
+  }
+}
+
+.skeleton-line {
+  width: 80px;
+  height: 24px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, $ff-bg-elevated 25%, $ff-bg-hover 50%, $ff-bg-elevated 75%);
+  background-size: 800px 100%;
+  animation: shimmer 1.4s infinite linear;
+}
+
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position:  400px 0; }
+}
+
+// ─── SECTION CARD ───────────────────────────────────────────────────────────
+.section-card {
+  background: $ff-bg-surface;
+  border: 1px solid $ff-border-default;
+  border-radius: $ff-radius-lg;
+  padding: 26px 28px;
+  box-shadow: $ff-shadow-card;
+}
+
+.section-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 20px;
+
+  .section-icon {
+    font-size: 26px;
+    width: 26px;
+    height: 26px;
+    color: $ff-accent-primary;
+    margin-top: 2px;
+  }
+
+  .section-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: $ff-text-primary;
+    margin: 0 0 4px;
+  }
+
+  .section-sub {
+    font-size: 13px;
+    color: $ff-text-secondary;
+    margin: 0;
+  }
+}
+
+// ─── MONTH NAVIGATOR ────────────────────────────────────────────────────────
+.month-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.month-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: $ff-text-primary;
+  margin: 0;
+  min-width: 180px;
+  text-align: center;
+}
+
+.nav-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid $ff-border-default;
+  background: $ff-bg-elevated;
+  color: $ff-text-primary;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+
+  mat-icon { font-size: 20px; width: 20px; height: 20px; }
+
+  &:hover:not(:disabled) {
+    background: $ff-accent-primary;
+    border-color: $ff-accent-primary;
+    color: #fff;
+  }
+
+  &:disabled { opacity: 0.35; cursor: not-allowed; }
+}
+
+// ─── CALENDAR ───────────────────────────────────────────────────────────────
+.calendar-wrapper {
+  max-width: 850px;
+  margin: 0 auto;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 9px;
+  margin-bottom: 9px;
+}
+
+.day-header {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: $ff-text-secondary;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 4px 0 10px;
+}
+
+.day-cell {
+  height: 100px;
+  border-radius: $ff-radius-sm;
+  border: 1px solid $ff-border-default;
+  background: $ff-bg-elevated;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  transition: background 0.15s, border-color 0.15s;
+
+  &.empty {
+    background: transparent;
+    border-color: transparent;
+  }
+
+  &.future {
+    opacity: 0.3;
+  }
+
+  &.today {
+    border-color: $ff-accent-primary;
+    background: rgba(255, 107, 0, 0.08);
+
+    .day-number { color: $ff-accent-primary; font-weight: 800; }
+  }
+
+  &.attended {
+    background: rgba(34, 197, 94, 0.12);
+    border-color: rgba(34, 197, 94, 0.45);
+
+    .day-number { color: #22C55E; font-weight: 800; }
+  }
+}
+
+.day-number {
+  font-size: 15px;
+  font-weight: 600;
+  color: $ff-text-secondary;
+  line-height: 1;
+}
+
+.check-time {
+  font-size: 10px;
+  font-weight: 600;
+  color: #22C55E;
+  letter-spacing: 0.2px;
+  line-height: 1;
+  opacity: 0.9;
+}
+
+.today-pill {
+  font-size: 9px;
+  font-weight: 700;
+  color: $ff-accent-primary;
+  letter-spacing: 0.4px;
+  background: rgba(255, 107, 0, 0.15);
+  padding: 2px 6px;
+  border-radius: 3px;
+  line-height: 1;
+}
+
+// ─── LEGEND ─────────────────────────────────────────────────────────────────
+.legend {
+  display: flex;
+  gap: 20px;
+  margin-top: 18px;
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  color: $ff-text-secondary;
+}
+
+.legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  border: 1px solid;
+
+  &.attended  { background: rgba(34, 197, 94, 0.15); border-color: rgba(34, 197, 94, 0.5); }
+  &.today     { background: rgba(255, 107, 0, 0.08); border-color: $ff-accent-primary; }
+  &.missed    { background: $ff-bg-elevated; border-color: $ff-border-default; }
+}
+
+// ─── CALENDAR LOADING ───────────────────────────────────────────────────────
+.calendar-loading {
+  display: flex;
+  justify-content: center;
+  padding: 48px 0;
+}
+
+// ─── RESPONSIVE ─────────────────────────────────────────────────────────────
+@media (max-width: 768px) {
+  .attendance-page { padding: 14px 12px; }
+  .day-cell { height: 54px; gap: 3px; }
+  .day-number { font-size: 12px; }
+  .check-time { font-size: 9px; }
+  .today-pill { font-size: 8px; }
+}

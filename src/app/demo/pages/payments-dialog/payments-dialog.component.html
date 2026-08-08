@@ -1,0 +1,68 @@
+<div class="form-section">
+  <div class="title">
+    <h2 class="form-title">Add Payment</h2>
+    <button class="close-light" (click)="closeDialog()">&#x2715;</button>
+  </div>
+
+  <form [formGroup]="paymentForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="half-width">
+        <label for="member">Select Member <span class="required">*</span></label>
+        <select id="member" formControlName="member">
+          <option value="" disabled>-- Select Member --</option>
+          <option *ngFor="let member of memberList" [value]="member.firstName">{{ member.firstName }} {{ member.lastName }}</option>
+        </select>
+        <span class="required-message" *ngIf="submitted && paymentForm.get('member').invalid">
+          <ng-container *ngIf="paymentForm.get('member').hasError('required')">Member is required</ng-container>
+        </span>
+      </div>
+
+      <div class="half-width">
+        <label for="amount">Amount <span class="required">*</span></label>
+        <input id="amount" type="number" placeholder="Enter payment amount" formControlName="amount" />
+        <span class="required-message" *ngIf="submitted && paymentForm.get('amount').invalid">
+          <ng-container *ngIf="paymentForm.get('amount').hasError('required')">Amount is required</ng-container>
+        </span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="half-width">
+        <label for="status">Status <span class="required">*</span></label>
+        <select id="status" formControlName="status">
+          <option value="" disabled>-- Select Status --</option>
+          <option value="Paid">Paid</option>
+          <option value="Unpaid">Unpaid</option>
+        </select>
+        <span class="required-message" *ngIf="submitted && paymentForm.get('status').invalid">
+          <ng-container *ngIf="paymentForm.get('status').hasError('required')">Status is required</ng-container>
+        </span>
+      </div>
+
+      <div class="half-width">
+        <label for="paymentDate">Paid Date <span class="required">*</span></label>
+        <input id="paymentDate" type="date" formControlName="paymentDate" />
+        <span class="required-message" *ngIf="submitted && paymentForm.get('paymentDate').invalid">
+          <ng-container *ngIf="paymentForm.get('paymentDate').hasError('required')">Payment date is required</ng-container>
+          <ng-container *ngIf="paymentForm.get('paymentDate').hasError('futureDate')">Payment date cannot be in the future</ng-container>
+        </span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="half-width">
+        <label for="nextPaymentDate">Next Payment Date <span class="required">*</span></label>
+        <input id="nextPaymentDate" type="date" formControlName="nextPaymentDate" />
+        <span class="required-message" *ngIf="submitted && paymentForm.get('nextPaymentDate').invalid">
+          <ng-container *ngIf="paymentForm.get('nextPaymentDate').hasError('required')">Next payment date is required</ng-container>
+          <ng-container *ngIf="paymentForm.get('nextPaymentDate').hasError('pastDate')">Next payment date cannot be in the past</ng-container>
+        </span>
+      </div>
+    </div>
+
+    <div class="row">
+      <button type="submit" class="register-button half-width" [disabled]="submitDisabled">{{ registerButtonLabel }}</button>
+      <button type="button" class="reset-button half-width" (click)="resetData()">Reset</button>
+    </div>
+  </form>
+</div>

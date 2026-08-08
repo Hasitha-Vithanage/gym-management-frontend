@@ -1,0 +1,261 @@
+@import 'src/scss/settings/colors';
+
+::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.form-section {
+  width: 700px;
+  max-height: 80vh;
+  background: $ff-bg-elevated;
+  border-radius: $ff-radius-md;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: $ff-font;
+  box-shadow: $ff-shadow-card;
+}
+
+.dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 24px;
+  border-bottom: 1px solid $ff-border-default;
+  flex-shrink: 0;
+}
+
+.header-title-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-icon {
+  font-size: 26px;
+  width: 26px;
+  height: 26px;
+  color: $ff-accent-primary;
+  flex-shrink: 0;
+}
+
+.form-title {
+  margin: 0 0 2px;
+  font-size: 17px;
+  font-weight: 700;
+  color: $ff-text-primary;
+  letter-spacing: 0.2px;
+}
+
+.dialog-sub {
+  margin: 0;
+  font-size: 12px;
+  color: $ff-text-secondary;
+}
+
+.close-btn {
+  background: transparent;
+  border: none;
+  color: $ff-text-dim;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: $ff-radius-sm;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+
+  &:hover { background: $ff-bg-input; color: $ff-text-primary; }
+
+  mat-icon { font-size: 18px; width: 18px; height: 18px; }
+}
+
+form {
+  padding: 20px 24px;
+  overflow-y: auto;
+}
+
+.row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.half-width {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.full-width {
+  flex: 1 1 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-size: 13px;
+  font-weight: 600;
+  color: $ff-text-secondary;
+  margin-bottom: 6px;
+}
+
+.required {
+  color: $ff-danger;
+  margin-left: 2px;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"] {
+  height: 38px;
+  padding: 0 10px;
+  border-radius: $ff-radius-sm;
+  border: 1px solid $ff-border-default;
+  background: $ff-bg-input;
+  font-size: 14px;
+  color: $ff-text-primary;
+  font-family: $ff-font;
+  box-sizing: border-box;
+  width: 100%;
+  transition: border-color 0.2s ease, background 0.2s ease;
+
+  &::placeholder {
+    color: $ff-text-dim;
+  }
+
+  &:focus {
+    border-color: $ff-border-accent;
+    background: $ff-bg-elevated;
+    outline: none;
+  }
+
+  &:disabled,
+  &[readonly] {
+    color: $ff-text-secondary;
+    cursor: default;
+    opacity: 0.7;
+  }
+}
+
+input[type="date"] {
+  color-scheme: dark;
+}
+
+select {
+  height: 38px;
+  padding: 0 10px;
+  border-radius: $ff-radius-sm;
+  border: 1px solid $ff-border-default;
+  background: $ff-bg-input;
+  font-size: 14px;
+  color: $ff-text-primary;
+  font-family: $ff-font;
+  appearance: none;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%239BA3B8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-color: $ff-bg-input;
+  padding-right: 32px;
+  box-sizing: border-box;
+  width: 100%;
+  transition: border-color 0.2s ease, background 0.2s ease;
+
+  &:focus {
+    border-color: $ff-border-accent;
+    background: $ff-bg-elevated;
+    outline: none;
+  }
+
+  option {
+    background: $ff-bg-surface;
+    color: $ff-text-primary;
+  }
+}
+
+.hint-message {
+  color: $ff-text-dim;
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
+}
+
+.required-message {
+  color: $ff-danger;
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
+}
+
+textarea {
+  padding: 8px 10px;
+  min-height: 72px;
+  border-radius: $ff-radius-sm;
+  border: 1px solid $ff-border-default;
+  background: $ff-bg-input;
+  font-size: 14px;
+  color: $ff-text-primary;
+  font-family: $ff-font;
+  box-sizing: border-box;
+  width: 100%;
+  resize: vertical;
+  transition: border-color 0.2s ease, background 0.2s ease;
+
+  &::placeholder {
+    color: $ff-text-dim;
+  }
+
+  &:focus {
+    border-color: $ff-border-accent;
+    background: $ff-bg-elevated;
+    outline: none;
+  }
+}
+
+.submit-button {
+  height: 38px;
+  border-radius: $ff-radius-sm;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: $ff-accent-primary;
+  color: #fff;
+  font-family: $ff-font;
+
+  &:hover:not(:disabled) {
+    background: $ff-accent-hover;
+    box-shadow: $ff-shadow-orange;
+    transform: translateY(-1px);
+  }
+
+  &:disabled {
+    background: $ff-bg-elevated;
+    color: $ff-text-dim;
+    cursor: not-allowed;
+  }
+}
+
+.close-button {
+  height: 38px;
+  border-radius: $ff-radius-sm;
+  font-size: 14px;
+  font-weight: 600;
+  border: 1px solid $ff-border-default;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: $ff-bg-elevated;
+  color: $ff-text-secondary;
+  font-family: $ff-font;
+
+  &:hover {
+    background: $ff-bg-hover;
+    border-color: $ff-border-accent;
+    color: $ff-text-primary;
+  }
+}

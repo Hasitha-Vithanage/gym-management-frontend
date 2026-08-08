@@ -1,0 +1,255 @@
+@import 'src/scss/settings/colors';
+
+/* Dialog Container Fix */
+::ng-deep .mat-mdc-dialog-container {
+  --mdc-dialog-container-color: #{$ff-bg-surface};
+  border-radius: $ff-radius-md !important;
+
+  .mdc-dialog__surface {
+    background: $ff-bg-surface !important;
+    border-radius: $ff-radius-md !important;
+    overflow: hidden;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+}
+
+/* Dialog wrapper fills the dialog and stacks tables + buttons */
+.add-remove-dialog {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Layout */
+.row {
+  display: flex;
+  align-items: stretch;
+  gap: 12px;
+  padding: 12px;
+}
+
+/* Tables row takes all available space and scrolls internally */
+.row.tables-row {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Buttons row always visible at the bottom */
+.row.actions-row {
+  flex-shrink: 0;
+}
+
+/* Table Card Panels */
+.col-md-5,
+.col-md-6 {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  background: $ff-bg-surface;
+  border: 1px solid $ff-border-default;
+  border-radius: $ff-radius-md;
+  overflow-y: auto;
+  box-shadow: $ff-shadow-card;
+}
+
+/* Toolbar Header */
+mat-toolbar {
+  background: $ff-bg-elevated !important;
+  color: $ff-text-primary !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  height: 48px !important;
+  border-bottom: 1px solid $ff-border-default !important;
+  border-radius: $ff-radius-md $ff-radius-md 0 0 !important;
+  border: none !important;
+  letter-spacing: 0.2px;
+}
+
+/* Transfer Buttons Column */
+.col-sm-1 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 0 4px;
+
+  button.btn {
+    width: 40px;
+    height: 36px;
+    background: $ff-bg-elevated;
+    color: $ff-text-primary;
+    border: 1px solid $ff-border-default;
+    border-radius: $ff-radius-sm !important;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      background: $ff-accent-primary;
+      border-color: $ff-accent-primary;
+      box-shadow: $ff-shadow-orange;
+      transform: translateY(-1px);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+}
+
+/* Action Buttons Row */
+.btn-group {
+  display: flex;
+  gap: 10px;
+  padding: 4px 12px 12px;
+
+  // Reset Bootstrap's btn-group border-radius overrides
+  > .btn {
+    flex: 1;
+    border-radius: $ff-radius-sm !important;
+
+    &:first-child,
+    &:last-child,
+    &:not(:first-child),
+    &:not(:last-child) {
+      border-radius: $ff-radius-sm !important;
+    }
+  }
+}
+
+/* Base Button */
+.btn {
+  height: 38px;
+  padding: 0 24px;
+  border-radius: $ff-radius-sm !important;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+  letter-spacing: 0.3px;
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Save */
+  &.primary {
+    background: $ff-accent-primary;
+    color: #fff;
+
+    &:hover:not(:disabled) {
+      background: $ff-accent-hover;
+      box-shadow: $ff-shadow-orange;
+      transform: translateY(-1px);
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0);
+    }
+  }
+
+  /* Reset */
+  &.danger {
+    background: $ff-danger;
+    color: #fff;
+    border: none;
+
+    &:hover:not(:disabled) {
+      background: #DC2626;
+      box-shadow: 0 6px 16px rgba(239, 68, 68, 0.28);
+      transform: translateY(-1px);
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0);
+    }
+  }
+
+  /* Close */
+  &.secondary {
+    background: $ff-bg-elevated;
+    border: 1px solid $ff-border-default;
+    color: $ff-text-secondary;
+
+    &:hover:not(:disabled) {
+      background: $ff-bg-hover;
+      border-color: $ff-border-accent;
+      color: $ff-text-primary;
+    }
+  }
+}
+
+/* Material Table Overrides */
+::ng-deep {
+  .mat-elevation-z8 {
+    box-shadow: none !important;
+    background: $ff-bg-surface !important;
+    width: 100%;
+
+    .mat-mdc-header-row {
+      background: $ff-bg-elevated !important;
+    }
+
+    th.mat-mdc-header-cell {
+      background: $ff-bg-elevated !important;
+      color: $ff-text-secondary !important;
+      font-size: 11px !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.6px !important;
+      text-transform: uppercase !important;
+      border-bottom: 1px solid $ff-border-default !important;
+      padding: 12px 16px !important;
+    }
+
+    .mat-mdc-row {
+      background: $ff-bg-surface !important;
+      border-bottom: 1px solid $ff-border-default !important;
+      transition: background 0.18s ease;
+      cursor: pointer;
+
+      &:hover {
+        background: $ff-bg-hover !important;
+      }
+
+      &:last-child td {
+        border-bottom: none !important;
+      }
+    }
+
+    .mdc-data-table__row:last-child .mdc-data-table__cell {
+      border-bottom: none !important;
+    }
+
+    td.mat-mdc-cell {
+      color: $ff-text-secondary !important;
+      border-bottom: 1px solid $ff-border-default !important;
+      padding: 12px 16px !important;
+      font-size: 13.5px !important;
+      background: transparent !important;
+    }
+
+    .mat-mdc-checkbox {
+      .mdc-checkbox__background {
+        border-color: $ff-border-default !important;
+      }
+
+      &.mat-mdc-checkbox-checked .mdc-checkbox__background {
+        background: $ff-accent-primary !important;
+        border-color: $ff-accent-primary !important;
+      }
+    }
+  }
+}

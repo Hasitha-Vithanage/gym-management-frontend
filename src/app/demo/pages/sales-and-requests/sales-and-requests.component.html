@@ -1,0 +1,95 @@
+<div class="container">
+  <div class="table-section">
+
+    <h2 class="form-title">
+      <img src="../../../../assets/images/icon/icons8-get-cash-24.png"
+        style="margin-right:5px;height:24;width:24px" />
+      Supplement Orders
+    </h2>
+
+    <div class="toolbar">
+      <div class="table-filter">
+        <div class="search-bar">
+          <img src="../../../../assets/images/icon/search.png"
+            style="margin-right:5px;height:18px;width:18px" />
+          <input type="text" placeholder="Search by member or status..." (keyup)="applyFilter($event)" />
+        </div>
+        <button mat-icon-button class="refresh-button" (click)="refreshData()">
+          <img src="../../../../assets/images/icon/refresh.png" style="height:18px;width:18px" />
+        </button>
+      </div>
+    </div>
+
+    <div class="table-wrapper">
+      <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+        <ng-container matColumnDef="memberUsername">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Member</th>
+          <td mat-cell *matCellDef="let o">{{ o.memberUsername }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="orderDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Order Date</th>
+          <td mat-cell *matCellDef="let o">{{ o.orderDate | date:'dd MMM yyyy, h:mm a' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="itemCount">
+          <th mat-header-cell *matHeaderCellDef>Products Ordered</th>
+          <td mat-cell *matCellDef="let o">
+            <div class="product-cell">
+              <span class="product-cell-line" *ngFor="let item of (o.items ?? [])">
+                {{ item.productName }}
+                <span class="qty-chip">×{{ item.quantity }}</span>
+              </span>
+              <span class="product-cell-empty" *ngIf="!o.items || o.items.length === 0">—</span>
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="totalAmount">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Total</th>
+          <td mat-cell *matCellDef="let o">Rs. {{ o.totalAmount | number:'1.2-2' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>Status</th>
+          <td mat-cell *matCellDef="let o">
+            <span [ngClass]="{
+              'status-badge pending':   o.status === 'PENDING',
+              'status-badge completed': o.status === 'COMPLETED',
+              'status-badge cancelled': o.status === 'CANCELLED'
+            }">{{ o.status }}</span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th style="text-align:center" mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let o">
+            <div class="action-column" *ngIf="o.status === 'PENDING'; else noActions">
+              <button class="action-btn complete-btn" matTooltip="Mark Completed" (click)="completeOrder(o)">
+                Complete
+              </button>
+              <button class="action-btn cancel-btn" matTooltip="Cancel Order" (click)="cancelOrder(o)">
+                Cancel
+              </button>
+            </div>
+            <ng-template #noActions>
+              <span class="no-action">—</span>
+            </ng-template>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell no-data" [attr.colspan]="displayedColumns.length">No orders found</td>
+        </tr>
+
+      </table>
+    </div>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 25]" class="pagination"></mat-paginator>
+
+  </div>
+</div>

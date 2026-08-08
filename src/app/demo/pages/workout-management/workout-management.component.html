@@ -1,0 +1,329 @@
+<div class="page-container">
+
+  <!-- STEP 1: FORM -->
+  <ng-container *ngIf="step === 'form'">
+
+    <!-- Active-plan notice -->
+    <div class="active-plan-notice" *ngIf="activeAssignment">
+      <img src="../../../../assets/images/icon/icons8-event-24.png">
+      <div class="notice-body">
+        <strong>You have an active workout plan</strong>
+        <span>{{ activeAssignment.template?.templateName }} &mdash; active until {{ activePlanEndLabel }}.</span>
+        <a class="notice-link" routerLink="/pages/my-workout-plan">View my plan</a>
+      </div>
+      <span class="notice-replace">Submitting below will replace it.</span>
+    </div>
+
+    <!-- Left: Form Card -->
+    <div class="card form-card">
+      <div class="card-header">
+        <h2 class="card-title">Workout Plan</h2>
+        <p class="card-subtitle">Create your fitness profile to personalise your workout experience.</p>
+      </div>
+
+      <!-- Auto-fill awareness notice -->
+      <div class="prefill-notice" *ngIf="prefillSources.length > 0">
+        <img src="../../../../assets/images/icon/icons8-ai-24.png">
+        <div class="prefill-body">
+          <strong>Some fields were pre-filled for you</strong>
+          <ul class="prefill-list">
+            <li *ngIf="prefillSources.includes('profile')">
+              <img src="../../../../assets/images/icon/icons8-person-13dd.png">
+              <strong>Age</strong> and <strong>Gender</strong> were filled from your member profile.
+            </li>
+            <li *ngIf="prefillSources.includes('previous')">
+              <img src="../../../../assets/images/icon/icons8-history-13ff.png">
+              <strong>Weight</strong> and <strong>Height</strong> were filled from your previous submission.
+            </li>
+          </ul>
+          <span class="prefill-tip">Please review and update any values if they have changed.</span>
+        </div>
+      </div>
+
+      <form [formGroup]="formGroup" class="form-body">
+        <div class="grid">
+
+          <div class="field">
+            <label for="age">Age <span class="required">*</span></label>
+            <input id="age" type="number" formControlName="age" placeholder="e.g. 25"
+              [class.input-error]="isFieldInvalid('age')" />
+            <span class="error-msg" *ngIf="isFieldInvalid('age')">
+              <ng-container *ngIf="formGroup.get('age').hasError('required')">Age is required</ng-container>
+              <ng-container *ngIf="formGroup.get('age').hasError('min')">Minimum age is 10</ng-container>
+              <ng-container *ngIf="formGroup.get('age').hasError('max')">Maximum age is 100</ng-container>
+            </span>
+          </div>
+
+          <div class="field">
+            <label for="weight">Weight (kg) <span class="required">*</span></label>
+            <input id="weight" type="number" formControlName="weight" placeholder="e.g. 70"
+              [class.input-error]="isFieldInvalid('weight')" />
+            <span class="error-msg" *ngIf="isFieldInvalid('weight')">
+              <ng-container *ngIf="formGroup.get('weight').hasError('required')">Weight is required</ng-container>
+              <ng-container *ngIf="formGroup.get('weight').hasError('min')">Minimum weight is 20 kg</ng-container>
+              <ng-container *ngIf="formGroup.get('weight').hasError('max')">Maximum weight is 300 kg</ng-container>
+            </span>
+          </div>
+
+          <div class="field">
+            <label for="height">Height (cm) <span class="required">*</span></label>
+            <input id="height" type="number" formControlName="height" placeholder="e.g. 170"
+              [class.input-error]="isFieldInvalid('height')" />
+            <span class="error-msg" *ngIf="isFieldInvalid('height')">
+              <ng-container *ngIf="formGroup.get('height').hasError('required')">Height is required</ng-container>
+              <ng-container *ngIf="formGroup.get('height').hasError('min')">Minimum height is 100 cm</ng-container>
+              <ng-container *ngIf="formGroup.get('height').hasError('max')">Maximum height is 250 cm</ng-container>
+            </span>
+          </div>
+
+          <div class="field">
+            <label for="fitnessGoal">Primary Fitness Goal <span class="required">*</span></label>
+            <select id="fitnessGoal" formControlName="fitnessGoal"
+              [class.input-error]="isFieldInvalid('fitnessGoal')">
+              <option value="">Select goal</option>
+              <option value="muscle_gain">Muscle Gain</option>
+              <option value="fat_loss">Fat Loss</option>
+              <option value="strength">Strength</option>
+              <option value="endurance">Endurance</option>
+            </select>
+            <span class="error-msg" *ngIf="isFieldInvalid('fitnessGoal')">
+              Fitness goal is required
+            </span>
+          </div>
+
+          <div class="field">
+            <label for="gender">Gender <span class="required">*</span></label>
+            <select id="gender" formControlName="gender"
+              [class.input-error]="isFieldInvalid('gender')">
+              <option value="">Select gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+            <span class="error-msg" *ngIf="isFieldInvalid('gender')">
+              Gender is required
+            </span>
+          </div>
+
+          <fieldset class="field full radio-fieldset">
+            <legend class="field-label">Fitness Experience Level <span class="required">*</span></legend>
+            <div class="radio-group">
+
+              <label class="radio-card" [class.selected]="formGroup.get('experienceLevel').value === 'Beginner'">
+                <input type="radio" formControlName="experienceLevel" value="Beginner" />
+                <div class="radio-card-content">
+                  <span class="radio-card-title">Beginner</span>
+                  <span class="radio-card-desc">New to exercise or returning after a long break. Less than 6 months of consistent training.</span>
+                </div>
+              </label>
+
+              <label class="radio-card" [class.selected]="formGroup.get('experienceLevel').value === 'Intermediate'">
+                <input type="radio" formControlName="experienceLevel" value="Intermediate" />
+                <div class="radio-card-content">
+                  <span class="radio-card-title">Intermediate</span>
+                  <span class="radio-card-desc">6+ months of regular training with a solid base of fitness knowledge and exercise form.</span>
+                </div>
+              </label>
+
+              <label class="radio-card" [class.selected]="formGroup.get('experienceLevel').value === 'Advanced'">
+                <input type="radio" formControlName="experienceLevel" value="Advanced" />
+                <div class="radio-card-content">
+                  <span class="radio-card-title">Advanced</span>
+                  <span class="radio-card-desc">1+ year of consistent training with advanced knowledge of programming, form, and periodisation.</span>
+                </div>
+              </label>
+
+            </div>
+            <span class="error-msg" *ngIf="isFieldInvalid('experienceLevel')">
+              Experience level is required
+            </span>
+          </fieldset>
+
+        </div>
+
+        <div class="action-row">
+          <button type="button" class="primary-btn" (click)="proceedToConfirm()" [disabled]="isLoading">
+            {{ isLoading ? 'Loading...' : 'Next →' }}
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Right: Summary Card -->
+    <div class="card summary-card" *ngIf="formGroup.valid">
+      <h4 class="summary-title">Profile Summary</h4>
+
+      <div class="summary-list">
+        <div class="summary-item">
+          <span class="summary-label">Age</span>
+          <span class="summary-value">{{ formGroup.value.age }}</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Weight</span>
+          <span class="summary-value">{{ formGroup.value.weight }} kg</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Height</span>
+          <span class="summary-value">{{ formGroup.value.height }} cm</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Goal</span>
+          <span class="summary-value">{{ formatGoal(formGroup.value.fitnessGoal) }}</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Gender</span>
+          <span class="summary-value">{{ formGroup.value.gender }}</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Experience</span>
+          <span class="summary-value">{{ formGroup.value.experienceLevel }}</span>
+        </div>
+      </div>
+
+      <div class="goal-tip">
+        <h5>Tip for Your Goal</h5>
+        <p *ngIf="formGroup.value.fitnessGoal === 'muscle_gain'">
+          Focus on compound lifts like squats and deadlifts. Eat at a slight calorie surplus with high protein.
+        </p>
+        <p *ngIf="formGroup.value.fitnessGoal === 'fat_loss'">
+          Stay in a calorie deficit and include strength training to preserve lean mass.
+        </p>
+        <p *ngIf="formGroup.value.fitnessGoal === 'endurance'">
+          Include long-distance runs and interval cardio. Hydration and breathing control matter a lot!
+        </p>
+        <p *ngIf="formGroup.value.fitnessGoal === 'strength'">
+          Focus on progressive overload with low reps and heavy weights. Prioritise rest and recovery between sessions.
+        </p>
+      </div>
+
+      <div class="bmi-card">
+        <h5>Your BMI: <strong>{{ bmi }}</strong></h5>
+        <p class="bmi-category {{ bmiCategory | lowercase }}">{{ bmiCategory }}</p>
+        <div class="bmi-bar-track">
+          <div
+            class="bmi-bar-fill {{ bmiCategory | lowercase }}"
+            [style.width.%]="(bmi / 50) * 100 > 100 ? 100 : (bmi / 50) * 100"
+          ></div>
+        </div>
+      </div>
+    </div>
+
+  </ng-container>
+
+  <!-- STEP 2: CONFIRM -->
+  <ng-container *ngIf="step === 'confirm'">
+
+    <div class="confirm-container">
+
+      <div class="confirm-header">
+        <button class="back-btn" (click)="backToForm()">
+          <img src="../../../../assets/images/icon/back-arrow.png">
+          Back
+        </button>
+        <h2 class="confirm-title">Confirm Your Profile</h2>
+      </div>
+
+      <div class="info-grid">
+
+        <!-- User Info -->
+        <div class="info-card">
+          <div class="info-card-header">
+            <img src="../../../../assets/images/icon/icons8-person-16.png">
+            <h3 class="info-card-title">Your Information</h3>
+          </div>
+          <div class="info-card-body">
+            <div class="info-row">
+              <span class="info-label">Age</span>
+              <span class="info-value">{{ formGroup.value.age }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Weight</span>
+              <span class="info-value">{{ formGroup.value.weight }} kg</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Height</span>
+              <span class="info-value">{{ formGroup.value.height }} cm</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Fitness Goal</span>
+              <span class="info-value">{{ formatGoal(formGroup.value.fitnessGoal) }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Gender</span>
+              <span class="info-value">{{ formGroup.value.gender }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Experience Level</span>
+              <span class="info-value">{{ formGroup.value.experienceLevel }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">BMI</span>
+              <span class="info-value bmi-inline {{ bmiCategory | lowercase }}">
+                {{ bmi }} — {{ bmiCategory }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Trainer Info -->
+        <div class="info-card">
+          <div class="info-card-header">
+            <img src="../../../../assets/images/icon/icons8-workout-16asd.png">
+            <h3 class="info-card-title">Assigned Trainer</h3>
+          </div>
+          <div class="info-card-body">
+            <ng-container *ngIf="trainer; else noTrainer">
+              <div class="info-row">
+                <span class="info-label">Name</span>
+                <span class="info-value">{{ trainerDetails?.trainer }}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Email</span>
+                <span class="info-value">{{ trainer?.email }}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Contact</span>
+                <span class="info-value">{{ trainer?.phoneNumber }}</span>
+              </div>
+            </ng-container>
+            <ng-template #noTrainer>
+              <div class="no-trainer-msg">
+                <img src="../../../../assets/images/icon/icons8-user-not-found-50gg.png">
+                <p>No trainer assigned yet.</p>
+                <button class="request-trainer-btn" (click)="requestTrainer()" [disabled]="trainerRequested">
+                  <img [src]="trainerRequested ? '../../../../assets/images/icon/icons8-instagram-check-mark-20.png' : '../../../../assets/images/icon/icons8-add-user-male-20.png'" class="request-trainer-icon" alt="">
+                  {{ trainerRequested ? 'Request Sent' : 'Request a Trainer' }}
+                </button>
+                <small class="request-sent-note" *ngIf="trainerRequested">
+                  Gym management has been notified and will assign a trainer to you shortly.
+                </small>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Contextual note -->
+      <div class="plan-note" [class.intermediate]="!trainer">
+        <img [src]="trainer ? '../../../../assets/images/icon/icons8-info-20.png' : '../../../../assets/images/icon/icons8-warning-16.png'" class="plan-note-icon" alt="">
+        <p *ngIf="trainer">
+          We will match you with the best available workout template based on your profile.
+          Your trainer will also be notified and can set up a personalised plan if needed.
+        </p>
+        <p *ngIf="!trainer">
+          We will match you with the best available workout template based on your profile.
+          You have no trainer assigned — use the <strong>Request a Trainer</strong> button above to notify gym management.
+        </p>
+      </div>
+
+      <div class="confirm-action-row">
+        <button class="primary-btn" (click)="goToMyPlan()">
+          Go to My Workout Plan
+        </button>
+      </div>
+
+    </div>
+
+  </ng-container>
+
+</div>

@@ -1,0 +1,140 @@
+<div class="form-container">
+
+  <div class="form-header">
+    <h2>{{ mode === 'add' ? 'Add New Supplement' : 'Edit Supplement' }}</h2>
+    <button class="close-btn" (click)="closeDialog()">
+      <img src="../../../../../assets/images/icon/close-light.png" style="height:18px;width:18px">
+    </button>
+  </div>
+
+  <form [formGroup]="supplementForm" (ngSubmit)="onSubmit()" class="form-body">
+
+    <!-- Product Info -->
+    <h3 class="section-title">Product Info</h3>
+    <hr>
+
+    <div class="grid">
+      <div class="field full">
+        <label>Product Name <span class="required">*</span></label>
+        <input type="text" placeholder="e.g. Whey Protein Gold Standard" formControlName="productName" />
+        <span class="error" *ngIf="submitted && supplementForm.get('productName')?.invalid">
+          Product name is required (min 2 characters).
+        </span>
+      </div>
+
+      <div class="field">
+        <label>Brand</label>
+        <input type="text" maxlength="100" placeholder="e.g. Optimum Nutrition" formControlName="brand" />
+        <span class="error" *ngIf="submitted && supplementForm.get('brand')?.hasError('maxlength')">
+          Brand must be 100 characters or fewer.
+        </span>
+      </div>
+
+      <div class="field">
+        <label>Category <span class="required">*</span></label>
+        <select formControlName="category">
+          <option value="">Select Category</option>
+          <option value="Protein">Protein</option>
+          <option value="Creatine">Creatine</option>
+          <option value="Pre-Workout">Pre-Workout</option>
+          <option value="Vitamins & Minerals">Vitamins & Minerals</option>
+          <option value="BCAA">BCAA</option>
+          <option value="Weight Gainer">Weight Gainer</option>
+          <option value="Fat Burner">Fat Burner</option>
+          <option value="Amino Acids">Amino Acids</option>
+          <option value="Hydration & Electrolytes">Hydration & Electrolytes</option>
+          <option value="Other">Other</option>
+        </select>
+        <span class="error" *ngIf="submitted && supplementForm.get('category')?.invalid">
+          Category is required.
+        </span>
+      </div>
+
+      <div class="field full">
+        <label>Description</label>
+        <input type="text" maxlength="500" placeholder="e.g. 24g protein per serving, chocolate flavour" formControlName="description" />
+        <span class="error" *ngIf="submitted && supplementForm.get('description')?.hasError('maxlength')">
+          Description must be 500 characters or fewer.
+        </span>
+      </div>
+    </div>
+
+    <!-- Product Image -->
+    <h3 class="section-title">Product Image</h3>
+    <hr>
+
+    <div class="grid">
+      <div class="field full">
+        <div class="image-upload-area" (click)="fileInput.click()">
+          <img *ngIf="selectedImageUrl" [src]="selectedImageUrl" class="image-preview" alt="Product preview">
+          <div *ngIf="!selectedImageUrl" class="upload-placeholder">
+            <img src="../../../../assets/images/icon/icons8-add-image-50.png">
+            <span>Click to upload product image</span>
+            <small>JPG, PNG or WEBP</small>
+          </div>
+        </div>
+        <input #fileInput type="file" accept="image/*" style="display:none" (change)="onFileSelected($event)">
+        <button type="button" class="remove-img-btn" *ngIf="selectedImageUrl" (click)="removeImage()">
+          Remove Image
+        </button>
+      </div>
+    </div>
+
+    <!-- Pricing & Stock -->
+    <h3 class="section-title">Pricing & Stock</h3>
+    <hr>
+
+    <div class="grid">
+      <div class="field">
+        <label>Price (Rs.) <span class="required">*</span></label>
+        <input type="number" min="0" step="0.01" placeholder="e.g. 4500.00" formControlName="price" />
+        <span class="error" *ngIf="submitted && supplementForm.get('price')?.invalid">Required.</span>
+      </div>
+
+      <div class="field">
+        <label>Stock Quantity <span class="required">*</span></label>
+        <input type="number" min="0" step="1" placeholder="e.g. 20" formControlName="stockQty" />
+        <span class="error" *ngIf="submitted && supplementForm.get('stockQty')?.invalid">Required.</span>
+      </div>
+    </div>
+
+    <!-- Tags & Visibility -->
+    <h3 class="section-title">Tags & Visibility</h3>
+    <hr>
+
+    <div class="grid">
+      <div class="field full">
+        <label>Tags <span class="hint-inline">(click to select)</span></label>
+        <div class="tag-chips">
+          <button
+            type="button"
+            class="tag-chip"
+            [class.selected]="isTagSelected(tag)"
+            *ngFor="let tag of predefinedTags"
+            (click)="toggleTag(tag)">
+            {{ tag }}
+          </button>
+        </div>
+        <span class="hint" *ngIf="selectedTags.length === 0">No tags selected — helps members filter products in the store.</span>
+        <span class="hint" *ngIf="selectedTags.length > 0">Selected: {{ selectedTags.join(', ') }}</span>
+      </div>
+
+      <div class="field full">
+        <label class="toggle-label">
+          <span>Visible in store</span>
+          <label class="switch">
+            <input type="checkbox" formControlName="isActive" />
+            <span class="slider"></span>
+          </label>
+        </label>
+        <span class="hint">Hidden products won't appear to members but remain in your inventory.</span>
+      </div>
+    </div>
+
+    <div class="action-buttons">
+      <button type="submit" class="register-button field">{{ saveButtonLabel }}</button>
+      <button type="button" class="reset-button field" (click)="resetForm()">Reset</button>
+    </div>
+
+  </form>
+</div>

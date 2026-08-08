@@ -1,0 +1,155 @@
+<div class="table-section">
+
+  <h2 class="form-title">
+    <img src="../../../../assets/images/icon/icons8-tools-24.png">
+    Equipment
+  </h2>
+
+  <div class="toolbar">
+    <div class="add-new">
+      <button mat-raised-button class="new-button" (click)="openDialog()">
+        <img src="../../../../assets/images/icon/add-16.png">
+        Add New Equipment
+      </button>
+    </div>
+
+    <div class="table-filter">
+      <div class="search-bar">
+        <img src="../../../../assets/images/icon/icons8-search-16.png">
+        <input type="text" placeholder="Search..." (keyup)="applyFilter($event)" />
+      </div>
+      <button mat-icon-button class="refresh-button" (click)="refreshData()" matTooltip="Refresh">
+        <img src="../../../../assets/images/icon/icons8-reboot-10.png">
+      </button>
+    </div>
+  </div>
+
+  <div class="table-wrapper">
+    <table mat-table [dataSource]="dataSource" class="equipment-master-table">
+
+      <!-- Equipment Name -->
+      <ng-container matColumnDef="machineName">
+        <th mat-header-cell *matHeaderCellDef>Equipment Name</th>
+        <td mat-cell *matCellDef="let e">
+          <div class="name-cell">
+            <span class="name-primary">{{ e.machineName || e.equipmentName || '—' }}</span>
+            <span class="name-sub" *ngIf="e.model">{{ e.model }}</span>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Category -->
+      <ng-container matColumnDef="category">
+        <th mat-header-cell *matHeaderCellDef>Category</th>
+        <td mat-cell *matCellDef="let e">
+          <span class="cat-chip" [ngClass]="getCatClass(e.category)" *ngIf="e.category; else noCat">{{ e.category }}</span>
+          <ng-template #noCat><span class="dim-text">—</span></ng-template>
+        </td>
+      </ng-container>
+
+      <!-- Brand -->
+      <ng-container matColumnDef="brandName">
+        <th mat-header-cell *matHeaderCellDef>Brand</th>
+        <td mat-cell *matCellDef="let e">{{ e.brandName || '—' }}</td>
+      </ng-container>
+
+      <!-- Supplier -->
+      <ng-container matColumnDef="supplier">
+        <th mat-header-cell *matHeaderCellDef>Supplier</th>
+        <td mat-cell *matCellDef="let e">{{ getSupplierName(e.supplier) }}</td>
+      </ng-container>
+
+      <!-- Quantity -->
+      <ng-container matColumnDef="quantity">
+        <th mat-header-cell *matHeaderCellDef>Qty</th>
+        <td mat-cell *matCellDef="let e">
+          <span class="qty-badge" *ngIf="e.quantity; else noQty">{{ e.quantity }}</span>
+          <ng-template #noQty><span class="dim-text">—</span></ng-template>
+        </td>
+      </ng-container>
+
+      <!-- Condition -->
+      <ng-container matColumnDef="condition">
+        <th mat-header-cell *matHeaderCellDef>Condition</th>
+        <td mat-cell *matCellDef="let e">
+          <span class="condition-pill" [ngClass]="getConditionClass(e.condition)" *ngIf="e.condition; else noCond">
+            {{ e.condition }}
+          </span>
+          <ng-template #noCond><span class="dim-text">—</span></ng-template>
+        </td>
+      </ng-container>
+
+      <!-- Purchase Date -->
+      <ng-container matColumnDef="purchaseDate">
+        <th mat-header-cell *matHeaderCellDef>Purchase Date</th>
+        <td mat-cell *matCellDef="let e">
+          {{ e.purchaseDate ? (e.purchaseDate | date: 'MMM d, y') : '—' }}
+        </td>
+      </ng-container>
+
+      <!-- Remaining ng-containers kept for registration compatibility -->
+      <ng-container matColumnDef="model">
+        <th mat-header-cell *matHeaderCellDef>Model</th>
+        <td mat-cell *matCellDef="let e">{{ e.model || '—' }}</td>
+      </ng-container>
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef>Type</th>
+        <td mat-cell *matCellDef="let e">{{ e.type || '—' }}</td>
+      </ng-container>
+      <ng-container matColumnDef="sizeStandard">
+        <th mat-header-cell *matHeaderCellDef>Size Standard</th>
+        <td mat-cell *matCellDef="let e">{{ e.sizeStandard || '—' }}</td>
+      </ng-container>
+      <ng-container matColumnDef="barLength">
+        <th mat-header-cell *matHeaderCellDef>Bar Length</th>
+        <td mat-cell *matCellDef="let e">{{ e.barLength || '—' }}</td>
+      </ng-container>
+      <ng-container matColumnDef="weight">
+        <th mat-header-cell *matHeaderCellDef>Weight</th>
+        <td mat-cell *matCellDef="let e">{{ e.weight || '—' }}</td>
+      </ng-container>
+      <ng-container matColumnDef="equipmentName">
+        <th mat-header-cell *matHeaderCellDef>Equipment Name</th>
+        <td mat-cell *matCellDef="let e">{{ e.equipmentName || '—' }}</td>
+      </ng-container>
+      <ng-container matColumnDef="addedBy">
+        <th mat-header-cell *matHeaderCellDef>Added By</th>
+        <td mat-cell *matCellDef="let e">{{ e.addedBy || '—' }}</td>
+      </ng-container>
+      <ng-container matColumnDef="remarks">
+        <th mat-header-cell *matHeaderCellDef>Remarks</th>
+        <td mat-cell *matCellDef="let e">{{ e.remarks || '—' }}</td>
+      </ng-container>
+
+      <!-- Actions -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef style="text-align: center">Actions</th>
+        <td mat-cell *matCellDef="let e">
+          <div class="action-column">
+            <button mat-icon-button class="gray-icon-btn" matTooltip="Edit" (click)="editData(e)">
+              <img src="../../../../assets/images/icon/edit-light.png">
+            </button>
+            <button mat-icon-button class="gray-icon-btn" matTooltip="Delete" (click)="deleteData(e)">
+              <img src="../../../../assets/images/icon/delete-light.png">
+            </button>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell no-data" [attr.colspan]="displayedColumns.length">
+          No equipment records found.
+        </td>
+      </tr>
+
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[10, 25, 50]" class="pagination" aria-label="Select page">
+    </mat-paginator>
+
+  </div>
+
+</div>

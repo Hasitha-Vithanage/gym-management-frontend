@@ -1,0 +1,210 @@
+<div class="feedbacks-page">
+
+  <!-- ─── PAGE HEADER ──────────────────────────────────────────────────────── -->
+  <div class="page-header">
+    <img src="../../../../assets/images/icon/icons8-chat-24.png" class="sec-icon-img">
+    <div>
+      <h2 class="page-title">Feedback History</h2>
+      <p class="page-sub">Review and manage all member feedback submissions</p>
+    </div>
+  </div>
+
+  <!-- ─── ANALYTICS CARDS ───────────────────────────────────────────────────── -->
+  <div class="analytics-row">
+
+    <div class="stat-card">
+      <div class="stat-icon total-icon"><img src="../../../../assets/images/icon/icons8-progress-24.png" class="sec-icon-img"></div>
+      <div class="stat-body">
+        <span class="stat-value">{{ analytics?.total || 0 }}</span>
+        <span class="stat-label">Total Feedbacks</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon rating-icon"><img src="../../../../assets/images/icon/icons8-star-24.png" class="sec-icon-img"></div>
+      <div class="stat-body">
+        <span class="stat-value">{{ (analytics?.averageRating || 0) | number: '1.1-1' }}</span>
+        <span class="stat-label">Average Rating</span>
+        <div class="avg-stars">
+          <img *ngFor="let s of stars; let i = index"
+               [src]="i < (analytics?.averageRating || 0) ? '../../../../assets/images/icon/icons8-star-24.png' : '../../../../assets/images/icon/icons8-star-24-border.png'"
+               class="star-icon" alt="star">
+        </div>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon pending-icon"><img src="../../../../assets/images/icon/icons8-data-pending-24.png" class="sec-icon-img"></div>
+      <div class="stat-body">
+        <span class="stat-value" [class.pending-val]="(analytics?.pending || 0) > 0">
+          {{ analytics?.pending || 0 }}
+        </span>
+        <span class="stat-label">Pending Review</span>
+        <span class="stat-hint warn" *ngIf="(analytics?.pending || 0) > 0">Needs attention</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon resolved-icon"><img src="../../../../assets/images/icon/icons8-instagram-check-mark-24.png" class="sec-icon-img"></div>
+      <div class="stat-body">
+        <span class="stat-value">{{ analytics?.resolved || 0 }}</span>
+        <span class="stat-label">Resolved</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ─── TABLE CARD ───────────────────────────────────────────────────────── -->
+  <div class="table-card">
+
+    <div class="table-card-header">
+      <div class="card-title">
+        <img src="../../../../assets/images/icon/icons8-very-popular-topic-24.png" class="sec-icon-img">
+        All Submissions
+        <span class="count-badge" *ngIf="dataSource.data.length > 0">{{ dataSource.data.length }}</span>
+      </div>
+      <div class="card-toolbar">
+        <div class="search-bar">
+          <img src="../../../../assets/images/icon/icons8-search-16.png" class="sec-icon-img">
+          <input type="text" placeholder="Search feedback…" (keyup)="applyFilter($event)" />
+        </div>
+        <button class="icon-btn" (click)="refreshData()" matTooltip="Refresh">
+          <img src="../../../../assets/images/icon/icons8-refresh-24.png" class="sec-icon-img">
+        </button>
+      </div>
+    </div>
+
+    <!-- Status filter tabs -->
+    <div class="filter-tabs">
+      <button class="ftab" [class.active]="statusFilter === ''" (click)="setStatusFilter('')">
+        All <span class="ftab-count">{{ dataSource.data.length }}</span>
+      </button>
+      <button class="ftab ftab-pending" [class.active]="statusFilter === 'PENDING'" (click)="setStatusFilter('PENDING')">
+        <span class="ftab-dot"></span>
+        Pending <span class="ftab-count">{{ pendingCount }}</span>
+      </button>
+      <button class="ftab ftab-reviewed" [class.active]="statusFilter === 'REVIEWED'" (click)="setStatusFilter('REVIEWED')">
+        <span class="ftab-dot"></span>
+        Reviewed <span class="ftab-count">{{ reviewedCount }}</span>
+      </button>
+      <button class="ftab ftab-resolved" [class.active]="statusFilter === 'RESOLVED'" (click)="setStatusFilter('RESOLVED')">
+        <span class="ftab-dot"></span>
+        Resolved <span class="ftab-count">{{ resolvedCount }}</span>
+      </button>
+    </div>
+
+    <div class="table-wrapper">
+      <table mat-table [dataSource]="dataSource" matSort class="feedback-table">
+
+        <!-- Category -->
+        <ng-container matColumnDef="category">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Category</th>
+          <td mat-cell *matCellDef="let e">
+            <span class="cat-chip" [class.gym]="e.category === 'Gym'" [class.trainer]="e.category === 'Trainer'">
+              <img class="cat-icon" [src]="e.category === 'Gym' ? 'assets/images/icon/icons8-barbell-13.png' : 'assets/images/icon/icons8-person-13.png'" alt="" />
+              {{ e.category }}
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- Target / Trainer -->
+        <ng-container matColumnDef="targetName">
+          <th mat-header-cell *matHeaderCellDef>Target</th>
+          <td mat-cell *matCellDef="let e" class="dim-text">{{ e.targetName || '—' }}</td>
+        </ng-container>
+
+        <!-- Rating -->
+        <ng-container matColumnDef="rating">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Rating</th>
+          <td mat-cell *matCellDef="let e">
+            <div class="mini-stars">
+              <img *ngFor="let s of stars; let i = index"
+                   [src]="i < e.rating ? '../../../../assets/images/icon/icons8-star-24.png' : '../../../../assets/images/icon/icons8-star-24-border.png'"
+                   class="star-icon" alt="star">
+              <span class="rating-num">{{ e.rating }}/5</span>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Feedback text -->
+        <ng-container matColumnDef="feedback">
+          <th mat-header-cell *matHeaderCellDef>Feedback</th>
+          <td mat-cell *matCellDef="let e">
+            <div class="feedback-cell">{{ e.feedback }}</div>
+          </td>
+        </ng-container>
+
+        <!-- Date -->
+        <ng-container matColumnDef="submittedAt">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+          <td mat-cell *matCellDef="let e" class="date-cell dim-text">
+            {{ e.submittedAt | date: 'MMM d, y' }}
+          </td>
+        </ng-container>
+
+        <!-- Submitted by -->
+        <ng-container matColumnDef="submittedBy">
+          <th mat-header-cell *matHeaderCellDef>Submitted By</th>
+          <td mat-cell *matCellDef="let e">
+            <div class="submitter-cell">
+              <img
+                src="assets/images/icon/icons8-person-13-gray.png"
+                class="submitter-icon"
+                [class.anon-icon]="e.anonymous"
+                alt=""
+              />
+              <span>{{ getDisplayName(e) }}</span>
+              <span class="anon-tag" *ngIf="e.anonymous">ANON</span>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Status -->
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+          <td mat-cell *matCellDef="let e">
+            <span class="status-pill" [ngClass]="getStatusClass(e.status)">{{ e.status }}</span>
+          </td>
+        </ng-container>
+
+        <!-- Actions -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Action</th>
+          <td mat-cell *matCellDef="let e">
+            <button class="action-pill review" *ngIf="e.status === 'PENDING'"
+                    (click)="updateStatus(e, 'REVIEWED')"
+                    matTooltip="Mark this feedback as Reviewed">
+              <img src="../../../../assets/images/icon/icons8-very-popular-topic-16.png" class="sec-icon-img"> Review
+            </button>
+            <button class="action-pill resolve" *ngIf="e.status === 'REVIEWED'"
+                    (click)="updateStatus(e, 'RESOLVED')"
+                    matTooltip="Mark this feedback as Resolved">
+              <img src="../../../../assets/images/icon/icons8-check-16.png" class="sec-icon-img"> Resolve
+            </button>
+            <span class="done-chip" *ngIf="e.status === 'RESOLVED'">
+              <img src="../../../../assets/images/icon/icons8-check-16-12.png" class="sec-icon-img"> Done
+            </span>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell no-data-cell" [attr.colspan]="displayedColumns.length">
+            <div class="empty-state">
+              <img src="../../../../assets/images/icon/icons8-very-popular-topic-24.png" class="sec-icon-img">
+              <p *ngIf="statusFilter">No {{ statusFilter | lowercase }} feedback found</p>
+              <p *ngIf="!statusFilter">No feedback submissions yet</p>
+            </div>
+          </td>
+        </tr>
+
+      </table>
+    </div>
+
+    <mat-paginator [pageSizeOptions]="[10, 25, 50]" aria-label="Select page"></mat-paginator>
+
+  </div>
+
+</div>

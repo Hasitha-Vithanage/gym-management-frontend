@@ -1,0 +1,65 @@
+<div class="progress-charts">
+  <div class="header">
+    <h2>Your Progress</h2>
+    <p>Visual insights into your fitness journey</p>
+  </div>
+
+  <div class="charts-grid">
+    <div class="chart-card">
+      <h3>Strength Progress</h3>
+      <apx-chart
+        [series]="strengthChartOptions.series"
+        [chart]="strengthChartOptions.chart"
+        [xaxis]="strengthChartOptions.xaxis"
+        [yaxis]="strengthChartOptions.yaxis"
+        [colors]="strengthChartOptions.colors"
+        [stroke]="strengthChartOptions.stroke"
+        [markers]="strengthChartOptions.markers"
+        [grid]="strengthChartOptions.grid"
+        [title]="strengthChartOptions.title"
+      ></apx-chart>
+    </div>
+
+    <div class="chart-card">
+      <h3>Body Weight Trends</h3>
+      <apx-chart
+        [series]="weightChartOptions.series"
+        [chart]="weightChartOptions.chart"
+        [xaxis]="weightChartOptions.xaxis"
+        [yaxis]="weightChartOptions.yaxis"
+        [colors]="weightChartOptions.colors"
+        [stroke]="weightChartOptions.stroke"
+        [markers]="weightChartOptions.markers"
+        [grid]="weightChartOptions.grid"
+        [title]="weightChartOptions.title"
+      ></apx-chart>
+    </div>
+
+    <div class="chart-card">
+      <h3>Workout Volume</h3>
+      <apx-chart
+        [series]="volumeChartOptions.series"
+        [chart]="volumeChartOptions.chart"
+        [xaxis]="volumeChartOptions.xaxis"
+        [yaxis]="volumeChartOptions.yaxis"
+        [colors]="volumeChartOptions.colors"
+        [plotOptions]="volumeChartOptions.plotOptions"
+        [grid]="volumeChartOptions.grid"
+        [title]="volumeChartOptions.title"
+      ></apx-chart>
+    </div>
+
+    <div class="chart-card">
+      <h3>Muscle Group Distribution</h3>
+      <apx-chart
+        [series]="muscleGroupChartOptions.series"
+        [chart]="muscleGroupChartOptions.chart"
+        [labels]="muscleGroupChartOptions.labels"
+        [colors]="muscleGroupChartOptions.colors"
+        [legend]="muscleGroupChartOptions.legend"
+        [plotOptions]="muscleGroupChartOptions.plotOptions"
+        [title]="muscleGroupChartOptions.title"
+      ></apx-chart>
+    </div>
+  </div>
+</div>

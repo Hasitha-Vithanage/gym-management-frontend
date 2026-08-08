@@ -1,0 +1,151 @@
+<div class="trainer-progress-page">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div>
+      <h2 class="page-title">Member Progress</h2>
+      <p class="page-subtitle">Monitor training consistency across all active members</p>
+    </div>
+    <!-- <button class="outline-btn" (click)="loadMembersProgress()">
+      <mat-icon>refresh</mat-icon>
+      Refresh
+    </button> -->
+  </div>
+
+  <!-- Loading -->
+  <ng-container *ngIf="isLoading">
+    <div class="state-container">
+      <mat-spinner diameter="36"></mat-spinner>
+      <p class="state-text">Loading member progress...</p>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="!isLoading">
+
+    <!-- Summary cards -->
+    <div class="summary-cards">
+      <div class="summary-card active">
+        <img src="../../../../assets/images/icon/white-tick.png" style="margin-right: 5px;">
+        <div class="summary-card-info">
+          <span class="summary-card-value">{{ activeCount }}</span>
+          <span class="summary-card-label">Active</span>
+        </div>
+      </div>
+      <div class="summary-card inactive">
+        <img src="../../../../assets/images/icon/exclamation-icon-white.png" style="margin-right: 5px;">
+        <div class="summary-card-info">
+          <span class="summary-card-value">{{ inactiveCount }}</span>
+          <span class="summary-card-label">Inactive</span>
+        </div>
+      </div>
+      <div class="summary-card dropped">
+        <img src="../../../../assets/images/icon/white-close.png" style="margin-right: 5px;">
+        <div class="summary-card-info">
+          <span class="summary-card-value">{{ droppedCount }}</span>
+          <span class="summary-card-label">Dropped Off</span>
+        </div>
+      </div>
+      <div class="summary-card total">
+        <img src="../../../../assets/images/icon/total-member.png" style="margin-right: 5px;">
+        <div class="summary-card-info">
+          <span class="summary-card-value">{{ members.length }}</span>
+          <span class="summary-card-label">Total</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters-row">
+      <div class="search-box">
+        <img src="../../../../assets/images/icon/search-16.png" style="margin-right: 2px;">
+        <input
+          type="text"
+          placeholder="Search by member or program..."
+          (input)="onSearch($any($event.target).value)" />
+      </div>
+      <div class="status-filters">
+        <button
+          class="filter-btn"
+          *ngFor="let opt of statusOptions"
+          [class.active]="filterStatus === opt.value"
+          (click)="onStatusFilter(opt.value)">
+          {{ opt.label }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Empty state -->
+    <div class="empty-state" *ngIf="filteredMembers.length === 0">
+      <img src="../../../../assets/images/icon/people.png" style="margin-right: 5px;">
+      <p>No members match the current filter.</p>
+    </div>
+
+    <!-- Members Table -->
+    <div class="table-card" *ngIf="filteredMembers.length > 0">
+      <table class="progress-table">
+        <thead>
+          <tr>
+            <th>Member</th>
+            <th>Program</th>
+            <th>Program Week</th>
+            <th>This Week</th>
+            <th>Last Session</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let m of filteredMembers">
+
+            <td>
+              <div class="member-cell">
+                <div class="member-avatar">{{ (m.memberName ?? 'M')[0].toUpperCase() }}</div>
+                <div class="member-info">
+                  <span class="member-name">{{ m.memberName ?? 'Member #' + m.userId }}</span>
+                  <span class="member-id">ID: {{ m.userId }}</span>
+                </div>
+              </div>
+            </td>
+
+            <td>
+              <div class="program-cell">
+                <span class="program-name">{{ m.programName ?? '—' }}</span>
+                <span class="program-meta" *ngIf="m.daysPerWeek">{{ m.daysPerWeek }} days/week</span>
+              </div>
+            </td>
+
+            <td class="week-cell">
+              <span class="week-value">{{ m.currentProgramWeek ?? '—' }}</span>
+              <span class="week-total" *ngIf="m.totalProgramWeeks"> / {{ m.totalProgramWeeks }}</span>
+              <div class="week-bar" *ngIf="m.totalProgramWeeks">
+                <div class="week-bar-fill"
+                     [style.width.%]="((m.currentProgramWeek - 1) / m.totalProgramWeeks) * 100 | number:'1.0-0'">
+                </div>
+              </div>
+            </td>
+
+            <td class="sessions-cell">
+              <span class="sessions-done"
+                    [class.on-target]="m.sessionsThisWeek >= (m.daysPerWeek ?? 0)">
+                {{ m.sessionsThisWeek }}
+              </span>
+              <span class="sessions-target" *ngIf="m.daysPerWeek"> / {{ m.daysPerWeek }}</span>
+            </td>
+
+            <td class="last-session-cell">
+              {{ getDaysSinceLabel(m.daysSinceLastSession) }}
+            </td>
+
+            <td>
+              <span class="status-badge {{ m.activityStatus?.toLowerCase().replace('_', '-') }}">
+                {{ getStatusLabel(m.activityStatus) }}
+              </span>
+            </td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </ng-container>
+
+</div>

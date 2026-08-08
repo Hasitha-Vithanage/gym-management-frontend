@@ -1,0 +1,290 @@
+@import 'src/scss/settings/colors';
+
+::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.form-section {
+  width: 700px;
+  max-height: 70vh;
+  padding: 0;
+  background: $ff-bg-surface;
+  border-radius: $ff-radius-md;
+  box-shadow: $ff-shadow-card;
+  font-family: $ff-font;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  border-bottom: 1px solid $ff-border-default;
+  background-color: $ff-bg-surface;
+  flex-shrink: 0;
+}
+
+.form-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: $ff-text-primary;
+  margin: 0;
+}
+
+.close-light {
+  background: transparent;
+  border: none;
+  color: $ff-text-secondary;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: $ff-radius-sm;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: $ff-bg-hover;
+    color: $ff-text-primary;
+  }
+}
+
+.example-form {
+  padding: 24px;
+  overflow-y: auto;
+}
+
+.row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.half-width {
+  flex: 1 1 48%;
+}
+
+.full-width {
+  flex: 1 1 100%;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-group label {
+  font-size: 13px;
+  font-weight: 600;
+  color: $ff-text-secondary;
+  margin-bottom: 6px;
+}
+
+.lable {
+  font-size: 13px;
+  font-weight: 600;
+  color: $ff-text-secondary;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.input-group input,
+.input-group select,
+.input-group textarea {
+  padding: 0 10px;
+  height: 38px;
+  border-radius: $ff-radius-sm;
+  border: 1px solid $ff-border-default;
+  background: $ff-bg-input;
+  color: $ff-text-primary;
+  font-size: 14px;
+  font-family: $ff-font;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, background 0.2s ease;
+  outline: none;
+  width: 100%;
+
+  &::placeholder {
+    color: $ff-text-dim;
+  }
+
+  &:focus {
+    border-color: $ff-border-accent;
+    background: $ff-bg-elevated;
+  }
+
+  // Prevent browser autofill from flashing white background
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus,
+  &:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px $ff-bg-input inset !important;
+    -webkit-text-fill-color: $ff-text-primary !important;
+    caret-color: $ff-text-primary;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+}
+
+// Disabled/read-only auto-generated ID field
+.auto-id-input {
+  background: $ff-bg-elevated !important;
+  color: $ff-text-secondary !important;
+  cursor: not-allowed !important;
+  border-color: $ff-border-default !important;
+
+  &:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px $ff-bg-elevated inset !important;
+    -webkit-text-fill-color: $ff-text-secondary !important;
+  }
+}
+
+.input-group textarea {
+  height: 72px;
+  padding: 8px 10px;
+  resize: vertical;
+}
+
+.input-group select {
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%239BA3B8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-color: $ff-bg-input;
+  padding-right: 32px;
+
+  option {
+    background: $ff-bg-surface;
+    color: $ff-text-primary;
+  }
+}
+
+input[type="date"] {
+  color-scheme: dark;
+}
+
+.radio-group {
+  display: flex;
+  gap: 16px;
+  margin-top: 4px;
+  align-items: center;
+}
+
+.radio-group label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  color: $ff-text-secondary;
+  font-weight: 400;
+}
+
+.radio-group input[type='radio'] {
+  accent-color: $ff-accent-primary;
+  width: 16px;
+  height: 16px;
+}
+
+.auto-label {
+  font-size: 11px;
+  color: $ff-text-secondary;
+  font-weight: 400;
+  margin-left: 4px;
+}
+
+.required-message {
+  color: $ff-danger;
+  font-size: 12px;
+  margin-top: 4px;
+  font-weight: 500;
+  line-height: 1.3;
+  display: block;
+}
+
+button {
+  height: 38px;
+  border-radius: $ff-radius-sm;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: $ff-font;
+}
+
+.register-button {
+  background: $ff-accent-primary;
+  color: #fff;
+
+  &:hover:not(:disabled) {
+    background: $ff-accent-hover;
+    box-shadow: $ff-shadow-orange;
+    transform: translateY(-1px);
+  }
+
+  &:disabled {
+    background: $ff-bg-elevated;
+    color: $ff-text-dim;
+    cursor: not-allowed;
+  }
+}
+
+.reset-button {
+  background: $ff-bg-elevated;
+  color: $ff-text-secondary;
+  border: 1px solid $ff-border-default;
+
+  &:hover {
+    background: $ff-bg-hover;
+    border-color: $ff-border-accent;
+    color: $ff-text-primary;
+  }
+}
+
+.upload-section {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.choose-file-btn {
+  padding: 0 16px;
+  border-radius: $ff-radius-sm;
+  border: none;
+  cursor: pointer;
+  background: $ff-accent-primary;
+  color: #fff;
+  font-family: $ff-font;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: $ff-accent-hover;
+    box-shadow: $ff-shadow-orange;
+  }
+}
+
+.image-preview {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: $ff-radius-sm;
+  border: 2px solid $ff-border-default;
+}
+
+@media (max-width: 768px) {
+  .half-width {
+    flex: 1 1 100%;
+  }
+
+  .row {
+    gap: 12px;
+  }
+}

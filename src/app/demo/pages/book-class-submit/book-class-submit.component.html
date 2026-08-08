@@ -1,0 +1,132 @@
+<div class="confirm-page">
+
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <button class="back-btn" (click)="goBack()">
+      <img src="../../../../assets/images/icon/icons8-arrow-back-20.png" class="sec-icon-img">
+      <span>Back to Classes</span>
+    </button>
+    <h2 class="page-title">
+      <img src="../../../../assets/images/icon/icons8-microsoft-to-do-app-20.png" class="sec-icon-img">
+      Confirm Booking
+    </h2>
+  </div>
+
+  <!-- SKELETON -->
+  <div *ngIf="isLoading" class="skeleton-layout">
+    <div class="skeleton-panel"></div>
+    <div class="skeleton-panel"></div>
+  </div>
+
+  <!-- SUCCESS STATE -->
+  <!-- <div *ngIf="!isLoading && isConfirmed" class="success-card">
+    <div class="success-icon">
+      <mat-icon>check_circle</mat-icon>
+    </div>
+    <h3>You're all set!</h3>
+    <p>Your spot in <strong>{{ classDetails?.classTitle }}</strong> has been confirmed.</p>
+    <p class="success-sub">
+      {{ classDetails?.date | date:'EEE, dd MMM yyyy' }} &nbsp;·&nbsp;
+      {{ formatTime(classDetails?.startTime) }} – {{ formatTime(classDetails?.endTime) }}
+    </p>
+    <p class="redirect-note">Redirecting to My Bookings…</p>
+    <button class="btn-dashboard" (click)="goToMyBookings()">
+      <mat-icon>event_note</mat-icon>
+      View My Bookings
+    </button>
+  </div> -->
+
+  <!-- CONFIRMATION LAYOUT -->
+  <div *ngIf="!isLoading && !isConfirmed" class="confirm-layout">
+
+    <!-- LEFT: Class Details -->
+    <div class="info-panel">
+      <h5 class="panel-heading">
+        <img src="../../../../assets/images/icon/calendar_today.png" class="sec-icon-img">
+        Class Details
+      </h5>
+
+      <div class="detail-block">
+        <div class="detail-row">
+          <span class="detail-label">Class</span>
+          <span class="detail-value highlight">{{ classDetails?.classTitle }}</span>
+        </div>
+        <div class="detail-row" *ngIf="classDetails?.classType">
+          <span class="detail-label">Type</span>
+          <span class="detail-value">{{ classDetails?.classType }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Date</span>
+          <span class="detail-value">{{ classDetails?.date | date:'EEE, dd MMM yyyy' }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Time</span>
+          <span class="detail-value">{{ formatTime(classDetails?.startTime) }} – {{ formatTime(classDetails?.endTime) }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Trainer</span>
+          <span class="detail-value">{{ classDetails?.conductorName }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Duration</span>
+          <span class="detail-value">{{ classDetails?.profession }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Slots Left</span>
+          <span class="detail-value" [class.text-danger]="classDetails?.remainingSlots <= 3">
+            {{ classDetails?.remainingSlots }} / {{ classDetails?.totalSlots }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Member Details + Confirm -->
+    <div class="confirm-panel">
+      <h5 class="panel-heading">
+        <img src="../../../../assets/images/icon/icons8-person-16.png" class="sec-icon-img">
+        Your Details
+      </h5>
+
+      <div class="member-info-card">
+        <p class="member-info-hint">
+          <img src="../../../../assets/images/icon/icons8-info-16 (1).png" class="sec-icon-img">
+          Your details are pre-filled from your profile
+        </p>
+        <div class="detail-block">
+          <div class="detail-row">
+            <span class="detail-label">Name</span>
+            <span class="detail-value">{{ memberDetails?.firstName }} {{ memberDetails?.lastName }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Email</span>
+            <span class="detail-value">{{ memberDetails?.email || '—' }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Phone</span>
+            <span class="detail-value">{{ memberDetails?.phoneNumber || '—' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fully Booked notice -->
+      <div *ngIf="isFullyBooked" class="full-notice">
+        <img src="../../../../assets/images/icon/icons8-block-13.png" class="sec-icon-img">
+        <span>This class is fully booked. Please choose another class.</span>
+      </div>
+
+      <!-- Confirm button -->
+      <button *ngIf="!isFullyBooked"
+              class="confirm-btn"
+              (click)="confirmBooking()"
+              [disabled]="isConfirming">
+        <mat-icon *ngIf="isConfirming">hourglass_empty</mat-icon>
+        <img *ngIf="!isConfirming" src="../../../../assets/images/icon/verify-icon-light.png" class="confirm-btn-icon" alt="Confirm">
+        {{ isConfirming ? 'Confirming…' : 'Confirm Booking' }}
+      </button>
+
+      <p class="cancel-note">Changed your mind? <a (click)="goBack()">Go back to classes</a></p>
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,198 @@
+<div class="form-section">
+  <div class="dialog-header">
+    <div class="header-title-group">
+      <img src="../../../../assets/images/icon/icons8-tools-24.png">
+      <div>
+        <h2 class="form-title">{{ saveButtonLabel === 'Update' ? 'Edit Equipment' : 'Add New Equipment' }}</h2>
+        <p class="dialog-sub">{{ saveButtonLabel === 'Update' ? 'Update the equipment record details' : 'Register a new item in the equipment catalogue' }}</p>
+      </div>
+    </div>
+    <button class="close-btn" (click)="closeDialog()">
+      <img src="../../../../assets/images/icon/close-light.png">
+    </button>
+  </div>
+
+  <form [formGroup]="equipmentForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="half-width">
+        <label for="category">Category <span class="required">*</span></label>
+        <select id="category" formControlName="category">
+          <option value="" disabled>-- Select Category --</option>
+          <option value="Machines">Machines</option>
+          <option value="Freeweights">Freeweights &amp; Bars</option>
+          <option value="Other">Other</option>
+        </select>
+        <span class="required-message" *ngIf="submitted && equipmentForm.get('category')?.invalid">
+          Category is required
+        </span>
+      </div>
+
+      <div class="half-width">
+        <label for="supplier">Supplier <span class="required">*</span></label>
+        <select id="supplier" formControlName="supplier">
+          <option value="" disabled>-- Select Supplier --</option>
+          <option *ngFor="let supplier of filteredSupplierList" [value]="supplier.id">{{ supplier.supplierName }}</option>
+        </select>
+        <span class="hint-message" *ngIf="equipmentForm.get('category')?.value && filteredSupplierList.length === 0">
+          No suppliers are tagged for this category yet.
+        </span>
+        <span class="required-message" *ngIf="submitted && equipmentForm.get('supplier')?.invalid">
+          Supplier is required
+        </span>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="equipmentForm.get('category')?.value === 'Machines'">
+      <div class="half-width">
+        <label for="machineName">Machine Name <span class="required">*</span></label>
+        <input id="machineName" type="text" maxlength="50" placeholder="Enter Machine Name" formControlName="machineName" />
+        <span class="required-message" *ngIf="submitted && equipmentForm.get('machineName')?.invalid">
+          <ng-container *ngIf="equipmentForm.get('machineName')?.hasError('required')">Machine name is required</ng-container>
+          <ng-container *ngIf="equipmentForm.get('machineName')?.hasError('maxlength')">Machine name must be 50 characters or fewer</ng-container>
+        </span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="half-width">
+        <label for="brandName">Brand Name</label>
+        <input id="brandName" type="text" maxlength="50" placeholder="Enter Brand Name" formControlName="brandName" />
+        <span class="required-message" *ngIf="submitted && equipmentForm.get('brandName')?.hasError('maxlength')">
+          Brand name must be 50 characters or fewer
+        </span>
+      </div>
+
+      <div class="half-width" *ngIf="equipmentForm.get('category')?.value === 'Machines'">
+        <label for="model">Model</label>
+        <input id="model" type="text" maxlength="50" placeholder="Enter Model Name or Number" formControlName="model" />
+        <span class="required-message" *ngIf="submitted && equipmentForm.get('model')?.hasError('maxlength')">
+          Model must be 50 characters or fewer
+        </span>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="equipmentForm.get('category')?.value === 'Freeweights'">
+      <div class="half-width">
+        <label for="type">Type <span class="required">*</span></label>
+        <select id="type" formControlName="type">
+          <option value="" disabled>-- Select Type --</option>
+          <option value="Dumbbells">Dumbbells</option>
+          <option value="Plates">Plates</option>
+          <option value="Kettlebells">Kettlebells</option>
+          <option value="Bars">Bars</option>
+        </select>
+        <span class="required-message" *ngIf="submitted && equipmentForm.get('type')?.invalid">
+          Type is required
+        </span>
+      </div>
+
+      <div class="half-width" *ngIf="equipmentForm.get('type')?.value === 'Bars'">
+        <label for="sizeStandard">Size Standard <span class="required">*</span></label>
+        <select id="sizeStandard" formControlName="sizeStandard">
+          <option value="" disabled>-- Select Standard --</option>
+          <option value="Olympic">Olympic Bars</option>
+          <option value="Regular">Regular Bars</option>
+        </select>
+        <span class="required-message" *ngIf="submitted && equipmentForm.get('sizeStandard')?.invalid">
+          Size standard is required
+        </span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="half-width" *ngIf="['Bars'].includes(equipmentForm.get('type')?.value)">
+        <label for="barLength">Bar Length <span class="required">*</span></label>
+        <select id="barLength" formControlName="barLength">
+          <option value="" disabled>-- Select Length --</option>
+          <option *ngIf="equipmentForm.get('sizeStandard')?.value === 'Olympic'" value="7 feet">7 feet (Standard Olympic Bar)</option>
+          <option *ngIf="equipmentForm.get('sizeStandard')?.value === 'Olympic'" value="6.5 feet">6.5 feet (Short Olympic Bar)</option>
+          <option *ngIf="equipmentForm.get('sizeStandard')?.value === 'Olympic'" value="8 feet">8 feet (Long Olympic Bar)</option>
+          <option *ngIf="equipmentForm.get('sizeStandard')?.value === 'Olympic'" value="5 feet">5 feet (Mini Olympic Bar)</option>
+          <option *ngIf="equipmentForm.get('sizeStandard')?.value === 'Olympic'" value="12 inches">12 inches (Standard Olympic Dumbbell Bar)</option>
+          <option *ngIf="equipmentForm.get('sizeStandard')?.value === 'Regular'" value="12 inches">12 inches (Dumbbell Bar)</option>
+          <option *ngIf="equipmentForm.get('sizeStandard')?.value === 'Regular'" value="14 inches">14 inches (Dumbbell Bar)</option>
+          <option *ngIf="equipmentForm.get('sizeStandard')?.value === 'Regular'" value="16 inches">16 inches (Dumbbell Bar)</option>
+          <option *ngIf="equipmentForm.get('sizeStandard')?.value === 'Regular'" value="18 inches">18 inches (Dumbbell Bar)</option>
+          <option *ngIf="equipmentForm.get('sizeStandard')?.value === 'Regular'" value="20 inches">20 inches (Dumbbell Bar)</option>
+          <option *ngIf="equipmentForm.get('sizeStandard')?.value === 'Regular'" value="5 feet">5 feet (Standard Bar)</option>
+          <option *ngIf="equipmentForm.get('sizeStandard')?.value === 'Regular'" value="6 feet">6 feet (Standard Bar)</option>
+          <option *ngIf="equipmentForm.get('sizeStandard')?.value === 'Regular'" value="4 feet">4 feet (Curl Bar)</option>
+          <option *ngIf="equipmentForm.get('sizeStandard')?.value === 'Regular'" value="7 feet">7 feet (Trap Bar)</option>
+        </select>
+        <span class="required-message" *ngIf="submitted && equipmentForm.get('barLength')?.invalid">
+          Bar length is required
+        </span>
+      </div>
+
+      <div class="half-width" *ngIf="['Dumbbells','Plates','Kettlebells'].includes(equipmentForm.get('type')?.value)">
+        <label for="weight">Weight (kg) <span class="required">*</span></label>
+        <input id="weight" type="number" maxlength="3" placeholder="Enter Weight (kg)" formControlName="weight" />
+        <span class="required-message" *ngIf="submitted && equipmentForm.get('weight')?.invalid">
+          <ng-container *ngIf="equipmentForm.get('weight')?.hasError('required')">Weight is required</ng-container>
+          <ng-container *ngIf="equipmentForm.get('weight')?.hasError('min')">Weight must be greater than 0</ng-container>
+        </span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="half-width" *ngIf="['Freeweights','Other'].includes(equipmentForm.get('category')?.value)">
+        <label for="equipmentName">Equipment Name <span class="required">*</span></label>
+        <input id="equipmentName" type="text" maxlength="20" placeholder="Enter Equipment Name" formControlName="equipmentName" />
+        <span class="required-message" *ngIf="submitted && equipmentForm.get('equipmentName')?.invalid">
+          <ng-container *ngIf="equipmentForm.get('equipmentName')?.hasError('required')">Equipment name is required</ng-container>
+          <ng-container *ngIf="equipmentForm.get('equipmentName')?.hasError('maxlength')">Equipment name must be 20 characters or fewer</ng-container>
+        </span>
+      </div>
+
+      <div class="half-width">
+        <label for="quantity">Quantity <span class="required">*</span></label>
+        <input id="quantity" type="number" placeholder="Enter Quantity" formControlName="quantity" />
+        <span class="required-message" *ngIf="submitted && equipmentForm.get('quantity')?.invalid">
+          <ng-container *ngIf="equipmentForm.get('quantity')?.hasError('required')">Quantity is required</ng-container>
+          <ng-container *ngIf="equipmentForm.get('quantity')?.hasError('min')">Quantity must be at least 1</ng-container>
+        </span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="half-width">
+        <label for="condition">Condition</label>
+        <select id="condition" formControlName="condition">
+          <option value="" disabled>-- Select Condition --</option>
+          <option value="New">New</option>
+          <option value="Good">Good</option>
+          <option value="Poor">Poor</option>
+          <option value="Out of Service">Out of Service</option>
+        </select>
+        <span class="required-message" *ngIf="submitted && equipmentForm.get('condition')?.invalid">
+          <ng-container *ngIf="equipmentForm.get('condition')?.hasError('required')">Condition is required</ng-container>
+        </span>
+      </div>
+
+      <div class="half-width">
+        <label for="purchaseDate">Purchase Date <span class="required">*</span></label>
+        <input id="purchaseDate" type="date" formControlName="purchaseDate" />
+      </div>
+
+      <div class="half-width">
+        <label for="addedBy">Added By <span class="required">*</span></label>
+        <input id="addedBy" type="text" formControlName="addedBy" />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="full-width">
+        <label for="remarks">Remarks</label>
+        <textarea id="remarks" maxlength="1000" placeholder="Enter Remarks" formControlName="remarks"></textarea>
+        <span class="required-message" *ngIf="submitted && equipmentForm.get('remarks')?.hasError('maxlength')">
+          Remarks must be 1000 characters or fewer
+        </span>
+      </div>
+    </div>
+
+    <div class="row">
+      <button type="button" class="close-button half-width" (click)="closeDialog()">Close</button>
+      <button type="submit" class="submit-button half-width">{{ saveButtonLabel }}</button>
+    </div>
+  </form>
+</div>

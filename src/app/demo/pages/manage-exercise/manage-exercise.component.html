@@ -1,0 +1,102 @@
+<div class="container">
+  <div class="table-section">
+    <!-- Title -->
+    <h2 class="form-title">
+      <img src="../../../../assets/images/icon/exercise.png"
+        style="margin-right: 5px; height: 18px; width: 18px" />
+      Manage Exercises
+    </h2>
+
+    <div class="toolbar">
+      <!-- Add New -->
+      <div class="add-new">
+        <button type="reset" mat-raised-button class="new-button half-width" (click)="openExerciseDialog()">
+          <img src="../../../../assets/images/icon/add-light-icon.png"
+            style="margin-right: 5px; height: 18px; width: 18px" />
+          Add New Exercise
+        </button>
+      </div>
+
+      <!-- Filter -->
+      <div class="table-filter">
+        <div class="search-bar">
+          <img src="../../../../assets/images/icon/search.png"
+            style="margin-right: 5px; height: 18px; width: 18px" />
+          <input type="text" placeholder="Search..." (keyup)="applyFilter($event)" />
+        </div>
+        <button mat-icon-button class="refresh-button" (click)="refreshData()">
+          <img src="../../../../assets/images/icon/refresh.png"
+            style="margin-right: 5px; height: 18px; width: 18px" />
+        </button>
+      </div>
+    </div>
+
+    <div class="table-wrapper">
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+        <ng-container matColumnDef="exerciseName">
+          <th mat-header-cell *matHeaderCellDef>Exercise</th>
+          <td mat-cell *matCellDef="let e">{{ e.exerciseName }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="muscleGroup">
+          <th mat-header-cell *matHeaderCellDef>Primary Muscle</th>
+          <td mat-cell *matCellDef="let e">{{ e.muscleGroup }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="muscleGroupSecondary">
+          <th mat-header-cell *matHeaderCellDef>Secondary</th>
+          <td mat-cell *matCellDef="let e">{{ e.muscleGroupSecondary }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="exerciseType">
+          <th mat-header-cell *matHeaderCellDef>Type</th>
+          <td mat-cell *matCellDef="let e">{{ e.exerciseType }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="movementType">
+          <th mat-header-cell *matHeaderCellDef>Movement</th>
+          <td mat-cell *matCellDef="let e">{{ e.movementType }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="difficultyLevel">
+          <th mat-header-cell *matHeaderCellDef>Difficulty</th>
+          <td mat-cell *matCellDef="let e">{{ e.difficultyLevel }}</td>
+        </ng-container>
+
+        <!-- Actions -->
+        <ng-container matColumnDef="actions">
+          <th style="text-align: center;" mat-header-cell *matHeaderCellDef>Actions</th>
+          <td style="display: flex; justify-content: center;" mat-cell *matCellDef="let e">
+            <div class="action-column">
+              <button mat-icon-button class="gray-icon-btn" matTooltip="Edit" (click)="editData(e)">
+                <img src="../../../../assets/images/icon/edit-light.png"
+                  style="margin-right: 5px; height: 18px; width: 18px">
+              </button>
+              <button mat-icon-button class="gray-icon-btn" matTooltip="Delete" (click)="deleteData(e)">
+                <img src="../../../../assets/images/icon/delete-light.png"
+                  style="margin-right: 5px; height: 18px; width: 18px">
+              </button>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+        <!-- No data row -->
+        <tr *ngIf="dataSource?.data?.length === 0">
+          <td [attr.colspan]="displayedColumns.length" class="no-data">
+            No records found
+          </td>
+        </tr>
+
+      </table>
+    </div>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"
+      class="pagination">
+    </mat-paginator>
+
+  </div>
+</div>

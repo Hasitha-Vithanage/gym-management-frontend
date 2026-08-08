@@ -1,0 +1,103 @@
+<div class="container">
+  <div class="table-section">
+
+    <!-- Title -->
+    <h2 class="form-title">
+      <img src="../../../../assets/images/icon/member-login-icon.png" style="margin-right: 5px;">
+      Member Login
+    </h2>
+
+    <div class="toolbar">
+      <!-- Add New -->
+      <div class="add-new">
+        <button type="reset" mat-raised-button class="new-button half-width" (click)="openDialog()">
+          <img src="../../../../assets/images/icon/add-light-icon.png"
+            style="margin-right: 5px; height: 18px; width: 18px;">
+          Create Member Login
+        </button>
+      </div>
+
+      <!-- Table Filter -->
+      <div class="table-filter">
+        <div class="search-bar">
+          <img src="../../../../assets/images/icon/search.png"
+            style="margin-right: 5px; height: 18px; width: 18px;">
+          <input type="text" placeholder="Search..." (keyup)="applyFilter($event)" />
+        </div>
+        <button mat-icon-button class="refresh-button" (click)="refreshData()">
+          <img src="../../../../assets/images/icon/refresh.png"
+            style="margin-right: 5px; height: 18px; width: 18px;">
+        </button>
+      </div>
+    </div>
+
+    <div class="table-wrapper">
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+        <!-- First Name Column -->
+        <ng-container matColumnDef="firstName">
+          <th mat-header-cell *matHeaderCellDef>First Name</th>
+          <td mat-cell *matCellDef="let element">{{ element.firstName }}</td>
+        </ng-container>
+
+        <!-- Last Name Column -->
+        <ng-container matColumnDef="lastName">
+          <th mat-header-cell *matHeaderCellDef>Last Name</th>
+          <td mat-cell *matCellDef="let element">{{ element.lastName }}</td>
+        </ng-container>
+
+        <!-- Username Column -->
+        <ng-container matColumnDef="userName">
+          <th mat-header-cell *matHeaderCellDef>Username</th>
+          <td mat-cell *matCellDef="let element">{{ element.userName }}</td>
+        </ng-container>
+
+        <!-- Status Column -->
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef style="text-align: center;">Status</th>
+          <td mat-cell *matCellDef="let element" style="text-align: center;">
+            <span [class]="element.active !== false ? 'status-chip active' : 'status-chip inactive'">
+              {{ element.active !== false ? 'Active' : 'Inactive' }}
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef style="text-align: center;">Actions</th>
+          <td mat-cell *matCellDef="let element">
+            <div class="action-column" style="justify-content: center; display: flex;">
+              <button mat-icon-button class="gray-icon-btn" [matTooltip]="element.active !== false ? 'Deactivate' : 'Activate'" (click)="toggleStatus(element)">
+                <img [src]="element.active !== false ? '../../../../assets/images/icon/lock-light.png' : '../../../../assets/images/icon/unlock-light.png'"
+                  style="height: 18px; width: 18px;">
+              </button>
+              <button mat-icon-button class="gray-icon-btn" matTooltip="Edit" (click)="editData(element)">
+                <img src="../../../../assets/images/icon/edit-light.png"
+                  style="margin-right: 5px; height: 18px; width: 18px;">
+              </button>
+              <!-- <button mat-icon-button class="gray-icon-btn" matTooltip="Delete" (click)="deleteData(element)">
+                <img src="../../../../assets/images/icon/delete-light.png"
+                  style="margin-right: 5px; height: 18px; width: 18px;">
+              </button> -->
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- No Data Row -->
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell no-data" [attr.colspan]="displayedColumns.length">
+            No records to display
+          </td>
+        </tr>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"
+      class="pagination"></mat-paginator>
+  </div>
+</div>

@@ -1,0 +1,66 @@
+<div class="container">
+  <div class="card-section" [ngStyle]="{ display: isCardGenerated ? 'block' : 'none' }">
+    <button id="btn" (click)="downloadId()">
+      Download ID Card
+    </button>
+
+    <div #pdfContent class="id-card">
+      <div class="card-header">
+        <div class="company-logo">
+          <div class="logo-placeholder">
+            <img src="assets/images/dashboard-logo-white.png" alt="Company Logo" />
+          </div>
+        </div>
+        <div class="card-title">{{ userData.jobTitle || "Member" }} ID Card</div>
+      </div>
+
+      <div class="card-body">
+        <div class="employee-info">
+          <div class="avatar">
+            <img
+              *ngIf="userData?.image"
+              [src]="'data:' + (userData.imageType || 'image/jpeg') + ';base64,' + userData.image"
+              alt="User Avatar"
+              class="avatar-image"
+            />
+            <div *ngIf="!userData?.image" class="avatar-placeholder">
+              {{ userData.firstName.charAt(0) }}{{ userData.lastName.charAt(0) }}
+            </div>
+          </div>
+
+          <div class="info-details">
+            <h2>{{ userData.firstName }} {{ userData.lastName }}</h2>
+            <div class="details-grid">
+              <div class="detail-item">
+                <span class="label">ID:</span>
+                <span class="value">{{ userData.employeeId || userData.memberNo }}</span>
+              </div>
+              <div class="detail-item">
+                <span class="label">Email:</span>
+                <span class="value">{{ userData.email }}</span>
+              </div>
+              <div class="detail-item">
+                <span class="label">Phone:</span>
+                <span class="value">{{ userData.phoneNumber }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="qr-section">
+          <div class="qr-code">
+            <canvas #qrCanvas></canvas>
+          </div>
+          <p class="qr-label">Scan for attendance</p>
+          <div class="qr-instructions">
+            <p>Scan this QR code to mark attendance</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <p>This card is property of the company. If found, please return.</p>
+      </div>
+    </div>
+  </div>
+</div>

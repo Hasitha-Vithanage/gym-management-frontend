@@ -1,0 +1,147 @@
+<div class="page-wrapper">
+
+  <!-- Header -->
+  <div class="page-header">
+    <div class="header-left">
+      <img src="../../../../assets/images/icon/icons8-attendance-24.png" alt="attendance" />
+      <h2>Member Check-In</h2>
+    </div>
+    <div class="count-badge">
+      <img src="../../../../assets/images/icon/icons8-people-22.png"/>
+      <span>{{ checkInCount }} check-in{{ checkInCount !== 1 ? 's' : '' }} today</span>
+    </div>
+  </div>
+
+  <!-- Top row: Scanner + Manual -->
+  <div class="top-grid">
+
+    <!-- QR Scanner panel -->
+    <div class="panel scanner-panel">
+      <div class="panel-title">
+        <img src="../../../../assets/images/icon/icons8-qr-code-20.png"/>
+        <span>Scan Member QR</span>
+        <button class="camera-toggle-btn"
+                [class.active]="scannerEnabled"
+                type="button"
+                (click)="scannerEnabled = !scannerEnabled"
+                [title]="scannerEnabled ? 'Turn off camera' : 'Turn on camera'">
+          <img [src]="scannerEnabled ? '../../../../assets/images/icon/icons8-videocam-13.png' : '../../../../assets/images/icon/icons8-no-video-13.png'" alt="camera toggle" />
+          <span>{{ scannerEnabled ? 'Camera On' : 'Camera Off' }}</span>
+        </button>
+      </div>
+
+      <div class="scanner-wrap">
+        <zxing-scanner
+          *ngIf="hasPermission !== false && hasCamera !== false"
+          [enable]="scannerEnabled"
+          [formats]="allowedFormats"
+          (scanSuccess)="onScanSuccess($event)"
+          (camerasFound)="onCamerasFound($event)"
+          (camerasNotFound)="onCamerasNotFound()"
+          (permissionResponse)="onPermissionResponse($event)">
+        </zxing-scanner>
+
+        <div class="camera-blocked" *ngIf="hasPermission === false">
+          <img src="../../../../assets/images/icon/icons8-no-video-13.png"/>
+          <p>Camera access denied</p>
+          <small>Allow camera permission in your browser and refresh</small>
+        </div>
+
+        <div class="camera-blocked" *ngIf="hasPermission !== false && hasCamera === false">
+          <img src="../../../../assets/images/icon/icons8-no-video-13.png"/>
+          <p>No camera found</p>
+          <small>Use the manual check-in panel instead</small>
+        </div>
+      </div>
+
+      <!-- Scan feedback toast -->
+      <div class="scan-feedback"
+           *ngIf="scanFeedback"
+           [class.fb-success]="scanFeedback.success"
+           [class.fb-error]="!scanFeedback.success">
+        <img class="feedback-icon"
+             [src]="scanFeedback.success ? '../../../../assets/images/icon/icons8-instagram-check-mark-20.png' : '../../../../assets/images/icon/icons8-warning-20.png'"
+             [alt]="scanFeedback.success ? 'Success' : 'Error'"/>
+        <span>{{ scanFeedback.message }}</span>
+      </div>
+    </div>
+
+    <!-- Manual check-in panel -->
+    <div class="panel manual-panel">
+      <div class="panel-title">
+        <img src="../../../../assets/images/icon/icons8-find-user-male-13.png"/>
+        <span>Manual Check-In</span>
+      </div>
+
+      <div class="search-box">
+        <img src="../../../../assets/images/icon/icons8-search-16.png"/>
+        <input
+          type="text"
+          placeholder="Search by name or member no..."
+          [(ngModel)]="searchQuery"
+          (input)="onSearchChange()" />
+      </div>
+
+      <div class="member-results">
+        <button class="member-row" *ngFor="let member of filteredMembers"
+                type="button"
+                (click)="markManual(member)">
+          <div class="avatar">
+            <img *ngIf="member.image" [src]="'data:' + (member.imageType || 'image/jpeg') + ';base64,' + member.image" [alt]="member.firstName" />
+            <span *ngIf="!member.image" class="initials">{{ member.firstName[0] }}{{ member.lastName[0] }}</span>
+          </div>
+          <div class="member-info">
+            <span class="name">{{ member.firstName }} {{ member.lastName }}</span>
+            <span class="member-no">{{ member.memberNo }}</span>
+          </div>
+          <button class="checkin-btn" [disabled]="isMarkingAttendance" title="Mark present">
+            <img src="../../../../assets/images/icon/icons8-verified-account-13.png"/>
+          </button>
+        </button>
+
+        <div class="empty-state" *ngIf="searchQuery && filteredMembers.length === 0">
+          <mat-icon>search_off</mat-icon>
+          <span>No members found</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Today's check-ins list -->
+  <div class="panel checkins-panel">
+    <div class="panel-title">
+      <img src="../../../../assets/images/icon/icons8-event-15-1.png"/>
+      <span>Today's Check-ins</span>
+      <span class="refresh-note">auto-refreshes every 30s</span>
+    </div>
+
+    <div class="checkins-table">
+      <div class="table-head">
+        <span class="col-num">#</span>
+        <span class="col-member">Member</span>
+        <span class="col-id">Member No</span>
+        <span class="col-time">Check-in Time</span>
+      </div>
+
+      <div class="table-row" *ngFor="let c of todayCheckIns; let i = index">
+        <span class="col-num">{{ i + 1 }}</span>
+        <div class="col-member member-cell">
+          <div class="small-avatar">
+            <img *ngIf="getMemberPhoto(c.member)" [src]="getMemberPhoto(c.member)" alt="" />
+            <span *ngIf="!getMemberPhoto(c.member)" class="initials-sm">{{ getMemberInitials(c.member) }}</span>
+          </div>
+          <span>{{ getMemberName(c.member) }}</span>
+        </div>
+        <span class="col-id">{{ c.member }}</span>
+        <span class="col-time">{{ formatTime(c.checkInTime) }}</span>
+      </div>
+
+      <div class="no-checkins" *ngIf="todayCheckIns.length === 0">
+        <mat-icon>event_busy</mat-icon>
+        <span>No check-ins yet today</span>
+      </div>
+    </div>
+  </div>
+
+</div>

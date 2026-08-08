@@ -1,0 +1,363 @@
+@import 'src/scss/settings/colors';
+
+:host {
+  display: flex;
+  align-items: center;
+}
+
+.pc-h-item {
+  display: inline-flex;
+  align-items: center;
+}
+
+// Base head link
+.pc-head-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: $ff-radius-sm;
+  color: $ff-text-secondary;
+  background: transparent;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  text-decoration: none;
+  position: relative;
+
+  &.bg-gray-200 {
+    background: $ff-bg-elevated !important;
+    border-color: $ff-border-default;
+    color: $ff-text-secondary;
+  }
+
+  &:hover {
+    color: $ff-text-primary;
+    background: $ff-bg-hover !important;
+    border-color: $ff-border-default;
+  }
+
+  // Override vendor theme's light-mode header vars (--pc-header-color,
+  // --pc-active-background) which leave the icon dark-on-dark until hover.
+  nz-icon, i {
+    font-size: 18px;
+    color: $ff-text-secondary !important;
+  }
+
+  &::before {
+    background: $ff-bg-hover !important;
+  }
+
+  &:hover,
+  &:focus,
+  &.show {
+    nz-icon, i {
+      color: $ff-text-primary !important;
+    }
+  }
+}
+
+.dropdown.show > .pc-head-link {
+  nz-icon, i {
+    color: $ff-text-primary !important;
+  }
+}
+
+// Notification badge
+.pc-h-badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 4px;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 20px;
+  background: $ff-accent-primary !important;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid $ff-bg-surface;
+  animation: badgePulse 2s infinite;
+}
+
+@keyframes badgePulse {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.12); }
+}
+
+// Notification dropdown
+.dropdown-notification {
+  width: 360px;
+  background: $ff-bg-surface;
+  border: 1px solid $ff-border-default;
+  border-radius: $ff-radius-md;
+  box-shadow: $ff-shadow-hover;
+  padding: 0;
+  margin-top: 8px;
+
+  .dropdown-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px;
+    border-bottom: 1px solid $ff-border-default;
+    background: $ff-bg-elevated;
+    border-radius: $ff-radius-md $ff-radius-md 0 0;
+
+    h5 {
+      color: $ff-text-primary !important;
+      font-weight: 700;
+      font-size: 14px;
+      margin: 0;
+    }
+  }
+
+  .notif-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .mark-all-read {
+    background: none;
+    border: none;
+    color: $ff-accent-primary;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: background 0.2s;
+
+    &:hover {
+      background: $ff-accent-soft;
+    }
+  }
+
+  .clear-all-btn {
+    background: none;
+    border: none;
+    color: $ff-text-dim;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: all 0.2s;
+
+    &:hover {
+      background: rgba($ff-danger, 0.08);
+      color: $ff-danger;
+    }
+  }
+
+  .dropdown-divider {
+    border-color: $ff-border-default;
+    margin: 0;
+  }
+}
+
+// Notification items
+.notification-item {
+  display: flex;
+  align-items: flex-start;
+  padding: 12px 18px;
+  gap: 12px;
+  cursor: pointer;
+  transition: background 0.18s ease;
+  border-bottom: 1px solid $ff-border-default;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background: $ff-bg-hover;
+  }
+
+  &.unread {
+    background: rgba(255, 107, 0, 0.05);
+    border-left: 3px solid $ff-accent-primary;
+  }
+}
+
+.notification-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+
+  &.icon-success { background: rgba(34, 197, 94, 0.15);  color: $ff-success; }
+  &.icon-info    { background: rgba(59, 130, 246, 0.15);  color: $ff-info; }
+  &.icon-warning { background: rgba(251, 191, 36, 0.15);  color: $ff-warning; }
+  &.icon-error   { background: rgba(239, 68, 68, 0.15);   color: $ff-danger; }
+}
+
+.notification-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.notification-message {
+  font-size: 13px;
+  line-height: 1.45;
+  color: $ff-text-primary;
+  margin-bottom: 3px;
+}
+
+.notification-time {
+  font-size: 11px;
+  color: $ff-text-dim;
+}
+
+.notification-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.notif-clear-btn {
+  background: none;
+  border: none;
+  color: $ff-text-dim;
+  font-size: 11px;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 4px;
+  line-height: 1;
+  opacity: 0;
+  transition: all 0.15s;
+
+  .notification-item:hover & {
+    opacity: 1;
+  }
+
+  &:hover {
+    background: rgba($ff-danger, 0.1);
+    color: $ff-danger;
+  }
+}
+
+.notification-status {
+  width: 7px;
+  height: 7px;
+  background: $ff-accent-primary;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 5px;
+}
+
+// User profile dropdown
+.dropdown-user-profile {
+  width: 280px;
+  background: $ff-bg-surface;
+  border: 1px solid $ff-border-default;
+  border-radius: $ff-radius-md;
+  box-shadow: $ff-shadow-hover;
+  padding: 0;
+  margin-top: 8px;
+
+  .dropdown-header {
+    padding: 16px 18px 12px;
+    border-bottom: 1px solid $ff-border-default;
+    background: $ff-bg-elevated;
+    border-radius: $ff-radius-md $ff-radius-md 0 0;
+
+    h6 {
+      color: $ff-text-primary !important;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    span {
+      color: $ff-accent-primary;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  }
+}
+
+.user-avatar {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid $ff-border-accent;
+  box-shadow: $ff-shadow-orange;
+}
+
+// Profile tabs
+.drp-tabs {
+  border-bottom: 1px solid $ff-border-default !important;
+  background: $ff-bg-elevated;
+
+  .nav-link {
+    color: $ff-text-secondary !important;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 10px 14px;
+    border: none !important;
+    border-bottom: 2px solid transparent !important;
+    background: transparent !important;
+    transition: all 0.2s ease;
+
+    &:hover {
+      color: $ff-text-primary !important;
+    }
+
+    &.active {
+      color: $ff-accent-primary !important;
+      border-bottom-color: $ff-accent-primary !important;
+      background: transparent !important;
+    }
+
+    i { margin-right: 4px; }
+  }
+}
+
+// Profile dropdown items
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 18px;
+  color: $ff-text-secondary !important;
+  font-size: 13px;
+  font-weight: 500;
+  background: transparent;
+  transition: all 0.18s ease;
+  cursor: pointer;
+
+  &:hover {
+    background: $ff-bg-hover !important;
+    color: $ff-text-primary !important;
+
+    i { color: $ff-accent-primary; }
+  }
+
+  i {
+    font-size: 15px;
+    color: $ff-text-dim;
+    transition: color 0.18s ease;
+  }
+}
+
+// Username text
+.f-w-600 {
+  color: $ff-text-primary;
+  font-size: 13px;
+  font-weight: 600;
+}

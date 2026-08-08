@@ -1,0 +1,538 @@
+@import 'src/scss/settings/colors';
+
+.progress-page {
+  padding: 24px;
+  font-family: $ff-font;
+  max-width: 1400px;
+}
+
+/* ── Page Header ──────────────────────────────────────────────────────────── */
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.page-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: $ff-text-primary;
+  margin: 0 0 4px;
+}
+
+.page-subtitle {
+  font-size: 14px;
+  color: $ff-text-secondary;
+  margin: 0;
+}
+
+.primary-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 38px;
+  padding: 0 20px;
+  border-radius: $ff-radius-sm;
+  border: none;
+  background: $ff-accent-primary;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: $ff-font;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  mat-icon { font-size: 16px; width: 16px; height: 16px; }
+  &:hover { background: $ff-accent-hover; box-shadow: $ff-shadow-orange; }
+}
+
+/* ── Section Label ────────────────────────────────────────────────────────── */
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: $ff-text-secondary;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 16px;
+
+  mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    color: $ff-accent-primary;
+  }
+}
+
+/* ── Charts Grid ──────────────────────────────────────────────────────────── */
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(440px, 1fr));
+  gap: 20px;
+  margin-bottom: 8px;
+
+  @media (max-width: 960px) { grid-template-columns: 1fr; }
+}
+
+/* ── Chart Card ───────────────────────────────────────────────────────────── */
+.chart-card {
+  background: $ff-bg-surface;
+  border-radius: $ff-radius-md;
+  padding: 20px;
+  box-shadow: $ff-shadow-card;
+  border: 1px solid $ff-border-default;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover { transform: translateY(-2px); box-shadow: $ff-shadow-hover; }
+
+  &.chart-card-wide { grid-column: 1 / -1; }
+}
+
+.chart-card-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.chart-card-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: $ff-text-primary;
+}
+
+.chart-card-unit {
+  font-size: 11px;
+  font-weight: 600;
+  color: $ff-text-dim;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ── Exercise Selector ────────────────────────────────────────────────────── */
+.exercise-selector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+
+  mat-icon { font-size: 16px; width: 16px; height: 16px; color: $ff-text-dim; }
+}
+
+.exercise-select {
+  flex: 1;
+  max-width: 320px;
+  height: 36px;
+  padding: 0 12px;
+  border-radius: $ff-radius-sm;
+  border: 1px solid $ff-border-default;
+  background: $ff-bg-input;
+  color: $ff-text-primary;
+  font-size: 13px;
+  font-family: $ff-font;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.18s ease;
+
+  &:focus { border-color: $ff-border-accent; }
+
+  option {
+    background: $ff-bg-elevated;
+    color: $ff-text-primary;
+  }
+}
+
+/* ── Awareness / Guide Card ───────────────────────────────────────────────── */
+.tracking-guide-card {
+  background: rgba($ff-info, 0.06);
+  border: 1px solid rgba($ff-info, 0.2);
+  border-left: 4px solid $ff-info;
+  border-radius: $ff-radius-md;
+  padding: 16px 20px;
+  margin-bottom: 28px;
+
+  .guide-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+
+    mat-icon { font-size: 18px; width: 18px; height: 18px; color: $ff-info; flex-shrink: 0; }
+    strong { font-size: 14px; color: $ff-text-primary; font-family: $ff-font; }
+  }
+
+  .guide-tips {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    li {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: $ff-text-secondary;
+      font-family: $ff-font;
+
+      mat-icon { font-size: 16px; width: 16px; height: 16px; color: $ff-info; flex-shrink: 0; }
+      strong { color: $ff-text-primary; }
+    }
+  }
+}
+
+/* ── Empty Measurements State ─────────────────────────────────────────────── */
+.empty-measurements-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  background: $ff-bg-surface;
+  border: 1px solid $ff-border-default;
+  border-radius: $ff-radius-md;
+  padding: 36px 24px;
+  margin-bottom: 28px;
+  text-align: center;
+  box-shadow: $ff-shadow-card;
+
+  .empty-icon-wrap {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: rgba($ff-accent-primary, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    mat-icon { font-size: 28px; width: 28px; height: 28px; color: $ff-accent-primary; }
+  }
+
+  .empty-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: $ff-text-primary;
+    margin: 0;
+    font-family: $ff-font;
+  }
+
+  .empty-desc {
+    font-size: 13px;
+    color: $ff-text-secondary;
+    margin: 0;
+    font-family: $ff-font;
+  }
+}
+
+.baseline-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba($ff-success, 0.08);
+  border: 1px solid rgba($ff-success, 0.2);
+  border-radius: $ff-radius-sm;
+  padding: 10px 14px;
+  font-size: 13px;
+  color: $ff-text-secondary;
+  font-family: $ff-font;
+  max-width: 480px;
+
+  mat-icon { font-size: 18px; width: 18px; height: 18px; color: $ff-success; flex-shrink: 0; }
+  span strong { color: $ff-text-primary; }
+}
+
+.baseline-stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.baseline-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  background: $ff-bg-elevated;
+  border: 1px solid $ff-border-default;
+  border-radius: $ff-radius-sm;
+  padding: 10px 18px;
+  min-width: 90px;
+
+  .bs-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: $ff-text-dim;
+    text-transform: uppercase;
+    font-family: $ff-font;
+  }
+
+  .bs-value {
+    font-size: 16px;
+    font-weight: 700;
+    color: $ff-text-primary;
+    font-family: $ff-font;
+
+    small { font-size: 11px; font-weight: 500; color: $ff-text-secondary; margin-left: 2px; }
+  }
+}
+
+.baseline-btn { margin-top: 4px; }
+
+.baseline-note {
+  font-size: 11px;
+  color: $ff-text-dim;
+  font-family: $ff-font;
+  margin: 0;
+}
+
+/* ── No Data / Loading ────────────────────────────────────────────────────── */
+.no-data-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 24px;
+  background: $ff-bg-surface;
+  border: 1px solid $ff-border-default;
+  border-radius: $ff-radius-md;
+  margin-bottom: 8px;
+
+  mat-icon { font-size: 20px; width: 20px; height: 20px; color: $ff-text-dim; }
+  p { font-size: 13px; color: $ff-text-secondary; margin: 0; }
+}
+
+.charts-loading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 0;
+  font-size: 13px;
+  color: $ff-text-secondary;
+  margin-bottom: 8px;
+}
+
+/* ── Nutrition Today Panel ────────────────────────────────────────────────── */
+.nutrition-panel {
+  background: $ff-bg-surface;
+  border: 1px solid $ff-border-default;
+  border-radius: $ff-radius-md;
+  box-shadow: $ff-shadow-card;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.nutrition-plan-strip {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  background: $ff-bg-elevated;
+  border-bottom: 1px solid $ff-border-default;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.nutrition-plan-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.nutrition-plan-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: $ff-text-primary;
+}
+
+.nutrition-goal-chip {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: $ff-accent-soft;
+  color: $ff-accent-primary;
+  border: 1px solid rgba(255, 107, 0, 0.2);
+}
+
+.nutrition-day-badge {
+  font-size: 12px;
+  font-weight: 700;
+  color: $ff-accent-primary;
+  background: $ff-accent-soft;
+  border: 1px solid rgba(255, 107, 0, 0.2);
+  border-radius: $ff-radius-sm;
+  padding: 4px 12px;
+}
+
+.nutrition-macros-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: $ff-border-default;
+
+  @media (max-width: 900px) { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 480px) { grid-template-columns: 1fr; }
+}
+
+.nutrition-macro-card {
+  background: $ff-bg-surface;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.nmc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.nmc-label {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: $ff-text-secondary;
+}
+
+.nmc-values {
+  font-size: 12px;
+  color: $ff-text-dim;
+
+  strong { font-size: 14px; font-weight: 700; color: $ff-text-primary; }
+}
+
+.nmc-bar-track {
+  height: 8px;
+  background: $ff-bg-elevated;
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid $ff-border-default;
+}
+
+.nmc-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.5s ease;
+
+  &.cal  { background: $ff-accent-primary; }
+  &.prot { background: #3b82f6; }
+  &.carb { background: #eab308; }
+  &.fat  { background: #ef4444; }
+}
+
+.nmc-pct {
+  font-size: 11px;
+  color: $ff-text-dim;
+  text-align: right;
+}
+
+.nmc-target-card {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border-radius: $ff-radius-sm;
+
+  &.cal  { background: rgba(255, 107, 0, 0.07);  border: 1px solid rgba(255, 107, 0, 0.2); }
+  &.prot { background: rgba(59, 130, 246, 0.07); border: 1px solid rgba(59, 130, 246, 0.2); }
+  &.carb { background: rgba(234, 179, 8, 0.07);  border: 1px solid rgba(234, 179, 8, 0.2); }
+  &.fat  { background: rgba(239, 68, 68, 0.07);  border: 1px solid rgba(239, 68, 68, 0.2); }
+
+  .nmc-target-icon {
+    font-size: 24px; width: 24px; height: 24px; opacity: 0.7;
+  }
+
+  &.cal  .nmc-target-icon { color: $ff-accent-primary; }
+  &.prot .nmc-target-icon { color: #3b82f6; }
+  &.carb .nmc-target-icon { color: #eab308; }
+  &.fat  .nmc-target-icon { color: #ef4444; }
+}
+
+.nmc-target-value {
+  font-size: 22px;
+  font-weight: 800;
+  color: $ff-text-primary;
+  line-height: 1;
+}
+
+.nmc-target-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: $ff-text-secondary;
+}
+
+.nmc-target-note {
+  font-size: 11px;
+  color: $ff-text-dim;
+  font-style: italic;
+}
+
+.nutrition-footer-note {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 20px;
+  background: $ff-bg-elevated;
+  border-top: 1px solid $ff-border-default;
+  font-size: 12px;
+  color: $ff-text-dim;
+
+  mat-icon { font-size: 14px; width: 14px; height: 14px; flex-shrink: 0; }
+}
+
+/* ── Photo comparison (kept for future use) ───────────────────────────────── */
+.photo-comparison-section {
+  margin-top: 32px;
+  background: $ff-bg-surface;
+  padding: 24px;
+  border-radius: $ff-radius-md;
+  box-shadow: $ff-shadow-card;
+  border: 1px solid $ff-border-default;
+
+  h3 {
+    font-size: 17px;
+    font-weight: 700;
+    color: $ff-text-primary;
+    margin-bottom: 20px;
+  }
+
+  .comparison-grid {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .comparison-card {
+    flex: 1 1 280px;
+    text-align: center;
+    background: $ff-bg-elevated;
+    padding: 16px;
+    border-radius: $ff-radius-sm;
+    border: 1px solid $ff-border-default;
+
+    h4 { margin-bottom: 12px; font-weight: 600; color: $ff-text-primary; }
+
+    img {
+      display: block;
+      margin: 12px auto;
+      max-width: 100%;
+      max-height: 240px;
+      border-radius: $ff-radius-sm;
+      box-shadow: $ff-shadow-card;
+    }
+  }
+
+  .no-image-msg { text-align: center; color: $ff-text-dim; font-style: italic; }
+}

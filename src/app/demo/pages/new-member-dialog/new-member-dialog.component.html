@@ -1,0 +1,156 @@
+﻿<div class="form-section">
+  <div class="title">
+    <h2 class="form-title">Add New Member</h2>
+    <button class="close-light" (click)="closeDialog()"><img src="../../../../assets/images/icon/close-light.png" style="margin-right: 5px;"></button>
+  </div>
+
+  <form [formGroup]="memberForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="half-width">
+        <label>Member ID <span class="auto-label">(Auto-generated)</span></label>
+        <input type="text" formControlName="memberNo" class="auto-id-input" />
+      </div>
+
+      <div class="half-width">
+        <label for="firstName">First Name <span class="required">*</span></label>
+        <input id="firstName" type="text" maxlength="10" placeholder="Ex. Mike" formControlName="firstName" />
+        <span class="required-message" *ngIf="submitted && memberForm.get('firstName').invalid">
+          <ng-container *ngIf="memberForm.get('firstName').hasError('required')">First Name is required</ng-container>
+          <ng-container *ngIf="memberForm.get('firstName').hasError('minlength')">Minimum 3 characters required</ng-container>
+          <ng-container *ngIf="memberForm.get('firstName').hasError('pattern')">Only letters allowed</ng-container>
+        </span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="half-width">
+        <label for="lastName">Last Name <span class="required">*</span></label>
+        <input id="lastName" type="text" maxlength="10" placeholder="Ex. David" formControlName="lastName" />
+        <span class="required-message" *ngIf="submitted && memberForm.get('lastName').invalid">
+          <ng-container *ngIf="memberForm.get('lastName').hasError('required')">Last Name is required</ng-container>
+          <ng-container *ngIf="memberForm.get('lastName').hasError('minlength')">Minimum 3 characters required</ng-container>
+          <ng-container *ngIf="memberForm.get('lastName').hasError('pattern')">Only letters allowed</ng-container>
+        </span>
+      </div>
+
+      <div class="half-width">
+        <label for="nic">NIC <span class="required">*</span></label>
+        <input id="nic" type="text" maxlength="12" placeholder="Ex. 512478912315" formControlName="nic" />
+        <span class="required-message" *ngIf="submitted && memberForm.get('nic').invalid">
+          <ng-container *ngIf="memberForm.get('nic').hasError('required')">NIC is required</ng-container>
+          <ng-container *ngIf="memberForm.get('nic').hasError('minlength')">Invalid NIC format</ng-container>
+          <ng-container *ngIf="memberForm.get('nic').hasError('pattern')">Invalid NIC format</ng-container>
+        </span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="half-width">
+        <label for="dateOfBirth">Date of Birth <span class="required">*</span></label>
+        <input id="dateOfBirth" type="date" [max]="today" formControlName="dateOfBirth" />
+        <span class="required-message" *ngIf="submitted && memberForm.get('dateOfBirth').invalid">
+          <ng-container *ngIf="memberForm.get('dateOfBirth').hasError('required')">Date of Birth is required</ng-container>
+          <ng-container *ngIf="memberForm.get('dateOfBirth').hasError('futureDate')">Future dates not allowed</ng-container>
+        </span>
+      </div>
+
+      <div class="half-width">
+        <label for="address">Address <span class="required">*</span></label>
+        <textarea id="address" maxlength="100" placeholder="Ex. 123, ABC Road, Kandy" formControlName="address"></textarea>
+        <span class="required-message" *ngIf="submitted && memberForm.get('address').invalid">
+          <ng-container *ngIf="memberForm.get('address').hasError('required')">Address is required</ng-container>
+        </span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="half-width">
+        <label for="phoneNumber">Phone Number <span class="required">*</span></label>
+        <input id="phoneNumber" type="text" maxlength="10" placeholder="Ex. 0771234567" formControlName="phoneNumber" />
+        <span class="required-message" *ngIf="submitted && memberForm.get('phoneNumber').invalid">
+          <ng-container *ngIf="memberForm.get('phoneNumber').hasError('required')">Phone Number is required</ng-container>
+          <ng-container *ngIf="memberForm.get('phoneNumber').hasError('pattern')">Must be a 10-digit number</ng-container>
+        </span>
+      </div>
+
+      <div class="half-width">
+        <label for="email">Email <span class="required">*</span></label>
+        <input id="email" type="email" maxlength="50" placeholder="Ex. abc@gmail.com" formControlName="email" />
+        <span class="required-message" *ngIf="submitted && memberForm.get('email').invalid">
+          <ng-container *ngIf="memberForm.get('email').hasError('required')">Email is required</ng-container>
+          <ng-container *ngIf="memberForm.get('email').hasError('email')">Invalid email format</ng-container>
+        </span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="half-width">
+        <label for="emergencyContactNumber">Emergency Contact <span class="required">*</span></label>
+        <input id="emergencyContactNumber" type="text" maxlength="10" placeholder="Ex. 0771234567" formControlName="emergencyContactNumber" />
+        <span class="required-message" *ngIf="submitted && memberForm.get('emergencyContactNumber').invalid">
+          <ng-container *ngIf="memberForm.get('emergencyContactNumber').hasError('required')">Emergency contact is required</ng-container>
+          <ng-container *ngIf="memberForm.get('emergencyContactNumber').hasError('pattern')">Must be a 10-digit number</ng-container>
+        </span>
+      </div>
+
+      <div class="half-width">
+        <label for="bloodType">Blood Type <span class="required">*</span></label>
+        <select id="bloodType" formControlName="bloodType">
+          <option value="" disabled>-- Select Blood Type --</option>
+          <option value="A+">A+</option>
+          <option value="A-">A-</option>
+          <option value="B+">B+</option>
+          <option value="B-">B-</option>
+          <option value="AB+">AB+</option>
+          <option value="AB-">AB-</option>
+          <option value="O+">O+</option>
+          <option value="O-">O-</option>
+        </select>
+        <span class="required-message" *ngIf="submitted && memberForm.get('bloodType').hasError('required')">
+          Blood Type is required
+        </span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="half-width">
+        <label for="joinedDate">Joined Date <span class="required">*</span></label>
+        <input type="date" id="joinedDate" [min]="minDoj" [max]="maxDoj" formControlName="joinedDate" />
+
+        <span class="required-message" *ngIf="submitted && memberForm.get('joinedDate').invalid">
+          <ng-container *ngIf="memberForm.get('joinedDate').hasError('required')">Date of Joining is required</ng-container>
+          <ng-container *ngIf="memberForm.get('joinedDate').hasError('tooOld')">Date cannot be more than 5 years in the past</ng-container>
+          <ng-container *ngIf="memberForm.get('joinedDate').hasError('tooFuture')">Date cannot be more than 1 year in the future</ng-container>
+        </span>
+      </div>
+
+      <div class="half-width gender-field">
+        <p class="field-label">Gender <span class="required">*</span></p>
+        <div class="radio-group">
+          <label class="radio-item">
+            <input type="radio" formControlName="gender" value="male" /> Male
+          </label>
+          <label class="radio-item">
+            <input type="radio" formControlName="gender" value="female" /> Female
+          </label>
+        </div>
+        <span class="required-message" *ngIf="submitted && memberForm.get('gender').invalid">
+          <ng-container *ngIf="memberForm.get('gender').hasError('required')">Gender is required</ng-container>
+        </span>
+      </div>
+    </div>
+
+    <div class="row upload-section">
+      <button type="button" class="choose-file-btn" (click)="fileInput.click()">
+        Choose Photo
+      </button>
+      <img class="image-preview" [src]="selectedImageUrl ? selectedImageUrl : 'assets/images/authentication/google.svg'" alt="Preview" />
+      <input hidden (change)="onFileSelected($event)" #fileInput type="file" id="file" />
+    </div>
+
+    <div class="row">
+      <button type="submit" class="register-button half-width">{{ registerButtonLabel }}</button>
+      <button type="button" class="reset-button half-width" (click)="resetData()">Reset</button>
+    </div>
+  </form>
+</div>

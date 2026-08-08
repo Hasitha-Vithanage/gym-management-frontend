@@ -1,0 +1,198 @@
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
+import { MemberLoginServiceService } from 'src/app/services/member-login/member-login-service.service';
+import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
+
+@Component({
+  selector: 'app-member-login-dialog',
+  standalone: false,
+  templateUrl: './member-login-dialog.component.html',
+  styleUrl: './member-login-dialog.component.scss'
+})
+export class MemberLoginDialogComponent implements OnInit {
+  memberLoginForm: FormGroup;
+  memberList: any[] = [];
+  dataSource: MatTableDataSource<any>;
+  showPassword = false;
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+
+  mode = 'add';
+  selectedData: any;
+  isButtonDisabled = false;
+  submitted = false;
+  submitDisabled = false;
+  isDisabled = false;
+
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private memberLoginService: MemberLoginServiceService,
+    private messageService: MessageServiceService,
+    public dialogRef: MatDialogRef<MemberLoginDialogComponent>
+  ) {}
+
+  ngOnInit(): void {
+    this.memberLoginForm = this.fb.group({
+      memberId: [null, Validators.required],
+      firstName: [''],
+      lastName: [''],
+      userName: ['', Validators.required],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      role: ['MEMBER'],
+      userId: [''],
+      member: ['']
+    });
+
+    this.getMembers();
+    this.populateData();
+
+    // Auto-fill first/last name when member is selected (add mode only)
+    this.memberLoginForm.get('memberId')?.valueChanges.subscribe((selectedId) => {
+      if (this.mode !== 'add') return;
+      if (selectedId) {
+        this.getMemberById(selectedId);
+      } else {
+        this.memberLoginForm.patchValue({ firstName: '', lastName: '', userName: '' });
+      }
+    });
+  }
+
+  public getMembers(): void {
+    this.memberLoginService.getMembers().subscribe({
+      next: (response: any[]) => {
+        const activeMembers = response.filter(member => !member.deleted)
+        this.memberList = activeMembers;
+      },
+      error: (error) => {
+            console.log('Error fetching members:', error);
+      }
+    });
+
+    this.memberLoginForm.get('firstName')?.disable();
+    this.memberLoginForm.get('lastName')?.disable();
+  }
+
+  public getMemberById(memberId: number): void {
+    this.memberLoginService.getMemberById(memberId).subscribe({
+      next: (response) => {
+        console.log('Selected Member: ', response);
+        this.memberLoginForm.patchValue({
+          firstName: response.firstName,
+          lastName: response.lastName,
+          userName: `${response.firstName}`.toLowerCase(),
+          member: memberId
+        });
+      },
+      error: (error) => {
+        this.messageService.showError(error);
+      }
+    });
+  }
+
+  onSubmit(): void {
+    this.submitted = true;
+
+    if (this.memberLoginForm.invalid) {
+      this.messageService.showError(this.getValidationMessage());
+      return;
+    }
+
+    try {
+      if (this.mode === 'add') {
+        this.memberLoginService.serviceCall(this.memberLoginForm.getRawValue()).subscribe({
+          next: (response: any) => {
+            this.messageService.showSuccess('Member registered successfully!');
+            this.dialogRef.close({ action: 'add', data: response });
+          },
+          error: (error) => {
+            this.messageService.showError(error);
+          }
+        });
+      } else if (this.mode === 'edit') {
+        this.memberLoginService
+          .editData(this.selectedData?.id, this.memberLoginForm.getRawValue())
+          .subscribe({
+            next: (response: any) => {
+              this.messageService.showSuccess('Record updated successfully!');
+              this.dialogRef.close({ action: 'edit', data: response });
+            },
+            error: (error) => {
+              this.messageService.showError(error);
+            }
+          });
+      }
+    } catch (error) {
+      this.messageService.showError(error);
+    }
+  }
+
+  private getValidationMessage(): string {
+    if (this.memberLoginForm.get('memberId')?.hasError('required')) {
+      return 'Please select a member.';
+    }
+    if (this.memberLoginForm.get('userName')?.hasError('required')) {
+      return 'Please enter a username.';
+    }
+    const passwordControl = this.memberLoginForm.get('password');
+    if (passwordControl?.hasError('required')) {
+      return 'Please enter a password.';
+    }
+    if (passwordControl?.hasError('minlength')) {
+      return 'Password must be at least 6 characters long.';
+    }
+    return 'Please fill in all required fields.';
+  }
+
+  onEdit(data: any): void {
+    this.mode = 'edit';
+    this.selectedData = data;
+    this.memberLoginForm.patchValue({
+      memberId: data.member,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      userName: data.userName,
+      password: data.password,
+      userId: data.userId
+    });
+    this.submitDisabled = true;
+
+    // Password is never returned from the backend (by design), so it's always blank
+    // here. Leaving it required would force a password reset just to edit an unrelated
+    // field. The backend already leaves the password untouched when it receives an empty
+    // value, so only enforce a minimum length when the admin actually sets a new one.
+    this.memberLoginForm.get('password')?.setValidators([Validators.minLength(6)]);
+    this.memberLoginForm.get('password')?.updateValueAndValidity();
+
+    this.memberLoginForm.valueChanges.subscribe(() => {
+      this.submitDisabled = !this.memberLoginForm.valid || this.memberLoginForm.pristine;
+    });
+  }
+
+  togglePassword(): void {
+    this.showPassword = !this.showPassword;
+  }
+
+  closeDialog(): void {
+    this.dialogRef.close();
+  }
+
+  public populateData(): void {
+    this.memberLoginService.getData().subscribe({
+      next: (response: any) => {
+        this.dataSource = new MatTableDataSource(response);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      },
+      error: () => {
+        this.messageService.showError('Error occurred while getting data!');
+      }
+    });
+  }
+}

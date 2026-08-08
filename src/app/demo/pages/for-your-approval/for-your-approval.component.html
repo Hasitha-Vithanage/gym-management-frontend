@@ -1,0 +1,134 @@
+<div class="container">
+  <!-- Table Section to the Right of Form -->
+  <div class="table-section">
+    <!-- title of the-->
+    <h2 class="form-title">
+      <img src="../../../../assets/images/icon/for-your-approval-light-icon.png" style="margin-right: 5px" />
+      For Your Approval
+    </h2>
+
+<!-- Want to add a expandable  -->
+    <div class="toolbar">
+      <!-- add-new on the left -->
+      <div class="add-new">
+        <!-- <button type="reset" mat-raised-button class="new-button half-width" (click)="openEmployeeDialog()">
+          <img src="../../../../assets/images/icon/add-light-icon.png" style="margin-right: 5px;">
+          Add New Employee
+        </button> -->
+      </div>
+
+      <!-- table filter-->
+      <div class="table-filter">
+        <!-- Search bar -->
+        <div class="search-bar">
+          <img src="../../../../assets/images/icon/search.png"
+            style="margin-right: 5px; height: 18px; width: 18px;" />
+          <input type="text" placeholder="Search..." (keyup)="applyFilter($event)" />
+        </div>
+
+        <!-- refresh button-->
+        <button mat-icon-button class="refresh-button" (click)="refreshData()">
+          <img src="../../../../assets/images/icon/refresh.png"
+            style="margin-right: 5px; height: 18px; width: 18px;" />
+        </button>
+      </div>
+    </div>
+    <div class="table-wrapper">
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        <!-- # Column -->
+        <ng-container matColumnDef="#">
+          <th mat-header-cell *matHeaderCellDef>#</th>
+          <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+        </ng-container>
+
+        <!-- firstName Column -->
+        <ng-container matColumnDef="firstName">
+          <th mat-header-cell *matHeaderCellDef>First Name</th>
+          <td mat-cell *matCellDef="let element">{{ element.firstName }}</td>
+        </ng-container>
+
+        <!-- lastName Column -->
+        <ng-container matColumnDef="lastName">
+          <th mat-header-cell *matHeaderCellDef>Last Name</th>
+          <td mat-cell *matCellDef="let element">{{ element.lastName }}</td>
+        </ng-container>
+
+        <!-- role Column -->
+        <ng-container matColumnDef="role">
+          <th mat-header-cell *matHeaderCellDef>Role</th>
+          <td mat-cell *matCellDef="let element">{{ element.role || '-' }}</td>
+        </ng-container>
+
+        <!-- requestedDate Column -->
+        <!-- | date:'dd/MM/yyyy' -->
+        <ng-container matColumnDef="requestedDate">
+          <th style="text-align: center;" mat-header-cell *matHeaderCellDef>Requested Date</th>
+          <td style="text-align: center;" mat-cell *matCellDef="let element">{{ element.requestedDate | date:
+            'dd/MM/yyyy' }}</td>
+        </ng-container>
+
+        <!-- approvedDate Column -->
+        <!-- <ng-container matColumnDef="approvedDate">
+          <th mat-header-cell *matHeaderCellDef>Approved Date</th>
+          <td mat-cell *matCellDef="let element">{{ element.approvedDate || '-' }}</td>
+        </ng-container> -->
+
+        <!-- approvedBy Column -->
+        <!-- <ng-container matColumnDef="approvedBy">
+          <th mat-header-cell *matHeaderCellDef>Approved By</th>
+          <td mat-cell *matCellDef="let element">{{ element.approvedBy || '-' }}</td>
+        </ng-container> -->
+
+        <!-- status Column -->
+        <ng-container matColumnDef="status">
+          <th style="text-align: center;" mat-header-cell *matHeaderCellDef>Status</th>
+          <td style="text-align: center;" mat-cell *matCellDef="let element">
+            <span class="status-badge" [ngClass]="{
+              'approved': element.status === 'Approved',
+              'pending': element.status === 'Approval Pending'
+            }">
+              {{ element.status || '-' }}
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- action Column -->
+        <ng-container matColumnDef="actions">
+          <th style="text-align: center" mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let element">
+            <div class="action-column">
+              <!-- <button mat-icon-button class="gray-icon-btn" matTooltip="Edit" (click)="editData(element)">
+                <img src="../../../../assets/images/icon/view-icon-dark.png" style="margin-right: 5px; height: 18px; width: 18px;" />
+              </button> -->
+              <button mat-icon-button class="gray-icon-btn" matTooltip="Approve" (click)="approveRequest(element)">
+                <img src="../../../../assets/images/icon/approve-icon-green.png"
+                  style="margin-right: 5px; height: 18px; width: 18px;" />
+              </button>
+              <button mat-icon-button class="gray-icon-btn" matTooltip="Reject" (click)="rejectRequest(element)">
+                <img src="../../../../assets/images/icon/cancel-icon-red.png"
+                  style="margin-right: 5px; height: 18px; width: 18px;" />
+              </button>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+
+      <!-- No data row -->
+      <ng-container *ngIf="dataSource.data.length === 0">
+        <ng-container matColumnDef="noData">
+          <td mat-cell [attr.colspan]="displayedColumns.length" class="no-data">No records found</td>
+        </ng-container>
+
+        <tr mat-row *matRowDef="let row; columns: ['noData']"></tr>
+      </ng-container>
+    </div>
+    <!-- pagination-->
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of periodic elements">
+    </mat-paginator>
+    
+<!-- Want to add a expandable  -->
+  </div>
+</div>

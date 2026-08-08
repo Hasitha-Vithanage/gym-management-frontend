@@ -1,0 +1,72 @@
+<div class="form-section">
+  <div class="title">
+    <h2 class="form-title">Add New Progress</h2>
+    <button class="close-light" (click)="closeDialog()">&#x2715;</button>
+  </div>
+
+  <form [formGroup]="progressForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="half-width">
+        <label for="date">Date <span class="required">*</span></label>
+        <input id="date" type="date" formControlName="date" />
+        <span class="required-message" *ngIf="submitted && progressForm.get('date')?.invalid">
+          Date is required
+        </span>
+      </div>
+
+      <div class="half-width">
+        <label for="weight">Weight (Kg) <span class="required">*</span></label>
+        <input id="weight" type="number" maxlength="20" placeholder="Enter Weight" formControlName="weight" />
+        <span class="required-message" *ngIf="submitted && progressForm.get('weight')?.invalid">
+          Weight is required
+        </span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="half-width">
+        <label for="height">Height (cm) <span class="required">*</span></label>
+        <input id="height" type="number" maxlength="20" placeholder="Enter Height" formControlName="height" />
+        <span class="required-message" *ngIf="submitted && progressForm.get('height')?.invalid">
+          Height is required
+        </span>
+      </div>
+
+      <div class="half-width">
+        <label for="bmi">BMI</label>
+        <input id="bmi" type="number" placeholder="Auto-calculated" formControlName="bmi" readonly />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="half-width">
+        <label for="bodyFat">Body Fat % <small class="optional-label">(optional — from scale or device)</small></label>
+        <input id="bodyFat" type="number" placeholder="e.g. 18.5" formControlName="bodyFat" />
+      </div>
+
+      <div class="half-width">
+        <label for="gender">Gender <span class="required">*</span></label>
+        <select id="gender" formControlName="gender">
+          <option value="" disabled>-- Select Gender --</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+        </select>
+        <span class="required-message" *ngIf="submitted && progressForm.get('gender')?.invalid">
+          Gender is required
+        </span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="half-width">
+        <label for="remarks">Remarks</label>
+        <textarea id="remarks" maxlength="1000" placeholder="Enter Remarks" formControlName="remarks"></textarea>
+      </div>
+    </div>
+
+    <div class="row">
+      <button type="button" class="close-button half-width" (click)="closeDialog()">Close</button>
+      <button type="submit" class="submit-button half-width">{{ saveButtonLabel }}</button>
+    </div>
+  </form>
+</div>

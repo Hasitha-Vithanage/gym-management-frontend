@@ -1,0 +1,37 @@
+<div class="form-section">
+  <div class="title">
+    <h2 class="form-title">Assign Trainer</h2>
+    <button class="close-light" (click)="closeDialog()">&#x2715;</button>
+  </div>
+
+  <form [formGroup]="assignTrainerForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="half-width">
+        <label for="member">Select Member <span class="required">*</span></label>
+        <select id="member" formControlName="member" (change)="onMemberSelect($event)">
+          <option value="" disabled>-- Select Member --</option>
+          <option *ngFor="let member of memberList" [value]="member.firstName">{{ member.memberNo }} - {{ member.firstName }} {{ member.lastName }}</option>
+        </select>
+        <span class="required-message" *ngIf="submitted && assignTrainerForm.get('member').invalid">
+          <ng-container *ngIf="assignTrainerForm.get('member').hasError('required')">Member is required</ng-container>
+        </span>
+      </div>
+
+      <div class="half-width">
+        <label for="trainer">Select Trainer <span class="required">*</span></label>
+        <select id="trainer" formControlName="trainer" (change)="onTrainerSelect($event)">
+          <option value="" disabled>-- Select Trainer --</option>
+          <option *ngFor="let trainer of trainerList" [value]="trainer.firstName">{{ trainer.employeeId }} - {{ trainer.firstName }} {{ trainer.lastName }}</option>
+        </select>
+        <span class="required-message" *ngIf="submitted && assignTrainerForm.get('trainer').invalid">
+          <ng-container *ngIf="assignTrainerForm.get('trainer').hasError('required')">Trainer is required</ng-container>
+        </span>
+      </div>
+    </div>
+
+    <div class="row">
+      <button type="submit" class="register-button half-width" [disabled]="submitDisabled">{{ registerButtonLabel }}</button>
+      <button type="button" class="reset-button half-width" (click)="resetData()">Reset</button>
+    </div>
+  </form>
+</div>

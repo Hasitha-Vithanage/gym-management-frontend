@@ -1,0 +1,330 @@
+@import 'src/scss/settings/colors';
+
+:host {
+  display: block;
+  min-height: 100vh;
+  background: $ff-bg-base;
+  font-family: $ff-font;
+  color: $ff-text-primary;
+}
+
+.page-wrapper { padding: 24px 28px; }
+
+// ─── HEADER ──────────────────────────────────────────────────────────────────
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.page-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: $ff-text-primary;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+
+  .title-icon {
+    font-size: 24px;
+    color: $ff-accent-primary;
+  }
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 18px;
+  border-radius: $ff-radius-sm;
+  border: none;
+  background: $ff-accent-primary;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: $ff-font;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+
+  mat-icon { font-size: 18px; width: 18px; height: 18px; }
+
+  &:hover {
+    background: $ff-accent-hover;
+    transform: translateY(-1px);
+  }
+}
+
+// ─── TABS ─────────────────────────────────────────────────────────────────────
+.tabs-row {
+  display: flex;
+  gap: 4px;
+  border-bottom: 2px solid $ff-border-default;
+  margin-bottom: 24px;
+}
+
+.tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border: none;
+  background: transparent;
+  color: $ff-text-secondary;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: $ff-font;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: color 0.2s, border-color 0.2s;
+
+  &.active {
+    color: $ff-accent-primary;
+    border-bottom-color: $ff-accent-primary;
+  }
+
+  &:hover:not(.active) { color: $ff-text-primary; }
+}
+
+.tab-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 700;
+  background: $ff-bg-elevated;
+  color: $ff-text-secondary;
+
+  .active & {
+    background: rgba($ff-accent-primary, 0.15);
+    color: $ff-accent-primary;
+  }
+}
+
+// ─── SKELETON ─────────────────────────────────────────────────────────────────
+@keyframes shimmer {
+  0%   { background-position: -600px 0; }
+  100% { background-position:  600px 0; }
+}
+
+.skeleton-list { display: flex; flex-direction: column; gap: 16px; }
+
+.skeleton-card {
+  height: 160px;
+  border-radius: $ff-radius-lg;
+  background: linear-gradient(90deg, $ff-bg-elevated 25%, $ff-bg-hover 50%, $ff-bg-elevated 75%);
+  background-size: 1200px 100%;
+  animation: shimmer 1.4s infinite linear;
+}
+
+// ─── EMPTY STATE ──────────────────────────────────────────────────────────────
+.empty-state {
+  text-align: center;
+  padding: 80px 20px;
+  color: $ff-text-dim;
+
+  mat-icon {
+    font-size: 64px;
+    width: 64px;
+    height: 64px;
+    margin-bottom: 16px;
+    opacity: 0.4;
+  }
+
+  p { font-size: 15px; margin: 0 0 20px; }
+}
+
+.empty-action-btn {
+  padding: 10px 24px;
+  border-radius: $ff-radius-sm;
+  border: 1px solid $ff-accent-primary;
+  background: transparent;
+  color: $ff-accent-primary;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: $ff-font;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+
+  &:hover {
+    background: $ff-accent-primary;
+    color: #fff;
+  }
+}
+
+// ─── BOOKING LIST ─────────────────────────────────────────────────────────────
+.bookings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+// ─── BOOKING CARD ─────────────────────────────────────────────────────────────
+.booking-card {
+  background: $ff-bg-surface;
+  border: 1px solid $ff-border-default;
+  border-radius: $ff-radius-lg;
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: $ff-shadow-card;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.2s, box-shadow 0.2s;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, $ff-accent-primary, $ff-accent-hover);
+  }
+
+  &.past {
+    opacity: 0.75;
+    &::before { background: $ff-text-dim; }
+  }
+
+  &:hover { border-color: $ff-border-accent; box-shadow: $ff-shadow-hover; }
+}
+
+// ─── CARD TOP ─────────────────────────────────────────────────────────────────
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.badge-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+// ─── TYPE BADGE ───────────────────────────────────────────────────────────────
+.type-badge {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+
+  &.hiit    { background: rgba(239,68,68,0.12);   color: $ff-danger;   border: 1px solid rgba(239,68,68,0.25); }
+  &.zumba   { background: rgba(167,139,250,0.12); color: $ff-platinum; border: 1px solid rgba(167,139,250,0.25); }
+  &.yoga    { background: rgba(34,197,94,0.12);   color: $ff-success;  border: 1px solid rgba(34,197,94,0.25); }
+  &.cycling { background: rgba(251,191,36,0.12);  color: $ff-warning;  border: 1px solid rgba(251,191,36,0.25); }
+  &.default { background: rgba(59,130,246,0.12);  color: $ff-info;     border: 1px solid rgba(59,130,246,0.25); }
+}
+
+// ─── BOOKING STATUS BADGE ─────────────────────────────────────────────────────
+.booking-status-badge {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+
+  &.confirmed { background: rgba(34,197,94,0.1);  color: $ff-success; border: 1px solid rgba(34,197,94,0.2); }
+  &.cancelled { background: rgba(239,68,68,0.1);  color: $ff-danger;  border: 1px solid rgba(239,68,68,0.2); }
+}
+
+// ─── CLASS STATUS BADGE ───────────────────────────────────────────────────────
+.class-status-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+
+  &.completed      { background: rgba(93,100,120,0.1); color: $ff-text-dim;  border: 1px solid $ff-border-default; }
+  &.class-cancelled { background: rgba(251,191,36,0.1); color: $ff-warning;  border: 1px solid rgba(251,191,36,0.2); }
+}
+
+// ─── TITLE & DETAILS ─────────────────────────────────────────────────────────
+.class-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: $ff-text-primary;
+  margin: 0;
+}
+
+.class-details {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.detail-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: $ff-text-secondary;
+
+  mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    color: $ff-accent-primary;
+    flex-shrink: 0;
+  }
+}
+
+// ─── CARD FOOTER ─────────────────────────────────────────────────────────────
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 10px;
+  border-top: 1px solid $ff-border-default;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.booked-on {
+  font-size: 12px;
+  color: $ff-text-dim;
+}
+
+// ─── CANCEL BUTTON ────────────────────────────────────────────────────────────
+.cancel-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 14px;
+  border-radius: $ff-radius-sm;
+  border: 1px solid rgba(239,68,68,0.4);
+  background: transparent;
+  color: $ff-danger;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: $ff-font;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+
+  mat-icon { font-size: 16px; width: 16px; height: 16px; }
+
+  &:hover {
+    background: $ff-danger;
+    color: #fff;
+    border-color: $ff-danger;
+  }
+}
+
+// ─── RESPONSIVE ───────────────────────────────────────────────────────────────
+@media (max-width: 768px) {
+  .page-wrapper { padding: 14px 12px; }
+  .card-footer  { flex-direction: column; align-items: flex-start; }
+}

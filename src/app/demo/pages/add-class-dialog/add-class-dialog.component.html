@@ -1,0 +1,119 @@
+<div class="dialog-container">
+
+  <!-- Header -->
+  <div class="dialog-header">
+    <h3>{{ mode === 'edit' ? 'Edit Class' : 'Schedule New Class' }}</h3>
+    <button type="button" class="close-btn" (click)="closeDialog()">✕</button>
+  </div>
+
+  <!-- Form -->
+  <form [formGroup]="classForm" (ngSubmit)="onSubmit()" class="dialog-body">
+
+    <!-- Row 1: Class Title + Class Type -->
+    <div class="row">
+      <div class="field">
+        <label for="classTitle">Class Title <span class="required">*</span></label>
+        <input id="classTitle" type="text" placeholder="Ex: Morning HIIT" formControlName="classTitle" />
+        <span class="error-msg" *ngIf="submitted && classForm.get('classTitle').hasError('required')">Class Title is required</span>
+        <span class="error-msg" *ngIf="submitted && classForm.get('classTitle').hasError('maxlength')">Maximum 50 characters allowed</span>
+      </div>
+      <div class="field">
+        <label for="classType">Class Type <span class="required">*</span></label>
+        <select id="classType" formControlName="classType" class="select-input">
+          <option value="" disabled>Select class type</option>
+          <option value="HIIT">HIIT</option>
+          <option value="Zumba">Zumba</option>
+          <option value="Yoga">Yoga</option>
+          <option value="Pilates">Pilates</option>
+          <option value="Body Pump">Body Pump</option>
+          <option value="Cardio Kickboxing">Cardio Kickboxing</option>
+          <option value="Cycling / Spin">Cycling / Spin</option>
+          <option value="Core & Abs">Core &amp; Abs</option>
+          <option value="TRX Training">TRX Training</option>
+          <option value="Functional Fitness">Functional Fitness</option>
+          <option value="Boxing Fitness">Boxing Fitness</option>
+          <option value="CrossFit">CrossFit</option>
+          <option value="Stretching">Stretching</option>
+          <option value="Aqua Aerobics">Aqua Aerobics</option>
+          <option value="Other">Other</option>
+        </select>
+        <span class="error-msg" *ngIf="submitted && classForm.get('classType').hasError('required')">Class Type is required</span>
+      </div>
+    </div>
+
+    <!-- Row 1b: Description (full width) -->
+    <div class="row">
+      <div class="field">
+        <label for="description">Description <span class="required">*</span></label>
+        <input id="description" type="text" placeholder="Ex: High intensity interval training for fat burn" formControlName="description" />
+        <span class="error-msg" *ngIf="submitted && classForm.get('description').hasError('required')">Description is required</span>
+        <span class="error-msg" *ngIf="submitted && classForm.get('description').hasError('maxlength')">Maximum 200 characters allowed</span>
+      </div>
+    </div>
+
+    <!-- Row 2: Date + Start Time -->
+    <div class="row">
+      <div class="field">
+        <label for="date">Date <span class="required">*</span></label>
+        <input id="date" type="date" formControlName="date" (change)="onDateChange($event)" />
+        <span class="error-msg" *ngIf="submitted && classForm.get('date').hasError('required')">Date is required</span>
+        <span class="error-msg" *ngIf="submitted && classForm.get('date').errors?.['futureDateValidator']">Class date must be today or a future date</span>
+      </div>
+      <div class="field">
+        <label for="startTime">Start Time <span class="required">*</span></label>
+        <input id="startTime" type="time" formControlName="startTime" />
+        <span class="error-msg" *ngIf="submitted && classForm.get('startTime').hasError('required')">Start Time is required</span>
+        <span class="error-msg" *ngIf="submitted && classForm.errors?.['startTimeBeforeEndTimeValidator']">Start time must be before end time</span>
+      </div>
+    </div>
+
+    <!-- Row 3: End Time + Trainer -->
+    <div class="row">
+      <div class="field">
+        <label for="endTime">End Time <span class="required">*</span></label>
+        <input id="endTime" type="time" formControlName="endTime" />
+        <span class="error-msg" *ngIf="submitted && classForm.get('endTime').hasError('required')">End Time is required</span>
+        <span class="error-msg" *ngIf="submitted && classForm.errors?.['startTimeBeforeEndTimeValidator']">End time must be after start time</span>
+      </div>
+      <div class="field">
+        <label for="trainerEmployeeId">Trainer <span class="required">*</span></label>
+        <select id="trainerEmployeeId" formControlName="trainerEmployeeId" class="select-input">
+          <option value="" disabled>{{ trainers.length === 0 ? 'No trainers available' : 'Select a trainer' }}</option>
+          <option *ngFor="let trainer of trainers" [value]="trainer.id">
+            {{ trainer.firstName }} {{ trainer.lastName }}
+          </option>
+        </select>
+        <span class="error-msg" *ngIf="submitted && classForm.get('trainerEmployeeId').hasError('required')">Trainer is required</span>
+      </div>
+    </div>
+
+    <!-- Row 4: Number of Slots + Status -->
+    <div class="row">
+      <div class="field">
+        <label for="totalSlots">Number of Slots <span class="required">*</span></label>
+        <input id="totalSlots" type="number" placeholder="e.g. 15" formControlName="totalSlots" />
+        <span class="error-msg" *ngIf="submitted && classForm.get('totalSlots').hasError('required')">Number of Slots is required</span>
+        <span class="error-msg" *ngIf="submitted && classForm.get('totalSlots').hasError('min')">Minimum 1 slot is required</span>
+        <span class="error-msg" *ngIf="submitted && classForm.get('totalSlots').hasError('max')">Maximum allowed slots is 25</span>
+        <span class="error-msg" *ngIf="submitted && classForm.get('totalSlots').hasError('pattern')">Only numeric values are allowed</span>
+      </div>
+      <div class="field">
+        <label for="status">Status <span class="required">*</span></label>
+        <select id="status" formControlName="status" class="select-input">
+          <option value="" disabled>Select Status</option>
+          <option value="Scheduled">Scheduled</option>
+          <option value="Cancelled">Cancelled</option>
+          <option value="Completed">Completed</option>
+        </select>
+        <span class="error-msg" *ngIf="submitted && classForm.get('status').hasError('required')">Status is required</span>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="action">
+      <button type="button" class="btn secondary" (click)="resetData()">Reset</button>
+      <button type="submit" class="btn primary" [disabled]="submitDisabled">{{ saveButtonLabel }}</button>
+    </div>
+
+  </form>
+</div>

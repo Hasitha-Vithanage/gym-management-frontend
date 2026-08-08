@@ -1,0 +1,43 @@
+<div class="form-section">
+  <div class="title">
+    <h2 class="form-title">Upload Meal Plan</h2>
+    <button class="close-light" (click)="closeDialog()">&#x2715;</button>
+  </div>
+
+  <form [formGroup]="mealUploadForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="half-width">
+        <label for="mealPlanTitle">Meal Plan Title <span class="required">*</span></label>
+        <input id="mealPlanTitle" type="text" maxlength="50" placeholder="4-Week Strength Plan" formControlName="mealPlanTitle" />
+        <span class="required-message" *ngIf="submitted && mealUploadForm.get('mealPlanTitle').invalid">
+          <ng-container *ngIf="mealUploadForm.get('mealPlanTitle').hasError('required')">Meal Plan Title is required</ng-container>
+          <ng-container *ngIf="mealUploadForm.get('mealPlanTitle').hasError('minlength')">Minimum 5 characters required</ng-container>
+        </span>
+      </div>
+
+      <div class="half-width">
+        <label for="planDescription">Plan Description</label>
+        <input id="planDescription" type="text" maxlength="50" placeholder="Optional notes..." formControlName="planDescription" />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="half-width">
+        <label for="userId">Member</label>
+        <input id="userId" type="text" maxlength="50" formControlName="userId" readonly />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="half-width pdf-upload-wrapper">
+        <label for="pdfUpload">Upload Meal Plan (PDF) <span class="required">*</span></label>
+        <input type="file" id="pdfUpload" accept="application/pdf" (change)="onFileSelected($event)" required />
+      </div>
+    </div>
+
+    <div class="row">
+      <button type="submit" class="register-button half-width" [disabled]="isDisabled">{{ registerButtonLabel }}</button>
+      <button type="button" class="reset-button half-width" (click)="resetData()">Reset</button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,230 @@
+<div class="container">
+
+  <!-- ── Page Header ── -->
+  <div class="page-header">
+    <div class="header-left">
+      <button mat-button class="back-button" (click)="goBack()">
+        <img src="../../../../assets/images/icon/back-arrow.png">
+        Back
+      </button>
+      <div class="header-info">
+        <h2 class="page-title">Assign Exercises</h2>
+        <span class="template-badge" *ngIf="templateData">
+           <img class="badge-icon" src="../../../../assets/images/icon/workout-orange.png" style="margin-right: 5px;">
+          {{ templateData.templateName }}
+        </span>
+      </div>
+    </div>
+    <button
+      mat-raised-button
+      class="save-button"
+      (click)="saveAssignments()"
+      [disabled]="assignedExercises.length === 0"
+    >
+      Save Assignments
+    </button>
+  </div>
+
+  <!-- Pending request assignment banner -->
+  <div class="pending-assign-banner" *ngIf="pendingRequestId">
+    <img src="../../../../assets/images/icon/icons8-audit-20.png">
+    <span>
+      When you click <strong>Save Assignments</strong>, this template will be automatically assigned to
+      <strong>{{ pendingMemberName }}</strong>.
+    </span>
+  </div>
+
+  <!-- ── Two-column body ── -->
+  <div class="body-grid">
+
+    <!-- ════ LEFT: Browse Exercises ════ -->
+    <div class="browse-panel">
+      <div class="panel-title">
+        Browse Exercises
+      </div>
+
+      <div class="search-wrap">
+         <img class="s-icon" src="../../../../assets/images/icon/search-16.png">
+        <input
+          id="exercise-search"
+          type="text"
+          [(ngModel)]="searchQuery"
+          placeholder="Search by name, muscle or category…"
+          class="search-input"
+        />
+      </div>
+
+      <div class="browse-list">
+        <ng-container *ngIf="filteredExercises().length > 0; else noExercises">
+          <div
+            class="browse-card"
+            *ngFor="let ex of filteredExercises()"
+            [class.selected]="selectedExercise?.id === ex.id"
+          >
+            <div class="bc-top">
+              <span class="bc-name">{{ ex.exerciseName }}</span>
+              <span class="diff-badge {{ ex.difficulty?.toLowerCase() || 'beginner' }}" *ngIf="ex.difficulty">
+                {{ ex.difficulty }}
+              </span>
+            </div>
+            <div class="bc-chips" *ngIf="ex.muscleGroup || ex.category">
+              <span class="chip" *ngIf="ex.muscleGroup">{{ ex.muscleGroup }}</span>
+              <span class="chip" *ngIf="ex.category">{{ ex.category }}</span>
+            </div>
+            <button class="add-btn" (click)="quickAdd(ex); $event.stopPropagation()">
+              <img src="../../../../assets/images/icon/add-16.png"> Add to Template
+            </button>
+          </div>
+        </ng-container>
+        <ng-template #noExercises>
+          <div class="empty-browse">
+            <p>No exercises found</p>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+
+    <!-- ════ RIGHT: Config + Workout Split ════ -->
+    <div class="right-panel">
+
+      <!-- Config form -->
+      <div class="config-card">
+        <div class="panel-title">
+          <img src="../../../../assets/images/icon/tune-16.png">
+          Exercise Configuration
+          <span class="selected-ex-label" *ngIf="selectedExercise">
+            — {{ selectedExercise.exerciseName }}
+          </span>
+        </div>
+
+        <form [formGroup]="assignmentForm" class="config-form">
+          <div class="form-row">
+
+            <div class="form-field">
+              <label for="workout-day">Workout Day <span class="req">*</span></label>
+              <select id="workout-day" formControlName="workoutDay">
+                <option value="">Select Day</option>
+                <option *ngFor="let d of workoutDays" [value]="d">Day {{ d }}</option>
+              </select>
+              <span class="required-message" *ngIf="isSubmitted && assignmentForm.get('workoutDay')?.invalid">
+                Workout day is required
+              </span>
+            </div>
+
+            <div class="form-field">
+              <label for="exercise-select">Exercise <span class="req">*</span></label>
+              <select id="exercise-select" formControlName="exerciseId">
+                <option value="">Select Exercise</option>
+                <option *ngFor="let ex of exerciseList" [value]="ex.id">{{ ex.exerciseName }}</option>
+              </select>
+              <span class="required-message" *ngIf="isSubmitted && assignmentForm.get('exerciseId')?.invalid">
+                Exercise is required
+              </span>
+            </div>
+
+            <div class="form-field narrow">
+              <label for="sets-input">Sets <span class="req">*</span></label>
+              <input id="sets-input" type="number" formControlName="sets" min="1" placeholder="4" />
+              <span class="required-message" *ngIf="isSubmitted && assignmentForm.get('sets')?.invalid">
+                <ng-container *ngIf="assignmentForm.get('sets')?.hasError('required')">Sets is required</ng-container>
+                <ng-container *ngIf="assignmentForm.get('sets')?.hasError('min')">Sets must be at least 1</ng-container>
+              </span>
+            </div>
+
+            <div class="form-field narrow">
+              <label for="reps-input">Reps <span class="req">*</span></label>
+              <input id="reps-input" type="number" formControlName="reps" min="1" placeholder="12" />
+              <span class="required-message" *ngIf="isSubmitted && assignmentForm.get('reps')?.invalid">
+                <ng-container *ngIf="assignmentForm.get('reps')?.hasError('required')">Reps is required</ng-container>
+                <ng-container *ngIf="assignmentForm.get('reps')?.hasError('min')">Reps must be at least 1</ng-container>
+              </span>
+            </div>
+
+            <div class="form-field narrow">
+              <label for="rest-input">Rest (s)</label>
+              <input id="rest-input" type="number" formControlName="restSeconds" min="0" placeholder="60" />
+              <span class="required-message" *ngIf="isSubmitted && assignmentForm.get('restSeconds')?.hasError('min')">
+                Rest cannot be negative
+              </span>
+            </div>
+
+            <div class="form-field narrow">
+              <label for="order-input">Order</label>
+              <input id="order-input" type="number" formControlName="exerciseOrder" min="1" placeholder="1" />
+              <span class="required-message" *ngIf="isSubmitted && assignmentForm.get('exerciseOrder')?.hasError('min')">
+                Order must be at least 1
+              </span>
+            </div>
+
+          </div>
+
+          <div class="form-row-bottom">
+            <div class="form-field grow">
+              <label for="notes-input">Notes</label>
+              <input id="notes-input" type="text" formControlName="notes" maxlength="500" placeholder="Optional notes…" />
+              <span class="required-message" *ngIf="isSubmitted && assignmentForm.get('notes')?.hasError('maxlength')">
+                Notes must be 500 characters or fewer
+              </span>
+            </div>
+            <div class="form-actions">
+              <button type="button" class="btn-add" (click)="addExerciseToTemplate()">
+              Add
+              </button>
+              <button type="button" class="btn-reset" (click)="resetForm()">
+              Reset
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- Workout Split View -->
+      <div class="split-card">
+        <div class="panel-title">
+          <img src="../../../../assets/images/icon/calendar_view_week.png" style="margin-right: 5px;">
+          Workout Split
+          <span class="count-badge" *ngIf="assignedExercises.length > 0">
+            {{ assignedExercises.length }} exercise{{ assignedExercises.length !== 1 ? 's' : '' }}
+          </span>
+        </div>
+
+        <ng-container *ngIf="assignedExercises.length > 0; else emptyAssigned">
+          <div class="day-columns">
+            <div class="day-column" *ngFor="let day of usedDays">
+              <div class="day-header">
+                <span class="day-label">Day {{ day }}</span>
+                <span class="day-count">{{ exercisesForDay(day).length }} ex</span>
+              </div>
+              <div class="day-exercises">
+                <div class="ex-pill" *ngFor="let e of exercisesForDay(day)">
+                  <div class="pill-name">{{ e.exerciseName }}</div>
+                  <div class="pill-stats">
+                    <span class="stat">
+                      <img src="../../../../assets/images/icon/icons8-repeat-10.png">{{ e.sets }} × {{ e.reps }}
+                    </span>
+                    <span class="stat">
+                      <img src="../../../../assets/images/icon/icons8-timer-10.png">{{ e.restSeconds }}s
+                    </span>
+                  </div>
+                  <button class="pill-remove" (click)="removeExercise(e)" matTooltip="Remove">
+                    <img src="../../../../assets/images/icon/icons8-close-13.png">
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+        <ng-template #emptyAssigned>
+          <div class="empty-split">
+            <img src="../../../../assets/images/icon/icons8-week-view-40.png">
+            <h4>No exercises assigned yet</h4>
+            <p>Browse exercises on the left, configure sets/reps above, then click <strong>Add</strong>.</p>
+          </div>
+        </ng-template>
+      </div>
+
+    </div>
+  </div>
+
+</div>

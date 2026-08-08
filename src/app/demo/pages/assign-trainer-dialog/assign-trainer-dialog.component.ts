@@ -1,0 +1,290 @@
+import { Component, Inject } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
+import { AssignTrainerServiceService } from 'src/app/services/assign-trainer/assign-trainer-service.service';
+import { HttpService } from 'src/app/services/http.service';
+import { MessageServiceService } from 'src/app/services/message-service/message-service.service';
+import { NotificationService } from 'src/app/services/notification-service/notification.service';
+import { TrainerRequestService } from 'src/app/services/trainer-request/trainer-request.service';
+
+@Component({
+  selector: 'app-assign-trainer-dialog',
+  standalone: false,
+  templateUrl: './assign-trainer-dialog.component.html',
+  styleUrls: ['./assign-trainer-dialog.component.scss']
+})
+export class AssignTrainerDialogComponent {
+  assignTrainerForm: FormGroup;
+  registerButtonLabel = 'Assign Trainer';
+  mode = 'add';
+  selectedData;
+  isDisabled = false;
+  submitted = false;
+  userName;
+  dataSource: MatTableDataSource<any>;
+  memberList: any[] = [];
+  trainerList: any[] = [];
+  submitDisabled;
+  selectedMember;
+  selectedTrainer;
+
+  constructor(
+    private fb: FormBuilder,
+    public dialogRef: MatDialogRef<AssignTrainerDialogComponent>,
+    private http: HttpService,
+    private assignTrainerService: AssignTrainerServiceService,
+    private messageService: MessageServiceService,
+    private notificationService: NotificationService,
+    private trainerRequestService: TrainerRequestService,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {}
+
+  ngOnInit() {
+    // Get today's date
+    const today = new Date().toISOString().split('T')[0]; // Format as YYYY-MM-DD
+    const userName = this.http.getLoginNameFromCache();
+
+    this.assignTrainerForm = new FormGroup({
+      member: new FormControl('', [Validators.required]),
+      trainer: new FormControl('', [Validators.required])
+    });
+
+    // Function for get suppliers
+    this.getMembers();
+    this.getTrainers();
+  }
+
+  /* onsubmit function */
+  onSubmit() {
+    this.submitted = true;
+    // check if form is valid
+    if (this.assignTrainerForm.invalid) {
+      return;
+    }
+
+    console.log('Clicked');
+    console.log(this.assignTrainerForm.value);
+    try {
+      // check mode (add or edit)
+      if (this.mode === 'add') {
+        const addPayload = { memberId: this.selectedMember, trainerId: this.selectedTrainer };
+        this.assignTrainerService.serviceCall(addPayload).subscribe({
+          next: (response: any) => {
+            if (this.dataSource && this.dataSource.data && this.dataSource.data.length > 0) {
+              this.dataSource = new MatTableDataSource([response, ...this.dataSource.data]);
+            } else {
+              this.dataSource = new MatTableDataSource([response]);
+            }
+            // displaying success message
+            this.messageService.showSuccess('Trainer Assigned successfully!');
+
+            this.addNotification('add');
+
+            if (this.data?.pendingTrainerRequestMemberId) {
+              this.trainerRequestService.updateStatus(this.data.pendingTrainerRequestMemberId, 'ASSIGNED')
+                .subscribe({ error: () => {} });
+            }
+          },
+          // Displaying error message
+          error: (error) => {
+            this.messageService.showError(error);
+          }
+        });
+      } else if (this.mode === 'edit') {
+        const editPayload = { memberId: this.selectedMember, trainerId: this.selectedTrainer };
+        this.assignTrainerService.editData(this.selectedData?.id, editPayload).subscribe({
+          next: (response: any) => {
+            let elementIndex = this.dataSource.data.findIndex((element) => element.id === this.selectedData?.id);
+            this.dataSource.data[elementIndex] = response;
+            this.dataSource = new MatTableDataSource(this.dataSource.data);
+
+            // Displaying success message
+            this.messageService.showSuccess('Record updated successfully!');
+          },
+          error: (error) => {
+            this.messageService.showError(error);
+          }
+        });
+      }
+      // this.employeeForm.disable();
+      this.isDisabled = true;
+      this.mode = 'add';
+    } catch (error) {
+      this.messageService.showError(error);
+    }
+    this.closeDialog();
+  }
+
+  // getMember function
+  public getMembers(): void {
+    this.assignTrainerService.getMembers().subscribe({
+      next: (response: any[]) => {
+        const activeMembers = response.filter(member => !member.deleted);
+        this.memberList = activeMembers;
+        this.applyPreselectedMember();
+        this.applyEditValues();
+      },
+      error: (error) => {
+        console.log('Error fetching members:', error);
+      }
+    });
+  }
+
+  private applyPreselectedMember(): void {
+    const name: string = this.data?.preSelectedMemberName;
+    if (!name) return;
+
+    const member = this.memberList.find((m: any) =>
+      (`${m.firstName} ${m.lastName}`).trim().toLowerCase() === name.trim().toLowerCase()
+    );
+
+    if (member) {
+      this.assignTrainerForm.patchValue({ member: member.firstName });
+      this.selectedMember = member.id;
+
+      if (this.data?.lockMember) {
+        this.assignTrainerForm.get('member')?.disable();
+      }
+    }
+  }
+
+  // getMember function
+  public getTrainers(): void {
+    //Call Service to get trainers
+    this.assignTrainerService.getTrainers().subscribe({
+      next: (response: any[]) => {
+        const activeTrainers = response.filter(trainer => !trainer.isDeleted);
+        this.trainerList = activeTrainers;
+        this.applyEditValues();
+      },
+      error: (error) => {
+        console.log('Error fetching trainers:', error);
+      }
+    });
+  }
+
+  // Re-applies the edit-mode dropdown selections once memberList/trainerList have
+  // actually loaded (they are fetched asynchronously, separately from onEdit()).
+  private applyEditValues(): void {
+    if (this.mode !== 'edit' || !this.selectedData) return;
+
+    // Match by ID rather than the stored full-name string (AssignTrainerEntity.member/trainer
+    // store "First Last", but the <option> values below are firstName only).
+    if (this.memberList.length) {
+      const member = this.memberList.find((m: any) => m.id === this.selectedData.memberId);
+      if (member) {
+        this.assignTrainerForm.patchValue({ member: member.firstName });
+      }
+    }
+    if (this.trainerList.length) {
+      const trainer = this.trainerList.find((t: any) => t.id === this.selectedData.trainerId);
+      if (trainer) {
+        this.assignTrainerForm.patchValue({ trainer: trainer.firstName });
+      }
+    }
+  }
+
+  // reset button function
+  public resetData(): void {
+    this.assignTrainerForm.reset();
+    this.assignTrainerForm.setErrors = null;
+    this.assignTrainerForm.updateValueAndValidity();
+    this.assignTrainerForm.enable();
+    this.isDisabled = false;
+    this.submitted = false;
+    this.registerButtonLabel = 'Assign Trainer';
+  }
+
+  onEdit(data: any): void {
+    this.selectedData = data;
+    this.mode = 'edit';
+    this.selectedMember = data.memberId;
+    this.selectedTrainer = data.trainerId;
+    this.registerButtonLabel = 'Update';
+    this.submitDisabled = true;
+
+    // Editing an assignment only changes its trainer; the member stays fixed.
+    this.assignTrainerForm.get('member')?.disable();
+
+    // Populates the dropdowns immediately if memberList/trainerList already loaded;
+    // otherwise getMembers()/getTrainers() re-apply this once their data arrives.
+    this.applyEditValues();
+
+    this.assignTrainerForm.valueChanges.subscribe(() => {
+      this.submitDisabled = !this.assignTrainerForm.valid || this.assignTrainerForm.pristine;
+    });
+  }
+
+  // Dialog close function
+  closeDialog(): void {
+    this.dialogRef.close();
+  }
+
+  public addNotification(detail): void {
+    const memberObj  = this.memberList.find((m: any) => m.id === this.selectedMember);
+    const trainerObj = this.trainerList.find((t: any) => t.id === this.selectedTrainer);
+    const memberName  = memberObj  ? `${memberObj.firstName} ${memberObj.lastName}`.trim()  : 'A member';
+    const trainerName = trainerObj ? `${trainerObj.firstName} ${trainerObj.lastName}`.trim() : 'Your trainer';
+
+    this.assignTrainerService.getTrainerUserId(this.selectedTrainer).subscribe({
+      next: (response: any) => {
+        if (detail === 'add') {
+          this.notificationService.addNotification(
+            `${memberName} has been assigned to you as a new member.`,
+            'info',
+            response.userId
+          );
+        }
+      },
+      error: (err: any) => {
+        if (typeof err === 'string' && err.includes('No login account found')) {
+          this.messageService.showWarning(`${trainerName} does not have a login account yet, so they could not be notified.`);
+        } else {
+          this.messageService.showError('Error while sending notification to trainer');
+        }
+      }
+    });
+
+    this.assignTrainerService.getMemberUserId(this.selectedMember).subscribe({
+      next: (response: any) => {
+        if (detail === 'add') {
+          this.notificationService.addNotification(
+            `${trainerName} has been assigned as your personal trainer.`,
+            'info',
+            response.userId
+          );
+        }
+      },
+      error: (err: any) => {
+        if (typeof err === 'string' && err.includes('No login account found')) {
+          this.messageService.showWarning(`${memberName} does not have a login account yet, so they could not be notified.`);
+        } else {
+          this.messageService.showError('Error while sending notification to member');
+        }
+      }
+    });
+  }
+
+  public onMemberSelect(event: any): void {
+    const memberName = (event?.target as HTMLSelectElement)?.value ?? event?.value;
+
+    if (memberName) {
+      const member = this.memberList.find((item: any) => item.firstName == memberName);
+      if (member) {
+        this.selectedMember = member.id;
+      }
+    }
+  }
+
+  public onTrainerSelect(event: any): void {
+    const trainerName = (event?.target as HTMLSelectElement)?.value ?? event?.value;
+
+    if (trainerName) {
+      const trainer = this.trainerList.find((item: any) => item.firstName == trainerName);
+      if (trainer) {
+        this.selectedTrainer = trainer.id;
+      }
+    }
+  }
+}

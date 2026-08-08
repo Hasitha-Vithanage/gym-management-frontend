@@ -1,0 +1,280 @@
+<div class="profile-page">
+
+  <!-- TOP BAR -->
+  <div class="page-top-bar">
+    <button class="back-btn" (click)="goBack()">
+      <img src="../../../../assets/images/icon/icons8-arrow-back-20.png">
+      <span>Back to Dashboard</span>
+    </button>
+    <h2 class="page-title">
+      <img src="../../../../assets/images/icon/person-orange.png" style="margin-bottom: 15px;">
+      My Profile
+    </h2>
+  </div>
+
+  <!-- SKELETON -->
+  <div *ngIf="isLoading" class="skeleton-wrapper">
+    <div class="skeleton-avatar"></div>
+    <div class="skeleton-lines">
+      <div class="skeleton-line wide"></div>
+      <div class="skeleton-line medium"></div>
+      <div class="skeleton-line narrow"></div>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div *ngIf="!isLoading" class="profile-layout">
+
+    <!-- LEFT PANEL -->
+    <div class="left-panel">
+      <div class="avatar-circle" [class.has-image]="getImageSrc()">
+        <img *ngIf="getImageSrc()" [src]="getImageSrc()" alt="Profile photo" class="profile-img" />
+        <span *ngIf="!getImageSrc()" class="initials">{{ getInitials() }}</span>
+      </div>
+
+      <h3 class="display-name">{{ getFullName() }}</h3>
+      <p class="display-member-no" *ngIf="!isEmployee">Member # {{ profileData?.memberNo || '—' }}</p>
+      <p class="display-member-no" *ngIf="isEmployee">Employee ID: {{ profileData?.employeeId || '—' }}</p>
+
+      <div class="divider"></div>
+
+      <div class="left-meta-item">
+        <img src="../../../../assets/images/icon/calendar_today.png" style="width:16;height:16;">
+        <div>
+          <p class="meta-label">Joined</p>
+          <p class="meta-value">{{ (isEmployee ? profileData?.dateOfJoining : profileData?.joinedDate) || '—' }}</p>
+        </div>
+      </div>
+
+      <div class="left-meta-item" *ngIf="!isEmployee">
+        <img src="../../../../assets/images/icon/icons8-drop-of-blood-16.png" style="width:16;height:16;">
+        <div>
+          <p class="meta-label">Blood Type</p>
+          <p class="meta-value">{{ profileData?.bloodType || '—' }}</p>
+        </div>
+      </div>
+
+      <div class="left-meta-item" *ngIf="isEmployee">
+        <img src="../../../../assets/images/icon/icons8-id-card-16.png" style="width:16;height:16;">
+        <div>
+          <p class="meta-label">Job Title</p>
+          <p class="meta-value">{{ profileData?.jobTitle || '—' }}</p>
+        </div>
+      </div>
+
+      <!-- ACTION BUTTONS -->
+      <div class="action-buttons">
+        <button *ngIf="!isEditing" class="btn-edit" (click)="startEdit()">
+          <img class="icon-default" src="../../../../assets/images/icon/icons8-edit-16.png" alt="">
+          <img class="icon-hover" src="../../../../assets/images/icon/icons8-edit-16-white.png" alt="">
+          Edit Profile
+        </button>
+        <ng-container *ngIf="isEditing">
+          <button class="btn-save" (click)="saveEdit()" [disabled]="isSaving">
+            <mat-icon *ngIf="isSaving">hourglass_empty</mat-icon>
+            <ng-container *ngIf="!isSaving">
+              <img class="icon-default" src="../../../../assets/images/icon/icons8-save-16-green.png" alt="">
+              <img class="icon-hover" src="../../../../assets/images/icon/icons8-save-16-white.png" alt="">
+            </ng-container>
+            {{ isSaving ? 'Saving…' : 'Save Changes' }}
+          </button>
+          <button class="btn-cancel" (click)="cancelEdit()" [disabled]="isSaving">
+            <img class="icon-default" src="../../../../assets/images/icon/icons8-close-16-white.png" alt="">
+            <img class="icon-hover" src="../../../../assets/images/icon/icons8-close-16-red.png" alt="">
+            Cancel
+          </button>
+        </ng-container>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="right-panel">
+
+      <!-- EDIT MODE NOTICE -->
+      <div *ngIf="isEditing" class="edit-notice">
+        <img src="../../../../assets/images/icon/icons8-editing-16.png" style="width:16;height:16;">
+        <span>You are editing your profile. Fields marked <span class="req-star">*</span> are required.</span>
+      </div>
+
+      <!-- PERSONAL DETAILS -->
+      <div class="info-section">
+        <h5 class="section-heading">
+          <img src="../../../../assets/images/icon/icons8-person-16.png" style="width:16;height:16;">
+          Personal Details
+        </h5>
+        <div class="info-grid">
+
+          <div class="info-card" [class.editable]="isEditing">
+            <p class="info-label">First Name <span *ngIf="isEditing" class="req-star">*</span></p>
+            <p *ngIf="!isEditing" class="info-value">{{ profileData?.firstName || '—' }}</p>
+            <input *ngIf="isEditing" class="edit-input" type="text"
+                   [(ngModel)]="editForm.firstName" placeholder="First name" />
+          </div>
+
+          <div class="info-card" [class.editable]="isEditing">
+            <p class="info-label">Last Name <span *ngIf="isEditing" class="req-star">*</span></p>
+            <p *ngIf="!isEditing" class="info-value">{{ profileData?.lastName || '—' }}</p>
+            <input *ngIf="isEditing" class="edit-input" type="text"
+                   [(ngModel)]="editForm.lastName" placeholder="Last name" />
+          </div>
+
+          <div class="info-card">
+            <p class="info-label">Date of Birth <span class="readonly-tag">read-only</span></p>
+            <p class="info-value">{{ profileData?.dateOfBirth || '—' }}</p>
+          </div>
+
+          <div class="info-card">
+            <p class="info-label">Gender <span class="readonly-tag">read-only</span></p>
+            <p class="info-value">{{ profileData?.gender || '—' }}</p>
+          </div>
+
+          <div class="info-card">
+            <p class="info-label">NIC <span class="readonly-tag">read-only</span></p>
+            <p class="info-value">{{ profileData?.nic || '—' }}</p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- CONTACT INFORMATION -->
+      <div class="info-section">
+        <h5 class="section-heading">
+          <img src="../../../../assets/images/icon/icons8-contact-card-16.png">
+          Contact Information
+        </h5>
+        <div class="info-grid">
+
+          <div class="info-card" [class.editable]="isEditing">
+            <p class="info-label">Email Address</p>
+            <p *ngIf="!isEditing" class="info-value">{{ profileData?.email || '—' }}</p>
+            <input *ngIf="isEditing" class="edit-input" type="email"
+                   [(ngModel)]="editForm.email" placeholder="Email address" />
+          </div>
+
+          <div class="info-card" [class.editable]="isEditing">
+            <p class="info-label">Phone Number</p>
+            <p *ngIf="!isEditing" class="info-value">{{ profileData?.phoneNumber || '—' }}</p>
+            <input *ngIf="isEditing" class="edit-input" type="tel"
+                   [(ngModel)]="editForm.phoneNumber" placeholder="Phone number" />
+          </div>
+
+          <div class="info-card wide-card" [class.editable]="isEditing">
+            <p class="info-label">Address</p>
+            <p *ngIf="!isEditing" class="info-value">{{ profileData?.address || '—' }}</p>
+            <input *ngIf="isEditing" class="edit-input" type="text"
+                   [(ngModel)]="editForm.address" placeholder="Address" />
+          </div>
+
+          <div class="info-card wide-card" [class.editable]="isEditing">
+            <p class="info-label">Emergency Contact</p>
+            <p *ngIf="!isEditing" class="info-value">{{ profileData?.emergencyContactNumber || '—' }}</p>
+            <input *ngIf="isEditing" class="edit-input" type="tel"
+                   [(ngModel)]="editForm.emergencyContactNumber" placeholder="Emergency contact number" />
+          </div>
+
+        </div>
+      </div>
+
+      <!-- MEDICAL & MEMBERSHIP -->
+      <div class="info-section" *ngIf="!isEmployee">
+        <h5 class="section-heading">
+          <img src="../../../../assets/images/icon/icons8-medical-16.png">
+          Medical &amp; Membership
+        </h5>
+        <div class="info-grid">
+
+          <div class="info-card">
+            <p class="info-label">Blood Type <span class="readonly-tag">read-only</span></p>
+            <p class="info-value">{{ profileData?.bloodType || '—' }}</p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- EMPLOYMENT DETAILS -->
+      <div class="info-section" *ngIf="isEmployee">
+        <h5 class="section-heading">
+          <img src="../../../../assets/images/icon/icons8-work-16.png">
+          Employment Details
+        </h5>
+        <div class="info-grid">
+
+          <div class="info-card">
+            <p class="info-label">Employee ID <span class="readonly-tag">read-only</span></p>
+            <p class="info-value">{{ profileData?.employeeId || '—' }}</p>
+          </div>
+
+          <div class="info-card">
+            <p class="info-label">Job Title <span class="readonly-tag">read-only</span></p>
+            <p class="info-value">{{ profileData?.jobTitle || '—' }}</p>
+          </div>
+
+          <div class="info-card">
+            <p class="info-label">Date of Joining <span class="readonly-tag">read-only</span></p>
+            <p class="info-value">{{ profileData?.dateOfJoining || '—' }}</p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- LOGIN & SECURITY -->
+      <div class="info-section">
+        <h5 class="section-heading">
+          <img src="../../../../assets/images/icon/icons8-lock-16.png">
+          Login &amp; Security
+        </h5>
+
+        <div *ngIf="!isEditingLogin" class="info-grid">
+          <div class="info-card">
+            <p class="info-label">Username</p>
+            <p class="info-value">{{ loginForm.userName || '—' }}</p>
+          </div>
+        </div>
+
+        <div *ngIf="isEditingLogin" class="info-grid">
+          <div class="info-card editable">
+            <p class="info-label">Username <span class="req-star">*</span></p>
+            <input class="edit-input" type="text" [(ngModel)]="loginForm.userName" placeholder="Username" />
+          </div>
+
+          <div class="info-card editable">
+            <p class="info-label">New Password</p>
+            <input class="edit-input" type="password" [(ngModel)]="loginForm.password"
+                   placeholder="Leave blank to keep current password" />
+          </div>
+
+          <div class="info-card editable">
+            <p class="info-label">Confirm New Password</p>
+            <input class="edit-input" type="password" [(ngModel)]="loginForm.confirmPassword"
+                   placeholder="Confirm new password" />
+          </div>
+        </div>
+
+        <div class="login-actions">
+          <button *ngIf="!isEditingLogin" class="btn-edit" (click)="startEditLogin()">
+            <img class="icon-default" src="../../../../assets/images/icon/icons8-edit-16.png" alt="">
+            <img class="icon-hover" src="../../../../assets/images/icon/icons8-edit-16-white.png" alt="">
+            Change Login
+          </button>
+          <ng-container *ngIf="isEditingLogin">
+            <button class="btn-save" (click)="saveLogin()" [disabled]="isSavingLogin">
+              <mat-icon *ngIf="isSavingLogin">hourglass_empty</mat-icon>
+              <ng-container *ngIf="!isSavingLogin">
+                <img class="icon-default" src="../../../../assets/images/icon/icons8-save-16-green.png" alt="">
+                <img class="icon-hover" src="../../../../assets/images/icon/icons8-save-16-white.png" alt="">
+              </ng-container>
+              {{ isSavingLogin ? 'Saving…' : 'Save Login' }}
+            </button>
+            <button class="btn-cancel" (click)="cancelEditLogin()" [disabled]="isSavingLogin">
+              <img class="icon-default" src="../../../../assets/images/icon/icons8-close-16-white.png" alt="">
+              <img class="icon-hover" src="../../../../assets/images/icon/icons8-close-16-red.png" alt="">
+              Cancel
+            </button>
+          </ng-container>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>

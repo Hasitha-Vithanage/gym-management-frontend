@@ -1,0 +1,356 @@
+<div class="plan-page">
+
+  <!-- Loading -->
+  <ng-container *ngIf="isLoading">
+    <div class="state-container">
+      <mat-spinner diameter="40"></mat-spinner>
+      <p class="state-text">Finding your best workout plan...</p>
+    </div>
+  </ng-container>
+
+  <!-- No query params -->
+  <ng-container *ngIf="!isLoading && !hasParams">
+    <div class="state-container">
+      <img src="../../../../assets/images/icon/icons8-workout-48.png">
+      <h3 class="state-title">No Plan Selected</h3>
+      <p class="state-text">Fill out your fitness profile to get your workout plan.</p>
+      <button class="primary-btn" (click)="goToWorkoutForm()">Go to Workout Form</button>
+    </div>
+  </ng-container>
+
+  <!-- Results -->
+  <ng-container *ngIf="!isLoading && hasParams">
+
+    <div class="plan-header">
+      <div class="plan-header-info">
+        <h2 class="plan-title">My Workout Plan</h2>
+        <p class="plan-subtitle">
+          Best match for <strong>{{ level }}</strong> · <strong>{{ formatGoal(goal!) }}</strong>
+        </p>
+      </div>
+      <button class="outline-btn my-progress" (click)="goToProgress()">
+        <img class="icon-default" src="../../../../assets/images/icon/icons8-bar-chart-16.png">
+        <img class="icon-hover" src="../../../../assets/images/icon/icons8-bar-chart-16-orange.png">
+        My Progress
+      </button>
+    </div>
+
+    <!-- ── Progress Summary Bar ──────────────────────────────────────────── -->
+    <div class="progress-summary-bar" *ngIf="summary && !summaryLoading">
+
+      <div class="summary-stat">
+        <span class="summary-label">Program</span>
+        <span class="summary-value">
+          Week {{ summary.currentProgramWeek }}
+          <span class="summary-dim" *ngIf="summary.totalProgramWeeks">of {{ summary.totalProgramWeeks }}</span>
+        </span>
+        <div class="summary-track" *ngIf="summary.totalProgramWeeks">
+          <div class="summary-track-fill" [style.width.%]="programProgressPercent"></div>
+        </div>
+      </div>
+
+      <div class="summary-divider"></div>
+
+      <div class="summary-stat">
+        <span class="summary-label">This Week</span>
+        <span class="summary-value">
+          {{ summary.sessionsThisWeek }}
+          <span class="summary-dim" *ngIf="summary.targetSessionsPerWeek">/ {{ summary.targetSessionsPerWeek }} sessions</span>
+        </span>
+        <div class="summary-track" *ngIf="summary.targetSessionsPerWeek">
+          <div class="summary-track-fill accent" [style.width.%]="weekProgressPercent"></div>
+        </div>
+      </div>
+
+      <div class="summary-divider"></div>
+
+      <div class="summary-stat">
+        <span class="summary-label">Last Session</span>
+        <span class="summary-value" *ngIf="summary.lastSessionDate; else noSession">
+          <span *ngIf="summary.daysSinceLastSession === 0">Today</span>
+          <span *ngIf="summary.daysSinceLastSession === 1">Yesterday</span>
+          <span *ngIf="(summary.daysSinceLastSession ?? 0) > 1">{{ summary.daysSinceLastSession }} days ago</span>
+        </span>
+        <ng-template #noSession>
+          <span class="summary-value summary-dim">No sessions yet</span>
+        </ng-template>
+      </div>
+
+      <div class="summary-divider"></div>
+
+      <div class="summary-stat">
+        <span class="summary-label">Total Sessions</span>
+        <span class="summary-value accent-text">{{ summary.totalSessionsCompleted }}</span>
+      </div>
+
+    </div>
+
+    <!-- No match state -->
+    <ng-container *ngIf="noMatch">
+
+      <!-- Trainer is assigned: they will create a custom plan -->
+      <div class="no-match-container" *ngIf="hasTrainer">
+        <div class="no-match-icon-wrap">
+          <img src="../../../../assets/images/icon/icons8-clock-24.png">
+        </div>
+        <h3 class="no-match-title">Your Plan Is Being Prepared</h3>
+        <p class="no-match-text">
+          We couldn't find a ready-made template that perfectly fits your profile right now.
+          Your trainer has been notified and will set up a personalised plan based on your
+          goals, fitness level, and body profile. Check back soon!
+        </p>
+        <div class="no-match-tags">
+          <span class="tag">{{ level }}</span>
+          <span class="tag">{{ formatGoal(goal!) }}</span>
+          <span class="tag">BMI: {{ bmiCategory }}</span>
+        </div>
+      </div>
+
+      <!-- No trainer assigned: dead end — let member escalate to management -->
+      <div class="no-match-container" *ngIf="!hasTrainer">
+        <div class="no-match-icon-wrap no-match-icon-alert">
+          <img src="../../../../assets/images/icon/icons8-user-not-found-24.png">
+        </div>
+        <h3 class="no-match-title">No Plan Available Yet</h3>
+        <p class="no-match-text">
+          We couldn't find a matching workout template for your profile, and no trainer is assigned to you yet.
+          Gym management has been notified and will assign someone who can create a personalised plan for you.
+        </p>
+        <div class="no-match-tags">
+          <span class="tag">{{ level }}</span>
+          <span class="tag">{{ formatGoal(goal!) }}</span>
+          <span class="tag">BMI: {{ bmiCategory }}</span>
+        </div>
+        <div class="no-match-actions">
+          <button class="no-match-request-btn" (click)="requestTrainer()" [disabled]="trainerRequested">
+            <img *ngIf="trainerRequested" src="../../../../assets/images/icon/icons8-instagram-check-mark-20.png" class="btn-icon-img" alt="Request sent">
+            <img *ngIf="!trainerRequested" src="../../../../assets/images/icon/icons8-add-user-male-20.png" class="btn-icon-img" alt="Request a trainer">
+            {{ trainerRequested ? 'Request Sent' : 'Request a Trainer' }}
+          </button>
+          <p class="no-match-sent-note" *ngIf="trainerRequested">
+            Gym management has been notified and will assign a trainer to you shortly.
+          </p>
+        </div>
+      </div>
+
+    </ng-container>
+
+    <!-- Matched template -->
+    <ng-container *ngIf="matchedTemplate">
+
+      <div class="match-badge">
+        <img src="../../../../assets/images/icon/icons8-instagram-check-mark-20.png">
+        Best match for your profile
+      </div>
+
+      <!-- Template summary card -->
+      <div class="template-card">
+        <div class="template-card-header">
+          <h3 class="template-name">{{ matchedTemplate.templateName }}</h3>
+          <span class="difficulty-badge {{ matchedTemplate.difficultyLevel | lowercase }}">
+            {{ matchedTemplate.difficultyLevel }}
+          </span>
+        </div>
+
+        <p class="template-desc" *ngIf="matchedTemplate.description">{{ matchedTemplate.description }}</p>
+
+        <div class="template-stats">
+          <div class="stat">
+            <img src="../../../../assets/images/icon/icons8-flag-13.png">
+            <span>{{ formatGoal(matchedTemplate.goal) }}</span>
+          </div>
+          <div class="stat">
+            <img src="../../../../assets/images/icon/icons8-clock-13.png">
+            <span>{{ matchedTemplate.durationMinutes }} min/session</span>
+          </div>
+          <div class="stat">
+            <img src="../../../../assets/images/icon/icons8-event-15.png">
+            <span>{{ matchedTemplate.daysPerWeek }} days/week</span>
+          </div>
+          <div class="stat" *ngIf="matchedTemplate.programLengthWeeks">
+            <img src="../../../../assets/images/icon/icons8-event-15-1.png">
+            <span>{{ matchedTemplate.programLengthWeeks }} weeks</span>
+          </div>
+          <div class="stat">
+            <img src="../../../../assets/images/icon/icons8-location-15.png">
+            <span>{{ matchedTemplate.location }}</span>
+          </div>
+          <div class="stat">
+            <img src="../../../../assets/images/icon/icons8-bolt-15.png">
+            <span>{{ matchedTemplate.intensityLevel }} intensity</span>
+          </div>
+        </div>
+
+        <div class="equipment-row" *ngIf="matchedTemplate.equipmentRequired?.length">
+          <span class="equipment-label">Equipment:</span>
+          <span class="equipment-chip" *ngFor="let eq of matchedTemplate.equipmentRequired">{{ eq }}</span>
+        </div>
+      </div>
+
+      <!-- Exercises Section -->
+      <div class="exercises-section">
+
+        <div class="exercises-section-title">
+          <img src="../../../../assets/images/icon/workout-orange.png">
+          <span>Weekly Schedule</span>
+          <span class="session-mode-badge" *ngIf="sessionActive">
+            <img src="../../../../assets/images/icon/icons8-unchecked-radio-button-16.png">
+            Session Active — Day {{ activeSessionDay }}
+          </span>
+        </div>
+
+        <!-- Loading exercises -->
+        <div class="exercises-loading" *ngIf="exercisesLoading">
+          <mat-spinner diameter="28"></mat-spinner>
+          <span>Loading exercises...</span>
+        </div>
+
+        <!-- Empty state -->
+        <p class="exercises-placeholder" *ngIf="!exercisesLoading && templateExercises.length === 0">
+          Exercise details are being added by your trainer. Check back soon!
+        </p>
+
+        <!-- Day nav + exercise cards -->
+        <ng-container *ngIf="!exercisesLoading && templateExercises.length > 0">
+
+          <!-- Next workout prompt -->
+          <div class="next-workout-banner" *ngIf="!sessionActive && activeAssignment && nextWorkoutDay !== null">
+            <div class="next-workout-info">
+              <img src="../../../../assets/images/icon/icons8-circled-play-button-16.png">
+              <span>Next up: <strong>Day {{ nextWorkoutDay }}</strong>
+                <span *ngIf="summary?.lastWorkoutDay"> · Last session was Day {{ summary?.lastWorkoutDay }}</span>
+              </span>
+            </div>
+            <button class="start-next-btn" (click)="startNextWorkout()">
+              Start Today's Workout
+            </button>
+          </div>
+
+          <!-- Day navigation pills -->
+          <div class="day-nav">
+            <button
+              class="day-pill"
+              *ngFor="let day of usedDays"
+              [class.active]="selectedDay === day"
+              [class.done]="isDayCompleted(day) && day !== nextWorkoutDay"
+              [class.next]="day === nextWorkoutDay && !sessionActive"
+              [class.locked]="sessionActive && day !== activeSessionDay"
+              (click)="selectDay(day)">
+              <span class="day-pill-label">Day</span>
+              <span class="day-pill-num">{{ day }}</span>
+              <span class="day-pill-next" *ngIf="day === nextWorkoutDay && !sessionActive">Next</span>
+              <span class="day-pill-count" *ngIf="day !== nextWorkoutDay && !isDayCompleted(day)">{{ exercisesForDay(day).length }} ex</span>
+              <span class="day-pill-done" *ngIf="isDayCompleted(day) && day !== nextWorkoutDay">
+                <img src="../../../../assets/images/icon/icons8-check-16-12.png">
+              </span>
+            </button>
+          </div>
+
+          <!-- Exercise cards for selected day -->
+          <div *ngIf="selectedDay !== null">
+
+            <!-- VIEW MODE: exercise list -->
+            <ng-container *ngIf="!sessionActive || activeSessionDay !== selectedDay">
+              <div class="exercise-grid">
+                <div class="exercise-card" *ngFor="let ex of exercisesForDay(selectedDay); let i = index">
+                  <div class="exercise-card-top">
+                    <div class="exercise-index">{{ i + 1 }}</div>
+                    <div class="exercise-info">
+                      <div class="exercise-name">{{ ex.exerciseName }}</div>
+                      <div class="exercise-chips">
+                        <span class="chip chip-sets">
+                          <img src="../../../../assets/images/icon/icons8-repeat-13.png">{{ ex.sets }} sets
+                        </span>
+                        <span class="chip chip-reps">
+                          <img src="../../../../assets/images/icon/icons8-workout-13.png">{{ ex.reps }} reps
+                        </span>
+                        <span class="chip chip-rest" *ngIf="ex.restSeconds">
+                          <img src="../../../../assets/images/icon/icons8-timer-13.png">{{ ex.restSeconds }}s rest
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="exercise-note" *ngIf="ex.notes">
+                    <mat-icon>info_outline</mat-icon>
+                    <span>{{ ex.notes }}</span>
+                  </div>
+                </div>
+              </div>
+
+            </ng-container>
+
+            <!-- SESSION MODE: logging UI -->
+            <ng-container *ngIf="sessionActive && activeSessionDay === selectedDay">
+              <div class="session-exercises">
+
+                <div class="session-exercise-card"
+                     *ngFor="let ex of exercisesForDay(selectedDay); let i = index">
+
+                  <div class="session-ex-header">
+                    <div class="exercise-index">{{ i + 1 }}</div>
+                    <div class="exercise-info">
+                      <div class="exercise-name">{{ ex.exerciseName }}</div>
+                      <div class="session-ex-target">
+                        Target: {{ ex.sets }} sets × {{ ex.reps }} reps
+                        <span *ngIf="ex.restSeconds"> · {{ ex.restSeconds }}s rest</span>
+                      </div>
+                    </div>
+                    <div class="session-ex-count">
+                      <span class="count-done">{{ getSetsCompleted(ex.id) }}</span>
+                      <span class="count-sep">/</span>
+                      <span class="count-total">{{ ex.sets }}</span>
+                    </div>
+                  </div>
+
+                  <!-- Set buttons -->
+                  <div class="set-buttons-row">
+                    <button
+                      class="set-btn"
+                      *ngFor="let s of setArray(ex.sets); let si = index"
+                      [class.done]="isSetDone(ex.id, si)"
+                      (click)="toggleSet(ex.id, si)">
+                      <img *ngIf="isSetDone(ex.id, si)" src="../../../../assets/images/icon/icons8-check-20.png">
+                      <span *ngIf="!isSetDone(ex.id, si)">{{ si + 1 }}</span>
+                    </button>
+                  </div>
+
+                  <!-- Optional weight input -->
+                  <div class="weight-input-row" *ngIf="!isBodyweightEquipment(ex.equipmentType)">
+                    <img src="../../../../assets/images/icon/icons8-weight-kg-16.png">
+                    <input
+                      type="number"
+                      class="weight-input"
+                      placeholder="Weight (kg) — optional"
+                      min="0"
+                      step="0.5"
+                      [(ngModel)]="weightTrack[ex.id]" />
+                  </div>
+
+                </div>
+
+              </div>
+
+              <!-- Session action buttons -->
+              <div class="session-footer">
+                <button class="cancel-session-btn" (click)="cancelSession()" [disabled]="savingSession">
+                  Cancel
+                </button>
+                <button class="complete-session-btn" (click)="confirmCompleteSession()" [disabled]="savingSession">
+                  <mat-spinner *ngIf="savingSession" diameter="18"></mat-spinner>
+                  <img *ngIf="!savingSession" src="../../../../assets/images/icon/verify-icon-light.png">
+                  {{ savingSession ? 'Saving...' : 'Complete Session' }}
+                </button>
+              </div>
+            </ng-container>
+
+          </div>
+
+        </ng-container>
+
+      </div>
+
+    </ng-container>
+
+  </ng-container>
+
+</div>

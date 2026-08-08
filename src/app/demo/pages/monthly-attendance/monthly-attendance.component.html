@@ -1,0 +1,80 @@
+<div class="progress-charts">
+  <div class="toolbar-row">
+    <button mat-stroked-button class="dl-btn" (click)="downloadReport()" [disabled]="isDownloading">
+      <span class="pdf-icon-wrap">
+        <img src="../../../../assets/images/icon/icons8-pdf-16%20(1).png" class="pdf-icon pdf-icon-default" alt="PDF">
+        <img src="../../../../assets/images/icon/icons8-pdf-16.png" class="pdf-icon pdf-icon-hover" alt="PDF">
+      </span>
+      {{ isDownloading ? 'Generating…' : 'Download Report' }}
+    </button>
+  </div>
+
+  <div class="charts-grid">
+    <div class="chart-card">
+      <h3>Monthly Present Member Count</h3>
+      <apx-chart
+        [series]="memberMonthlyAttendanceChartOptions.series"
+        [chart]="memberMonthlyAttendanceChartOptions.chart"
+        [xaxis]="memberMonthlyAttendanceChartOptions.xaxis"
+        [yaxis]="memberMonthlyAttendanceChartOptions.yaxis"
+        [colors]="memberMonthlyAttendanceChartOptions.colors"
+        [plotOptions]="memberMonthlyAttendanceChartOptions.plotOptions"
+        [grid]="memberMonthlyAttendanceChartOptions.grid"
+        [title]="memberMonthlyAttendanceChartOptions.title"
+        [tooltip]="memberMonthlyAttendanceChartOptions.tooltip"
+      ></apx-chart>
+    </div>
+  </div>
+
+  <!-- Off-screen light-themed clone, captured for the PDF instead of the live
+       (dark) chart above, so the visible page never flashes during download. -->
+  <div #pdfContent class="charts-grid pdf-export-light pdf-hidden-capture">
+    <div class="chart-card">
+      <h3>Monthly Present Member Count</h3>
+      <apx-chart
+        [series]="memberMonthlyAttendanceChartOptionsLight.series"
+        [chart]="memberMonthlyAttendanceChartOptionsLight.chart"
+        [xaxis]="memberMonthlyAttendanceChartOptionsLight.xaxis"
+        [yaxis]="memberMonthlyAttendanceChartOptionsLight.yaxis"
+        [colors]="memberMonthlyAttendanceChartOptionsLight.colors"
+        [plotOptions]="memberMonthlyAttendanceChartOptionsLight.plotOptions"
+        [grid]="memberMonthlyAttendanceChartOptionsLight.grid"
+        [title]="memberMonthlyAttendanceChartOptionsLight.title"
+        [tooltip]="memberMonthlyAttendanceChartOptionsLight.tooltip"
+      ></apx-chart>
+    </div>
+  </div>
+  
+
+  <!-- <div class="charts-grid">
+    <div class="chart-card">
+      <h3>Monthly Present Member Count Average</h3>
+      <apx-chart
+        [series]="memberMonthlyAttendanceAvgChartOptions.series"
+        [chart]="memberMonthlyAttendanceAvgChartOptions.chart"
+        [xaxis]="memberMonthlyAttendanceAvgChartOptions.xaxis"
+        [yaxis]="memberMonthlyAttendanceAvgChartOptions.yaxis"
+        [colors]="memberMonthlyAttendanceAvgChartOptions.colors"
+        [plotOptions]="memberMonthlyAttendanceAvgChartOptions.plotOptions"
+        [grid]="memberMonthlyAttendanceAvgChartOptions.grid"
+        [title]="memberMonthlyAttendanceAvgChartOptions.title"
+      ></apx-chart>
+    </div>
+  </div>
+
+  <div #pdfContent class="charts-grid pdf-export-light pdf-hidden-capture">
+    <div class="chart-card">
+      <h3>Monthly Present Member Count Average</h3>
+      <apx-chart
+        [series]="memberMonthlyAttendanceAvgChartOptionsLight.series"
+        [chart]="memberMonthlyAttendanceAvgChartOptionsLight.chart"
+        [xaxis]="memberMonthlyAttendanceAvgChartOptionsLight.xaxis"
+        [yaxis]="memberMonthlyAttendanceAvgChartOptionsLight.yaxis"
+        [colors]="memberMonthlyAttendanceAvgChartOptionsLight.colors"
+        [plotOptions]="memberMonthlyAttendanceAvgChartOptionsLight.plotOptions"
+        [grid]="memberMonthlyAttendanceAvgChartOptionsLight.grid"
+        [title]="memberMonthlyAttendanceAvgChartOptionsLight.title"
+      ></apx-chart>
+    </div>
+  </div> -->
+</div>

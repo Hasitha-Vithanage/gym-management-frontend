@@ -1,0 +1,69 @@
+<div class="dialog-container">
+
+  <div class="dialog-header">
+    <h2>Place Order</h2>
+    <button class="close-btn" (click)="closeDialog()">
+      <img src="../../../../../assets/images/icon/close-light.png" style="height:18px;width:18px">
+    </button>
+  </div>
+
+  <div class="dialog-body" *ngIf="product">
+
+    <!-- Product Summary -->
+    <div class="product-summary">
+      <div class="ps-main">
+        <div class="ps-name">{{ product.productName }}</div>
+        <div class="ps-brand" *ngIf="product.brand">{{ product.brand }}</div>
+        <div class="ps-cat">{{ product.category }}</div>
+      </div>
+      <div class="ps-price">Rs. {{ product.price | number:'1.2-2' }}</div>
+    </div>
+
+    <div class="stock-notice" *ngIf="product.stockQty <= 5 && product.stockQty > 0">
+      <img src="../../../../assets/images/icon/icons8-warning-16.png">
+      Only {{ product.stockQty }} unit{{ product.stockQty !== 1 ? 's' : '' }} left in stock.
+    </div>
+
+    <!-- Quantity Selector -->
+    <div class="field">
+      <label>Quantity</label>
+      <div class="qty-row">
+        <button class="qty-btn" (click)="decrement()" [disabled]="quantity <= 1">−</button>
+        <span class="qty-val">{{ quantity }}</span>
+        <button class="qty-btn" (click)="increment()" [disabled]="quantity >= product.stockQty">+</button>
+      </div>
+    </div>
+
+    <!-- Order Total -->
+    <div class="order-total">
+      <span class="ot-label">Order Total</span>
+      <span class="ot-value">Rs. {{ total | number:'1.2-2' }}</span>
+    </div>
+
+    <!-- Notes -->
+    <div class="field">
+      <label>Notes <span class="optional">(optional)</span></label>
+      <textarea
+        [(ngModel)]="notes"
+        placeholder="Any notes for the staff…"
+        class="notes-input"
+        rows="2">
+      </textarea>
+    </div>
+
+    <!-- Pickup Notice -->
+    <div class="pickup-notice">
+      <img src="../../../../assets/images/icon/icons8-store-13.png">
+      <span>Your order will be ready for pickup at the gym counter. Payment is collected in person.</span>
+    </div>
+
+  </div>
+
+  <div class="dialog-footer">
+    <button class="cancel-btn" (click)="closeDialog()">Cancel</button>
+    <button class="confirm-btn" (click)="placeOrder()" [disabled]="isSubmitting || !product">
+      {{ isSubmitting ? 'Placing…' : 'Confirm Order' }}
+    </button>
+  </div>
+
+</div>

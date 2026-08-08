@@ -1,0 +1,93 @@
+@import 'src/scss/settings/colors';
+
+:host {
+  display: flex;
+  align-items: center;
+}
+
+.pc-h-item {
+  display: inline-flex;
+  align-items: center;
+}
+
+.pc-head-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: $ff-radius-sm;
+  color: $ff-text-secondary;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  cursor: pointer;
+  text-decoration: none !important;
+  transition: none !important;
+
+  &:hover,
+  &:focus,
+  &:active {
+    background: transparent !important;
+    color: $ff-text-secondary !important;
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+    text-decoration: none !important;
+  }
+
+  &.on {
+    color: $ff-accent-primary !important;
+  }
+
+  nz-icon, i {
+    font-size: 17px;
+    color: inherit !important;
+    pointer-events: none;
+  }
+}
+
+::ng-deep .pc-sidebar-collapse,
+::ng-deep .pc-sidebar-popup {
+  a:hover,
+  a:focus,
+  a:active {
+    background: $ff-bg-hover !important;
+    color: $ff-text-primary !important;
+  }
+}
+
+// Search dropdown
+.drp-search {
+  background: $ff-bg-surface;
+  border: 1px solid $ff-border-default;
+  border-radius: $ff-radius-md;
+  box-shadow: $ff-shadow-hover;
+  padding: 10px 0;
+  margin-top: 6px;
+
+  .form-group {
+    gap: 8px;
+
+    i {
+      color: $ff-text-dim;
+      font-size: 14px;
+    }
+  }
+
+  .form-control {
+    background: $ff-bg-input;
+    color: $ff-text-primary;
+    border: none;
+    font-size: 13px;
+
+    &::placeholder { color: $ff-text-dim; }
+
+    &:focus {
+      background: $ff-bg-input;
+      box-shadow: none;
+      color: $ff-text-primary;
+    }
+  }
+}

@@ -1,0 +1,77 @@
+<div class="dialog-container">
+
+  <!-- Header -->
+  <div class="dialog-header">
+    <h3>Employee Login</h3>
+    <button type="button" class="close-btn" (click)="closeDialog()">✕</button>
+  </div>
+
+  <!-- Form -->
+  <form [formGroup]="trainerLoginForm" (ngSubmit)="onSubmit()" class="dialog-body">
+
+    <!-- Employee Select -->
+    <div class="row">
+      <div class="field">
+        <label>Select Employee *</label>
+        <select formControlName="trainerId" class="select-input">
+          <option [ngValue]="null" disabled>Select Employee</option>
+          <option *ngFor="let trainer of trainerList" [ngValue]="trainer.id">
+            {{ trainer.employeeId }} - {{ trainer.firstName }} {{ trainer.lastName }} - {{ trainer.jobTitle }}
+          </option>
+        </select>
+        <span class="required-message" *ngIf="submitted && trainerLoginForm.get('trainerId')?.invalid">
+          Please select an employee
+        </span>
+      </div>
+    </div>
+
+    <!-- First Name + Last Name -->
+    <div class="row">
+      <div class="field">
+        <label>First Name</label>
+        <input type="text" placeholder="Enter First Name" formControlName="firstName" />
+      </div>
+      <div class="field">
+        <label>Last Name</label>
+        <input type="text" placeholder="Enter Last Name" formControlName="lastName" />
+      </div>
+    </div>
+
+    <!-- Username -->
+    <div class="row">
+      <div class="field">
+        <label>Username *</label>
+        <input type="text" placeholder="Enter Username" formControlName="userName" />
+        <span class="required-message" *ngIf="submitted && trainerLoginForm.get('userName')?.invalid">
+          Username is required
+        </span>
+      </div>
+    </div>
+
+    <!-- Password -->
+    <div class="row">
+      <div class="field">
+        <label>{{ mode === 'edit' ? 'New Password' : 'Password *' }}</label>
+        <div class="input-wrapper">
+          <input [type]="showPassword ? 'text' : 'password'" placeholder="Enter Password" formControlName="password" />
+        </div>
+        <small class="password-hint" *ngIf="mode === 'edit'">Leave blank to keep the current password.</small>
+        <small class="password-hint" *ngIf="mode === 'add'">Minimum 6 characters.</small>
+        <span class="required-message" *ngIf="submitted && trainerLoginForm.get('password')?.invalid">
+          <ng-container *ngIf="trainerLoginForm.get('password')?.hasError('required')">Password is required</ng-container>
+          <ng-container *ngIf="trainerLoginForm.get('password')?.hasError('minlength')">Password must be at least 6 characters</ng-container>
+        </span>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="action">
+      <button type="button" class="btn secondary" (click)="closeDialog()">Cancel</button>
+      <button type="submit" class="btn primary">
+        {{ mode === 'edit' ? 'Update' : 'Save' }}
+      </button>
+    </div>
+
+  </form>
+
+</div>

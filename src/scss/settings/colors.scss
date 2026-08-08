@@ -1,0 +1,79 @@
+// ── BACKGROUNDS ─────────────────────────────────────────────
+$ff-bg-base:        #0F1117;   // Page / sidebar base — darkest layer
+$ff-bg-surface:     #181C27;   // Cards, panels, modals
+$ff-bg-elevated:    #1F2435;   // Table headers, input fields, elevated cards
+$ff-bg-hover:       #252B3B;   // Hover state for rows, list items
+$ff-bg-input:       #1A1E2E;   // Form inputs, search bars
+
+// ── ACCENT / BRAND ──────────────────────────────────────────
+$ff-accent-primary: #FF6B00;   // Primary CTA, active nav, key numbers
+$ff-accent-hover:   #FF8C36;   // Hover variant of primary orange
+$ff-accent-soft:    rgba(255, 107, 0, 0.12); // Tinted orange background fill
+
+// ── TEXT ─────────────────────────────────────────────────────
+$ff-text-primary:   #F0F2F8;   // Headings, main body copy
+$ff-text-secondary: #9BA3B8;   // Subtitles, labels, muted text
+$ff-text-dim:       #767e92;   // Placeholders, very low emphasis
+
+// ── BORDERS ─────────────────────────────────────────────────
+$ff-border-default: rgba(255, 255, 255, 0.06);  // Resting border
+$ff-border-accent:  rgba(255, 107, 0, 0.28);    // Focused / hovered border
+
+// ── SEMANTIC COLOURS ────────────────────────────────────────
+$ff-success:        #22C55E;   // Positive delta, active status
+$ff-info:           #3B82F6;   // Informational highlights
+$ff-warning:        #FBBF24;   // Expiring soon, caution
+$ff-danger:         #EF4444;   // Overdue, error, urgent
+
+// ── MEMBERSHIP TIER COLOURS ─────────────────────────────────
+$ff-gold:           #F59E0B;
+$ff-silver:         #94A3B8;
+$ff-platinum:       #A78BFA;
+$ff-basic:          #3B82F6;
+
+// ── SHADOWS ─────────────────────────────────────────────────
+$ff-shadow-card:    0 4px 20px rgba(0, 0, 0, 0.40);
+$ff-shadow-hover:   0 12px 36px rgba(0, 0, 0, 0.55);
+$ff-shadow-orange:  0 8px 24px rgba(255, 107, 0, 0.22);
+
+// ── RADIUS SCALE ────────────────────────────────────────────
+$ff-radius-sm:      10px;
+$ff-radius-md:      16px;
+$ff-radius-lg:      22px;
+$ff-radius-xl:      28px;
+
+// ── TYPOGRAPHY ──────────────────────────────────────────────
+$ff-font:           'Plus Jakarta Sans', 'Outfit', sans-serif;
+
+//
+:root {
+  --ff-bg-base:        #0F1117;
+  --ff-bg-surface:     #181C27;
+  --ff-bg-elevated:    #1F2435;
+  --ff-bg-hover:       #252B3B;
+  --ff-bg-input:       #1A1E2E;
+
+  --ff-accent-primary: #FF6B00;
+  --ff-accent-hover:   #FF8C36;
+  --ff-accent-soft:    rgba(255, 107, 0, 0.12);
+
+  --ff-text-primary:   #F0F2F8;
+  --ff-text-secondary: #9BA3B8;
+  --ff-text-dim:       #5D6478;
+
+  --ff-border-default: rgba(255, 255, 255, 0.06);
+  --ff-border-accent:  rgba(255, 107, 0, 0.28);
+
+  --ff-success:        #22C55E;
+  --ff-info:           #3B82F6;
+  --ff-warning:        #FBBF24;
+  --ff-danger:         #EF4444;
+
+  --ff-gold:           #F59E0B;
+  --ff-silver:         #94A3B8;
+  --ff-platinum:       #A78BFA;
+
+  --ff-shadow-card:    0 4px 20px rgba(0, 0, 0, 0.40);
+  --ff-shadow-hover:   0 12px 36px rgba(0, 0, 0, 0.55);
+  --ff-shadow-orange:  0 8px 24px rgba(255, 107, 0, 0.22);
+}

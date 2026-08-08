@@ -1,0 +1,44 @@
+<div class="dialog-container">
+
+  <!-- Header -->
+  <div class="dialog-header">
+    <h3>{{ data ? 'Update' : 'Add' }} Privilege Group</h3>
+  </div>
+
+  <!-- Form -->
+  <form [formGroup]="privilegeGroupForm" (ngSubmit)="onFormSubmit()" class="dialog-body">
+
+    <div class="row">
+
+      <div class="field">
+        <label>Group Name *</label>
+        <input type="text" maxlength="50" placeholder="Ex. Admin" formControlName="groupName" />
+        <span class="required-message" *ngIf="submitted && privilegeGroupForm.get('groupName')?.invalid">
+          <ng-container *ngIf="privilegeGroupForm.get('groupName')?.hasError('required')">Group name is required</ng-container>
+          <ng-container *ngIf="privilegeGroupForm.get('groupName')?.hasError('whitespace')">Group name cannot be just spaces</ng-container>
+          <ng-container *ngIf="privilegeGroupForm.get('groupName')?.hasError('minlength')">Group name must be at least 3 characters</ng-container>
+          <ng-container *ngIf="privilegeGroupForm.get('groupName')?.hasError('maxlength')">Group name must be 50 characters or fewer</ng-container>
+        </span>
+      </div>
+
+      <div class="field">
+        <label>Group Description</label>
+        <input type="text" maxlength="200" placeholder="Ex. Admin Group" formControlName="groupDescription" />
+        <span class="required-message" *ngIf="submitted && privilegeGroupForm.get('groupDescription')?.hasError('maxlength')">
+          Group description must be 200 characters or fewer
+        </span>
+      </div>
+
+    </div>
+
+    <!-- Actions -->
+    <div class="action">
+      <button type="button" class="btn secondary" (click)="closeDialog()">Cancel</button>
+      <button type="submit" class="btn primary">
+        {{ data ? 'Update' : 'Save' }}
+      </button>
+    </div>
+
+  </form>
+
+</div>

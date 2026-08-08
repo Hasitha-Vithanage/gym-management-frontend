@@ -1,0 +1,234 @@
+<div class="feedback-page">
+
+  <!-- ─── PAGE HEADER ──────────────────────────────────────────────────── -->
+  <div class="page-header">
+    <img src="../../../../assets/images/icon/icons8-very-popular-topic-24.png">
+    <div>
+      <h2 class="page-title">Ratings &amp; Feedback</h2>
+      <p class="page-sub">Your opinion helps us improve your experience</p>
+    </div>
+  </div>
+
+  <div class="page-grid">
+
+    <!-- ─── FORM CARD ────────────────────────────────────────────────── -->
+    <div class="form-card" [class.is-editing]="mode === 'edit'">  
+
+      <div class="edit-banner" *ngIf="mode === 'edit'">
+        <img src="../../../../assets/images/icon/icons8-very-popular-topic-24.png">
+        Editing pending feedback — category and trainer cannot be changed.
+      </div>
+
+      <div class="card-heading">
+        <img [src]="mode === 'edit'
+              ? '../../../../assets/images/icon/icons8-edit-24.png'
+              : '../../../../assets/images/icon/icons8-feedback-24.png'"
+             class="heading-icon"
+             alt="">
+        {{ mode === 'edit' ? 'Edit Feedback' : 'Share Your Experience' }}
+      </div>
+
+      <form [formGroup]="feedbackForm" (ngSubmit)="onSubmit()">
+
+        <!-- Category Pills -->
+        <div class="form-group">
+          <span class="field-label">Category <span class="req">*</span></span>
+          <div class="pill-group">
+            <button type="button" class="pill"
+                    [class.active]="feedbackForm.get('category')?.value === 'Gym'"
+                    [disabled]="mode === 'edit'"
+                    (click)="setCategory('Gym')">
+              <img src="../../../../assets/images/icon/icons8-workout-16.png"> Gym
+            </button>
+            <button type="button" class="pill"
+                    [class.active]="feedbackForm.get('category')?.value === 'Trainer'"
+                    [disabled]="mode === 'edit'"
+                    (click)="setCategory('Trainer')">
+              <img src="../../../../assets/images/icon/icons8-person-16gg.png"> Trainer
+            </button>
+          </div>
+          <span class="err" *ngIf="submitted && feedbackForm.get('category')?.invalid">
+            Please select a category
+          </span>
+        </div>
+
+        <!-- Trainer Select -->
+        <div class="form-group" *ngIf="showTrainerField">
+          <label class="field-label" for="trainerSel">Trainer <span class="req">*</span></label>
+          <select id="trainerSel" formControlName="targetName">
+            <option value="" disabled>Select a trainer…</option>
+            <option *ngFor="let t of trainerList" [value]="t.firstName">{{ t.firstName }}</option>
+          </select>
+          <span class="err" *ngIf="submitted && feedbackForm.get('targetName')?.invalid">
+            Please select a trainer
+          </span>
+        </div>
+
+        <!-- Star Rating -->
+        <div class="form-group">
+          <span class="field-label">
+            Your Rating <span class="req">*</span>
+            <span class="rating-hint" *ngIf="hoverRating || rating">
+              — <strong>{{ ratingLabel }}</strong>
+            </span>
+          </span>
+          <div class="stars-row">
+            <img *ngFor="let s of stars; let i = index"
+                 class="star"
+                 [class.on]="i < (hoverRating || rating)"
+                 [src]="i < (hoverRating || rating)
+                        ? '../../../../assets/images/icon/icons8-star-24.png'
+                        : '../../../../assets/images/icon/icons8-star-24-border.png'"
+                 alt=""
+                 (mouseenter)="hoverRating = i + 1"
+                 (mouseleave)="hoverRating = 0"
+                 (click)="setRating(i + 1)">
+          </div>
+          <span class="err" *ngIf="submitted && rating < 1">Please select a rating</span>
+        </div>
+
+        <!-- Feedback Textarea -->
+        <div class="form-group">
+          <label class="field-label" for="fbText">Feedback <span class="req">*</span></label>
+          <textarea id="fbText" formControlName="feedback" rows="5" maxlength="1000"
+                    placeholder="Describe your experience in detail (min. 10 characters)…"></textarea>
+          <div class="textarea-meta">
+            <span class="err" *ngIf="submitted && feedbackForm.get('feedback')?.invalid">
+              <ng-container *ngIf="feedbackForm.get('feedback')?.hasError('required')">Feedback is required</ng-container>
+              <ng-container *ngIf="feedbackForm.get('feedback')?.hasError('minlength')">Minimum 10 characters required</ng-container>
+            </span>
+            <span class="char-count">{{ feedbackForm.get('feedback')?.value?.length || 0 }}&thinsp;/&thinsp;1000</span>
+          </div>
+        </div>
+
+        <!-- Anonymous Toggle -->
+        <div class="anon-row">
+          <mat-slide-toggle formControlName="anonymous" color="accent">
+            Submit anonymously
+          </mat-slide-toggle>
+          <p class="anon-hint">Your name won't be visible to trainers or staff</p>
+        </div>
+
+        <!-- Actions -->
+        <div class="form-actions">
+          <button type="submit" class="btn-primary">
+            <img [src]="mode === 'edit' ? '../../../../assets/images/icon/icons8-save-24.png' : '../../../../assets/images/icon/icons8-send-24.png'" class="btn-icon" [alt]="mode === 'edit' ? 'Save' : 'Send'">
+            {{ submitLabel }}
+          </button>
+          <button type="button" class="btn-ghost" (click)="resetForm()">
+            Cancel
+          </button>
+        </div>
+
+      </form>
+    </div>
+
+    <!-- ─── HISTORY CARD ─────────────────────────────────────────────── -->
+    <div class="history-card">
+
+      <div class="history-header">
+        <div class="history-title">
+          <img src="../../../../assets/images/icon/icons8-clock-16.png">
+          My Feedback
+          <span class="count-badge" *ngIf="dataSource.data.length > 0">{{ dataSource.data.length }}</span>
+        </div>
+        <div class="history-toolbar">
+          <div class="search-bar">
+            <img src="../../../../assets/images/icon/icons8-search-16.png">
+            <input type="text" placeholder="Search…" (keyup)="applyFilter($event)" />
+          </div>
+          <button class="icon-btn" (click)="refreshData()" matTooltip="Refresh">
+            <img src="../../../../assets/images/icon/refresh.png">
+          </button>
+        </div>
+      </div>
+
+      <div class="table-wrapper">
+        <table mat-table [dataSource]="dataSource" matSort class="feedback-table">
+
+          <ng-container matColumnDef="category">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Category</th>
+            <td mat-cell *matCellDef="let e">
+              <span class="cat-chip" [class.gym]="e.category === 'Gym'" [class.trainer]="e.category === 'Trainer'">
+                <img class="cat-icon" [src]="e.category === 'Gym' ? '../../../../assets/images/icon/icons8-barbell-13.png' : '../../../../assets/images/icon/icons8-person-13.png'" [alt]="e.category">
+                {{ e.category }}
+              </span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="targetName">
+            <th mat-header-cell *matHeaderCellDef>Trainer</th>
+            <td mat-cell *matCellDef="let e" class="dim-text">{{ e.targetName || '—' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="rating">
+            <th mat-header-cell *matHeaderCellDef>Rating</th>
+            <td mat-cell *matCellDef="let e">
+              <div class="mini-stars">
+                <img *ngFor="let s of stars; let i = index"
+                     class="mini-star"
+                     [class.on]="i < e.rating"
+                     [src]="i < e.rating
+                            ? '../../../../assets/images/icon/icons8-star-24.png'
+                            : '../../../../assets/images/icon/icons8-star-24-border.png'"
+                     alt="">
+                <span class="rating-num">{{ e.rating }}/5</span>
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="feedback">
+            <th mat-header-cell *matHeaderCellDef>Feedback</th>
+            <td mat-cell *matCellDef="let e">
+              <div class="feedback-cell">{{ e.feedback }}</div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="submittedAt">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+            <td mat-cell *matCellDef="let e" class="dim-text date-cell">
+              {{ e.submittedAt | date: 'MMM d, y' }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>Status</th>
+            <td mat-cell *matCellDef="let e">
+              <span class="status-pill" [ngClass]="getStatusClass(e.status)">{{ e.status }}</span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let e">
+              <button mat-icon-button class="edit-btn"
+                      [disabled]="e.status !== 'PENDING'"
+                      [matTooltip]="e.status === 'PENDING' ? 'Edit feedback' : 'Only pending feedback can be edited'"
+                      (click)="editData(e)">
+                <img src="../../../../assets/images/icon/edit-light.png">
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell no-data-cell" [attr.colspan]="displayedColumns.length">
+              <div class="empty-state">
+                <img src="../../../../assets/images/icon/icons8-very-popular-topic-50.png">
+                <p>No feedback submitted yet — share your first experience!</p>
+              </div>
+            </td>
+          </tr>
+
+        </table>
+      </div>
+
+      <mat-paginator [pageSizeOptions]="[5, 10, 25]" aria-label="Select page"></mat-paginator>
+
+    </div>
+
+  </div>
+
+</div>
