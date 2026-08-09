@@ -1,11 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  OnInit,
-  ViewChild,
-  inject
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -23,7 +16,6 @@ import { AddExerciseComponent } from './add-exercise/add-exercise.component';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ManageExerciseComponent implements OnInit {
-
   displayedColumns: string[] = [
     'exerciseName',
     'muscleGroup',
