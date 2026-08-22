@@ -173,7 +173,7 @@ export class MemberServiceService {
     return this.http.get<any[]>(requestUrl, { headers });
   }
 
-  getAtRiskMembers(days: number = 14) {
+  getAtRiskMembers(days: number = 20) {
     const requestUrl = `${environment.baseUrl}/memberService/attendance/at-risk?days=${days}`;
     let headers = {};
     if (this.httpService.getAuthToken() !== null) {

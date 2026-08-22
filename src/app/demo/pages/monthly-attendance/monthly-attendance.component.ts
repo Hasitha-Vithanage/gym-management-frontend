@@ -25,7 +25,7 @@ export class MonthlyAttendanceComponent {
     private pdfExportService: PdfExportService
   ) {
     this.getMonthlyMemberPresentAttendance();
-    this.getMonthlyMemberPresentAttendanceAvg();
+    // this.getMonthlyMemberPresentAttendanceAvg(); // backend endpoint is commented out, see CommonServiceController
   }
 
   async downloadReport(): Promise<void> {

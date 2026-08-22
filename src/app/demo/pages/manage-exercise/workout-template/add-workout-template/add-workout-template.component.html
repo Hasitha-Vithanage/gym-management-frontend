@@ -4,249 +4,276 @@
   <div class="form-header">
     <h2>Add Workout Template</h2>
     <button class="close-btn" (click)="closeDialog()">
-        <img src="../../../../assets/images/icon/close-light.png" style="margin-right: 5px;">
+      <img src="../../../../assets/images/icon/close-light.png" style="margin-right: 5px;">
     </button>
   </div>
 
-    <!-- Assignment banner shown when creating for a pending custom request -->
-    <div class="assignment-banner" *ngIf="fromPendingRequest">
-      <img src="../../../../assets/images/icon/icons8-audit-20.png">
-      <span>
-        This template will be <strong>automatically assigned to {{ data.memberName }}</strong> after you add exercises.
-        Goal and difficulty have been pre-filled from their request.
-      </span>
+  <!-- Assignment banner shown when creating for a pending custom request -->
+  <div class="assignment-banner" *ngIf="fromPendingRequest">
+    <img src="../../../../assets/images/icon/icons8-audit-20.png">
+    <span>
+      This template will be <strong>automatically assigned to {{ data.memberName }}</strong> after you add exercises.
+      Goal and difficulty have been pre-filled from their request.
+    </span>
+  </div>
+
+  <form [formGroup]="templateForm" (ngSubmit)="onSubmit()" class="form-body">
+
+    <!-- BASIC INFO -->
+    <h3 class="section-title">Basic Info</h3>
+    <hr class="divider" />
+
+    <div class="grid">
+      <div class="field full">
+        <label>Template Name<span class="required">*</span></label>
+        <input type="text" placeholder="Enter template name" formControlName="templateName" />
+        <span class="required-message" *ngIf="submitted && templateForm.get('templateName')?.invalid">
+          <ng-container *ngIf="templateForm.get('templateName')?.hasError('required')">Template name is
+            required</ng-container>
+          <ng-container *ngIf="templateForm.get('templateName')?.hasError('minlength')">Template name must be at least 3
+            characters</ng-container>
+          <ng-container *ngIf="templateForm.get('templateName')?.hasError('maxlength')">Template name must be 100
+            characters or fewer</ng-container>
+        </span>
+      </div>
+
+      <div class="field full">
+        <label>Description</label>
+        <textarea placeholder="Enter template description" formControlName="description"></textarea>
+        <span class="required-message" *ngIf="submitted && templateForm.get('description')?.hasError('maxlength')">
+          Description must be 2000 characters or fewer
+        </span>
+      </div>
     </div>
 
-    <form [formGroup]="templateForm" (ngSubmit)="onSubmit()" class="form-body">
+    <hr>
 
-        <!-- BASIC INFO -->
-        <h3 class="section-title">Basic Info</h3>
-        <hr class="divider"/>
+    <!-- CLASSIFICATION -->
+    <h3 class="section-title">Classification</h3>
+    <hr class="divider" />
 
-        <div class="grid">
-        <div class="field full">
-            <label>Template Name<span class="required">*</span></label>
-            <input type="text" placeholder="Enter template name" formControlName="templateName" />
-            <span class="required-message" *ngIf="submitted && templateForm.get('templateName')?.invalid">
-              <ng-container *ngIf="templateForm.get('templateName')?.hasError('required')">Template name is required</ng-container>
-              <ng-container *ngIf="templateForm.get('templateName')?.hasError('minlength')">Template name must be at least 3 characters</ng-container>
-              <ng-container *ngIf="templateForm.get('templateName')?.hasError('maxlength')">Template name must be 100 characters or fewer</ng-container>
-            </span>
+    <div class="grid">
+      <div class="field">
+        <label>Goal<span class="required">*</span></label>
+        <select formControlName="goal">
+          <option value="">Select</option>
+          <option>Fat Loss</option>
+          <option>Muscle Gain</option>
+          <option>Strength</option>
+          <option>Endurance</option>
+        </select>
+        <span class="required-message" *ngIf="submitted && templateForm.get('goal')?.invalid">
+          Goal is required
+        </span>
+      </div>
+
+      <div class="field">
+        <label>Difficulty<span class="required">*</span></label>
+        <select formControlName="difficultyLevel">
+          <option value="">Select</option>
+          <option>Beginner</option>
+          <option>Intermediate</option>
+          <option>Advanced</option>
+        </select>
+        <span class="required-message" *ngIf="submitted && templateForm.get('difficultyLevel')?.invalid">
+          Difficulty is required
+        </span>
+      </div>
+
+      <div class="field">
+        <label>Intensity<span class="required">*</span></label>
+        <select formControlName="intensityLevel">
+          <option value="">Select</option>
+          <option>Low</option>
+          <option>Medium</option>
+          <option>High</option>
+        </select>
+        <span class="required-message" *ngIf="submitted && templateForm.get('intensityLevel')?.invalid">
+          Intensity is required
+        </span>
+      </div>
+
+      <div class="field">
+        <label>Location<span class="required">*</span></label>
+        <select formControlName="location">
+          <option value="">Select</option>
+          <option>Home</option>
+          <option>Gym</option>
+        </select>
+        <span class="required-message" *ngIf="submitted && templateForm.get('location')?.invalid">
+          Location is required
+        </span>
+      </div>
+    </div>
+
+    <hr>
+
+    <!-- DIFFICULTY & SETUP -->
+    <h3 class="section-title">Difficulty & Setup</h3>
+    <hr class="divider" />
+
+    <div class="grid">
+      <div class="field">
+        <label>Duration (minutes)<span class="required">*</span></label>
+        <input type="number" placeholder="e.g. 45" formControlName="durationMinutes" min="15" max="180" />
+        <span class="required-message" *ngIf="submitted && templateForm.get('durationMinutes')?.invalid">
+          <ng-container *ngIf="templateForm.get('durationMinutes')?.hasError('required')">Duration is
+            required</ng-container>
+          <ng-container *ngIf="templateForm.get('durationMinutes')?.hasError('min')">Duration must be at least 15
+            minutes</ng-container>
+          <ng-container *ngIf="templateForm.get('durationMinutes')?.hasError('max')">Duration must be 180 minutes or
+            fewer</ng-container>
+        </span>
+      </div>
+
+      <div class="field">
+        <label>Days Per Week<span class="required">*</span></label>
+        <input type="number" placeholder="e.g. 3" formControlName="daysPerWeek" min="1" max="7" />
+        <span class="required-message" *ngIf="submitted && templateForm.get('daysPerWeek')?.invalid">
+          <ng-container *ngIf="templateForm.get('daysPerWeek')?.hasError('required')">Days per week is
+            required</ng-container>
+          <ng-container *ngIf="templateForm.get('daysPerWeek')?.hasError('min')">Must be at least 1 day</ng-container>
+          <ng-container *ngIf="templateForm.get('daysPerWeek')?.hasError('max')">Must be 7 days or fewer</ng-container>
+        </span>
+      </div>
+
+      <div class="field">
+        <label>Program Length (weeks)</label>
+        <input type="number" placeholder="e.g. 8" formControlName="programLengthWeeks" min="1" max="52" />
+        <span class="required-message" *ngIf="submitted && templateForm.get('programLengthWeeks')?.invalid">
+          <ng-container *ngIf="templateForm.get('programLengthWeeks')?.hasError('min')">Must be at least 1
+            week</ng-container>
+          <ng-container *ngIf="templateForm.get('programLengthWeeks')?.hasError('max')">Must be 52 weeks or
+            fewer</ng-container>
+        </span>
+      </div>
+
+      <div class="field">
+        <label>Status<span class="required">*</span></label>
+        <select formControlName="status">
+          <option value="">Select</option>
+          <option>Draft</option>
+          <option>Active</option>
+          <option>Inactive</option>
+        </select>
+        <span class="required-message" *ngIf="submitted && templateForm.get('status')?.invalid">
+          Status is required
+        </span>
+      </div>
+    </div>
+
+    <hr>
+
+    <!-- EQUIPMENT -->
+    <h3 class="section-title">Equipment Required</h3>
+    <hr class="divider" />
+
+    <div class="grid">
+      <div class="field full">
+        <label>Equipment<span class="required">*</span></label>
+        <div class="checkbox-group">
+          <label class="checkbox-item">
+            <input type="checkbox" value="Bodyweight"
+              [checked]="templateForm.get('equipmentRequired')?.value?.includes('Bodyweight')"
+              (change)="onEquipmentChange($event)" /> Bodyweight
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" value="Dumbbell"
+              [checked]="templateForm.get('equipmentRequired')?.value?.includes('Dumbbell')"
+              (change)="onEquipmentChange($event)" /> Dumbbell
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" value="Barbell"
+              [checked]="templateForm.get('equipmentRequired')?.value?.includes('Barbell')"
+              (change)="onEquipmentChange($event)" /> Barbell
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" value="Machine"
+              [checked]="templateForm.get('equipmentRequired')?.value?.includes('Machine')"
+              (change)="onEquipmentChange($event)" /> Machine
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" value="Resistance Band"
+              [checked]="templateForm.get('equipmentRequired')?.value?.includes('Resistance Band')"
+              (change)="onEquipmentChange($event)" /> Resistance Band
+          </label>
         </div>
+        <span class="required-message" *ngIf="submitted && templateForm.get('equipmentRequired')?.invalid">
+          Select at least one equipment option
+        </span>
+      </div>
+    </div>
 
-        <div class="field full">
-            <label>Description</label>
-            <textarea placeholder="Enter template description" formControlName="description"></textarea>
-            <span class="required-message" *ngIf="submitted && templateForm.get('description')?.hasError('maxlength')">
-              Description must be 2000 characters or fewer
-            </span>
+    <hr>
+
+    <!-- TARGETING -->
+    <h3 class="section-title">Targeting</h3>
+    <hr class="divider" />
+
+    <div class="grid">
+      <div class="field">
+        <label>Suitable For<span class="required">*</span></label>
+        <select formControlName="suitableFor">
+          <option value="">Select</option>
+          <option>All</option>
+          <option>Male</option>
+          <option>Female</option>
+        </select>
+        <span class="required-message" *ngIf="submitted && templateForm.get('suitableFor')?.invalid">
+          Suitable for is required
+        </span>
+      </div>
+
+      <div class="field">
+        <label>Min Age</label>
+        <input type="number" placeholder="e.g. 18" formControlName="minAge" min="10" max="100" />
+        <span class="required-message" *ngIf="submitted && templateForm.get('minAge')?.invalid">
+          <ng-container *ngIf="templateForm.get('minAge')?.hasError('min')">Min age must be at least 10</ng-container>
+          <ng-container *ngIf="templateForm.get('minAge')?.hasError('max')">Min age must be 100 or fewer</ng-container>
+        </span>
+      </div>
+
+      <div class="field">
+        <label>Max Age</label>
+        <input type="number" placeholder="e.g. 55" formControlName="maxAge" min="10" max="100" />
+        <span class="required-message" *ngIf="submitted && templateForm.get('maxAge')?.invalid">
+          <ng-container *ngIf="templateForm.get('maxAge')?.hasError('min')">Max age must be at least 10</ng-container>
+          <ng-container *ngIf="templateForm.get('maxAge')?.hasError('max')">Max age must be 100 or fewer</ng-container>
+        </span>
+      </div>
+
+      <div class="field full">
+        <label>Recommended BMI Category</label>
+        <div class="checkbox-group">
+          <label class="checkbox-item">
+            <input type="checkbox" value="Underweight"
+              [checked]="templateForm.get('recommendedBMI')?.value?.includes('Underweight')"
+              (change)="onBMIChange($event)" /> Underweight
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" value="Normal"
+              [checked]="templateForm.get('recommendedBMI')?.value?.includes('Normal')"
+              (change)="onBMIChange($event)" /> Normal
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" value="Overweight"
+              [checked]="templateForm.get('recommendedBMI')?.value?.includes('Overweight')"
+              (change)="onBMIChange($event)" /> Overweight
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" value="Obese"
+              [checked]="templateForm.get('recommendedBMI')?.value?.includes('Obese')" (change)="onBMIChange($event)" />
+            Obese
+          </label>
         </div>
-        </div>
+      </div>
+    </div>
 
-        <hr>
+    <!-- Actions -->
+    <div class="action-buttons">
+      <button type="submit" class="register-button field">Save</button>
+      <button type="button" class="reset-button field" (click)="resetData()">Reset</button>
+    </div>
 
-        <!-- CLASSIFICATION -->
-        <h3 class="section-title">Classification</h3>
-        <hr class="divider"/>
-
-        <div class="grid">
-        <div class="field">
-            <label>Goal<span class="required">*</span></label>
-            <select formControlName="goal">
-            <option value="">Select</option>
-            <option>Fat Loss</option>
-            <option>Muscle Gain</option>
-            <option>Strength</option>
-            <option>Endurance</option>
-            </select>
-            <span class="required-message" *ngIf="submitted && templateForm.get('goal')?.invalid">
-              Goal is required
-            </span>
-        </div>
-
-        <div class="field">
-            <label>Difficulty<span class="required">*</span></label>
-            <select formControlName="difficultyLevel">
-            <option value="">Select</option>
-            <option>Beginner</option>
-            <option>Intermediate</option>
-            <option>Advanced</option>
-            </select>
-            <span class="required-message" *ngIf="submitted && templateForm.get('difficultyLevel')?.invalid">
-              Difficulty is required
-            </span>
-        </div>
-
-        <div class="field">
-            <label>Intensity<span class="required">*</span></label>
-            <select formControlName="intensityLevel">
-            <option value="">Select</option>
-            <option>Low</option>
-            <option>Medium</option>
-            <option>High</option>
-            </select>
-            <span class="required-message" *ngIf="submitted && templateForm.get('intensityLevel')?.invalid">
-              Intensity is required
-            </span>
-        </div>
-
-        <div class="field">
-            <label>Location<span class="required">*</span></label>
-            <select formControlName="location">
-            <option value="">Select</option>
-            <option>Home</option>
-            <option>Gym</option>
-            </select>
-            <span class="required-message" *ngIf="submitted && templateForm.get('location')?.invalid">
-              Location is required
-            </span>
-        </div>
-        </div>
-
-        <hr>
-
-        <!-- DIFFICULTY & SETUP -->
-        <h3 class="section-title">Difficulty & Setup</h3>
-        <hr class="divider"/>
-
-        <div class="grid">
-        <div class="field">
-            <label>Duration (minutes)<span class="required">*</span></label>
-            <input type="number" placeholder="e.g. 45" formControlName="durationMinutes" min="15" max="180" />
-            <span class="required-message" *ngIf="submitted && templateForm.get('durationMinutes')?.invalid">
-              <ng-container *ngIf="templateForm.get('durationMinutes')?.hasError('required')">Duration is required</ng-container>
-              <ng-container *ngIf="templateForm.get('durationMinutes')?.hasError('min')">Duration must be at least 15 minutes</ng-container>
-              <ng-container *ngIf="templateForm.get('durationMinutes')?.hasError('max')">Duration must be 180 minutes or fewer</ng-container>
-            </span>
-        </div>
-
-        <div class="field">
-            <label>Days Per Week<span class="required">*</span></label>
-            <input type="number" placeholder="e.g. 3" formControlName="daysPerWeek" min="1" max="7" />
-            <span class="required-message" *ngIf="submitted && templateForm.get('daysPerWeek')?.invalid">
-              <ng-container *ngIf="templateForm.get('daysPerWeek')?.hasError('required')">Days per week is required</ng-container>
-              <ng-container *ngIf="templateForm.get('daysPerWeek')?.hasError('min')">Must be at least 1 day</ng-container>
-              <ng-container *ngIf="templateForm.get('daysPerWeek')?.hasError('max')">Must be 7 days or fewer</ng-container>
-            </span>
-        </div>
-
-        <div class="field">
-            <label>Program Length (weeks)</label>
-            <input type="number" placeholder="e.g. 8" formControlName="programLengthWeeks" min="1" max="52" />
-            <span class="required-message" *ngIf="submitted && templateForm.get('programLengthWeeks')?.invalid">
-              <ng-container *ngIf="templateForm.get('programLengthWeeks')?.hasError('min')">Must be at least 1 week</ng-container>
-              <ng-container *ngIf="templateForm.get('programLengthWeeks')?.hasError('max')">Must be 52 weeks or fewer</ng-container>
-            </span>
-        </div>
-
-        <div class="field">
-            <label>Status<span class="required">*</span></label>
-            <select formControlName="status">
-            <option value="">Select</option>
-            <option>Draft</option>
-            <option>Active</option>
-            <option>Inactive</option>
-            </select>
-            <span class="required-message" *ngIf="submitted && templateForm.get('status')?.invalid">
-              Status is required
-            </span>
-        </div>
-        </div>
-
-        <hr>
-
-        <!-- EQUIPMENT -->
-        <h3 class="section-title">Equipment Required</h3>
-        <hr class="divider"/>
-
-        <div class="grid">
-        <div class="field full">
-            <label>Equipment<span class="required">*</span></label>
-            <div class="checkbox-group">
-            <label class="checkbox-item">
-                <input type="checkbox" value="Bodyweight" [checked]="templateForm.get('equipmentRequired')?.value?.includes('Bodyweight')" (change)="onEquipmentChange($event)" /> Bodyweight
-            </label>
-            <label class="checkbox-item">
-                <input type="checkbox" value="Dumbbell" [checked]="templateForm.get('equipmentRequired')?.value?.includes('Dumbbell')" (change)="onEquipmentChange($event)" /> Dumbbell
-            </label>
-            <label class="checkbox-item">
-                <input type="checkbox" value="Barbell" [checked]="templateForm.get('equipmentRequired')?.value?.includes('Barbell')" (change)="onEquipmentChange($event)" /> Barbell
-            </label>
-            <label class="checkbox-item">
-                <input type="checkbox" value="Machine" [checked]="templateForm.get('equipmentRequired')?.value?.includes('Machine')" (change)="onEquipmentChange($event)" /> Machine
-            </label>
-            <label class="checkbox-item">
-                <input type="checkbox" value="Resistance Band" [checked]="templateForm.get('equipmentRequired')?.value?.includes('Resistance Band')" (change)="onEquipmentChange($event)" /> Resistance Band
-            </label>
-            </div>
-            <span class="required-message" *ngIf="submitted && templateForm.get('equipmentRequired')?.invalid">
-              Select at least one equipment option
-            </span>
-        </div>
-        </div>
-
-        <hr>
-
-        <!-- TARGETING -->
-        <h3 class="section-title">Targeting</h3>
-        <hr class="divider"/>
-
-        <div class="grid">
-        <div class="field">
-            <label>Suitable For<span class="required">*</span></label>
-            <select formControlName="suitableFor">
-            <option value="">Select</option>
-            <option>All</option>
-            <option>Male</option>
-            <option>Female</option>
-            </select>
-            <span class="required-message" *ngIf="submitted && templateForm.get('suitableFor')?.invalid">
-              Suitable for is required
-            </span>
-        </div>
-
-        <div class="field">
-            <label>Min Age</label>
-            <input type="number" placeholder="e.g. 18" formControlName="minAge" min="10" max="100" />
-            <span class="required-message" *ngIf="submitted && templateForm.get('minAge')?.invalid">
-              <ng-container *ngIf="templateForm.get('minAge')?.hasError('min')">Min age must be at least 10</ng-container>
-              <ng-container *ngIf="templateForm.get('minAge')?.hasError('max')">Min age must be 100 or fewer</ng-container>
-            </span>
-        </div>
-
-        <div class="field">
-            <label>Max Age</label>
-            <input type="number" placeholder="e.g. 55" formControlName="maxAge" min="10" max="100" />
-            <span class="required-message" *ngIf="submitted && templateForm.get('maxAge')?.invalid">
-              <ng-container *ngIf="templateForm.get('maxAge')?.hasError('min')">Max age must be at least 10</ng-container>
-              <ng-container *ngIf="templateForm.get('maxAge')?.hasError('max')">Max age must be 100 or fewer</ng-container>
-            </span>
-        </div>
-
-        <div class="field full">
-            <label>Recommended BMI Category</label>
-            <div class="checkbox-group">
-            <label class="checkbox-item">
-                <input type="checkbox" value="Underweight" [checked]="templateForm.get('recommendedBMI')?.value?.includes('Underweight')" (change)="onBMIChange($event)" /> Underweight
-            </label>
-            <label class="checkbox-item">
-                <input type="checkbox" value="Normal" [checked]="templateForm.get('recommendedBMI')?.value?.includes('Normal')" (change)="onBMIChange($event)" /> Normal
-            </label>
-            <label class="checkbox-item">
-                <input type="checkbox" value="Overweight" [checked]="templateForm.get('recommendedBMI')?.value?.includes('Overweight')" (change)="onBMIChange($event)" /> Overweight
-            </label>
-            <label class="checkbox-item">
-                <input type="checkbox" value="Obese" [checked]="templateForm.get('recommendedBMI')?.value?.includes('Obese')" (change)="onBMIChange($event)" /> Obese
-            </label>
-            </div>
-        </div>
-        </div>
-
-        <!-- Actions -->
-        <div class="action-buttons">
-        <button type="submit" class="register-button field">Save</button>
-        <button type="button" class="reset-button field" (click)="resetData()">Reset</button>
-        </div>
-
-    </form>
+  </form>
 </div>

@@ -72,7 +72,7 @@ export class AddExerciseComponent implements OnInit, OnDestroy {
       this.exerciseService.createExercise(this.prepareFormData()).subscribe({
         next: (response) => {
           this.messageService.showSuccess('Exercise added successfully!');
-          this.notificationService.addNotification('Exercise Added Successfully', 'success', 1);
+          this.notificationService.addNotification(`Exercise "${response.exerciseName}" Added Successfully`, 'success', 1);
           this.dialogRef.close({ action: 'add', data: response });
         },
         error: (error) => {
@@ -85,6 +85,7 @@ export class AddExerciseComponent implements OnInit, OnDestroy {
       this.exerciseService.updateExercise(this.selectedData?.id, this.prepareFormData()).subscribe({
         next: (response) => {
           this.messageService.showSuccess('Exercise updated successfully!');
+          this.notificationService.addNotification(`Exercise "${response.exerciseName}" Updated Successfully`, 'success', 1);
           this.dialogRef.close({ action: 'edit', data: response });
         },
         error: (error) => {
