@@ -32,11 +32,11 @@ export class AddNewProgressDialogComponent {
 
     this.progressForm = this.fb.group({
       date: new FormControl(this.data?.purchaseDate || today, [Validators.required]),
-      weight:  new FormControl(this.data?.weight  ?? '', Validators.required),
-      height:  new FormControl(this.data?.height  ?? '', Validators.required),
+      weight:  new FormControl(this.data?.weight  ?? '', [Validators.required, Validators.min(1), Validators.max(500)]),
+      height:  new FormControl(this.data?.height  ?? '', [Validators.required, Validators.min(1), Validators.max(300)]),
       bmi:     new FormControl(this.data?.bmi     ?? ''),
       bodyFat: new FormControl(''),
-      gender:  new FormControl(this.data?.gender  ?? '', Validators.required),
+      gender:  new FormControl(this.data?.gender  ?? '', [Validators.required]),
       remarks: new FormControl(''),
     });
 

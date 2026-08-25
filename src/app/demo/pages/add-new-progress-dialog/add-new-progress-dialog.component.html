@@ -17,8 +17,11 @@
       <div class="half-width">
         <label for="weight">Weight (Kg) <span class="required">*</span></label>
         <input id="weight" type="number" maxlength="20" placeholder="Enter Weight" formControlName="weight" />
-        <span class="required-message" *ngIf="submitted && progressForm.get('weight')?.invalid">
+        <span class="required-message" *ngIf="submitted && progressForm.get('weight')?.hasError('required')">
           Weight is required
+        </span>
+        <span class="required-message" *ngIf="submitted && (progressForm.get('weight')?.hasError('min') || progressForm.get('weight')?.hasError('max'))">
+          Weight must be between 1 and 500
         </span>
       </div>
     </div>
@@ -27,8 +30,11 @@
       <div class="half-width">
         <label for="height">Height (cm) <span class="required">*</span></label>
         <input id="height" type="number" maxlength="20" placeholder="Enter Height" formControlName="height" />
-        <span class="required-message" *ngIf="submitted && progressForm.get('height')?.invalid">
+        <span class="required-message" *ngIf="submitted && progressForm.get('height')?.hasError('required')">
           Height is required
+        </span>
+        <span class="required-message" *ngIf="submitted && (progressForm.get('height')?.hasError('min') || progressForm.get('height')?.hasError('max'))">
+          Height must be between 1 and 300
         </span>
       </div>
 
