@@ -36,7 +36,13 @@ export class ProgressTrackingComponent implements OnInit {
   userName = this.http.getLoginNameFromCache();
 
   // Pre-fill data from last workout request (for new members with no measurements)
-  prefillData: { weight: number; height: number; gender: string; bmi: number; bmiCategory: string; estimatedBodyFat: number | null } | null = null;
+  prefillData: { 
+    weight: number; 
+    height: number; 
+    gender: string; 
+    bmi: number; 
+    bmiCategory: string; 
+    estimatedBodyFat: number | null } | null = null;
 
   // ── Meal plan data ────────────────────────────────────────────────────────────
   mealPlanLoading = false;
