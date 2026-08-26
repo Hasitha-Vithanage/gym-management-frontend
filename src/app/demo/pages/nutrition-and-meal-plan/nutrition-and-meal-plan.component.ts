@@ -70,7 +70,7 @@ export class NutritionAndMealPlanComponent implements OnInit {
       userId:             [name, Validators.required],
       submittedDate:      [today, Validators.required],
       fitnessGoal:        ['', Validators.required],
-      dietaryPreferences: [[]],
+      dietaryPreferences: ['', [Validators.required]],
       allergies:          [''],
       additionalNotes:    ['']
     });

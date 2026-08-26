@@ -427,7 +427,7 @@
           </div>
 
           <div class="nf-field nf-full">
-            <span class="nf-label">Dietary Preferences</span>
+            <span class="nf-label">Dietary Preferences <span class="nf-req">*</span></span>
             <div class="nf-check-grid">
               <label class="nf-check-item" *ngFor="let pref of allDietaryPrefs">
                 <input type="checkbox"
@@ -436,6 +436,9 @@
                 <span>{{ pref }}</span>
               </label>
             </div>
+            <span class="nf-error" *ngIf="submitted && nutritionProfileForm.get('dietaryPreferences')?.hasError('required')">
+              Dietary preferences are required
+            </span>
           </div>
 
           <div class="nf-field nf-full">
