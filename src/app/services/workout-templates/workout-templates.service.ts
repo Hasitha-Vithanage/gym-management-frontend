@@ -97,6 +97,7 @@ export class WorkoutTemplatesService {
 
           if (scored.length === 0) return null;
           scored.sort((a, b) => b.score - a.score);
+          // scored.slice(0,3).map(entry => entry.template);
           return scored[0].template;
         })
       );
